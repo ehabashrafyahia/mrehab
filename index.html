@@ -3,123 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منشئ الاختبارات الذكي</title>
+    <title>ملك الاختبارات التاريخية | أساطير الزمان</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
+    <!-- الخلفية الملحمية -->
+    <div class="epic-background">
+        <div class="particles"></div>
+        <div class="glow-effect"></div>
+    </div>
+
+    <!-- المؤثرات الصوتية -->
+    <audio id="ambientSound" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-epic-adventure-4-995.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="clickSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- الصفحة الرئيسية -->
     <div class="container">
-        <header>
-            <h1><i class="fas fa-brain"></i> منشئ الاختبارات الذكي</h1>
-            <p class="subtitle">أنشئ اختباراتك بنظام قوالب جاهزة وجذابة</p>
+        <!-- الهيدر الملحمي -->
+        <header class="epic-header">
+            <div class="crown-animation">
+                <i class="fas fa-crown"></i>
+            </div>
+            <h1 class="title-animation">
+                <span class="title-text">ملك الاختبارات التاريخية</span>
+                <span class="subtitle">أساطير الزمان تتحداك!</span>
+            </h1>
+            <div class="torch-left">
+                <i class="fas fa-fire"></i>
+            </div>
+            <div class="torch-right">
+                <i class="fas fa-fire"></i>
+            </div>
+            <div class="score-display">
+                <i class="fas fa-coins"></i>
+                <span id="totalScore">0</span> نقطة
+            </div>
         </header>
 
-        <div class="main-content">
-            <!-- قسم إضافة الأسئلة -->
-            <section class="question-creator">
-                <h2><i class="fas fa-plus-circle"></i> إضافة سؤال جديد</h2>
+        <!-- المنطقة الرئيسية -->
+        <main class="main-content">
+            <!-- لوحة التحكم -->
+            <section class="control-panel">
+                <div class="panel-title">
+                    <i class="fas fa-scroll"></i>
+                    <h2>صُنع أسطورة جديدة</h2>
+                </div>
+                
                 <div class="form-container">
-                    <div class="form-group">
-                        <label for="questionText">نص السؤال</label>
-                        <textarea id="questionText" placeholder="أدخل نص السؤال هنا..." rows="3"></textarea>
+                    <!-- إدخال السؤال -->
+                    <div class="input-group epic-input">
+                        <label for="questionText">
+                            <i class="fas fa-question-circle"></i>
+                            نَص التحدي التاريخي
+                        </label>
+                        <textarea 
+                            id="questionText" 
+                            placeholder="اكتب سؤالاً تاريخياً يليق بالأساطير..."
+                            rows="3"></textarea>
+                        <div class="input-decoration">
+                            <i class="fas fa-feather-alt"></i>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>نوع القالب</label>
-                        <div class="template-options">
-                            <div class="template-option" data-template="default">
-                                <i class="fas fa-th-large"></i>
-                                <span>قياسي</span>
+                    <!-- توقيت السؤال -->
+                    <div class="input-group">
+                        <label>
+                            <i class="fas fa-hourglass-half"></i>
+                            زمن التفكير (ثواني)
+                        </label>
+                        <div class="time-selector">
+                            <button class="time-btn" data-time="15">15</button>
+                            <button class="time-btn" data-time="30">30</button>
+                            <button class="time-btn" data-time="45">45</button>
+                            <button class="time-btn" data-time="60">60</button>
+                            <input type="number" id="customTime" min="5" max="180" placeholder="مخصص">
+                        </div>
+                    </div>
+
+                    <!-- مستوى الصعوبة -->
+                    <div class="input-group">
+                        <label>
+                            <i class="fas fa-shield-alt"></i>
+                            مستوى التحدي
+                        </label>
+                        <div class="difficulty-levels">
+                            <div class="difficulty-btn" data-level="easy">
+                                <i class="fas fa-chess-pawn"></i>
+                                <span>سهل</span>
+                                <div class="level-bar" style="width: 30%"></div>
                             </div>
-                            <div class="template-option" data-template="modern">
-                                <i class="fas fa-star"></i>
-                                <span>حديث</span>
+                            <div class="difficulty-btn" data-level="medium">
+                                <i class="fas fa-chess-knight"></i>
+                                <span>متوسط</span>
+                                <div class="level-bar" style="width: 60%"></div>
                             </div>
-                            <div class="template-option" data-template="elegant">
-                                <i class="fas fa-gem"></i>
-                                <span>أنيق</span>
+                            <div class="difficulty-btn" data-level="hard">
+                                <i class="fas fa-chess-queen"></i>
+                                <span>صعب</span>
+                                <div class="level-bar" style="width: 90%"></div>
                             </div>
-                            <div class="template-option" data-template="minimal">
-                                <i class="fas fa-minimize"></i>
-                                <span>بسيط</span>
+                            <div class="difficulty-btn" data-level="legendary">
+                                <i class="fas fa-dragon"></i>
+                                <span>أسطوري</span>
+                                <div class="level-bar" style="width: 100%"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>الخيارات (حدد الإجابة الصحيحة)</label>
+                    <!-- إضافة الخيارات -->
+                    <div class="input-group">
+                        <label>
+                            <i class="fas fa-list-ol"></i>
+                            خيارات الجواب (حتى 4 خيارات)
+                        </label>
                         <div id="optionsContainer">
                             <div class="option-input">
-                                <input type="text" class="option-text" placeholder="النص الأول">
-                                <label class="correct-checkbox">
-                                    <input type="radio" name="correct" value="0"> صحيح
-                                </label>
+                                <div class="option-number">أ</div>
+                                <input type="text" class="option-text" placeholder="الخيار الأول">
+                                <button class="remove-option" title="إزالة الخيار">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                             <div class="option-input">
-                                <input type="text" class="option-text" placeholder="النص الثاني">
-                                <label class="correct-checkbox">
-                                    <input type="radio" name="correct" value="1"> صحيح
-                                </label>
+                                <div class="option-number">ب</div>
+                                <input type="text" class="option-text" placeholder="الخيار الثاني">
+                                <button class="remove-option" title="إزالة الخيار">
+                                    <i class="fas fa-times"></i>
+                                </button>
                             </div>
                         </div>
-                        <button id="addOption" class="btn-secondary">
-                            <i class="fas fa-plus"></i> إضافة خيار جديد
+                        <button id="addOption" class="add-option-btn">
+                            <i class="fas fa-plus-circle"></i>
+                            إضافة خيار جديد
                         </button>
                     </div>
 
-                    <div class="form-actions">
-                        <button id="previewBtn" class="btn-secondary">
-                            <i class="fas fa-eye"></i> معاينة السؤال
+                    <!-- الإجراءات -->
+                    <div class="action-buttons">
+                        <button id="previewBtn" class="action-btn preview-btn">
+                            <i class="fas fa-eye"></i>
+                            معاينة الملحمية
                         </button>
-                        <button id="saveBtn" class="btn-primary">
-                            <i class="fas fa-save"></i> حفظ السؤال
+                        <button id="saveBtn" class="action-btn save-btn">
+                            <i class="fas fa-save"></i>
+                            حفظ التحدي
                         </button>
-                        <button id="resetBtn" class="btn-outline">
-                            <i class="fas fa-redo"></i> مسح الكل
+                        <button id="resetBtn" class="action-btn reset-btn">
+                            <i class="fas fa-redo"></i>
+                            بداية جديدة
                         </button>
                     </div>
                 </div>
             </section>
 
-            <!-- قسم المعاينة -->
+            <!-- معاينة التحدي -->
             <section class="preview-section">
-                <h2><i class="fas fa-eye"></i> معاينة الأسئلة</h2>
-                <div id="previewContainer">
-                    <p class="empty-message">لم تقم بإضافة أي أسئلة بعد. ابدأ بإضافة سؤال جديد!</p>
+                <div class="section-header">
+                    <h2><i class="fas fa-theater-masks"></i> معاينة التحدي</h2>
+                    <div class="timer-preview">
+                        <i class="fas fa-clock"></i>
+                        <span id="previewTimer">30</span> ثانية
+                    </div>
                 </div>
-                <div class="preview-actions">
-                    <button id="exportHtml" class="btn-success">
-                        <i class="fas fa-download"></i> تصدير كـ HTML
-                    </button>
-                    <button id="exportJson" class="btn-secondary">
-                        <i class="fas fa-file-code"></i> تصدير كـ JSON
-                    </button>
+                
+                <div id="previewContainer">
+                    <!-- سيتم عرض المعاينة هنا -->
+                    <div class="welcome-message">
+                        <div class="welcome-icon">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <h3>اهلاً بك في مملكة التاريخ!</h3>
+                        <p>ابدأ بصنع أول تحدٍ تاريخي وسيظهر هنا</p>
+                    </div>
                 </div>
             </section>
-        </div>
+        </main>
 
-        <!-- الأسئلة المحفوظة -->
-        <section class="saved-questions">
-            <h2><i class="fas fa-list"></i> الأسئلة المحفوظة (<span id="questionCount">0</span>)</h2>
-            <div id="savedQuestionsContainer">
-                <p class="empty-message">لا توجد أسئلة محفوظة</p>
+        <!-- مكتبة التحديات -->
+        <section class="challenges-library">
+            <div class="library-header">
+                <h2><i class="fas fa-book-dead"></i> مكتبة التحديات التاريخية</h2>
+                <div class="library-stats">
+                    <span class="stat-item">
+                        <i class="fas fa-scroll"></i>
+                        <span id="challengesCount">0</span> تحديات
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-crown"></i>
+                        <span id="totalPoints">0</span> نقطة إجمالية
+                    </span>
+                </div>
+            </div>
+
+            <div id="challengesContainer" class="challenges-grid">
+                <!-- سيتم عرض التحديات المحفوظة هنا -->
             </div>
         </section>
+
+        <!-- أدوات التصدير -->
+        <section class="export-tools">
+            <h2><i class="fas fa-download"></i> أدوات النُسَّاخ</h2>
+            <div class="export-buttons">
+                <button id="exportPdf" class="export-btn">
+                    <i class="fas fa-file-pdf"></i>
+                    مخطوطة PDF
+                </button>
+                <button id="exportImage" class="export-btn">
+                    <i class="fas fa-image"></i>
+                    لوحة فنية
+                </button>
+                <button id="exportChallenge" class="export-btn">
+                    <i class="fas fa-share-alt"></i>
+                    تحدٍ قابل للمشاركة
+                </button>
+                <button id="printAll" class="export-btn">
+                    <i class="fas fa-print"></i>
+                    طبع المخطوطات
+                </button>
+            </div>
+        </section>
+
+        <!-- الفوتر -->
+        <footer class="epic-footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-monument"></i>
+                    <span>ملك الاختبارات التاريخية</span>
+                </div>
+                <div class="footer-quote">
+                    "التاريخ سجل انتصارات وهزائم، وأنت من يكتب الفصل القادم"
+                </div>
+                <div class="sound-control">
+                    <button id="soundToggle">
+                        <i class="fas fa-volume-up"></i>
+                        الموسيقى الملحمية
+                    </button>
+                    <button id="effectsToggle">
+                        <i class="fas fa-bolt"></i>
+                        المؤثرات الصوتية
+                    </button>
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <!-- نافذة المعاينة -->
-    <div id="previewModal" class="modal">
+    <!-- النافذة المنبثقة للمعاينة -->
+    <div id="epicModal" class="epic-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>معاينة السؤال</h3>
-                <span class="close-modal">&times;</span>
+                <div class="modal-title">
+                    <i class="fas fa-crown"></i>
+                    <h3>معاينة التحدي الملحمي</h3>
+                </div>
+                <div class="modal-timer">
+                    <div class="timer-circle">
+                        <svg width="60" height="60">
+                            <circle cx="30" cy="30" r="28"></circle>
+                        </svg>
+                        <span>30</span>
+                    </div>
+                </div>
             </div>
             <div class="modal-body" id="modalPreview">
-                <!-- سيتم إضافة المعاينة هنا -->
+                <!-- محتوى المعاينة -->
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn close-modal">
+                    <i class="fas fa-times"></i>
+                    إغلاق
+                </button>
+                <button class="modal-btn start-challenge">
+                    <i class="fas fa-play"></i>
+                    بدء التحدي!
+                </button>
             </div>
         </div>
     </div>
+
+    <!-- نافذة النتائج -->
+    <div id="resultsModal" class="results-modal">
+        <div class="results-content">
+            <div class="results-header">
+                <i class="fas fa-trophy"></i>
+                <h3>نتائج التحدي!</h3>
+            </div>
+            <div class="results-body">
+                <div class="score-display-large">
+                    <div class="score-number" id="finalScore">0</div>
+                    <div class="score-label">نقطة</div>
+                </div>
+                <div class="results-message" id="resultsMessage">
+                    <!-- رسالة النتائج -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الأصوات -->
+    <audio id="correctSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="wrongSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="victorySound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-victory-fanfare-2018.mp3" type="audio/mpeg">
+    </audio>
 
     <script src="script.js"></script>
 </body>
