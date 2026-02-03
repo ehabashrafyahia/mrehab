@@ -3,226 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مغامرة الأطلال | نسخة مطورة</title>
+<title>مولد اختبار تفاعلي | أ. إيهاب أشرف</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-
-*{
-  box-sizing:border-box;
-  font-family:'Cairo',sans-serif;
-}
-
 body{
   margin:0;
   background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  font-family:'Cairo',sans-serif;
   color:#fff;
-  min-height:100vh;
 }
-
 .container{
   max-width:900px;
   margin:auto;
   padding:20px;
 }
-
-header{
-  text-align:center;
-  margin-bottom:20px;
-}
-
-header h1{
-  font-size:32px;
-  margin-bottom:5px;
-}
-
-header p{
-  opacity:.8;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-  margin:20px 0;
-}
-
-.stat{
-  background:rgba(255,255,255,.08);
-  padding:15px;
+h1{text-align:center;}
+textarea{
+  width:100%;
+  height:220px;
   border-radius:15px;
-  text-align:center;
-  backdrop-filter:blur(6px);
+  border:none;
+  padding:15px;
+  font-size:16px;
+  margin-bottom:15px;
 }
-
-.stat h2{
-  margin:0;
-  font-size:26px;
-  color:#ffd369;
-}
-
-.stat span{
-  font-size:14px;
-  opacity:.8;
-}
-
-.card{
-  background:rgba(0,0,0,.35);
-  border-radius:20px;
-  padding:25px;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
-}
-
-.challenge{
-  font-size:20px;
-  margin-bottom:20px;
-  min-height:60px;
-}
-
-.buttons{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:15px;
-}
-
 button{
+  width:100%;
   padding:15px;
   border:none;
-  border-radius:14px;
-  font-size:16px;
-  cursor:pointer;
-  background:#ffd369;
-  color:#000;
-  transition:.3s;
-}
-
-button:hover{
-  transform:scale(1.05);
-  background:#ffbe33;
-}
-
-.result{
-  margin-top:15px;
+  border-radius:15px;
   font-size:18px;
-  text-align:center;
-  min-height:30px;
+  background:#ffd369;
+  cursor:pointer;
 }
-
-.footer{
-  text-align:center;
-  margin-top:30px;
-  opacity:.6;
-  font-size:14px;
+.quiz-box{
+  margin-top:25px;
+  background:rgba(0,0,0,.4);
+  padding:25px;
+  border-radius:20px;
 }
-
-@media(max-width:600px){
-  header h1{font-size:26px;}
-  .stats{grid-template-columns:1fr;}
+.option{
+  background:rgba(255,255,255,.1);
+  padding:12px;
+  border-radius:12px;
+  margin:10px 0;
+  cursor:pointer;
 }
+.option:hover{background:#ffd369;color:#000;}
+.stats{
+  display:flex;
+  justify-content:space-between;
+  margin-top:15px;
+}
+.hidden{display:none;}
 </style>
 </head>
 
 <body>
-
 <div class="container">
+<h1>🧠 مولد اختبار تفاعلي</h1>
 
-<header>
-  <h1>🏺 مغامرة الأطلال</h1>
-  <p>اختبر معرفتك في رحلة تاريخية ممتعة</p>
-</header>
+<textarea id="input">
+س: بُنيت الأهرامات في عصر؟
+A) الدولة القديمة
+B) الدولة الوسطى
+C) الدولة الحديثة
+D) العصر البطلمي
+الإجابة: A
+</textarea>
 
-<div class="stats">
-  <div class="stat">
-    <h2 id="score">0</h2>
-    <span>النقاط</span>
-  </div>
-  <div class="stat">
-    <h2 id="correct">0</h2>
-    <span>إجابات صحيحة</span>
-  </div>
-  <div class="stat">
-    <h2 id="wrong">0</h2>
-    <span>إجابات خاطئة</span>
+<button onclick="generateQuiz()">تحويل إلى اختبار 🚀</button>
+
+<div id="quiz" class="quiz-box hidden">
+  <div id="question"></div>
+  <div id="options"></div>
+  <div class="stats">
+    <span>✔️ صحيح: <b id="correct">0</b></span>
+    <span>❌ خطأ: <b id="wrong">0</b></span>
   </div>
 </div>
-
-<div class="card">
-  <div class="challenge" id="challenge">
-    اضغط "ابدأ الرحلة" لبدء المغامرة
-  </div>
-
-  <div class="buttons">
-    <button onclick="answer(true)">✔️ صحيح</button>
-    <button onclick="answer(false)">❌ خطأ</button>
-    <button onclick="startGame()">🚀 ابدأ الرحلة</button>
-  </div>
-
-  <div class="result" id="result"></div>
-</div>
-
-<div class="footer">
-  تصميم وتطوير © أ. إيهاب أشرف
-</div>
-
 </div>
 
 <script>
-const challenges = [
-  "بُنيت الأهرامات في عصر الدولة القديمة.",
-  "نهر النيل يجري من الجنوب إلى الشمال.",
-  "كانت عاصمة الدولة الفاطمية هي الإسكندرية.",
-  "محمد علي باشا مؤسس مصر الحديثة.",
-  "معركة عين جالوت ضد المغول."
-];
+let questions=[],current=0,correct=0,wrong=0;
 
-let current = -1;
-let score = Number(localStorage.getItem("score")) || 0;
-let correct = Number(localStorage.getItem("correct")) || 0;
-let wrong = Number(localStorage.getItem("wrong")) || 0;
+function generateQuiz(){
+  const text=document.getElementById("input").value.trim();
+  const blocks=text.split("\n\n");
+  questions=[];
 
-updateStats();
+  blocks.forEach(b=>{
+    const lines=b.split("\n");
+    if(lines.length>=6){
+      questions.push({
+        q:lines[0].replace("س:","").trim(),
+        options:lines.slice(1,5).map(l=>l.slice(3)),
+        answer:lines[5].split(":")[1].trim()
+      });
+    }
+  });
 
-function startGame(){
-  nextChallenge();
-  document.getElementById("result").innerText="";
+  if(!questions.length){alert("الصيغة غير صحيحة");return;}
+
+  document.getElementById("quiz").classList.remove("hidden");
+  showQuestion();
 }
 
-function nextChallenge(){
-  current = Math.floor(Math.random()*challenges.length);
-  document.getElementById("challenge").innerText = challenges[current];
+function showQuestion(){
+  const q=questions[current];
+  document.getElementById("question").innerText=q.q;
+  const optDiv=document.getElementById("options");
+  optDiv.innerHTML="";
+  q.options.forEach((o,i)=>{
+    const div=document.createElement("div");
+    div.className="option";
+    div.innerText=o;
+    div.onclick=()=>checkAnswer(i);
+    optDiv.appendChild(div);
+  });
 }
 
-function answer(isTrue){
-  if(current === -1) return;
-
-  const isCorrect = Math.random() > 0.5;
-
-  if(isCorrect === isTrue){
-    score += 10;
-    correct++;
-    document.getElementById("result").innerText = "🎉 إجابة صحيحة!";
-  }else{
-    wrong++;
-    document.getElementById("result").innerText = "😢 إجابة خاطئة!";
-  }
-
-  saveData();
-  updateStats();
-  nextChallenge();
-}
-
-function updateStats(){
-  document.getElementById("score").innerText = score;
-  document.getElementById("correct").innerText = correct;
-  document.getElementById("wrong").innerText = wrong;
-}
-
-function saveData(){
-  localStorage.setItem("score",score);
-  localStorage.setItem("correct",correct);
-  localStorage.setItem("wrong",wrong);
+function checkAnswer(i){
+  const q=questions[current];
+  const correctIndex="ABCD".indexOf(q.answer);
+  i===correctIndex ? correct++ : wrong++;
+  document.getElementById("correct").innerText=correct;
+  document.getElementById("wrong").innerText=wrong;
+  current++;
+  current<questions.length ? showQuestion() : alert("انتهى الاختبار 🎉");
 }
 </script>
-
 </body>
 </html>
