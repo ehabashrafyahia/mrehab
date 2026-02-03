@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>مولد اختبار تفاعلي | أ. إيهاب أشرف</title>
+<title>اختبار تفاعلي | أ. إيهاب أشرف</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
@@ -21,28 +21,23 @@ body{
   padding:20px;
 }
 
-h1{
-  text-align:center;
-  margin-bottom:15px;
-}
+h1{text-align:center;}
 
 textarea{
   width:100%;
-  height:220px;
+  height:260px;
   border-radius:16px;
   border:none;
   padding:15px;
   font-size:16px;
   margin-bottom:15px;
-  resize:none;
 }
 
 button{
-  width:100%;
-  padding:16px;
+  padding:14px 20px;
   border:none;
-  border-radius:16px;
-  font-size:18px;
+  border-radius:14px;
+  font-size:17px;
   background:#ffd369;
   cursor:pointer;
   transition:.3s;
@@ -50,7 +45,6 @@ button{
 
 button:hover{
   background:#ffbe33;
-  transform:scale(1.02);
 }
 
 .quiz-box{
@@ -63,7 +57,6 @@ button:hover{
 #question{
   font-size:20px;
   margin-bottom:20px;
-  min-height:60px;
 }
 
 .option{
@@ -72,31 +65,20 @@ button:hover{
   border-radius:14px;
   margin:10px 0;
   cursor:pointer;
-  transition:.3s;
 }
 
-.option:hover{
+.option.selected{
   background:#ffd369;
   color:#000;
 }
 
-.stats{
+.controls{
   display:flex;
   justify-content:space-between;
   margin-top:20px;
-  opacity:.85;
 }
 
-.hidden{
-  display:none;
-}
-
-.footer{
-  text-align:center;
-  margin-top:30px;
-  font-size:14px;
-  opacity:.6;
-}
+.hidden{display:none;}
 </style>
 </head>
 
@@ -104,31 +86,19 @@ button:hover{
 
 <div class="container">
 
-<h1>🧠 مولد اختبار تفاعلي</h1>
+<h1>🧠 اختبار تفاعلي</h1>
 
-<textarea id="input">
-س: بُنيت الأهرامات في عصر؟
-A) الدولة القديمة
-B) الدولة الوسطى
-C) الدولة الحديثة
-D) العصر البطلمي
-الإجابة: A
-</textarea>
+<textarea id="input" placeholder="الصق جميع الأسئلة هنا"></textarea>
 
-<button onclick="generateQuiz()">تحويل إلى اختبار 🚀</button>
+<button onclick="startQuiz()">بدء الاختبار 🚀</button>
 
 <div id="quiz" class="quiz-box hidden">
   <div id="question"></div>
   <div id="options"></div>
 
-  <div class="stats">
-    <span>الإجابات: <b id="correct">0</b></span>
-    <span>المحاولات: <b id="attempts">0</b></span>
+  <div class="controls">
+    <button onclick="nextQuestion()">التالي ⏭️</button>
   </div>
-</div>
-
-<div class="footer">
-  تصميم وتطوير © أ. إيهاب أشرف
 </div>
 
 </div>
@@ -136,16 +106,13 @@ D) العصر البطلمي
 <script>
 let questions = [];
 let current = 0;
-let correct = 0;
-let attempts = 0;
+let selectedAnswer = null;
 
-function generateQuiz(){
+function startQuiz(){
   const text = document.getElementById("input").value.trim();
   const blocks = text.split("\n\n");
   questions = [];
   current = 0;
-  correct = 0;
-  attempts = 0;
 
   blocks.forEach(block=>{
     const lines = block.split("\n");
@@ -159,49 +126,49 @@ function generateQuiz(){
   });
 
   if(!questions.length){
-    alert("من فضلك تأكد من صيغة الأسئلة");
+    alert("تأكد من صيغة الأسئلة");
     return;
   }
 
   document.getElementById("quiz").classList.remove("hidden");
-  updateStats();
   showQuestion();
 }
 
 function showQuestion(){
+  selectedAnswer = null;
   const q = questions[current];
-  document.getElementById("question").innerText = q.q;
+  document.getElementById("question").innerText =
+    `(${current+1}/${questions.length}) ${q.q}`;
+
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
 
-  q.options.forEach((opt,index)=>{
+  q.options.forEach((opt,i)=>{
     const div = document.createElement("div");
     div.className = "option";
     div.innerText = opt;
-    div.onclick = ()=>checkAnswer(index);
+    div.onclick = ()=>{
+      document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+      div.classList.add('selected');
+      selectedAnswer = i;
+    };
     optionsDiv.appendChild(div);
   });
 }
 
-function checkAnswer(index){
-  const q = questions[current];
-  const correctIndex = "ABCD".indexOf(q.answer);
-  attempts++;
-  if(index === correctIndex) correct++;
+function nextQuestion(){
+  if(selectedAnswer === null){
+    alert("اختر إجابة أولًا");
+    return;
+  }
 
-  updateStats();
   current++;
-
   if(current < questions.length){
     showQuestion();
   }else{
-    alert("🎉 تم الانتهاء من الاختبار");
+    alert("🎉 انتهى الاختبار");
+    document.getElementById("quiz").classList.add("hidden");
   }
-}
-
-function updateStats(){
-  document.getElementById("correct").innerText = correct;
-  document.getElementById("attempts").innerText = attempts;
 }
 </script>
 
