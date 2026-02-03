@@ -3,320 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ملك الاختبارات التاريخية | أساطير الزمان</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <title>ملحمة التاريخ: من سيربح الكنز؟</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f9d77e;
+            --dark-bg: #0f0e0b;
+            --panel-bg: #1a1510;
+            --text-color: #f0e6d2;
+            --correct: #2ecc71;
+            --wrong: #c0392b;
+            --border-style: 2px solid var(--gold-primary);
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Amiri', serif;
+            background-color: var(--dark-bg);
+            /* خلفية مزخرفة خفيفة */
+            background-image: radial-gradient(circle at center, #2c241b 0%, #050505 100%);
+            color: var(--text-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* الحاوية الرئيسية */
+        .game-container {
+            width: 90%;
+            max-width: 1000px;
+            height: 90vh;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+            border: 4px double var(--gold-primary);
+            padding: 20px;
+            background: rgba(20, 15, 10, 0.9);
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
+            position: relative;
+        }
+
+        /* منطقة اللعب (السؤال والإجابات) */
+        .play-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+
+        /* تصميم السؤال */
+        .question-box {
+            background: linear-gradient(180deg, #2b2116 0%, #1a120b 100%);
+            border: 2px solid var(--gold-primary);
+            padding: 30px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            position: relative;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* زخرفة جانبية للسؤال */
+        .question-box::before, .question-box::after {
+            content: '✦';
+            color: var(--gold-primary);
+            font-size: 2rem;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .question-box::before { left: 15px; }
+        .question-box::after { right: 15px; }
+
+        /* شبكة الإجابات */
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .answer-btn {
+            background: transparent;
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 20px;
+            font-size: 1.4rem;
+            font-family: 'Amiri', serif;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 20%); /* شكل مشطوف */
+            text-align: right;
+            padding-right: 40px;
+        }
+
+        .answer-btn:hover:not([disabled]) {
+            background: rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 15px var(--gold-primary);
+        }
+
+        /* حالات الإجابة */
+        .answer-btn.selected { background: #d35400; color: white; border-color: #e67e22; }
+        .answer-btn.correct { background: var(--correct); color: white; border-color: #27ae60; animation: pulse 1s infinite; }
+        .answer-btn.wrong { background: var(--wrong); color: white; border-color: #c0392b; }
+        
+        /* سلم الأرباح */
+        .money-ladder {
+            background: rgba(0,0,0,0.6);
+            border-right: 2px solid var(--gold-primary);
+            padding: 10px;
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ladder-step {
+            width: 100%;
+            padding: 8px;
+            text-align: center;
+            color: #888;
+            font-family: 'Reem Kufi', sans-serif;
+            border-bottom: 1px solid #333;
+            transition: 0.3s;
+        }
+
+        .ladder-step.active {
+            color: var(--gold-light);
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: 1px solid var(--gold-primary);
+        }
+
+        .ladder-step.passed {
+            color: var(--gold-primary);
+        }
+
+        /* وسائل المساعدة */
+        .lifelines {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .lifeline-btn {
+            background: #2c241b;
+            border: 2px solid var(--gold-primary);
+            color: var(--gold-light);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .lifeline-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--gold-primary); }
+        .lifeline-btn:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
+
+        /* شاشة النهاية */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .overlay h1 { font-size: 4rem; color: var(--gold-primary); margin-bottom: 20px; }
+        .overlay p { font-size: 2rem; margin-bottom: 30px; }
+        .restart-btn {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            background: var(--gold-primary);
+            color: var(--dark-bg);
+            border: none;
+            font-family: 'Amiri', serif;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* التجاوب للموبايل */
+        @media (max-width: 768px) {
+            .game-container { grid-template-columns: 1fr; height: 95vh; padding-top: 50px; }
+            .money-ladder { display: none; } /* إخفاء السلم في الموبايل للتبسيط */
+            .answers-grid { grid-template-columns: 1fr; }
+            .question-box { font-size: 1.2rem; min-height: 100px; }
+            .lifelines { top: 10px; width: 100%; justify-content: center; }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+    </style>
 </head>
 <body>
-    <!-- الخلفية الملحمية -->
-    <div class="epic-background">
-        <div class="particles"></div>
-        <div class="glow-effect"></div>
+
+    <div class="lifelines">
+        <button class="lifeline-btn" onclick="useLifeline('5050')" id="btn-5050" title="حذف إجابتين">50:50</button>
+        <button class="lifeline-btn" onclick="useLifeline('skip')" id="btn-skip" title="تغيير السؤال">↻</button>
     </div>
 
-    <!-- المؤثرات الصوتية -->
-    <audio id="ambientSound" loop>
-        <source src="https://assets.mixkit.co/music/preview/mixkit-epic-adventure-4-995.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="clickSound">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- الصفحة الرئيسية -->
-    <div class="container">
-        <!-- الهيدر الملحمي -->
-        <header class="epic-header">
-            <div class="crown-animation">
-                <i class="fas fa-crown"></i>
+    <div class="game-container">
+        <div class="play-area">
+            <div class="question-box" id="question-text">
+                جاري تحميل المخطوطة...
             </div>
-            <h1 class="title-animation">
-                <span class="title-text">ملك الاختبارات التاريخية</span>
-                <span class="subtitle">أساطير الزمان تتحداك!</span>
-            </h1>
-            <div class="torch-left">
-                <i class="fas fa-fire"></i>
-            </div>
-            <div class="torch-right">
-                <i class="fas fa-fire"></i>
-            </div>
-            <div class="score-display">
-                <i class="fas fa-coins"></i>
-                <span id="totalScore">0</span> نقطة
-            </div>
-        </header>
-
-        <!-- المنطقة الرئيسية -->
-        <main class="main-content">
-            <!-- لوحة التحكم -->
-            <section class="control-panel">
-                <div class="panel-title">
-                    <i class="fas fa-scroll"></i>
-                    <h2>صُنع أسطورة جديدة</h2>
-                </div>
-                
-                <div class="form-container">
-                    <!-- إدخال السؤال -->
-                    <div class="input-group epic-input">
-                        <label for="questionText">
-                            <i class="fas fa-question-circle"></i>
-                            نَص التحدي التاريخي
-                        </label>
-                        <textarea 
-                            id="questionText" 
-                            placeholder="اكتب سؤالاً تاريخياً يليق بالأساطير..."
-                            rows="3"></textarea>
-                        <div class="input-decoration">
-                            <i class="fas fa-feather-alt"></i>
-                        </div>
-                    </div>
-
-                    <!-- توقيت السؤال -->
-                    <div class="input-group">
-                        <label>
-                            <i class="fas fa-hourglass-half"></i>
-                            زمن التفكير (ثواني)
-                        </label>
-                        <div class="time-selector">
-                            <button class="time-btn" data-time="15">15</button>
-                            <button class="time-btn" data-time="30">30</button>
-                            <button class="time-btn" data-time="45">45</button>
-                            <button class="time-btn" data-time="60">60</button>
-                            <input type="number" id="customTime" min="5" max="180" placeholder="مخصص">
-                        </div>
-                    </div>
-
-                    <!-- مستوى الصعوبة -->
-                    <div class="input-group">
-                        <label>
-                            <i class="fas fa-shield-alt"></i>
-                            مستوى التحدي
-                        </label>
-                        <div class="difficulty-levels">
-                            <div class="difficulty-btn" data-level="easy">
-                                <i class="fas fa-chess-pawn"></i>
-                                <span>سهل</span>
-                                <div class="level-bar" style="width: 30%"></div>
-                            </div>
-                            <div class="difficulty-btn" data-level="medium">
-                                <i class="fas fa-chess-knight"></i>
-                                <span>متوسط</span>
-                                <div class="level-bar" style="width: 60%"></div>
-                            </div>
-                            <div class="difficulty-btn" data-level="hard">
-                                <i class="fas fa-chess-queen"></i>
-                                <span>صعب</span>
-                                <div class="level-bar" style="width: 90%"></div>
-                            </div>
-                            <div class="difficulty-btn" data-level="legendary">
-                                <i class="fas fa-dragon"></i>
-                                <span>أسطوري</span>
-                                <div class="level-bar" style="width: 100%"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- إضافة الخيارات -->
-                    <div class="input-group">
-                        <label>
-                            <i class="fas fa-list-ol"></i>
-                            خيارات الجواب (حتى 4 خيارات)
-                        </label>
-                        <div id="optionsContainer">
-                            <div class="option-input">
-                                <div class="option-number">أ</div>
-                                <input type="text" class="option-text" placeholder="الخيار الأول">
-                                <button class="remove-option" title="إزالة الخيار">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            <div class="option-input">
-                                <div class="option-number">ب</div>
-                                <input type="text" class="option-text" placeholder="الخيار الثاني">
-                                <button class="remove-option" title="إزالة الخيار">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <button id="addOption" class="add-option-btn">
-                            <i class="fas fa-plus-circle"></i>
-                            إضافة خيار جديد
-                        </button>
-                    </div>
-
-                    <!-- الإجراءات -->
-                    <div class="action-buttons">
-                        <button id="previewBtn" class="action-btn preview-btn">
-                            <i class="fas fa-eye"></i>
-                            معاينة الملحمية
-                        </button>
-                        <button id="saveBtn" class="action-btn save-btn">
-                            <i class="fas fa-save"></i>
-                            حفظ التحدي
-                        </button>
-                        <button id="resetBtn" class="action-btn reset-btn">
-                            <i class="fas fa-redo"></i>
-                            بداية جديدة
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <!-- معاينة التحدي -->
-            <section class="preview-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-theater-masks"></i> معاينة التحدي</h2>
-                    <div class="timer-preview">
-                        <i class="fas fa-clock"></i>
-                        <span id="previewTimer">30</span> ثانية
-                    </div>
-                </div>
-                
-                <div id="previewContainer">
-                    <!-- سيتم عرض المعاينة هنا -->
-                    <div class="welcome-message">
-                        <div class="welcome-icon">
-                            <i class="fas fa-landmark"></i>
-                        </div>
-                        <h3>اهلاً بك في مملكة التاريخ!</h3>
-                        <p>ابدأ بصنع أول تحدٍ تاريخي وسيظهر هنا</p>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- مكتبة التحديات -->
-        <section class="challenges-library">
-            <div class="library-header">
-                <h2><i class="fas fa-book-dead"></i> مكتبة التحديات التاريخية</h2>
-                <div class="library-stats">
-                    <span class="stat-item">
-                        <i class="fas fa-scroll"></i>
-                        <span id="challengesCount">0</span> تحديات
-                    </span>
-                    <span class="stat-item">
-                        <i class="fas fa-crown"></i>
-                        <span id="totalPoints">0</span> نقطة إجمالية
-                    </span>
-                </div>
-            </div>
-
-            <div id="challengesContainer" class="challenges-grid">
-                <!-- سيتم عرض التحديات المحفوظة هنا -->
-            </div>
-        </section>
-
-        <!-- أدوات التصدير -->
-        <section class="export-tools">
-            <h2><i class="fas fa-download"></i> أدوات النُسَّاخ</h2>
-            <div class="export-buttons">
-                <button id="exportPdf" class="export-btn">
-                    <i class="fas fa-file-pdf"></i>
-                    مخطوطة PDF
-                </button>
-                <button id="exportImage" class="export-btn">
-                    <i class="fas fa-image"></i>
-                    لوحة فنية
-                </button>
-                <button id="exportChallenge" class="export-btn">
-                    <i class="fas fa-share-alt"></i>
-                    تحدٍ قابل للمشاركة
-                </button>
-                <button id="printAll" class="export-btn">
-                    <i class="fas fa-print"></i>
-                    طبع المخطوطات
-                </button>
-            </div>
-        </section>
-
-        <!-- الفوتر -->
-        <footer class="epic-footer">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-monument"></i>
-                    <span>ملك الاختبارات التاريخية</span>
-                </div>
-                <div class="footer-quote">
-                    "التاريخ سجل انتصارات وهزائم، وأنت من يكتب الفصل القادم"
-                </div>
-                <div class="sound-control">
-                    <button id="soundToggle">
-                        <i class="fas fa-volume-up"></i>
-                        الموسيقى الملحمية
-                    </button>
-                    <button id="effectsToggle">
-                        <i class="fas fa-bolt"></i>
-                        المؤثرات الصوتية
-                    </button>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- النافذة المنبثقة للمعاينة -->
-    <div id="epicModal" class="epic-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">
-                    <i class="fas fa-crown"></i>
-                    <h3>معاينة التحدي الملحمي</h3>
-                </div>
-                <div class="modal-timer">
-                    <div class="timer-circle">
-                        <svg width="60" height="60">
-                            <circle cx="30" cy="30" r="28"></circle>
-                        </svg>
-                        <span>30</span>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-body" id="modalPreview">
-                <!-- محتوى المعاينة -->
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn close-modal">
-                    <i class="fas fa-times"></i>
-                    إغلاق
-                </button>
-                <button class="modal-btn start-challenge">
-                    <i class="fas fa-play"></i>
-                    بدء التحدي!
-                </button>
+            
+            <div class="answers-grid">
+                <button class="answer-btn" onclick="selectAnswer(0)" id="opt-0">أ. الخيار الأول</button>
+                <button class="answer-btn" onclick="selectAnswer(1)" id="opt-1">ب. الخيار الثاني</button>
+                <button class="answer-btn" onclick="selectAnswer(2)" id="opt-2">ج. الخيار الثالث</button>
+                <button class="answer-btn" onclick="selectAnswer(3)" id="opt-3">د. الخيار الرابع</button>
             </div>
         </div>
+
+        <div class="money-ladder" id="ladder">
+            </div>
     </div>
 
-    <!-- نافذة النتائج -->
-    <div id="resultsModal" class="results-modal">
-        <div class="results-content">
-            <div class="results-header">
-                <i class="fas fa-trophy"></i>
-                <h3>نتائج التحدي!</h3>
-            </div>
-            <div class="results-body">
-                <div class="score-display-large">
-                    <div class="score-number" id="finalScore">0</div>
-                    <div class="score-label">نقطة</div>
-                </div>
-                <div class="results-message" id="resultsMessage">
-                    <!-- رسالة النتائج -->
-                </div>
-            </div>
-        </div>
+    <div class="overlay" id="end-screen">
+        <h1 id="end-title">انتهت الرحلة</h1>
+        <p>لقد حصلت على كنز بقيمة: <span id="final-score" style="color: var(--gold-primary)">0</span> دينار</p>
+        <button class="restart-btn" onclick="restartGame()">ابدأ رحلة جديدة</button>
     </div>
 
-    <!-- الأصوات -->
-    <audio id="correctSound">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="wrongSound">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="victorySound">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-victory-fanfare-2018.mp3" type="audio/mpeg">
-    </audio>
+    <script>
+        // === بيانات اللعبة ===
+        const prizes = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
+        
+        // قاعدة بيانات الأسئلة (يمكنك إضافة المزيد هنا)
+        const questionsDB = [
+            { q: "من هو القائد المسلم الذي فتح القسطنطينية؟", options: ["صلاح الدين الأيوبي", "محمد الفاتح", "خالد بن الوليد", "الظاهر بيبرس"], answer: 1 },
+            { q: "في أي عام حدثت معركة حطين الشهيرة؟", options: ["1187 م", "1099 م", "1250 م", "1453 م"], answer: 0 },
+            { q: "ما هي عاصمة الدولة الأموية؟", options: ["بغداد", "القاهرة", "دمشق", "قرطبة"], answer: 2 },
+            { q: "من هو مؤسس علم الجبر؟", options: ["ابن سينا", "الخوارزمي", "الفارابي", "ابن الهيثم"], answer: 1 },
+            { q: "كم استمرت حرب البسوس؟", options: ["10 سنوات", "20 سنة", "40 سنة", "100 سنة"], answer: 2 },
+            { q: "من بنى قبة الصخرة المشرفة؟", options: ["عبد الملك بن مروان", "الوليد بن عبد الملك", "عمر بن الخطاب", "هارون الرشيد"], answer: 0 },
+            { q: "ما هو الاسم القديم لمدينة المدينة المنورة؟", options: ["مكة", "يثرب", "الطائف", "خيبر"], answer: 1 },
+            { q: "من هو الملقب بأسد الله؟", options: ["حمزة بن عبد المطلب", "عمر بن الخطاب", "علي بن أبي طالب", "خالد بن الوليد"], answer: 0 },
+            { q: "أين تقع حدائق بابل المعلقة؟", options: ["مصر", "العراق", "سوريا", "الأردن"], answer: 1 },
+            { q: "من هو مؤلف كتاب 'مقدمة ابن خلدون'؟", options: ["ابن بطوطة", "ابن خلدون", "المقريزي", "الطبري"], answer: 1 },
+            { q: "ما هي أول عاصمة لمصر الإسلامية؟", options: ["القطائع", "العسكر", "الفسطاط", "القاهرة"], answer: 2 },
+            { q: "من القائد الذي أحرق سفنه بعد عبور المضيق؟", options: ["طارق بن زياد", "موسى بن نصير", "عقبة بن نافع", "عمرو بن العاص"], answer: 0 },
+            { q: "في أي عهد تم بناء الأهرامات؟", options: ["الدولة الحديثة", "الدولة الوسطى", "الدولة القديمة", "العصر المتأخر"], answer: 2 },
+            { q: "ما هي المعركة التي أوقفت الزحف المغولي؟", options: ["حطين", "عين جالوت", "اليرموك", "القادسية"], answer: 1 },
+            { q: "من هو الفرعون الذي وقع أول معاهدة سلام في التاريخ؟", options: ["رمسيس الثاني", "تحتمس الثالث", "أخناتون", "توت عنخ آمون"], answer: 0 }
+        ];
 
-    <script src="script.js"></script>
+        // === متغيرات الحالة ===
+        let currentLevel = 0;
+        let isAnswerLocked = false;
+        
+        // === تهيئة اللعبة ===
+        function initGame() {
+            renderLadder();
+            loadQuestion();
+        }
+
+        // رسم سلم الجوائز
+        function renderLadder() {
+            const ladderEl = document.getElementById('ladder');
+            ladderEl.innerHTML = '';
+            // نعكس المصفوفة لأن السلم يبدأ من الأسفل
+            [...prizes].reverse().forEach((prize, index) => {
+                const realIndex = prizes.length - 1 - index;
+                const div = document.createElement('div');
+                div.className = `ladder-step ${realIndex === currentLevel ? 'active' : ''} ${realIndex < currentLevel ? 'passed' : ''}`;
+                div.innerHTML = `<span style="float:right">${realIndex + 1}</span> ${prize.toLocaleString()} 🪙`;
+                ladderEl.appendChild(div);
+            });
+        }
+
+        // تحميل السؤال الحالي
+        function loadQuestion() {
+            // إعادة تفعيل الأزرار وتننظيف الألوان
+            isAnswerLocked = false;
+            const qData = questionsDB[currentLevel];
+            
+            document.getElementById('question-text').innerText = qData.q;
+            
+            for(let i=0; i<4; i++) {
+                const btn = document.getElementById(`opt-${i}`);
+                btn.innerText = ["أ", "ب", "ج", "د"][i] + ". " + qData.options[i];
+                btn.className = 'answer-btn'; // إعادة الكلاس للأصل
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }
+            
+            renderLadder();
+        }
+
+        // اختيار إجابة
+        function selectAnswer(index) {
+            if (isAnswerLocked) return;
+            isAnswerLocked = true;
+            
+            const btn = document.getElementById(`opt-${index}`);
+            btn.classList.add('selected');
+
+            // محاكاة التوتر (انتظار 2 ثانية)
+            setTimeout(() => {
+                checkAnswer(index);
+            }, 2000);
+        }
+
+        // التحقق من الإجابة
+        function checkAnswer(selectedIndex) {
+            const correctIndex = questionsDB[currentLevel].answer;
+            const selectedBtn = document.getElementById(`opt-${selectedIndex}`);
+            const correctBtn = document.getElementById(`opt-${correctIndex}`);
+
+            selectedBtn.classList.remove('selected');
+
+            if (selectedIndex === correctIndex) {
+                // إجابة صحيحة
+                selectedBtn.classList.add('correct');
+                // صوت نجاح (يمكن إضافته هنا)
+                setTimeout(() => {
+                    if (currentLevel < prizes.length - 1) {
+                        currentLevel++;
+                        loadQuestion();
+                    } else {
+                        endGame(true);
+                    }
+                }, 2000);
+            } else {
+                // إجابة خاطئة
+                selectedBtn.classList.add('wrong');
+                correctBtn.classList.add('correct'); // كشف الصحيحة
+                setTimeout(() => {
+                    endGame(false);
+                }, 2500);
+            }
+        }
+
+        // وسائل المساعدة
+        function useLifeline(type) {
+            const btn = document.getElementById(`btn-${type}`);
+            if(btn.disabled || isAnswerLocked) return;
+            
+            btn.disabled = true;
+            const correctIndex = questionsDB[currentLevel].answer;
+
+            if (type === '5050') {
+                // حذف إجابتين خاطئتين
+                let removedCount = 0;
+                let optionsToCheck = [0, 1, 2, 3].filter(i => i !== correctIndex);
+                
+                // خلط الخيارات الخاطئة
+                optionsToCheck.sort(() => Math.random() - 0.5);
+
+                // إخفاء أول 2
+                optionsToCheck.slice(0, 2).forEach(idx => {
+                    document.getElementById(`opt-${idx}`).style.opacity = '0';
+                    document.getElementById(`opt-${idx}`).disabled = true;
+                });
+            } else if (type === 'skip') {
+                // تخطي السؤال (استبداله بسؤال عشوائي آخر - للتبسيط سنقوم بالفوز تلقائياً بهذا السؤال)
+                // في تطبيق حقيقي يجب جلب سؤال بديل من قاعدة البيانات
+                document.getElementById(`opt-${correctIndex}`).classList.add('correct');
+                setTimeout(() => {
+                    currentLevel++;
+                    loadQuestion();
+                }, 1500);
+            }
+        }
+
+        // إنهاء اللعبة
+        function endGame(isWinner) {
+            const screen = document.getElementById('end-screen');
+            const title = document.getElementById('end-title');
+            const scoreDisplay = document.getElementById('final-score');
+            
+            screen.style.display = 'flex';
+            
+            let prizeAmount = 0;
+            if (isWinner) {
+                title.innerText = "★ أنت أسطورة التاريخ ★";
+                title.style.color = "#ffd700";
+                prizeAmount = prizes[14];
+            } else {
+                title.innerText = "سقطت الإمبراطورية";
+                title.style.color = "#c0392b";
+                // حساب مبلغ الانسحاب (محطات الأمان - اختيارية)
+                if(currentLevel >= 10) prizeAmount = prizes[9];
+                else if(currentLevel >= 5) prizeAmount = prizes[4];
+                else prizeAmount = 0;
+            }
+            
+            scoreDisplay.innerText = prizeAmount.toLocaleString();
+        }
+
+        function restartGame() {
+            currentLevel = 0;
+            document.getElementById('end-screen').style.display = 'none';
+            // إعادة تفعيل وسائل المساعدة
+            document.getElementById('btn-5050').disabled = false;
+            document.getElementById('btn-skip').disabled = false;
+            initGame();
+        }
+
+        // تشغيل اللعبة عند التحميل
+        window.onload = initGame;
+
+    </script>
 </body>
 </html>
