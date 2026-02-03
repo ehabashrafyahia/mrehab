@@ -52,7 +52,7 @@ button:hover{
   margin-top:25px;
   background:linear-gradient(135deg,#1a2a6c,#0f2027); /* أزرق داكن متدرج */
   padding:25px;
-  border-radius:30px;
+  border-radius:30px; /* زوايا بيضاوية كبيرة */
   box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
@@ -64,7 +64,7 @@ button:hover{
 .option{
   background:rgba(255,255,255,0.15);
   padding:14px;
-  border-radius:20px;
+  border-radius:20px; /* خيارات بيضاوية */
   margin:10px 0;
   cursor:pointer;
   transition:.3s;
@@ -106,7 +106,7 @@ button:hover{
   </div>
 
   <div class="controls">
-    <button onclick="saveAsImage()">📸 حفظ السؤال كصورة</button>
+    <button onclick="screenshotQuestion()">📷 سكرين شوت السؤال</button>
     <button onclick="nextQuestion()">التالي ⏭️</button>
   </div>
 </div>
@@ -176,17 +176,18 @@ function nextQuestion(){
   }
 }
 
-function saveAsImage(){
+// زر السكرين شوت للمربع الأزرق الداكن
+function screenshotQuestion(){
   const element = document.getElementById("captureArea");
   html2canvas(element, {
-    backgroundColor:null, // يحافظ على الـ gradient
+    backgroundColor:null, // يحافظ على gradient
     scale:2,
-    useCORS:true // يحسن ظهور الصور الخارجية لو فيه
+    useCORS:true
   }).then(canvas=>{
-    const link = document.createElement("a");
-    link.download = `question-${current+1}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    const image = canvas.toDataURL("image/png");
+    // فتح السكرين شوت في نافذة جديدة للمعاينة
+    const newTab = window.open();
+    newTab.document.write('<img src="' + image + '" style="width:100%">');
   });
 }
 </script>
