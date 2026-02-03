@@ -13,6 +13,7 @@ body{
   background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   font-family:'Cairo',sans-serif;
   color:#fff;
+  min-height: 100vh;
 }
 
 .container{
@@ -25,12 +26,13 @@ h1{text-align:center;}
 
 textarea{
   width:100%;
-  height:260px;
+  height:200px;
   border-radius:16px;
   border:none;
   padding:15px;
   font-size:16px;
   margin-bottom:15px;
+  box-sizing: border-box;
 }
 
 button{
@@ -41,79 +43,93 @@ button{
   background:#ffd369;
   cursor:pointer;
   transition:.3s;
+  font-weight: bold;
 }
 
 button:hover{
   background:#ffbe33;
 }
 
-/* المربع البيضاوي الأزرق الداكن المتدرج */
-.quiz-box{
-  margin-top:25px;
-  background:linear-gradient(135deg,#1a2a6c,#0f2027); /* أزرق داكن متدرج */
-  padding:25px;
-  border-radius:30px; /* زوايا بيضاوية كبيرة */
+/* تعديل منطقة التصوير لتشمل الخلفية والتنسيق بشكل كامل */
+#captureArea {
+  background: linear-gradient(135deg,#1a2a6c,#0f2027);
+  padding: 30px;
+  border-radius: 30px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  margin-top: 25px;
+  /* لضمان عدم ظهور حواف بيضاء عند التصوير */
+  overflow: hidden; 
 }
 
 #question{
-  font-size:20px;
-  margin-bottom:20px;
+  font-size:22px;
+  margin-bottom:25px;
+  line-height: 1.6;
 }
 
 .option{
   background:rgba(255,255,255,0.15);
-  padding:14px;
-  border-radius:20px; /* خيارات بيضاوية */
-  margin:10px 0;
+  padding:15px;
+  border-radius:20px;
+  margin:12px 0;
   cursor:pointer;
   transition:.3s;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .option.selected{
   background:#ffd369;
   color:#000;
+  font-weight: bold;
 }
 
 .controls{
   display:flex;
-  justify-content:space-between;
-  gap:10px;
+  justify-content:center;
+  gap:15px;
   margin-top:20px;
   flex-wrap:wrap;
 }
 
 .hidden{display:none;}
+
+/* زر خاص للتحميل المباشر */
+.download-btn {
+    background-color: #4CAF50;
+    color: white;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+    <h1>🧠 اختبار تفاعلي</h1>
 
-<h1>🧠 اختبار تفاعلي</h1>
+    <div id="setupSection">
+        <textarea id="input" placeholder="مثال للصيغة:
+س: ما هي عاصمة مصر؟
+أ: القاهرة
+ب: الإسكندرية
+ج: أسوان
+د: الجيزة
+الإجابة: القاهرة"></textarea>
+        <button onclick="startQuiz()" style="width: 100%;">بدء الاختبار 🚀</button>
+    </div>
 
-<textarea id="input" placeholder="الصق جميع الأسئلة هنا"></textarea>
+    <div id="quiz" class="hidden">
+        <div id="captureArea">
+            <div id="question"></div>
+            <div id="options"></div>
+        </div>
 
-<button onclick="startQuiz()">بدء الاختبار 🚀</button>
-
-<div id="quiz" class="quiz-box hidden">
-
-  <!-- المربع الأزرق الداكن المتدرج -->
-  <div id="captureArea">
-    <div id="question"></div>
-    <div id="options"></div>
-  </div>
-
-  <div class="controls">
-    <button onclick="screenshotQuestion()">📷 سكرين شوت السؤال</button>
-    <button onclick="nextQuestion()">التالي ⏭️</button>
-  </div>
+        <div class="controls">
+            <button onclick="screenshotQuestion()" class="download-btn">📷 تحميل صورة السؤال</button>
+            <button onclick="nextQuestion()">السؤال التالي ⏭️</button>
+        </div>
+    </div>
 </div>
 
-</div>
-
-<!-- مكتبة تحويل HTML لصورة -->
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <script>
@@ -122,34 +138,36 @@ let current = 0;
 
 function startQuiz(){
   const text = document.getElementById("input").value.trim();
+  if(!text) { alert("من فضلك أدخل الأسئلة أولاً"); return; }
+  
   const blocks = text.split("\n\n");
   questions = [];
   current = 0;
 
   blocks.forEach(block=>{
-    const lines = block.split("\n");
+    const lines = block.split("\n").filter(l => l.trim() !== "");
     if(lines.length >= 6){
       questions.push({
         q: lines[0].replace("س:","").trim(),
-        options: lines.slice(1,5).map(l=>l.slice(3).trim()),
-        answer: lines[5].split(":")[1].trim()
+        options: lines.slice(1,5).map(l=>l.trim()),
+        answer: lines[5].split(":")[1]?.trim() || ""
       });
     }
   });
 
-  if(!questions.length){
-    alert("تأكد من صيغة الأسئلة");
+  if(questions.length === 0){
+    alert("تأكد من اتباع صيغة الأسئلة الصحيحة (سؤال، 4 اختيارات، ثم الإجابة)");
     return;
   }
 
+  document.getElementById("setupSection").classList.add("hidden");
   document.getElementById("quiz").classList.remove("hidden");
   showQuestion();
 }
 
 function showQuestion(){
   const q = questions[current];
-  document.getElementById("question").innerText =
-    `(${current+1}/${questions.length}) ${q.q}`;
+  document.getElementById("question").innerText = `(${current+1}/${questions.length}) ${q.q}`;
 
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
@@ -171,23 +189,28 @@ function nextQuestion(){
   if(current < questions.length){
     showQuestion();
   }else{
-    alert("🎉 انتهى الاختبار");
-    document.getElementById("quiz").classList.add("hidden");
+    alert("🎉 انتهى الاختبار!");
+    location.reload(); // للعودة للبداية
   }
 }
 
-// زر السكرين شوت للمربع الأزرق الداكن
 function screenshotQuestion(){
   const element = document.getElementById("captureArea");
+  
+  // إعدادات محسنة لضمان جودة الألوان والأبعاد
   html2canvas(element, {
-    backgroundColor:null, // يحافظ على gradient
-    scale:2,
-    useCORS:true
-  }).then(canvas=>{
-    const image = canvas.toDataURL("image/png");
-    // فتح السكرين شوت في نافذة جديدة للمعاينة
-    const newTab = window.open();
-    newTab.document.write('<img src="' + image + '" style="width:100%">');
+    backgroundColor: null, // يسمح بظهور التدرج اللوني
+    scale: 3, // دقة عالية جداً (أوضح للطباعة والمشاركة)
+    useCORS: true,
+    logging: false,
+    letterRendering: true,
+    allowTaint: false
+  }).then(canvas => {
+    // كود لتحميل الصورة مباشرة بدلاً من فتحها في نافذة قد يحجبها المتصفح
+    const link = document.createElement('a');
+    link.download = `سؤال-${current+1}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
   });
 }
 </script>
