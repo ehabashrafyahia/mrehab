@@ -47,12 +47,12 @@ button:hover{
   background:#ffbe33;
 }
 
-/* مربع السؤال البيضاوي الملون */
+/* المربع البيضاوي الأزرق الداكن المتدرج */
 .quiz-box{
   margin-top:25px;
-  background:linear-gradient(135deg,#1e3c72,#2a5298);
+  background:linear-gradient(135deg,#1a2a6c,#0f2027); /* أزرق داكن متدرج */
   padding:25px;
-  border-radius:30px; /* زوايا بيضاوية كبيرة */
+  border-radius:30px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
@@ -64,7 +64,7 @@ button:hover{
 .option{
   background:rgba(255,255,255,0.15);
   padding:14px;
-  border-radius:20px; /* خيارات بيضاوية */
+  border-radius:20px;
   margin:10px 0;
   cursor:pointer;
   transition:.3s;
@@ -99,7 +99,7 @@ button:hover{
 
 <div id="quiz" class="quiz-box hidden">
 
-  <!-- المربع البيضاوي الملون اللي هيتحول لصورة -->
+  <!-- المربع الأزرق الداكن المتدرج -->
   <div id="captureArea">
     <div id="question"></div>
     <div id="options"></div>
@@ -178,7 +178,11 @@ function nextQuestion(){
 
 function saveAsImage(){
   const element = document.getElementById("captureArea");
-  html2canvas(element, {backgroundColor:null, scale:2}).then(canvas=>{
+  html2canvas(element, {
+    backgroundColor:null, // يحافظ على الـ gradient
+    scale:2,
+    useCORS:true // يحسن ظهور الصور الخارجية لو فيه
+  }).then(canvas=>{
     const link = document.createElement("a");
     link.download = `question-${current+1}.png`;
     link.href = canvas.toDataURL("image/png");
