@@ -36,7 +36,7 @@ textarea{
 button{
   padding:14px 20px;
   border:none;
-  border-radius:14px;
+  border-radius:16px;
   font-size:16px;
   background:#ffd369;
   cursor:pointer;
@@ -47,11 +47,13 @@ button:hover{
   background:#ffbe33;
 }
 
+/* مربع السؤال البيضاوي الملون */
 .quiz-box{
   margin-top:25px;
-  background:rgba(0,0,0,.45);
+  background:linear-gradient(135deg,#1e3c72,#2a5298);
   padding:25px;
-  border-radius:22px;
+  border-radius:30px; /* زوايا بيضاوية كبيرة */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
 }
 
 #question{
@@ -60,11 +62,12 @@ button:hover{
 }
 
 .option{
-  background:rgba(255,255,255,.12);
+  background:rgba(255,255,255,0.15);
   padding:14px;
-  border-radius:14px;
+  border-radius:20px; /* خيارات بيضاوية */
   margin:10px 0;
   cursor:pointer;
+  transition:.3s;
 }
 
 .option.selected{
@@ -96,7 +99,7 @@ button:hover{
 
 <div id="quiz" class="quiz-box hidden">
 
-  <!-- الجزء اللي هيتحول لصورة -->
+  <!-- المربع البيضاوي الملون اللي هيتحول لصورة -->
   <div id="captureArea">
     <div id="question"></div>
     <div id="options"></div>
