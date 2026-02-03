@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منشئ الاختبارات الذكي</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-brain"></i> منشئ الاختبارات الذكي</h1>
+            <p class="subtitle">أنشئ اختباراتك بنظام قوالب جاهزة وجذابة</p>
+        </header>
+
+        <div class="main-content">
+            <!-- قسم إضافة الأسئلة -->
+            <section class="question-creator">
+                <h2><i class="fas fa-plus-circle"></i> إضافة سؤال جديد</h2>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label for="questionText">نص السؤال</label>
+                        <textarea id="questionText" placeholder="أدخل نص السؤال هنا..." rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>نوع القالب</label>
+                        <div class="template-options">
+                            <div class="template-option" data-template="default">
+                                <i class="fas fa-th-large"></i>
+                                <span>قياسي</span>
+                            </div>
+                            <div class="template-option" data-template="modern">
+                                <i class="fas fa-star"></i>
+                                <span>حديث</span>
+                            </div>
+                            <div class="template-option" data-template="elegant">
+                                <i class="fas fa-gem"></i>
+                                <span>أنيق</span>
+                            </div>
+                            <div class="template-option" data-template="minimal">
+                                <i class="fas fa-minimize"></i>
+                                <span>بسيط</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>الخيارات (حدد الإجابة الصحيحة)</label>
+                        <div id="optionsContainer">
+                            <div class="option-input">
+                                <input type="text" class="option-text" placeholder="النص الأول">
+                                <label class="correct-checkbox">
+                                    <input type="radio" name="correct" value="0"> صحيح
+                                </label>
+                            </div>
+                            <div class="option-input">
+                                <input type="text" class="option-text" placeholder="النص الثاني">
+                                <label class="correct-checkbox">
+                                    <input type="radio" name="correct" value="1"> صحيح
+                                </label>
+                            </div>
+                        </div>
+                        <button id="addOption" class="btn-secondary">
+                            <i class="fas fa-plus"></i> إضافة خيار جديد
+                        </button>
+                    </div>
+
+                    <div class="form-actions">
+                        <button id="previewBtn" class="btn-secondary">
+                            <i class="fas fa-eye"></i> معاينة السؤال
+                        </button>
+                        <button id="saveBtn" class="btn-primary">
+                            <i class="fas fa-save"></i> حفظ السؤال
+                        </button>
+                        <button id="resetBtn" class="btn-outline">
+                            <i class="fas fa-redo"></i> مسح الكل
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- قسم المعاينة -->
+            <section class="preview-section">
+                <h2><i class="fas fa-eye"></i> معاينة الأسئلة</h2>
+                <div id="previewContainer">
+                    <p class="empty-message">لم تقم بإضافة أي أسئلة بعد. ابدأ بإضافة سؤال جديد!</p>
+                </div>
+                <div class="preview-actions">
+                    <button id="exportHtml" class="btn-success">
+                        <i class="fas fa-download"></i> تصدير كـ HTML
+                    </button>
+                    <button id="exportJson" class="btn-secondary">
+                        <i class="fas fa-file-code"></i> تصدير كـ JSON
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- الأسئلة المحفوظة -->
+        <section class="saved-questions">
+            <h2><i class="fas fa-list"></i> الأسئلة المحفوظة (<span id="questionCount">0</span>)</h2>
+            <div id="savedQuestionsContainer">
+                <p class="empty-message">لا توجد أسئلة محفوظة</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- نافذة المعاينة -->
+    <div id="previewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>معاينة السؤال</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body" id="modalPreview">
+                <!-- سيتم إضافة المعاينة هنا -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
