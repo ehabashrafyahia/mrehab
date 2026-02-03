@@ -6,61 +6,104 @@
 <title>مولد اختبار تفاعلي | أ. إيهاب أشرف</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
 body{
   margin:0;
   background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
   font-family:'Cairo',sans-serif;
   color:#fff;
 }
+
 .container{
   max-width:900px;
   margin:auto;
   padding:20px;
 }
-h1{text-align:center;}
+
+h1{
+  text-align:center;
+  margin-bottom:15px;
+}
+
 textarea{
   width:100%;
   height:220px;
-  border-radius:15px;
+  border-radius:16px;
   border:none;
   padding:15px;
   font-size:16px;
   margin-bottom:15px;
+  resize:none;
 }
+
 button{
   width:100%;
-  padding:15px;
+  padding:16px;
   border:none;
-  border-radius:15px;
+  border-radius:16px;
   font-size:18px;
   background:#ffd369;
   cursor:pointer;
+  transition:.3s;
 }
+
+button:hover{
+  background:#ffbe33;
+  transform:scale(1.02);
+}
+
 .quiz-box{
   margin-top:25px;
-  background:rgba(0,0,0,.4);
+  background:rgba(0,0,0,.45);
   padding:25px;
-  border-radius:20px;
+  border-radius:22px;
 }
+
+#question{
+  font-size:20px;
+  margin-bottom:20px;
+  min-height:60px;
+}
+
 .option{
-  background:rgba(255,255,255,.1);
-  padding:12px;
-  border-radius:12px;
+  background:rgba(255,255,255,.12);
+  padding:14px;
+  border-radius:14px;
   margin:10px 0;
   cursor:pointer;
+  transition:.3s;
 }
-.option:hover{background:#ffd369;color:#000;}
+
+.option:hover{
+  background:#ffd369;
+  color:#000;
+}
+
 .stats{
   display:flex;
   justify-content:space-between;
-  margin-top:15px;
+  margin-top:20px;
+  opacity:.85;
 }
-.hidden{display:none;}
+
+.hidden{
+  display:none;
+}
+
+.footer{
+  text-align:center;
+  margin-top:30px;
+  font-size:14px;
+  opacity:.6;
+}
 </style>
 </head>
 
 <body>
+
 <div class="container">
+
 <h1>🧠 مولد اختبار تفاعلي</h1>
 
 <textarea id="input">
@@ -77,61 +120,90 @@ D) العصر البطلمي
 <div id="quiz" class="quiz-box hidden">
   <div id="question"></div>
   <div id="options"></div>
+
   <div class="stats">
-    <span>✔️ صحيح: <b id="correct">0</b></span>
-    <span>❌ خطأ: <b id="wrong">0</b></span>
+    <span>الإجابات: <b id="correct">0</b></span>
+    <span>المحاولات: <b id="attempts">0</b></span>
   </div>
 </div>
+
+<div class="footer">
+  تصميم وتطوير © أ. إيهاب أشرف
+</div>
+
 </div>
 
 <script>
-let questions=[],current=0,correct=0,wrong=0;
+let questions = [];
+let current = 0;
+let correct = 0;
+let attempts = 0;
 
 function generateQuiz(){
-  const text=document.getElementById("input").value.trim();
-  const blocks=text.split("\n\n");
-  questions=[];
+  const text = document.getElementById("input").value.trim();
+  const blocks = text.split("\n\n");
+  questions = [];
+  current = 0;
+  correct = 0;
+  attempts = 0;
 
-  blocks.forEach(b=>{
-    const lines=b.split("\n");
-    if(lines.length>=6){
+  blocks.forEach(block=>{
+    const lines = block.split("\n");
+    if(lines.length >= 6){
       questions.push({
-        q:lines[0].replace("س:","").trim(),
-        options:lines.slice(1,5).map(l=>l.slice(3)),
-        answer:lines[5].split(":")[1].trim()
+        q: lines[0].replace("س:","").trim(),
+        options: lines.slice(1,5).map(l=>l.slice(3).trim()),
+        answer: lines[5].split(":")[1].trim()
       });
     }
   });
 
-  if(!questions.length){alert("الصيغة غير صحيحة");return;}
+  if(!questions.length){
+    alert("من فضلك تأكد من صيغة الأسئلة");
+    return;
+  }
 
   document.getElementById("quiz").classList.remove("hidden");
+  updateStats();
   showQuestion();
 }
 
 function showQuestion(){
-  const q=questions[current];
-  document.getElementById("question").innerText=q.q;
-  const optDiv=document.getElementById("options");
-  optDiv.innerHTML="";
-  q.options.forEach((o,i)=>{
-    const div=document.createElement("div");
-    div.className="option";
-    div.innerText=o;
-    div.onclick=()=>checkAnswer(i);
-    optDiv.appendChild(div);
+  const q = questions[current];
+  document.getElementById("question").innerText = q.q;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach((opt,index)=>{
+    const div = document.createElement("div");
+    div.className = "option";
+    div.innerText = opt;
+    div.onclick = ()=>checkAnswer(index);
+    optionsDiv.appendChild(div);
   });
 }
 
-function checkAnswer(i){
-  const q=questions[current];
-  const correctIndex="ABCD".indexOf(q.answer);
-  i===correctIndex ? correct++ : wrong++;
-  document.getElementById("correct").innerText=correct;
-  document.getElementById("wrong").innerText=wrong;
+function checkAnswer(index){
+  const q = questions[current];
+  const correctIndex = "ABCD".indexOf(q.answer);
+  attempts++;
+  if(index === correctIndex) correct++;
+
+  updateStats();
   current++;
-  current<questions.length ? showQuestion() : alert("انتهى الاختبار 🎉");
+
+  if(current < questions.length){
+    showQuestion();
+  }else{
+    alert("🎉 تم الانتهاء من الاختبار");
+  }
+}
+
+function updateStats(){
+  document.getElementById("correct").innerText = correct;
+  document.getElementById("attempts").innerText = attempts;
 }
 </script>
+
 </body>
 </html>
