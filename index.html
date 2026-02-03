@@ -3,182 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محرر الملحمة التاريخية - حفظ تلقائي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --gold-primary: #d4af37;
-            --gold-light: #f9d77e;
-            --dark-bg: #0f0e0b;
-            --text-color: #f0e6d2;
-            --correct: #2ecc71;
-            --wrong: #c0392b;
-        }
-
-        body {
-            margin: 0; font-family: 'Amiri', serif;
-            background: var(--dark-bg) radial-gradient(circle at center, #2c241b 0%, #050505 100%);
-            color: var(--text-color); min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        /* شاشة الإعداد */
-        .setup-panel {
-            width: 95%; max-width: 850px; background: rgba(20, 15, 10, 0.98);
-            border: 2px solid var(--gold-primary); padding: 25px; border-radius: 12px;
-            max-height: 90vh; overflow-y: auto; box-shadow: 0 0 40px rgba(0,0,0,0.8);
-        }
-
-        .input-group {
-            background: rgba(255, 255, 255, 0.03); padding: 20px;
-            margin-bottom: 20px; border: 1px solid #3d3122; border-radius: 8px; position: relative;
-        }
-
-        input, select {
-            width: 100%; padding: 12px; margin: 8px 0; background: #000;
-            border: 1px solid #444; color: #fff; font-family: 'Amiri', serif; border-radius: 5px;
-        }
-
-        input:focus { border-color: var(--gold-primary); outline: none; background: #0a0a0a; }
-
-        .btn-main {
-            padding: 15px 25px; border: none; cursor: pointer; font-weight: bold;
-            font-family: 'Amiri', serif; font-size: 1.2rem; border-radius: 6px; transition: 0.3s;
-        }
-
-        .btn-start { background: var(--gold-primary); color: #000; width: 100%; margin-top: 20px; }
-        .btn-add { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); margin-bottom: 10px; }
-        .btn-reset { background: #c0392b; color: white; font-size: 0.9rem; padding: 5px 15px; margin-top: 10px; }
-
-        /* ستايل اللعبة */
-        .game-container { display: none; width: 90%; max-width: 1100px; height: 85vh; border: 4px double var(--gold-primary); padding: 20px; background: rgba(15, 10, 5, 0.95); position: relative; }
-        .play-area { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; width: 100%; }
-        .question-box { background: #1a120b; border: 2px solid var(--gold-primary); padding: 40px; width: 90%; text-align: center; font-size: 2rem; margin-bottom: 40px; border-radius: 10px; }
-        .answers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 90%; }
-        .answer-btn { 
-            background: rgba(212, 175, 55, 0.05); border: 1px solid var(--gold-primary); color: var(--gold-light); 
-            padding: 20px; font-size: 1.5rem; cursor: pointer; text-align: right; font-family: 'Amiri';
-            transition: 0.3s; clip-path: polygon(5% 0, 100% 0, 100% 100%, 0% 100%, 0% 25%);
-        }
-        .answer-btn:hover { background: rgba(212, 175, 55, 0.2); }
-        .answer-btn.selected { background: #d35400; }
-        .answer-btn.correct { background: var(--correct); color: white; }
-        .answer-btn.wrong { background: var(--wrong); color: white; }
-
-        .remove-btn { position: absolute; left: 10px; top: 10px; background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1.2rem; }
-    </style>
+    <title>لعنة الفراعنة: اختبار الملوك</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div class="setup-panel" id="setup-screen">
-        <h2 style="text-align:center; color: var(--gold-primary);">📜 ديوان إعداد الأسئلة</h2>
+    <div id="setup-screen" class="admin-panel">
+        <h1 class="glow-text">📜 ديوان الأسئلة الملكي</h1>
         <div id="questions-list"></div>
-        <button class="btn-main btn-add" onclick="addNewField()">+ أضف سؤالاً جديداً</button>
-        <button class="btn-main btn-start" onclick="launchGame()">بدء الملحمة التاريخية ⚔️</button>
-        <center><button class="btn-reset" onclick="clearStorage()">مسح كافة الأسئلة والبدء من جديد</button></center>
-    </div>
-
-    <div class="game-container" id="game-screen">
-        <div class="play-area">
-            <div class="question-box" id="q-text"></div>
-            <div class="answers-grid">
-                <button class="answer-btn" id="opt-0" onclick="handleChoice(0)"></button>
-                <button class="answer-btn" id="opt-1" onclick="handleChoice(1)"></button>
-                <button class="answer-btn" id="opt-2" onclick="handleChoice(2)"></button>
-                <button class="answer-btn" id="opt-3" onclick="handleChoice(3)"></button>
-            </div>
+        <div class="controls">
+            <button class="ancient-btn" onclick="addQuestion()">+ إضافة نقش جديد</button>
+            <button class="ancient-btn start-btn" onclick="startWorld()">إحياء الملحمة 🏺</button>
         </div>
     </div>
 
-    <script>
-        let db = [];
-        let currentIdx = 0;
+    <div id="game-screen" style="display:none;">
+        <div class="papyrus-card">
+            <div id="q-text" class="question-box"></div>
+            <div id="options-grid"></div>
+        </div>
+    </div>
 
-        // تحميل البيانات عند فتح الصفحة
-        window.onload = () => {
-            const saved = localStorage.getItem('myEpicQuiz');
-            if (saved) {
-                db = JSON.parse(saved);
-                renderFields();
-            } else {
-                addNewField();
-            }
-        };
-
-        function renderFields() {
-            const container = document.getElementById('questions-list');
-            container.innerHTML = '';
-            db.forEach((item, i) => {
-                const div = document.createElement('div');
-                div.className = 'input-group';
-                div.innerHTML = `
-                    <button class="remove-btn" onclick="removeQ(${i})">🗑 حذف</button>
-                    <h4>السؤال ${i+1}</h4>
-                    <input type="text" placeholder="نص السؤال" value="${item.q}" onchange="updateData(${i}, 'q', this.value)">
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                        <input type="text" placeholder="خيار أ" value="${item.options[0]}" onchange="updateOpt(${i}, 0, this.value)">
-                        <input type="text" placeholder="خيار ب" value="${item.options[1]}" onchange="updateOpt(${i}, 1, this.value)">
-                        <input type="text" placeholder="خيار ج" value="${item.options[2]}" onchange="updateOpt(${i}, 2, this.value)">
-                        <input type="text" placeholder="خيار د" value="${item.options[3]}" onchange="updateOpt(${i}, 3, this.value)">
-                    </div>
-                    <select onchange="updateData(${i}, 'answer', this.value)">
-                        <option value="0" ${item.answer==0?'selected':''}>الإجابة الصحيحة: أ</option>
-                        <option value="1" ${item.answer==1?'selected':''}>الإجابة الصحيحة: ب</option>
-                        <option value="2" ${item.answer==2?'selected':''}>الإجابة الصحيحة: ج</option>
-                        <option value="3" ${item.answer==3?'selected':''}>الإجابة الصحيحة: د</option>
-                    </select>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function addNewField() {
-            db.push({ q: '', options: ['', '', '', ''], answer: 0 });
-            save(); renderFields();
-        }
-
-        function removeQ(i) { db.splice(i, 1); save(); renderFields(); }
-        function updateData(i, key, val) { db[i][key] = val; save(); }
-        function updateOpt(i, optIdx, val) { db[i].options[optIdx] = val; save(); }
-        function save() { localStorage.setItem('myEpicQuiz', JSON.stringify(db)); }
-        function clearStorage() { if(confirm("هل أنت متأكد من حذف كل الأسئلة؟")) { localStorage.clear(); location.reload(); } }
-
-        function launchGame() {
-            if(db.some(x => x.q === '')) { alert("تأكد من ملء جميع خانات الأسئلة!"); return; }
-            document.getElementById('setup-screen').style.display = 'none';
-            document.getElementById('game-screen').style.display = 'block';
-            showQuestion();
-        }
-
-        function showQuestion() {
-            const q = db[currentIdx];
-            document.getElementById('q-text').innerText = q.q;
-            for(let i=0; i<4; i++) {
-                const btn = document.getElementById(`opt-${i}`);
-                btn.innerText = q.options[i];
-                btn.className = 'answer-btn';
-            }
-        }
-
-        function handleChoice(idx) {
-            const btn = document.getElementById(`opt-${idx}`);
-            btn.classList.add('selected');
-            setTimeout(() => {
-                if(idx == db[currentIdx].answer) {
-                    btn.classList.add('correct');
-                    setTimeout(() => {
-                        currentIdx++;
-                        if(currentIdx < db.length) showQuestion();
-                        else alert("تهانينا! لقد أنهيت الملحمة بنجاح.");
-                    }, 1000);
-                } else {
-                    btn.classList.add('wrong');
-                    alert("للأسف، إجابة خاطئة. انتهت اللعبة.");
-                    location.reload();
-                }
-            }, 1000);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
