@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ملحمة الأجداد - اختبار التاريخ التفاعلي</title>
+    <title>مغامرة الأطلال التاريخية - رحلة عبر الزمن</title>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,14 +11,19 @@
             --gold-primary: #d4af37;
             --gold-light: #f9d77e;
             --gold-dark: #b8941f;
-            --dark-bg: #0f0e0b;
+            --bronze: #cd7f32;
+            --copper: #b87333;
+            --dark-bg: #0a0906;
             --dark-card: #1a140d;
+            --parchment: #f5e6ca;
             --text-color: #f0e6d2;
-            --correct: #2ecc71;
-            --wrong: #e74c3c;
+            --correct: #27ae60;
+            --wrong: #c0392b;
             --accent-blue: #3498db;
-            --scrollbar-thumb: var(--gold-primary);
+            --scrollbar-thumb: var(--bronze);
             --scrollbar-track: #2c241b;
+            --ancient-green: #2d5016;
+            --ancient-blue: #1a5276;
         }
 
         * {
@@ -29,15 +34,16 @@
             margin: 0;
             font-family: 'Amiri', serif;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(44, 36, 27, 0.7) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 101, 8, 0.4) 0%, transparent 50%),
-                linear-gradient(135deg, #0f0e0b 0%, #1a1208 100%);
+                radial-gradient(ellipse at 10% 20%, rgba(44, 36, 27, 0.9) 0%, transparent 40%),
+                radial-gradient(ellipse at 90% 80%, rgba(139, 101, 8, 0.7) 0%, transparent 40%),
+                linear-gradient(135deg, #0a0906 0%, #1a1208 100%);
             color: var(--text-color);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
+        /* خلفية الآثار القديمة */
         body::before {
             content: "";
             position: fixed;
@@ -46,14 +52,15 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 1px, transparent 1px),
-                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
+                url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10h20v20H10V10zm40 0h20v20H50V10zm40 0h20v20H90V10zm40 0h20v20h-20V10zm-120 40h20v20H10V50zm40 0h20v20H50V50zm40 0h20v20H90V50zm40 0h20v20h-20V50zm-120 40h20v20H10V90zm40 0h20v20H50V90zm40 0h20v20H90V90zm40 0h20v20h-20V90zm-120 40h20v20H10v-20zm40 0h20v20H50v-20zm40 0h20v20H90v-20zm40 0h20v20h-20v-20z' fill='%23d4af37' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"),
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, rgba(205, 127, 50, 0.05) 1px, transparent 1px);
+            background-size: 200px 200px, 50px 50px, 60px 60px;
             z-index: -1;
-            opacity: 0.3;
+            opacity: 0.4;
         }
 
-        /* شاشة البداية */
+        /* شاشة البداية - واجهة المغامرة */
         .welcome-screen {
             display: flex;
             flex-direction: column;
@@ -62,65 +69,194 @@
             min-height: 100vh;
             padding: 20px;
             text-align: center;
-            animation: fadeIn 1s ease-out;
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* تأثير دخان الخلفية */
+        .smoke-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(205, 127, 50, 0.05) 0%, transparent 50%);
+            filter: blur(40px);
+            z-index: -1;
+            animation: smokeFloat 20s infinite alternate;
         }
 
         .logo-container {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             position: relative;
+            z-index: 1;
         }
 
-        .logo {
+        .ancient-logo {
             font-family: 'Reem Kufi', sans-serif;
-            font-size: 4rem;
+            font-size: 4.5rem;
             color: var(--gold-primary);
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            text-shadow: 
+                0 0 10px rgba(212, 175, 55, 0.5),
+                0 0 20px rgba(212, 175, 55, 0.3),
+                2px 2px 0 rgba(0, 0, 0, 0.5);
             position: relative;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
         }
 
         .logo-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: var(--gold-light);
-            opacity: 0.8;
+            opacity: 0.9;
             letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
-        .decoration {
+        .logo-subtitle::before, .logo-subtitle::after {
+            content: "✦";
             position: absolute;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
             top: 50%;
+            transform: translateY(-50%);
+            color: var(--bronze);
+            font-size: 1.2rem;
         }
 
-        .decoration.left {
-            right: 120%;
+        .logo-subtitle::before {
+            right: -40px;
         }
 
-        .decoration.right {
-            left: 120%;
+        .logo-subtitle::after {
+            left: -40px;
         }
 
-        .welcome-buttons {
+        .welcome-message {
+            font-size: 1.4rem;
+            max-width: 800px;
+            line-height: 1.9;
+            color: var(--parchment);
+            margin: 30px 0 50px;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(26, 20, 13, 0.7), rgba(15, 12, 8, 0.7));
+            border: 2px solid var(--bronze);
+            border-radius: 15px;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.5),
+                0 10px 30px rgba(0, 0, 0, 0.7);
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+
+        .welcome-message::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            bottom: -2px;
+            left: -2px;
+            background: linear-gradient(45deg, var(--gold-primary), transparent, var(--bronze), transparent, var(--gold-primary));
+            border-radius: 17px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* تصميم أزرار المغامرة */
+        .adventure-buttons {
             display: flex;
-            gap: 20px;
+            gap: 30px;
             margin-top: 40px;
+            z-index: 1;
         }
 
-        /* لوحة التحكم */
+        .adventure-btn {
+            padding: 18px 35px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Amiri', serif;
+            border-radius: 12px;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.2rem;
+            min-width: 220px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+
+        .adventure-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: -1;
+        }
+
+        .adventure-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .adventure-btn.primary {
+            background: linear-gradient(135deg, var(--gold-primary), var(--bronze), var(--gold-dark));
+            color: #000;
+            border: 2px solid var(--gold-light);
+            box-shadow: 
+                0 5px 15px rgba(212, 175, 55, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .adventure-btn.primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 10px 25px rgba(212, 175, 55, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .adventure-btn.secondary {
+            background: linear-gradient(135deg, rgba(26, 20, 13, 0.8), rgba(44, 36, 27, 0.8));
+            color: var(--gold-light);
+            border: 2px solid var(--bronze);
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.5),
+                inset 0 0 20px rgba(205, 127, 50, 0.1);
+        }
+
+        .adventure-btn.secondary:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.7),
+                inset 0 0 20px rgba(205, 127, 50, 0.2);
+            background: linear-gradient(135deg, rgba(34, 27, 18, 0.9), rgba(54, 44, 33, 0.9));
+        }
+
+        /* لوحة التحكم - تصميم كخريطة قديمة */
         .control-panel {
             width: 95%;
-            max-width: 900px;
-            background: rgba(26, 20, 13, 0.95);
-            border: 2px solid var(--gold-primary);
+            max-width: 950px;
+            background: 
+                linear-gradient(135deg, rgba(26, 20, 13, 0.95), rgba(15, 12, 8, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d4af37' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            border: 3px solid var(--bronze);
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.8),
+                inset 0 0 50px rgba(0, 0, 0, 0.5);
             margin: 20px auto;
             display: none;
-            animation: slideUp 0.8s ease-out;
+            animation: mapUnfold 1s ease-out;
             position: relative;
             overflow: hidden;
         }
@@ -130,10 +266,20 @@
             position: absolute;
             top: 0;
             right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1), transparent 70%);
+            z-index: 0;
+        }
+
+        .control-panel::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
             width: 100px;
             height: 100px;
-            background: linear-gradient(45deg, transparent, rgba(212, 175, 55, 0.1), transparent);
-            transform: rotate(45deg);
+            background: radial-gradient(circle at center, rgba(205, 127, 50, 0.1), transparent 70%);
             z-index: 0;
         }
 
@@ -142,8 +288,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            padding-bottom: 15px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--bronze);
             position: relative;
             z-index: 1;
         }
@@ -151,77 +297,108 @@
         .panel-header h2 {
             color: var(--gold-primary);
             margin: 0;
-            font-size: 1.8rem;
-        }
-
-        .header-actions {
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             display: flex;
-            gap: 10px;
+            align-items: center;
+            gap: 15px;
         }
 
-        /* حاوية الأسئلة */
+        /* تصميم كروت الأسئلة كألواح حجرية */
         .questions-container {
             max-height: 60vh;
             overflow-y: auto;
-            padding-right: 10px;
+            padding: 10px 15px 10px 5px;
             margin-bottom: 25px;
             position: relative;
             z-index: 1;
         }
 
-        /* تخصيص شريط التمرير */
-        .questions-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .questions-container::-webkit-scrollbar-track {
-            background: var(--scrollbar-track);
-            border-radius: 4px;
-        }
-
-        .questions-container::-webkit-scrollbar-thumb {
-            background: var(--scrollbar-thumb);
-            border-radius: 4px;
-        }
-
-        .question-card {
-            background: rgba(15, 12, 8, 0.7);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            transition: all 0.3s ease;
+        .stone-tablet {
+            background: 
+                linear-gradient(135deg, rgba(44, 36, 27, 0.9), rgba(26, 20, 13, 0.9)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            border: 2px solid var(--copper);
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
 
-        .question-card:hover {
+        .stone-tablet:hover {
             border-color: var(--gold-primary);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1);
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
         }
 
-        .question-card::after {
+        .stone-tablet::before {
             content: "";
             position: absolute;
             top: 0;
             right: 0;
-            width: 4px;
+            width: 100%;
             height: 100%;
-            background: var(--gold-primary);
-            opacity: 0;
-            transition: opacity 0.3s;
+            background: linear-gradient(135deg, transparent 30%, rgba(212, 175, 55, 0.05) 50%, transparent 70%);
+            z-index: 0;
         }
 
-        .question-card:hover::after {
-            opacity: 1;
-        }
-
-        .question-number {
+        .tablet-number {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--gold-dark);
-            color: white;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, var(--bronze), var(--copper));
+            color: #000;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            border: 2px solid var(--gold-light);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        /* تصميم خيارات الإجابة في لوحة التحكم */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+            z-index: 1;
+            position: relative;
+        }
+
+        .ancient-option {
+            position: relative;
+            background: rgba(15, 12, 8, 0.7);
+            border: 1px solid var(--copper);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .ancient-option:hover {
+            border-color: var(--gold-primary);
+            background: rgba(26, 20, 13, 0.8);
+        }
+
+        .option-symbol {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--gold-primary), var(--bronze));
+            color: #000;
             width: 30px;
             height: 30px;
             border-radius: 50%;
@@ -229,132 +406,29 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-        }
-
-        .question-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        /* خيارات الإجابة في الإعداد */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 15px 0;
-        }
-
-        .option-input {
-            position: relative;
-        }
-
-        .option-label {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
-            background: var(--gold-primary);
-            color: #000;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        /* الأزرار */
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            font-family: 'Amiri', serif;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
-            color: #000;
             font-size: 1.1rem;
+            border: 1px solid var(--gold-light);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(212, 175, 55, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--gold-primary);
-            border: 1px solid var(--gold-primary);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(212, 175, 55, 0.1);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(231, 76, 60, 0.4);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
-        }
-
-        .btn-success:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(46, 204, 113, 0.4);
-        }
-
-        /* شاشة اللعبة */
+        /* شاشة اللعبة - تصميم معبد قديم */
         .game-container {
             display: none;
             width: 95%;
-            max-width: 1100px;
+            max-width: 1200px;
             height: 90vh;
             margin: 20px auto;
-            border: 3px solid var(--gold-primary);
+            border: 4px solid var(--bronze);
             padding: 25px;
-            background: rgba(15, 10, 5, 0.95);
+            background: 
+                linear-gradient(135deg, rgba(15, 10, 5, 0.95), rgba(26, 20, 13, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d4af37' fill-opacity='0.03'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             position: relative;
             overflow: hidden;
-            border-radius: 15px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-            animation: fadeIn 0.8s ease-out;
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.9),
+                inset 0 0 60px rgba(0, 0, 0, 0.7);
+            animation: templeEnter 1s ease-out;
         }
 
         .game-container::before {
@@ -364,18 +438,32 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d4af37' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-            z-index: -1;
-            opacity: 0.3;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(205, 127, 50, 0.05) 0%, transparent 50%);
+            z-index: 0;
         }
 
+        /* رأس اللعبة - تصميم كتمثال قديم */
         .game-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--bronze);
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-header::before {
+            content: "⚔️";
+            position: absolute;
+            bottom: -15px;
+            right: calc(50% - 15px);
+            font-size: 2rem;
+            background: var(--dark-card);
+            padding: 0 10px;
         }
 
         .game-stats {
@@ -383,41 +471,65 @@
             gap: 25px;
         }
 
-        .stat-box {
+        .relic-stat {
             text-align: center;
-            background: rgba(212, 175, 55, 0.1);
-            padding: 10px 20px;
-            border-radius: 8px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            min-width: 120px;
+            background: linear-gradient(135deg, rgba(44, 36, 27, 0.8), rgba(26, 20, 13, 0.8));
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 2px solid var(--copper);
+            min-width: 140px;
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .relic-stat::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 40%, rgba(212, 175, 55, 0.05) 50%, transparent 60%);
         }
 
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: bold;
             color: var(--gold-primary);
             margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: var(--gold-light);
-            opacity: 0.8;
+            opacity: 0.9;
+            letter-spacing: 1px;
         }
 
+        /* شريط التقدم كجدار قديم */
         .progress-container {
             width: 100%;
-            height: 12px;
-            background: rgba(212, 175, 55, 0.1);
-            border-radius: 6px;
-            margin: 20px 0;
+            height: 20px;
+            background: linear-gradient(135deg, rgba(44, 36, 27, 0.8), rgba(26, 20, 13, 0.8));
+            border-radius: 10px;
+            margin: 25px 0;
             overflow: hidden;
+            border: 2px solid var(--copper);
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 0.7),
+                0 3px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
         }
 
         .progress-bar {
             height: 100%;
-            background: linear-gradient(90deg, var(--gold-primary), var(--gold-light));
-            border-radius: 6px;
+            background: linear-gradient(90deg, var(--bronze), var(--gold-primary), var(--bronze));
+            border-radius: 8px;
             width: 0%;
             transition: width 0.8s ease;
             position: relative;
@@ -431,25 +543,32 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: shimmer 2s infinite;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: wallShimmer 2s infinite;
         }
 
+        /* عرض السؤال كلوحة منقوشة */
         .question-display {
-            background: rgba(26, 20, 13, 0.9);
-            border: 2px solid var(--gold-primary);
+            background: 
+                linear-gradient(135deg, rgba(26, 20, 13, 0.95), rgba(15, 12, 8, 0.95)),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d4af37' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            border: 3px solid var(--bronze);
             padding: 40px;
             width: 100%;
             text-align: center;
-            font-size: 2.2rem;
+            font-size: 2.3rem;
             margin-bottom: 40px;
-            border-radius: 12px;
-            line-height: 1.5;
+            border-radius: 15px;
+            line-height: 1.6;
             position: relative;
-            min-height: 200px;
+            min-height: 220px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.7),
+                inset 0 0 30px rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
 
         .question-display::before {
@@ -457,83 +576,118 @@
             position: absolute;
             top: -25px;
             right: 30px;
-            background: var(--dark-card);
-            color: var(--gold-primary);
+            background: linear-gradient(135deg, var(--bronze), var(--copper));
+            color: #000;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            border: 3px solid var(--gold-light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 2;
+        }
+
+        /* تصميم خيارات الإجابة كأبواب قديمة */
+        .answers-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ancient-door {
+            background: 
+                linear-gradient(135deg, rgba(44, 36, 27, 0.9), rgba(26, 20, 13, 0.9)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            border: 3px solid var(--copper);
+            color: var(--gold-light);
+            padding: 30px 25px;
+            font-size: 1.7rem;
+            cursor: pointer;
+            text-align: right;
+            font-family: 'Amiri';
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            border-radius: 15px;
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.6),
+                inset 0 0 20px rgba(0, 0, 0, 0.4);
+            min-height: 120px;
+            clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 20%);
+        }
+
+        .ancient-door:hover {
+            background: 
+                linear-gradient(135deg, rgba(54, 44, 33, 0.9), rgba(34, 27, 18, 0.9)),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--gold-primary);
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.8),
+                inset 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .ancient-door.selected {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: #000;
+            border-color: #ff9900;
+        }
+
+        .ancient-door.correct {
+            background: linear-gradient(135deg, var(--correct), #229954);
+            color: white;
+            border-color: #2ecc71;
+            animation: doorOpen 0.6s ease;
+        }
+
+        .ancient-door.wrong {
+            background: linear-gradient(135deg, var(--wrong), #a93226);
+            color: white;
+            border-color: #e74c3c;
+            animation: doorShake 0.5s ease;
+        }
+
+        .door-handle {
+            position: absolute;
+            top: 50%;
+            left: 25px;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, var(--gold-primary), var(--bronze));
+            color: #000;
             width: 50px;
             height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
             font-weight: bold;
-            border: 2px solid var(--gold-primary);
+            font-size: 1.5rem;
+            border: 2px solid var(--gold-light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            z-index: 1;
         }
 
-        .answers-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            width: 100%;
-        }
-
-        .answer-option {
-            background: rgba(212, 175, 55, 0.05);
-            border: 2px solid var(--gold-primary);
-            color: var(--gold-light);
-            padding: 25px 20px;
-            font-size: 1.6rem;
-            cursor: pointer;
-            text-align: right;
-            font-family: 'Amiri';
-            transition: all 0.3s ease;
-            clip-path: polygon(5% 0, 100% 0, 100% 100%, 0% 100%, 0% 25%);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
-
-        .answer-option:hover {
-            background: rgba(212, 175, 55, 0.15);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .answer-option.selected {
-            background: #e67e22;
-            color: white;
-        }
-
-        .answer-option.correct {
-            background: var(--correct);
-            color: white;
-            animation: pulse 0.5s ease;
-        }
-
-        .answer-option.wrong {
-            background: var(--wrong);
-            color: white;
-            animation: shake 0.5s ease;
-        }
-
-        .option-letter {
+        .door-handle::after {
+            content: "";
             position: absolute;
             top: 50%;
-            left: 20px;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.3);
-            color: var(--gold-primary);
-            width: 40px;
-            height: 40px;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+            height: 15px;
+            background: #000;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.3rem;
-            border: 1px solid var(--gold-primary);
+            opacity: 0.3;
         }
 
         .game-footer {
@@ -541,9 +695,23 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--bronze);
+            position: relative;
+            z-index: 1;
         }
 
-        /* شاشة النتائج */
+        .game-footer::before {
+            content: "⌛";
+            position: absolute;
+            top: -15px;
+            right: calc(50% - 15px);
+            font-size: 1.8rem;
+            background: var(--dark-card);
+            padding: 0 10px;
+        }
+
+        /* شاشة النتائج ككنز قديم */
         .results-screen {
             display: none;
             flex-direction: column;
@@ -552,51 +720,124 @@
             min-height: 100vh;
             padding: 30px;
             text-align: center;
-            animation: fadeIn 1s ease-out;
+            animation: treasureReveal 1.5s ease-out;
+            position: relative;
+            overflow: hidden;
         }
 
-        .trophy-icon {
-            font-size: 8rem;
+        .results-screen::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(205, 127, 50, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .treasure-chest {
+            font-size: 10rem;
             color: var(--gold-primary);
             margin-bottom: 30px;
-            animation: bounce 1.5s infinite alternate;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            animation: chestGlow 2s infinite alternate;
+            text-shadow: 
+                0 0 20px rgba(212, 175, 55, 0.7),
+                0 0 40px rgba(212, 175, 55, 0.5);
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
         }
 
         .results-title {
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             color: var(--gold-primary);
             margin-bottom: 20px;
             font-family: 'Reem Kufi', sans-serif;
+            text-shadow: 
+                2px 2px 0 rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(212, 175, 55, 0.5);
+            letter-spacing: 2px;
         }
 
         .score-display {
-            font-size: 5rem;
+            font-size: 6rem;
             font-weight: bold;
             color: var(--gold-light);
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-            margin: 20px 0;
-        }
-
-        .results-details {
-            background: rgba(26, 20, 13, 0.8);
-            border: 2px solid var(--gold-primary);
-            border-radius: 15px;
-            padding: 30px;
-            width: 90%;
-            max-width: 700px;
+            text-shadow: 
+                0 0 10px rgba(212, 175, 55, 0.7),
+                0 0 20px rgba(212, 175, 55, 0.5);
             margin: 30px 0;
+            position: relative;
+            display: inline-block;
         }
 
-        .result-row {
+        .score-display::before, .score-display::after {
+            content: "✧";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--bronze);
+            font-size: 3rem;
+            animation: spin 4s infinite linear;
+        }
+
+        .score-display::before {
+            right: -50px;
+        }
+
+        .score-display::after {
+            left: -50px;
+        }
+
+        .treasure-details {
+            background: linear-gradient(135deg, rgba(26, 20, 13, 0.9), rgba(15, 12, 8, 0.9));
+            border: 3px solid var(--bronze);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 800px;
+            margin: 40px 0;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.8),
+                inset 0 0 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .treasure-details::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            bottom: -2px;
+            left: -2px;
+            background: linear-gradient(45deg, var(--gold-primary), transparent, var(--bronze), transparent, var(--gold-primary));
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.2;
+            animation: borderGlow 3s infinite alternate;
+        }
+
+        .treasure-row {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(205, 127, 50, 0.3);
+            font-size: 1.2rem;
         }
 
-        .result-row:last-child {
+        .treasure-row:last-child {
             border-bottom: none;
+        }
+
+        .treasure-label {
+            color: var(--gold-light);
+        }
+
+        .treasure-value {
+            color: var(--gold-primary);
+            font-weight: bold;
         }
 
         /* الرسوم المتحركة */
@@ -605,31 +846,56 @@
             to { opacity: 1; }
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes mapUnfold {
+            from { transform: scale(0.8) translateY(50px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes templeEnter {
+            from { transform: perspective(1000px) rotateX(10deg) translateY(100px); opacity: 0; }
+            to { transform: perspective(1000px) rotateX(0) translateY(0); opacity: 1; }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-20px); }
-        }
-
-        @keyframes shimmer {
+        @keyframes wallShimmer {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
+        }
+
+        @keyframes doorOpen {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.05); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        @keyframes doorShake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+            20%, 40%, 60%, 80% { transform: translateX(8px); }
+        }
+
+        @keyframes treasureReveal {
+            from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            to { transform: scale(1) rotate(0); opacity: 1; }
+        }
+
+        @keyframes chestGlow {
+            from { filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.5)); }
+            to { filter: drop-shadow(0 5px 25px rgba(212, 175, 55, 0.8)); }
+        }
+
+        @keyframes borderGlow {
+            from { opacity: 0.2; }
+            to { opacity: 0.5; }
+        }
+
+        @keyframes smokeFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(20px, -20px) scale(1.1); }
+        }
+
+        @keyframes spin {
+            from { transform: translateY(-50%) rotate(0deg); }
+            to { transform: translateY(-50%) rotate(360deg); }
         }
 
         /* التأثيرات الخاصة */
@@ -639,66 +905,89 @@
             z-index: 100;
         }
 
-        .firework {
+        .gold-sparkle {
             position: absolute;
-            width: 5px;
-            height: 5px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
+            background: var(--gold-primary);
             pointer-events: none;
             z-index: 100;
+            filter: blur(1px);
         }
 
         /* التكيف مع الهواتف */
-        @media (max-width: 768px) {
-            .logo { font-size: 2.5rem; }
+        @media (max-width: 992px) {
+            .ancient-logo { font-size: 3.5rem; }
             .answers-container { grid-template-columns: 1fr; }
             .options-grid { grid-template-columns: 1fr; }
-            .game-stats { flex-direction: column; gap: 10px; }
-            .stat-box { min-width: auto; }
-            .welcome-buttons { flex-direction: column; }
-            .question-display { font-size: 1.6rem; padding: 25px; }
-            .answer-option { font-size: 1.3rem; padding: 20px 15px; }
+            .game-stats { flex-direction: column; gap: 15px; }
+            .relic-stat { min-width: auto; width: 100%; }
+            .adventure-buttons { flex-direction: column; width: 100%; }
+            .adventure-btn { width: 100%; }
+            .question-display { font-size: 1.8rem; padding: 30px; }
+            .ancient-door { font-size: 1.5rem; padding: 25px 20px; }
+            .treasure-chest { font-size: 7rem; }
+            .results-title { font-size: 2.8rem; }
+            .score-display { font-size: 4.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            .ancient-logo { font-size: 2.8rem; }
+            .logo-subtitle { font-size: 1.1rem; }
+            .welcome-message { font-size: 1.2rem; padding: 20px; }
+            .question-display { font-size: 1.6rem; padding: 25px; min-height: 180px; }
+            .ancient-door { font-size: 1.3rem; padding: 20px 15px; min-height: 100px; }
+            .door-handle { width: 40px; height: 40px; font-size: 1.3rem; left: 15px; }
+            .treasure-chest { font-size: 5rem; }
+            .results-title { font-size: 2.2rem; }
+            .score-display { font-size: 3.5rem; }
+            .treasure-details { padding: 25px; }
         }
     </style>
 </head>
 <body>
-    <!-- شاشة البداية -->
+    <!-- شاشة البداية - بوابة المغامرة -->
     <div class="welcome-screen" id="welcome-screen">
+        <div class="smoke-effect"></div>
+        
         <div class="logo-container">
-            <div class="decoration left"></div>
-            <div class="logo">ملحمة الأجداد</div>
-            <div class="decoration right"></div>
-            <div class="logo-subtitle">اختبار التاريخ التفاعلي</div>
+            <div class="ancient-logo">مغامرة الأطلال</div>
+            <div class="logo-subtitle">رحلة عبر كنوز التاريخ</div>
         </div>
         
-        <p style="font-size: 1.3rem; max-width: 700px; line-height: 1.8; color: var(--gold-light);">
-            استعد لرحلة عبر الزمن حيث تختبر معرفتك بالأحداث التاريخية العظيمة. قم بإنشاء أسئلتك الخاصة أو العب بالأسئلة المخزنة مسبقاً.
-        </p>
+        <div class="welcome-message">
+            <p>اهلاً أيها المُستكشف الشجاع! أمامك رحلة عبر أزمنة غابرة وأمجاد تاريخية.</p>
+            <p>ستواجه أسئلة تحمل في طياتها حكايات الأجداد، وستحتاج إلى ذكائك وشجاعتك للوصول إلى كنوز المعرفة.</p>
+            <p>هل أنت مستعد لخوض هذه المغامرة؟ اختر طريقك بحكمة!</p>
+        </div>
         
-        <div class="welcome-buttons">
-            <button class="btn btn-primary" onclick="showControlPanel()">
-                <i class="fas fa-plus-circle"></i> إنشاء اختبار جديد
+        <div class="adventure-buttons">
+            <button class="adventure-btn primary" onclick="showControlPanel()">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>رسم الخريطة (إنشاء أسئلة)</span>
             </button>
-            <button class="btn btn-secondary" onclick="loadExistingGame()">
-                <i class="fas fa-play-circle"></i> بدء الاختبار المخزن
+            <button class="adventure-btn secondary" onclick="startAdventure()">
+                <i class="fas fa-compass"></i>
+                <span>بدء الرحلة (بدء اللعبة)</span>
             </button>
         </div>
         
-        <div style="margin-top: 50px; color: rgba(240, 230, 210, 0.6); font-size: 0.9rem;">
-            <p>يتم حفظ الأسئلة تلقائياً في متصفحك</p>
+        <div style="margin-top: 60px; color: rgba(240, 230, 210, 0.5); font-size: 0.9rem;">
+            <p><i class="fas fa-history"></i> كل سؤال بوابة إلى زمن مضى، وكل إجابة مفتاح لكنز مخفي</p>
         </div>
     </div>
 
-    <!-- لوحة التحكم (إضافة/تعديل الأسئلة) -->
+    <!-- لوحة التحكم - خريطة المغامرة -->
     <div class="control-panel" id="control-panel">
         <div class="panel-header">
-            <h2><i class="fas fa-scroll"></i> ديوان إعداد الأسئلة</h2>
-            <div class="header-actions">
-                <button class="btn btn-secondary" onclick="backToWelcome()">
-                    <i class="fas fa-home"></i> الرجوع
+            <h2><i class="fas fa-scroll"></i> خريطة المغامرة - صياغة التحديات</h2>
+            <div style="display: flex; gap: 15px;">
+                <button class="adventure-btn secondary" onclick="backToWelcome()">
+                    <i class="fas fa-door-open"></i> العودة للبوابة
                 </button>
-                <button class="btn btn-success" onclick="startGame()">
-                    <i class="fas fa-play"></i> بدء الملحمة
+                <button class="adventure-btn primary" onclick="startAdventure()">
+                    <i class="fas fa-play"></i> انطلاق الرحلة
                 </button>
             </div>
         </div>
@@ -707,36 +996,36 @@
             <!-- سيتم إضافة الأسئلة هنا ديناميكياً -->
         </div>
         
-        <div style="text-align: center;">
-            <button class="btn btn-secondary" onclick="addNewQuestion()">
-                <i class="fas fa-plus"></i> أضف سؤالاً جديداً
+        <div style="text-align: center; margin-top: 30px; position: relative; z-index: 1;">
+            <button class="adventure-btn primary" onclick="addNewQuestion()" style="margin-bottom: 20px;">
+                <i class="fas fa-plus-circle"></i> إضافة تحدٍ جديد
             </button>
-            <button class="btn btn-danger" onclick="clearAllQuestions()" style="margin-right: 15px;">
-                <i class="fas fa-trash-alt"></i> مسح جميع الأسئلة
+            <button class="adventure-btn secondary" onclick="clearAllQuestions()" style="margin-right: 20px;">
+                <i class="fas fa-trash-alt"></i> محو الخريطة
             </button>
         </div>
     </div>
 
-    <!-- شاشة اللعبة -->
+    <!-- شاشة اللعبة - المعبد القديم -->
     <div class="game-container" id="game-screen">
         <div class="game-header">
             <div class="game-stats">
-                <div class="stat-box">
+                <div class="relic-stat">
                     <div class="stat-value" id="current-question">1</div>
-                    <div class="stat-label">السؤال الحالي</div>
+                    <div class="stat-label">البوابة الحالية</div>
                 </div>
-                <div class="stat-box">
+                <div class="relic-stat">
                     <div class="stat-value" id="score">0</div>
-                    <div class="stat-label">النقاط</div>
+                    <div class="stat-label">الكنوز المجمعة</div>
                 </div>
-                <div class="stat-box">
+                <div class="relic-stat">
                     <div class="stat-value" id="correct-count">0</div>
-                    <div class="stat-label">الإجابات الصحيحة</div>
+                    <div class="stat-label">المفاتيح الصحيحة</div>
                 </div>
             </div>
             
-            <button class="btn btn-secondary" onclick="endGame()">
-                <i class="fas fa-sign-out-alt"></i> إنهاء اللعبة
+            <button class="adventure-btn secondary" onclick="endAdventure()">
+                <i class="fas fa-sign-out-alt"></i> إنهاء الرحلة
             </button>
         </div>
         
@@ -749,92 +1038,93 @@
         </div>
         
         <div class="answers-container">
-            <div class="answer-option" id="option-0" onclick="selectAnswer(0)">
-                <div class="option-letter">أ</div>
+            <div class="ancient-door" id="option-0" onclick="selectAnswer(0)">
+                <div class="door-handle">أ</div>
                 <span id="option-text-0"></span>
             </div>
-            <div class="answer-option" id="option-1" onclick="selectAnswer(1)">
-                <div class="option-letter">ب</div>
+            <div class="ancient-door" id="option-1" onclick="selectAnswer(1)">
+                <div class="door-handle">ب</div>
                 <span id="option-text-1"></span>
             </div>
-            <div class="answer-option" id="option-2" onclick="selectAnswer(2)">
-                <div class="option-letter">ج</div>
+            <div class="ancient-door" id="option-2" onclick="selectAnswer(2)">
+                <div class="door-handle">ج</div>
                 <span id="option-text-2"></span>
             </div>
-            <div class="answer-option" id="option-3" onclick="selectAnswer(3)">
-                <div class="option-letter">د</div>
+            <div class="ancient-door" id="option-3" onclick="selectAnswer(3)">
+                <div class="door-handle">د</div>
                 <span id="option-text-3"></span>
             </div>
         </div>
         
         <div class="game-footer">
-            <div style="color: var(--gold-light);">
-                اختر الإجابة الصحيحة من بين الخيارات
+            <div style="color: var(--gold-light); font-size: 1.1rem;">
+                <i class="fas fa-key"></i> اختر البوابة الصحيحة لتستمر في الرحلة
             </div>
-            <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()" style="display: none;">
-                <i class="fas fa-forward"></i> التالي
+            <button class="adventure-btn primary" id="next-btn" onclick="nextQuestion()" style="display: none;">
+                <i class="fas fa-forward"></i> البوابة التالية
             </button>
         </div>
     </div>
 
-    <!-- شاشة النتائج -->
+    <!-- شاشة النتائج - كنز المغامرة -->
     <div class="results-screen" id="results-screen">
-        <div class="trophy-icon">
-            <i class="fas fa-trophy"></i>
+        <div class="treasure-chest">
+            <i class="fas fa-treasure-chest"></i>
         </div>
         
-        <div class="results-title">نتيجة الاختبار</div>
+        <div class="results-title">كنز المغامرة</div>
         
         <div class="score-display" id="final-score">0</div>
         
-        <div class="results-details">
-            <div class="result-row">
-                <span>عدد الأسئلة:</span>
-                <span id="total-questions">0</span>
+        <div class="treasure-details">
+            <div class="treasure-row">
+                <span class="treasure-label">عدد البوابات التي عبرتها:</span>
+                <span class="treasure-value" id="total-questions">0</span>
             </div>
-            <div class="result-row">
-                <span>الإجابات الصحيحة:</span>
-                <span id="total-correct">0</span>
+            <div class="treasure-row">
+                <span class="treasure-label">المفاتيح الصحيحة:</span>
+                <span class="treasure-value" id="total-correct">0</span>
             </div>
-            <div class="result-row">
-                <span>الإجابات الخاطئة:</span>
-                <span id="total-wrong">0</span>
+            <div class="treasure-row">
+                <span class="treasure-label">المفاتيح الخاطئة:</span>
+                <span class="treasure-value" id="total-wrong">0</span>
             </div>
-            <div class="result-row">
-                <span>النسبة المئوية:</span>
-                <span id="percentage">0%</span>
+            <div class="treasure-row">
+                <span class="treasure-label">نسبة النجاح:</span>
+                <span class="treasure-value" id="percentage">0%</span>
             </div>
-            <div class="result-row">
-                <span>الوقت المستغرق:</span>
-                <span id="time-taken">0 ثانية</span>
+            <div class="treasure-row">
+                <span class="treasure-label">مدة الرحلة:</span>
+                <span class="treasure-value" id="time-taken">0 ثانية</span>
             </div>
         </div>
         
-        <div style="display: flex; gap: 20px; margin-top: 30px;">
-            <button class="btn btn-primary" onclick="playAgain()">
-                <i class="fas fa-redo"></i> لعب مرة أخرى
+        <div style="display: flex; gap: 25px; margin-top: 40px; flex-wrap: wrap; justify-content: center;">
+            <button class="adventure-btn primary" onclick="playAgain()">
+                <i class="fas fa-redo"></i> رحلة جديدة
             </button>
-            <button class="btn btn-secondary" onclick="backToWelcome()">
-                <i class="fas fa-home"></i> الرجوع للرئيسية
+            <button class="adventure-btn secondary" onclick="backToWelcome()">
+                <i class="fas fa-home"></i> العودة للبوابة الرئيسية
             </button>
         </div>
     </div>
 
     <!-- المؤثرات الصوتية -->
-    <audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+    <audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
     <audio id="wrong-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
     <audio id="click-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" preload="auto"></audio>
+    <audio id="door-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-door-handle-lock-1120.mp3" preload="auto"></audio>
 
     <script>
         // بيانات اللعبة
-        let gameData = [];
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let correctAnswers = 0;
-        let wrongAnswers = 0;
-        let gameStartTime = 0;
-        let selectedAnswer = null;
-        let answerSelected = false;
+        let adventureData = [];
+        let currentQuestIndex = 0;
+        let treasureScore = 0;
+        let correctKeys = 0;
+        let wrongKeys = 0;
+        let adventureStartTime = 0;
+        let selectedDoor = null;
+        let doorSelected = false;
         
         // عناصر DOM الرئيسية
         const welcomeScreen = document.getElementById('welcome-screen');
@@ -843,170 +1133,181 @@
         const resultsScreen = document.getElementById('results-screen');
         const questionsList = document.getElementById('questions-list');
         
-        // تحميل البيانات المحفوظة عند بدء التحميل
+        // تحميل المغامرات المحفوظة
         window.addEventListener('DOMContentLoaded', () => {
-            const savedData = localStorage.getItem('historicalEpicGame');
-            if (savedData) {
+            const savedAdventure = localStorage.getItem('ancientAdventureGame');
+            if (savedAdventure) {
                 try {
-                    gameData = JSON.parse(savedData);
+                    adventureData = JSON.parse(savedAdventure);
                 } catch (e) {
-                    console.error("خطأ في تحليل البيانات المحفوظة:", e);
-                    gameData = [];
+                    console.error("خطأ في تحليل بيانات المغامرة:", e);
+                    adventureData = [];
                 }
             }
             
-            // إذا لم تكن هناك بيانات، نضيف مثالاً
-            if (gameData.length === 0) {
-                addSampleQuestions();
+            // إذا لم تكن هناك مغامرات، نضيف مغامرات استكشافية
+            if (adventureData.length === 0) {
+                addExplorationQuests();
             }
             
-            renderQuestionList();
+            renderQuestList();
+            
+            // إضافة تأثيرات ذهبية متفرقة
+            createBackgroundSparkles();
         });
         
-        // إضافة أسئلة كمثال
-        function addSampleQuestions() {
-            gameData = [
+        // إضافة مغامرات استكشافية
+        function addExplorationQuests() {
+            adventureData = [
                 {
-                    question: "في أي عام وقعت معركة حطين؟",
-                    options: ["1187 م", "1191 م", "1174 م", "1200 م"],
+                    question: "في أي عهد بني جامع قرطبة الكبير (المسجد الجامع)؟",
+                    options: ["عهد الخليفة الأموي عبدالرحمن الداخل", "عهد الخليفة الأموي عبدالرحمن الناصر", "عهد الخليفة الأموي هشام الثاني", "عهد الخليفة الأموي الحكم المستنصر"],
                     correctAnswer: 0
                 },
                 {
-                    question: "من هو القائد المسلم الذي فتح الأندلس؟",
-                    options: ["طارق بن زياد", "صلاح الدين الأيوبي", "خالد بن الوليد", "عمرو بن العاص"],
-                    correctAnswer: 0
+                    question: "ما هو الاسم القديم لمدينة فاس المغربية؟",
+                    options: ["أم البيضاء", "أم المدن", "باريس الصغيرة", "أم العلم"],
+                    correctAnswer: 1
                 },
                 {
-                    question: "أين ولد العالم ابن سينا؟",
-                    options: ["بخارى (أوزبكستان حالياً)", "القاهرة", "بغداد", "دمشق"],
-                    correctAnswer: 0
+                    question: "من القائد المسلم الذي فتح صقلية؟",
+                    options: ["موسى بن نصير", "طارق بن زياد", "أسد بن الفرات", "عقبة بن نافع"],
+                    correctAnswer: 2
                 },
                 {
-                    question: "ما اسم أقدم جامعة في العالم؟",
-                    options: ["جامعة القرويين", "جامعة الأزهر", "جامعة بغداد", "جامعة قرطبة"],
+                    question: "أي من هذه المدن أسسها الفاطميون؟",
+                    options: ["فاس", "مراكش", "القاهرة", "تونس"],
+                    correctAnswer: 2
+                },
+                {
+                    question: "ما هو الاسم الذي عرف به طريق التجارة القديم الذي ربط الصين بالعالم الغربي؟",
+                    options: ["طريق الحرير", "طريق البخور", "طريق التوابل", "طريق اللؤلؤ"],
                     correctAnswer: 0
                 }
             ];
-            saveGameData();
+            saveAdventureData();
         }
         
-        // حفظ البيانات في localStorage
-        function saveGameData() {
-            localStorage.setItem('historicalEpicGame', JSON.stringify(gameData));
+        // حفظ بيانات المغامرة
+        function saveAdventureData() {
+            localStorage.setItem('ancientAdventureGame', JSON.stringify(adventureData));
         }
         
-        // عرض قائمة الأسئلة في لوحة التحكم
-        function renderQuestionList() {
+        // عرض قائمة المغامرات
+        function renderQuestList() {
             questionsList.innerHTML = '';
             
-            gameData.forEach((question, index) => {
-                const questionCard = document.createElement('div');
-                questionCard.className = 'question-card';
-                questionCard.innerHTML = `
-                    <div class="question-number">${index + 1}</div>
-                    <div style="margin-right: 40px;">
+            adventureData.forEach((quest, index) => {
+                const stoneTablet = document.createElement('div');
+                stoneTablet.className = 'stone-tablet';
+                stoneTablet.innerHTML = `
+                    <div class="tablet-number">${index + 1}</div>
+                    <div style="margin-right: 50px;">
                         <input type="text" 
-                               class="question-input" 
-                               value="${question.question}" 
-                               placeholder="نص السؤال"
-                               onchange="updateQuestion(${index}, 'question', this.value)"
-                               style="width: 100%; padding: 10px; margin-bottom: 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(212,175,55,0.5); color: white; border-radius: 5px; font-family: 'Amiri'; font-size: 1.1rem;">
+                               class="quest-input" 
+                               value="${quest.question}" 
+                               placeholder="نص التحدي"
+                               onchange="updateQuest(${index}, 'question', this.value)"
+                               style="width: 100%; padding: 12px; margin-bottom: 20px; background: rgba(0,0,0,0.4); border: 1px solid rgba(205,127,50,0.7); color: var(--gold-light); border-radius: 8px; font-family: 'Amiri'; font-size: 1.2rem; text-align: right;">
                         
                         <div class="options-grid">
                             ${[0, 1, 2, 3].map(optIndex => `
-                                <div class="option-input">
-                                    <div class="option-label">${String.fromCharCode(1570 + optIndex)}</div>
+                                <div class="ancient-option">
+                                    <div class="option-symbol">${String.fromCharCode(1570 + optIndex)}</div>
                                     <input type="text" 
-                                           value="${question.options[optIndex]}" 
+                                           value="${quest.options[optIndex]}" 
                                            placeholder="خيار ${String.fromCharCode(1570 + optIndex)}"
-                                           onchange="updateQuestionOption(${index}, ${optIndex}, this.value)"
-                                           style="width: 100%; padding: 10px 40px 10px 10px; background: rgba(0,0,0,0.2); border: 1px solid rgba(212,175,55,0.3); color: white; border-radius: 5px; font-family: 'Amiri';">
+                                           onchange="updateQuestOption(${index}, ${optIndex}, this.value)"
+                                           style="width: 100%; padding: 12px 45px 12px 12px; background: rgba(0,0,0,0.3); border: none; color: var(--gold-light); border-radius: 8px; font-family: 'Amiri'; font-size: 1.1rem;">
                                 </div>
                             `).join('')}
                         </div>
                         
                         <div class="question-actions">
                             <div>
-                                <label style="color: var(--gold-light); margin-left: 10px;">الإجابة الصحيحة:</label>
-                                <select onchange="updateQuestion(${index}, 'correctAnswer', parseInt(this.value))" style="padding: 8px 15px; background: rgba(0,0,0,0.3); border: 1px solid rgba(212,175,55,0.5); color: white; border-radius: 5px;">
-                                    <option value="0" ${question.correctAnswer === 0 ? 'selected' : ''}>أ</option>
-                                    <option value="1" ${question.correctAnswer === 1 ? 'selected' : ''}>ب</option>
-                                    <option value="2" ${question.correctAnswer === 2 ? 'selected' : ''}>ج</option>
-                                    <option value="3" ${question.correctAnswer === 3 ? 'selected' : ''}>د</option>
+                                <label style="color: var(--gold-light); margin-left: 15px; font-size: 1.1rem;">البوابة الصحيحة:</label>
+                                <select onchange="updateQuest(${index}, 'correctAnswer', parseInt(this.value))" style="padding: 10px 20px; background: rgba(0,0,0,0.4); border: 1px solid rgba(205,127,50,0.7); color: var(--gold-light); border-radius: 8px; font-size: 1.1rem;">
+                                    <option value="0" ${quest.correctAnswer === 0 ? 'selected' : ''}>البوابة أ</option>
+                                    <option value="1" ${quest.correctAnswer === 1 ? 'selected' : ''}>البوابة ب</option>
+                                    <option value="2" ${quest.correctAnswer === 2 ? 'selected' : ''}>البوابة ج</option>
+                                    <option value="3" ${quest.correctAnswer === 3 ? 'selected' : ''}>البوابة د</option>
                                 </select>
                             </div>
                             
-                            <button class="btn btn-danger" onclick="removeQuestion(${index})">
-                                <i class="fas fa-trash"></i> حذف
+                            <button class="adventure-btn secondary" onclick="removeQuest(${index})" style="padding: 10px 20px; font-size: 1rem;">
+                                <i class="fas fa-trash"></i> إزالة التحدي
                             </button>
                         </div>
                     </div>
                 `;
-                questionsList.appendChild(questionCard);
+                questionsList.appendChild(stoneTablet);
             });
             
-            // إذا لم تكن هناك أسئلة، نعرض رسالة
-            if (gameData.length === 0) {
+            // إذا لم تكن هناك مغامرات
+            if (adventureData.length === 0) {
                 questionsList.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--gold-light);">
-                        <i class="fas fa-scroll" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.5;"></i>
-                        <h3>لا توجد أسئلة حالياً</h3>
-                        <p>أضف أسئلة جديدة لبدء اللعبة</p>
+                    <div style="text-align: center; padding: 50px; color: var(--gold-light);">
+                        <i class="fas fa-map" style="font-size: 4rem; margin-bottom: 25px; opacity: 0.5;"></i>
+                        <h3 style="color: var(--gold-primary);">الخريطة فارغة</h3>
+                        <p style="font-size: 1.2rem;">لم يتم رسم أي تحديات بعد. أضف تحديات جديدة لبدء الرحلة!</p>
                     </div>
                 `;
             }
         }
         
-        // تحديث سؤال
-        function updateQuestion(index, property, value) {
-            gameData[index][property] = value;
-            saveGameData();
+        // تحديث تحدٍ
+        function updateQuest(index, property, value) {
+            adventureData[index][property] = value;
+            saveAdventureData();
         }
         
-        // تحديث خيار لسؤال
-        function updateQuestionOption(questionIndex, optionIndex, value) {
-            gameData[questionIndex].options[optionIndex] = value;
-            saveGameData();
+        // تحديث خيار للتحدي
+        function updateQuestOption(questIndex, optionIndex, value) {
+            adventureData[questIndex].options[optionIndex] = value;
+            saveAdventureData();
         }
         
-        // إضافة سؤال جديد
+        // إضافة تحدٍ جديد
         function addNewQuestion() {
-            gameData.push({
+            adventureData.push({
                 question: '',
                 options: ['', '', '', ''],
                 correctAnswer: 0
             });
-            saveGameData();
-            renderQuestionList();
+            saveAdventureData();
+            renderQuestList();
             
-            // التمرير إلى آخر سؤال مضاف
+            // التمرير إلى آخر تحدٍ مضاف
             questionsList.scrollTop = questionsList.scrollHeight;
             
             // تشغيل صوت النقر
             playSound('click-sound');
+            
+            // تأثير إضافة جديد
+            createSparkleEffect(document.querySelector('.adventure-btn.primary'));
         }
         
-        // حذف سؤال
-        function removeQuestion(index) {
-            if (confirm(`هل أنت متأكد من حذف السؤال ${index + 1}؟`)) {
-                gameData.splice(index, 1);
-                saveGameData();
-                renderQuestionList();
+        // حذف تحدٍ
+        function removeQuest(index) {
+            if (confirm(`هل أنت متأكد من إزالة التحدي ${index + 1}؟`)) {
+                adventureData.splice(index, 1);
+                saveAdventureData();
+                renderQuestList();
                 playSound('click-sound');
             }
         }
         
-        // حذف جميع الأسئلة
+        // حذف جميع التحديات
         function clearAllQuestions() {
-            if (gameData.length === 0) {
-                alert('لا توجد أسئلة لحذفها!');
+            if (adventureData.length === 0) {
+                alert('لا توجد تحديات لحذفها!');
                 return;
             }
             
-            if (confirm('هل أنت متأكد من حذف جميع الأسئلة؟ لا يمكن التراجع عن هذا الإجراء.')) {
-                gameData = [];
-                saveGameData();
-                renderQuestionList();
+            if (confirm('هل أنت متأكد من محو جميع التحديات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                adventureData = [];
+                saveAdventureData();
+                renderQuestList();
                 playSound('click-sound');
             }
         }
@@ -1015,7 +1316,8 @@
         function showControlPanel() {
             welcomeScreen.style.display = 'none';
             controlPanel.style.display = 'block';
-            playSound('click-sound');
+            playSound('door-sound');
+            createSparkleEffect(document.querySelector('.control-panel'));
         }
         
         // العودة إلى الشاشة الرئيسية
@@ -1024,171 +1326,174 @@
             controlPanel.style.display = 'none';
             gameScreen.style.display = 'none';
             resultsScreen.style.display = 'none';
-            playSound('click-sound');
+            playSound('door-sound');
         }
         
-        // بدء اللعبة
-        function startGame() {
-            // التحقق من وجود أسئلة كافية
-            if (gameData.length === 0) {
-                alert('يجب إضافة أسئلة على الأقل لبدء اللعبة!');
+        // بدء المغامرة
+        function startAdventure() {
+            // التحقق من وجود تحديات كافية
+            if (adventureData.length === 0) {
+                alert('يجب إضافة تحديات على الأقل لبدء الرحلة!');
                 return;
             }
             
-            // التحقق من أن جميع الأسئلة مكتملة
-            const incompleteQuestion = gameData.find((q, index) => {
+            // التحقق من أن جميع التحديات مكتملة
+            const incompleteQuest = adventureData.find((q, index) => {
                 return !q.question || q.options.some(opt => !opt) || q.correctAnswer === undefined;
             });
             
-            if (incompleteQuestion) {
-                alert('بعض الأسئلة غير مكتملة. يرجى ملء جميع الحقول قبل بدء اللعبة.');
+            if (incompleteQuest) {
+                alert('بعض التحديات غير مكتملة. يرجى ملء جميع الحقول قبل بدء الرحلة.');
                 return;
             }
             
-            // تهيئة متغيرات اللعبة
-            currentQuestionIndex = 0;
-            score = 0;
-            correctAnswers = 0;
-            wrongAnswers = 0;
-            answerSelected = false;
-            gameStartTime = Date.now();
+            // تهيئة متغيرات المغامرة
+            currentQuestIndex = 0;
+            treasureScore = 0;
+            correctKeys = 0;
+            wrongKeys = 0;
+            doorSelected = false;
+            adventureStartTime = Date.now();
             
-            // الانتقال إلى شاشة اللعبة
+            // الانتقال إلى شاشة المغامرة
             controlPanel.style.display = 'none';
+            welcomeScreen.style.display = 'none';
             gameScreen.style.display = 'block';
             
-            // عرض السؤال الأول
-            displayCurrentQuestion();
-            updateGameStats();
-            playSound('click-sound');
+            // عرض التحدي الأول
+            displayCurrentQuest();
+            updateAdventureStats();
+            playSound('door-sound');
+            
+            // تأثير دخان للدخول
+            createSmokeEffect();
         }
         
-        // تحميل لعبة موجودة
-        function loadExistingGame() {
-            if (gameData.length === 0) {
-                alert('لا توجد أسئلة مخزنة. قم بإنشاء اختبار أولاً.');
-                return;
-            }
+        // عرض التحدي الحالي
+        function displayCurrentQuest() {
+            const quest = adventureData[currentQuestIndex];
             
-            startGame();
-        }
-        
-        // عرض السؤال الحالي
-        function displayCurrentQuestion() {
-            const question = gameData[currentQuestionIndex];
-            
-            // عرض نص السؤال
-            document.getElementById('question-display').textContent = question.question;
+            // عرض نص التحدي
+            document.getElementById('question-display').textContent = quest.question;
             
             // عرض الخيارات
             for (let i = 0; i < 4; i++) {
-                document.getElementById(`option-text-${i}`).textContent = question.options[i];
-                document.getElementById(`option-${i}`).className = 'answer-option';
-                const optionLetter = document.querySelector(`#option-${i} .option-letter`);
-                optionLetter.textContent = String.fromCharCode(1570 + i); // أ، ب، ج، د
+                document.getElementById(`option-text-${i}`).textContent = quest.options[i];
+                document.getElementById(`option-${i}`).className = 'ancient-door';
+                const doorHandle = document.querySelector(`#option-${i} .door-handle`);
+                doorHandle.textContent = String.fromCharCode(1570 + i); // أ، ب، ج، د
             }
             
             // إخفاء زر التالي
             document.getElementById('next-btn').style.display = 'none';
             
             // تحديث شريط التقدم
-            const progress = ((currentQuestionIndex + 1) / gameData.length) * 100;
+            const progress = ((currentQuestIndex + 1) / adventureData.length) * 100;
             document.getElementById('progress-bar').style.width = `${progress}%`;
             
-            // تحديث رقم السؤال الحالي
-            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+            // تحديث رقم البوابة الحالية
+            document.getElementById('current-question').textContent = currentQuestIndex + 1;
             
             // إعادة تعليمات التحديد
-            answerSelected = false;
-            selectedAnswer = null;
+            doorSelected = false;
+            selectedDoor = null;
         }
         
-        // اختيار إجابة
-        function selectAnswer(optionIndex) {
-            if (answerSelected) return;
+        // اختيار بوابة
+        function selectAnswer(doorIndex) {
+            if (doorSelected) return;
             
-            playSound('click-sound');
+            playSound('door-sound');
             
-            answerSelected = true;
-            selectedAnswer = optionIndex;
+            doorSelected = true;
+            selectedDoor = doorIndex;
             
-            const question = gameData[currentQuestionIndex];
-            const isCorrect = (optionIndex === question.correctAnswer);
+            const quest = adventureData[currentQuestIndex];
+            const isCorrect = (doorIndex === quest.correctAnswer);
             
-            // تلوين الإجابة المختارة
-            const selectedOption = document.getElementById(`option-${optionIndex}`);
+            // تلوين البوابة المختارة
+            const selectedDoorElement = document.getElementById(`option-${doorIndex}`);
             
             if (isCorrect) {
-                selectedOption.classList.add('correct');
+                selectedDoorElement.classList.add('correct');
                 playSound('correct-sound');
-                score += 100;
-                correctAnswers++;
+                treasureScore += 100;
+                correctKeys++;
                 
-                // إضافة تأثيرات بصرية للإجابة الصحيحة
-                createFireworks(selectedOption);
+                // إضافة تأثيرات بصرية للبوابة الصحيحة
+                createTreasureSparkles(selectedDoorElement);
+                createGoldenEffect();
             } else {
-                selectedOption.classList.add('wrong');
+                selectedDoorElement.classList.add('wrong');
                 playSound('wrong-sound');
-                wrongAnswers++;
+                wrongKeys++;
                 
-                // عرض الإجابة الصحيحة
-                const correctOption = document.getElementById(`option-${question.correctAnswer}`);
-                correctOption.classList.add('correct');
+                // عرض البوابة الصحيحة
+                const correctDoor = document.getElementById(`option-${quest.correctAnswer}`);
+                correctDoor.classList.add('correct');
+                
+                // تأثير خطأ
+                createShakeEffect(selectedDoorElement);
             }
             
             // تحديث الإحصائيات
-            updateGameStats();
+            updateAdventureStats();
             
             // إظهار زر التالي
             document.getElementById('next-btn').style.display = 'flex';
         }
         
-        // الانتقال إلى السؤال التالي
+        // الانتقال إلى التحدي التالي
         function nextQuestion() {
-            playSound('click-sound');
+            playSound('door-sound');
             
-            currentQuestionIndex++;
+            currentQuestIndex++;
             
-            if (currentQuestionIndex < gameData.length) {
-                displayCurrentQuestion();
+            if (currentQuestIndex < adventureData.length) {
+                displayCurrentQuest();
             } else {
-                endGame();
+                endAdventure();
             }
         }
         
-        // إنهاء اللعبة وعرض النتائج
-        function endGame() {
+        // إنهاء المغامرة وعرض الكنز
+        function endAdventure() {
             gameScreen.style.display = 'none';
             resultsScreen.style.display = 'flex';
             
             // حساب النتائج
-            const totalTime = Math.floor((Date.now() - gameStartTime) / 1000);
-            const percentage = Math.round((correctAnswers / gameData.length) * 100);
+            const totalTime = Math.floor((Date.now() - adventureStartTime) / 1000);
+            const percentage = Math.round((correctKeys / adventureData.length) * 100);
             
             // عرض النتائج
-            document.getElementById('final-score').textContent = score;
-            document.getElementById('total-questions').textContent = gameData.length;
-            document.getElementById('total-correct').textContent = correctAnswers;
-            document.getElementById('total-wrong').textContent = wrongAnswers;
+            document.getElementById('final-score').textContent = treasureScore;
+            document.getElementById('total-questions').textContent = adventureData.length;
+            document.getElementById('total-correct').textContent = correctKeys;
+            document.getElementById('total-wrong').textContent = wrongKeys;
             document.getElementById('percentage').textContent = `${percentage}%`;
             document.getElementById('time-taken').textContent = `${totalTime} ثانية`;
             
             // إضافة تأثيرات النجاح
             if (percentage >= 80) {
-                createCelebrationEffects();
+                createTreasureCelebration();
+            } else if (percentage >= 50) {
+                createModerateCelebration();
             }
+            
+            // تأثيرات التمرير
+            createScrollEffect();
         }
         
-        // اللعب مرة أخرى
+        // المغامرة مرة أخرى
         function playAgain() {
             resultsScreen.style.display = 'none';
-            startGame();
+            startAdventure();
         }
         
-        // تحديث إحصائيات اللعبة
-        function updateGameStats() {
-            document.getElementById('score').textContent = score;
-            document.getElementById('correct-count').textContent = correctAnswers;
+        // تحديث إحصائيات المغامرة
+        function updateAdventureStats() {
+            document.getElementById('score').textContent = treasureScore;
+            document.getElementById('correct-count').textContent = correctKeys;
         }
         
         // تشغيل صوت
@@ -1202,43 +1507,99 @@
             }
         }
         
-        // إنشاء تأثيرات الألعاب النارية للإجابة الصحيحة
-        function createFireworks(element) {
+        // إنشاء تأثير الشرارة الذهبية
+        function createSparkleEffect(element) {
             const rect = element.getBoundingClientRect();
-            const colors = ['#d4af37', '#f9d77e', '#ffd700', '#ffec8b'];
             
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 10; i++) {
                 setTimeout(() => {
-                    const firework = document.createElement('div');
-                    firework.className = 'firework';
-                    firework.style.left = `${rect.left + rect.width/2}px`;
-                    firework.style.top = `${rect.top + rect.height/2}px`;
-                    firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    document.body.appendChild(firework);
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'gold-sparkle';
+                    sparkle.style.left = `${rect.left + Math.random() * rect.width}px`;
+                    sparkle.style.top = `${rect.top + Math.random() * rect.height}px`;
+                    document.body.appendChild(sparkle);
                     
-                    // حركة عشوائية
+                    // حركة عشوائية مع اختفاء
                     const angle = Math.random() * Math.PI * 2;
-                    const velocity = 2 + Math.random() * 3;
+                    const velocity = 1 + Math.random() * 2;
+                    const vx = Math.cos(angle) * velocity;
+                    const vy = Math.sin(angle) * velocity;
+                    
+                    let x = parseFloat(sparkle.style.left);
+                    let y = parseFloat(sparkle.style.top);
+                    let opacity = 1;
+                    let size = 8;
+                    
+                    const animate = () => {
+                        x += vx;
+                        y += vy;
+                        opacity -= 0.03;
+                        size -= 0.1;
+                        
+                        sparkle.style.left = `${x}px`;
+                        sparkle.style.top = `${y}px`;
+                        sparkle.style.opacity = opacity;
+                        sparkle.style.width = `${size}px`;
+                        sparkle.style.height = `${size}px`;
+                        
+                        if (opacity > 0 && size > 0) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            if (sparkle.parentNode) {
+                                document.body.removeChild(sparkle);
+                            }
+                        }
+                    };
+                    
+                    animate();
+                }, i * 50);
+            }
+        }
+        
+        // إنشاء تأثير الذهب للبوابة الصحيحة
+        function createTreasureSparkles(element) {
+            const rect = element.getBoundingClientRect();
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'gold-sparkle';
+                    sparkle.style.left = `${rect.left + rect.width/2}px`;
+                    sparkle.style.top = `${rect.top + rect.height/2}px`;
+                    sparkle.style.backgroundColor = i % 2 === 0 ? '#ffd700' : '#d4af37';
+                    document.body.appendChild(sparkle);
+                    
+                    // حركة انفجار
+                    const angle = Math.random() * Math.PI * 2;
+                    const velocity = 2 + Math.random() * 4;
                     const vx = Math.cos(angle) * velocity;
                     const vy = Math.sin(angle) * velocity;
                     
                     let x = rect.left + rect.width/2;
                     let y = rect.top + rect.height/2;
                     let opacity = 1;
+                    let size = 6 + Math.random() * 6;
+                    
+                    sparkle.style.width = `${size}px`;
+                    sparkle.style.height = `${size}px`;
                     
                     const animate = () => {
                         x += vx;
                         y += vy;
-                        opacity -= 0.05;
+                        opacity -= 0.02;
+                        vx *= 0.95;
+                        vy *= 0.95;
                         
-                        firework.style.left = `${x}px`;
-                        firework.style.top = `${y}px`;
-                        firework.style.opacity = opacity;
+                        sparkle.style.left = `${x}px`;
+                        sparkle.style.top = `${y}px`;
+                        sparkle.style.opacity = opacity;
                         
                         if (opacity > 0) {
                             requestAnimationFrame(animate);
                         } else {
-                            document.body.removeChild(firework);
+                            if (sparkle.parentNode) {
+                                document.body.removeChild(sparkle);
+                            }
                         }
                     };
                     
@@ -1247,44 +1608,235 @@
             }
         }
         
-        // إنشاء تأثيرات الاحتفال عند الحصول على نتيجة عالية
-        function createCelebrationEffects() {
-            const colors = ['#d4af37', '#f9d77e', '#ffd700', '#2ecc71', '#3498db'];
-            
-            for (let i = 0; i < 50; i++) {
+        // إنشاء تأثير ذهبي عام
+        function createGoldenEffect() {
+            for (let i = 0; i < 15; i++) {
                 setTimeout(() => {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.width = `${5 + Math.random() * 10}px`;
-                    particle.style.height = particle.style.width;
-                    particle.style.borderRadius = '50%';
-                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    particle.style.position = 'fixed';
-                    particle.style.left = `${Math.random() * 100}vw`;
-                    particle.style.top = '-20px';
-                    particle.style.zIndex = '1000';
-                    document.body.appendChild(particle);
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'gold-sparkle';
+                    sparkle.style.left = `${Math.random() * window.innerWidth}px`;
+                    sparkle.style.top = `${Math.random() * window.innerHeight}px`;
+                    sparkle.style.backgroundColor = '#ffd700';
+                    sparkle.style.width = '4px';
+                    sparkle.style.height = '4px';
+                    document.body.appendChild(sparkle);
                     
-                    // حركة السقوط مع انحراف جانبي
-                    const duration = 1 + Math.random() * 2;
-                    const horizontalMove = (Math.random() - 0.5) * 100;
+                    // حركة السقوط البطيء
+                    const fallSpeed = 0.5 + Math.random();
                     
-                    particle.animate([
-                        { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
-                        { transform: `translate(${horizontalMove}px, 100vh) rotate(360deg)`, opacity: 0 }
-                    ], {
-                        duration: duration * 1000,
-                        easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
-                    });
+                    let y = parseFloat(sparkle.style.top);
+                    let opacity = 0.5 + Math.random() * 0.5;
                     
-                    // إزالة الجسيم بعد انتهاء الحركة
-                    setTimeout(() => {
-                        if (particle.parentNode) {
-                            document.body.removeChild(particle);
+                    const animate = () => {
+                        y += fallSpeed;
+                        opacity -= 0.005;
+                        
+                        sparkle.style.top = `${y}px`;
+                        sparkle.style.opacity = opacity;
+                        
+                        if (opacity > 0 && y < window.innerHeight) {
+                            requestAnimationFrame(animate);
+                        } else {
+                            if (sparkle.parentNode) {
+                                document.body.removeChild(sparkle);
+                            }
                         }
-                    }, duration * 1000);
+                    };
+                    
+                    animate();
                 }, i * 100);
             }
+        }
+        
+        // إنشاء تأثير اهتزاز للخطأ
+        function createShakeEffect(element) {
+            let shakeCount = 0;
+            const shakeInterval = setInterval(() => {
+                if (shakeCount % 2 === 0) {
+                    element.style.transform = 'translateX(-5px)';
+                } else {
+                    element.style.transform = 'translateX(5px)';
+                }
+                shakeCount++;
+                
+                if (shakeCount > 6) {
+                    clearInterval(shakeInterval);
+                    element.style.transform = '';
+                }
+            }, 50);
+        }
+        
+        // إنشاء تأثير دخان
+        function createSmokeEffect() {
+            const smokeContainer = document.createElement('div');
+            smokeContainer.style.position = 'fixed';
+            smokeContainer.style.top = '0';
+            smokeContainer.style.left = '0';
+            smokeContainer.style.width = '100%';
+            smokeContainer.style.height = '100%';
+            smokeContainer.style.pointerEvents = 'none';
+            smokeContainer.style.zIndex = '9999';
+            document.body.appendChild(smokeContainer);
+            
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const smoke = document.createElement('div');
+                    smoke.style.position = 'absolute';
+                    smoke.style.width = `${100 + Math.random() * 200}px`;
+                    smoke.style.height = smoke.style.width;
+                    smoke.style.borderRadius = '50%';
+                    smoke.style.background = 'radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%)';
+                    smoke.style.left = `${Math.random() * 100}%`;
+                    smoke.style.top = `${Math.random() * 100}%`;
+                    smoke.style.opacity = '0';
+                    smokeContainer.appendChild(smoke);
+                    
+                    // حركة الدخان
+                    const duration = 2 + Math.random() * 3;
+                    
+                    smoke.animate([
+                        { transform: 'scale(0) translate(0, 0)', opacity: 0 },
+                        { transform: 'scale(1) translate(0, 0)', opacity: 0.3 },
+                        { transform: `scale(2) translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`, opacity: 0 }
+                    ], {
+                        duration: duration * 1000,
+                        easing: 'ease-out'
+                    });
+                    
+                    // إزالة الدخان بعد انتهاء الحركة
+                    setTimeout(() => {
+                        if (smoke.parentNode) {
+                            smoke.remove();
+                        }
+                    }, duration * 1000);
+                }, i * 200);
+            }
+            
+            // إزالة حاوية الدخان بعد انتهاء التأثير
+            setTimeout(() => {
+                if (smokeContainer.parentNode) {
+                    document.body.removeChild(smokeContainer);
+                }
+            }, 4000);
+        }
+        
+        // إنشاء احتفال بالكنز
+        function createTreasureCelebration() {
+            // إضافة المزيد من الشرر الذهبي
+            for (let i = 0; i < 40; i++) {
+                setTimeout(() => {
+                    createSparkleAtPosition(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight,
+                        '#ffd700',
+                        10
+                    );
+                }, i * 50);
+            }
+            
+            // تأثير توهج للكنز
+            const treasureChest = document.querySelector('.treasure-chest');
+            let glowIntensity = 0.5;
+            let increasing = true;
+            
+            const glowInterval = setInterval(() => {
+                if (increasing) {
+                    glowIntensity += 0.05;
+                    if (glowIntensity >= 1) increasing = false;
+                } else {
+                    glowIntensity -= 0.05;
+                    if (glowIntensity <= 0.5) increasing = true;
+                }
+                
+                treasureChest.style.filter = `drop-shadow(0 0 ${20 * glowIntensity}px rgba(212, 175, 55, ${0.3 + glowIntensity * 0.4}))`;
+            }, 100);
+            
+            // إيقاف التوهج بعد فترة
+            setTimeout(() => {
+                clearInterval(glowInterval);
+                treasureChest.style.filter = 'drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5))';
+            }, 5000);
+        }
+        
+        // إنشاء احتفال معتدل
+        function createModerateCelebration() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createSparkleAtPosition(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight,
+                        '#d4af37',
+                        8
+                    );
+                }, i * 100);
+            }
+        }
+        
+        // إنشاء شرارة في موقع معين
+        function createSparkleAtPosition(x, y, color, size) {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'gold-sparkle';
+            sparkle.style.left = `${x}px`;
+            sparkle.style.top = `${y}px`;
+            sparkle.style.backgroundColor = color;
+            sparkle.style.width = `${size}px`;
+            sparkle.style.height = `${size}px`;
+            document.body.appendChild(sparkle);
+            
+            // حركة واختفاء
+            let opacity = 1;
+            
+            const animate = () => {
+                opacity -= 0.03;
+                sparkle.style.opacity = opacity;
+                
+                if (opacity > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    if (sparkle.parentNode) {
+                        document.body.removeChild(sparkle);
+                    }
+                }
+            };
+            
+            animate();
+        }
+        
+        // إنشاء تأثير التمرير
+        function createScrollEffect() {
+            const resultsDetails = document.querySelector('.treasure-details');
+            resultsDetails.style.opacity = '0';
+            resultsDetails.style.transform = 'translateY(50px)';
+            
+            setTimeout(() => {
+                resultsDetails.style.transition = 'opacity 1s ease, transform 1s ease';
+                resultsDetails.style.opacity = '1';
+                resultsDetails.style.transform = 'translateY(0)';
+            }, 300);
+        }
+        
+        // إنشاء شرار خلفي عشوائي
+        function createBackgroundSparkles() {
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    createSparkleAtPosition(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight,
+                        '#d4af37',
+                        3
+                    );
+                }
+            }, 1000);
+        }
+        
+        // بدء المغامرة مباشرة من الشاشة الرئيسية
+        function startAdventure() {
+            if (adventureData.length === 0) {
+                alert('لا توجد مغامرات مخزنة. قم برسم الخريطة أولاً!');
+                return;
+            }
+            
+            startAdventure();
         }
     </script>
 </body>
