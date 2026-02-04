@@ -1,131 +1,330 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>اختبار تفاعلي | أ. إيهاب أشرف</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أرشيف التاريخ والجغرافيا | أ. إيهاب أشرف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --paper-cream: #f8f5e7;
+            --dark-brown: #3e2723;
+            --aged-gold: #c39a51;
+            --light-gold: #e2c07e;
+            --ocean-blue: #2a5a6a;
+            --text-color: #3e2723;
+            --border-color: #8d6e63; /* لون خشبي/عتيق */
+            --shadow-color: rgba(0, 0, 0, 0.4);
+        }
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+        body {
+            margin: 0;
+            background: url('https://i.imgur.com/uR1g4hB.jpg') no-repeat center center fixed; /* خريطة عتيقة */
+            background-size: cover;
+            font-family: 'Cairo', sans-serif;
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-body{
-  margin:0;
-  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  font-family:'Cairo',sans-serif;
-  color:#fff;
-  min-height: 100vh;
-}
+        .container {
+            width: 100%;
+            max-width: 600px; /* حجم مناسب للمحتوى التاريخي والجغرافي */
+            animation: fadeInScale 0.8s ease-out;
+        }
 
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
+        /* الإطار الخشبي/المعدني العتيق */
+        .aged-frame {
+            background-color: var(--paper-cream);
+            border: 8px solid var(--border-color); /* إطار سميك */
+            border-radius: 12px;
+            box-shadow: 0 15px 30px var(--shadow-color);
+            padding: 30px;
+            position: relative;
+            overflow: hidden; /* لإخفاء أي حواف زائدة */
+            transition: all 0.3s ease;
+        }
 
-h1{text-align:center;}
+        /* لإضافة تأثير ورق البردي أو المخطوطة */
+        .aged-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.imgur.com/T09M3tK.png') repeat; /* تأثير ورق البردي */
+            opacity: 0.1;
+            pointer-events: none; /* لا يتداخل مع التفاعل */
+        }
+        
+        h1 {
+            font-family: 'Scheherazade New', serif; /* خط عربي كلاسيكي */
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--dark-brown);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--aged-gold);
+            border-radius: 2px;
+        }
 
-textarea{
-  width:100%;
-  height:200px;
-  border-radius:16px;
-  border:none;
-  padding:15px;
-  font-size:16px;
-  margin-bottom:15px;
-  box-sizing: border-box;
-}
+        textarea {
+            width: 100%;
+            height: 160px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--dark-brown);
+            padding: 15px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            border-color: var(--aged-gold);
+            box-shadow: 0 0 8px rgba(195, 154, 81, 0.4);
+        }
 
-button{
-  padding:14px 20px;
-  border:none;
-  border-radius:16px;
-  font-size:16px;
-  background:#ffd369;
-  cursor:pointer;
-  transition:.3s;
-  font-weight: bold;
-}
+        .btn-ancient {
+            background: linear-gradient(135deg, var(--aged-gold), var(--light-gold));
+            color: var(--dark-brown);
+            border: 1px solid #a68449;
+            padding: 14px 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 17px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-family: 'Cairo', sans-serif;
+        }
+        .btn-ancient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, var(--light-gold), var(--aged-gold));
+        }
 
-button:hover{
-  background:#ffbe33;
-}
+        /* منطقة تصوير السؤال كبطاقة تاريخية */
+        #captureArea {
+            background-color: var(--paper-cream);
+            border: 5px solid var(--border-color);
+            border-radius: 10px;
+            padding: 35px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px var(--shadow-color);
+        }
+        #captureArea::before { /* نفس تأثير البردي */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.imgur.com/T09M3tK.png') repeat;
+            opacity: 0.15; /* أوضح قليلاً للصورة النهائية */
+            pointer-events: none;
+        }
+        /* إطار زخرفي أعلى وأسفل البطاقة */
+        #captureArea::after {
+            content: '';
+            position: absolute;
+            left: 15px;
+            right: 15px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--aged-gold), transparent);
+            opacity: 0.7;
+        }
+        #captureArea::after { top: 15px; }
+        #captureArea #question::before {
+            content: "📜"; /* أيقونة مخطوطة */
+            position: absolute;
+            right: -25px;
+            top: 0px;
+            font-size: 20px;
+            opacity: 0.7;
+        }
 
-/* تعديل منطقة التصوير لتشمل الخلفية والتنسيق بشكل كامل */
-#captureArea {
-  background: linear-gradient(135deg,#1a2a6c,#0f2027);
-  padding: 30px;
-  border-radius: 30px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-  margin-top: 25px;
-  /* لضمان عدم ظهور حواف بيضاء عند التصوير */
-  overflow: hidden; 
-}
 
-#question{
-  font-size:22px;
-  margin-bottom:25px;
-  line-height: 1.6;
-}
+        #question {
+            font-family: 'Scheherazade New', serif;
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            color: var(--dark-brown);
+            position: relative;
+            padding-right: 15px;
+        }
 
-.option{
-  background:rgba(255,255,255,0.15);
-  padding:15px;
-  border-radius:20px;
-  margin:12px 0;
-  cursor:pointer;
-  transition:.3s;
-  border: 1px solid rgba(255,255,255,0.1);
-}
+        .options-list {
+            display: grid;
+            gap: 10px;
+        }
 
-.option.selected{
-  background:#ffd369;
-  color:#000;
-  font-weight: bold;
-}
+        .option-parchment {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--border-color);
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--dark-brown);
+            position: relative;
+            padding-right: 35px; /* لمكان الرقم */
+        }
+        .option-parchment:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-color: var(--aged-gold);
+            transform: translateX(-3px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .option-parchment.selected {
+            background-color: var(--aged-gold);
+            color: var(--dark-brown);
+            font-weight: 600;
+            border-color: var(--dark-brown);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .option-parchment::before {
+            content: attr(data-prefix); /* لإظهار أ, ب, ج, د */
+            position: absolute;
+            right: 15px;
+            font-weight: 700;
+            color: var(--aged-gold);
+            text-shadow: 0 0 2px rgba(0,0,0,0.1);
+        }
 
-.controls{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  margin-top:20px;
-  flex-wrap:wrap;
-}
+        /* شريط التقدم كشريط قياس أو مؤشر */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        #progressFill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--aged-gold), #b38b4d);
+            width: 0%;
+            transition: width 0.5s ease-out;
+            border-radius: 5px;
+        }
 
-.hidden{display:none;}
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .btn-secondary-ancient {
+            background-color: var(--dark-brown);
+            color: var(--paper-cream);
+            border: 1px solid var(--aged-gold);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            flex: 1;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .btn-secondary-ancient:hover {
+            background-color: var(--ocean-blue);
+            border-color: var(--paper-cream);
+            color: var(--paper-cream);
+        }
 
-/* زر خاص للتحميل المباشر */
-.download-btn {
-    background-color: #4CAF50;
-    color: white;
-}
-</style>
+        .watermark {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            font-size: 11px;
+            color: rgba(62, 39, 35, 0.4); /* لون خفيف */
+            font-family: 'Scheherazade New', serif;
+            letter-spacing: 1px;
+        }
+        
+        .hidden { display: none; }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* تحسينات لأجهزة الجوال */
+        @media (max-width: 480px) {
+            .aged-frame, #captureArea {
+                padding: 20px;
+                border-width: 5px;
+            }
+            h1 { font-size: 26px; }
+            #question { font-size: 20px; padding-right: 10px; }
+            .option-parchment { font-size: 14px; padding: 10px 15px; padding-right: 30px; }
+            .action-buttons { flex-direction: column; gap: 10px; }
+            .btn-ancient, .btn-secondary-ancient { font-size: 15px; padding: 10px 15px; }
+            .watermark { font-size: 9px; }
+        }
+
+    </style>
 </head>
-
 <body>
 
 <div class="container">
-    <h1>🧠 اختبار تفاعلي</h1>
-
-    <div id="setupSection">
-        <textarea id="input" placeholder="مثال للصيغة:
-س: ما هي عاصمة مصر؟
-أ: القاهرة
-ب: الإسكندرية
-ج: أسوان
-د: الجيزة
-الإجابة: القاهرة"></textarea>
-        <button onclick="startQuiz()" style="width: 100%;">بدء الاختبار 🚀</button>
+    
+    <div id="startSection" class="aged-frame">
+        <h1>أرشيف المعرفة التاريخية والجغرافية</h1>
+        <textarea id="rawData" placeholder="الصق أسئلتك عن التاريخ والجغرافيا هنا...
+مثال:
+س: من هو فاتح القسطنطينية؟
+أ: محمد الفاتح
+ب: صلاح الدين الأيوبي
+ج: طارق بن زياد
+د: خالد بن الوليد
+الإجابة: محمد الفاتح"></textarea>
+        <button onclick="startStudy()" class="btn-ancient">بدء رحلة الاكتشاف 🧭</button>
     </div>
 
-    <div id="quiz" class="hidden">
+    <div id="quizSection" class="aged-frame hidden">
+        <div class="progress-bar"><div id="progressFill"></div></div>
+
         <div id="captureArea">
-            <div id="question"></div>
-            <div id="options"></div>
+            <div id="question">جاري تحميل المعلومات...</div>
+            <div id="options" class="options-list"></div>
+            <div class="watermark">PROF. EIHAB ASHRAF | EXPLORE & LEARN</div>
         </div>
 
-        <div class="controls">
-            <button onclick="screenshotQuestion()" class="download-btn">📷 تحميل صورة السؤال</button>
-            <button onclick="nextQuestion()">السؤال التالي ⏭️</button>
+        <div class="action-buttons">
+            <button onclick="saveCard()" class="btn-ancient" style="flex: 2;">💾 حفظ بطاقة المعرفة</button>
+            <button onclick="nextEntry()" class="btn-secondary-ancient">التالي ▶️</button>
         </div>
     </div>
 </div>
@@ -133,86 +332,92 @@ button:hover{
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <script>
-let questions = [];
-let current = 0;
+    let questionsData = [];
+    let currentQuestionIndex = 0;
+    const optionPrefixes = ['أ:', 'ب:', 'ج:', 'د:']; // لتوليد أ, ب, ج, د تلقائياً
 
-function startQuiz(){
-  const text = document.getElementById("input").value.trim();
-  if(!text) { alert("من فضلك أدخل الأسئلة أولاً"); return; }
-  
-  const blocks = text.split("\n\n");
-  questions = [];
-  current = 0;
+    function startStudy() {
+        const inputContent = document.getElementById('rawData').value.trim();
+        if(!inputContent) {
+            alert("يرجى إدخال الأسئلة أولاً لبدء الاكتشاف!");
+            return;
+        }
 
-  blocks.forEach(block=>{
-    const lines = block.split("\n").filter(l => l.trim() !== "");
-    if(lines.length >= 6){
-      questions.push({
-        q: lines[0].replace("س:","").trim(),
-        options: lines.slice(1,5).map(l=>l.trim()),
-        answer: lines[5].split(":")[1]?.trim() || ""
-      });
+        const questionBlocks = inputContent.split("\n\n");
+        questionsData = questionBlocks.map(block => {
+            const lines = block.split("\n").map(l => l.trim()).filter(l => l !== "");
+            if(lines.length >= 6) { // سؤال + 4 خيارات + إجابة
+                return { 
+                    q: lines[0].replace(/س: ?/g, ""),
+                    opts: lines.slice(1, 5),
+                    ans: lines[5] // يمكن استخدامه للتحقق لاحقاً إذا أردت
+                };
+            }
+            return null;
+        }).filter(item => item !== null);
+
+        if(questionsData.length === 0) {
+            alert("يبدو أن هناك مشكلة في تنسيق الأسئلة المدخلة. يرجى مراجعة المثال.");
+            return;
+        }
+
+        document.getElementById('startSection').classList.add('hidden');
+        document.getElementById('quizSection').classList.remove('hidden');
+        displayQuestion();
     }
-  });
 
-  if(questions.length === 0){
-    alert("تأكد من اتباع صيغة الأسئلة الصحيحة (سؤال، 4 اختيارات، ثم الإجابة)");
-    return;
-  }
+    function displayQuestion() {
+        const currentItem = questionsData[currentQuestionIndex];
+        document.getElementById('question').innerHTML = `س${currentQuestionIndex + 1}: ${currentItem.q}`;
 
-  document.getElementById("setupSection").classList.add("hidden");
-  document.getElementById("quiz").classList.remove("hidden");
-  showQuestion();
-}
+        const optionsContainer = document.getElementById('options');
+        optionsContainer.innerHTML = '';
 
-function showQuestion(){
-  const q = questions[current];
-  document.getElementById("question").innerText = `(${current+1}/${questions.length}) ${q.q}`;
+        currentItem.opts.forEach((opt, index) => {
+            const div = document.createElement('div');
+            div.className = 'option-parchment';
+            div.innerText = opt.replace(/^[أ-د]: ?/g, ""); // إزالة الألفباء من النص الأصلي
+            div.setAttribute('data-prefix', optionPrefixes[index]); // استخدام الخاصية لعرض الألفباء
+            div.onclick = function() {
+                document.querySelectorAll('.option-parchment').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            };
+            optionsContainer.appendChild(div);
+        });
 
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
+        updateProgressBar();
+    }
 
-  q.options.forEach((opt)=>{
-    const div = document.createElement("div");
-    div.className = "option";
-    div.innerText = opt;
-    div.onclick = ()=>{
-      document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
-      div.classList.add('selected');
-    };
-    optionsDiv.appendChild(div);
-  });
-}
+    function updateProgressBar() {
+        const progress = ((currentQuestionIndex + 1) / questionsData.length) * 100;
+        document.getElementById('progressFill').style.width = progress + '%';
+    }
 
-function nextQuestion(){
-  current++;
-  if(current < questions.length){
-    showQuestion();
-  }else{
-    alert("🎉 انتهى الاختبار!");
-    location.reload(); // للعودة للبداية
-  }
-}
+    function nextEntry() {
+        if(currentQuestionIndex < questionsData.length - 1) {
+            currentQuestionIndex++;
+            displayQuestion();
+        } else {
+            alert("تم الانتهاء من استكشاف جميع المدخلات التاريخية والجغرافية! 🌍");
+            location.reload(); // للبدء من جديد
+        }
+    }
 
-function screenshotQuestion(){
-  const element = document.getElementById("captureArea");
-  
-  // إعدادات محسنة لضمان جودة الألوان والأبعاد
-  html2canvas(element, {
-    backgroundColor: null, // يسمح بظهور التدرج اللوني
-    scale: 3, // دقة عالية جداً (أوضح للطباعة والمشاركة)
-    useCORS: true,
-    logging: false,
-    letterRendering: true,
-    allowTaint: false
-  }).then(canvas => {
-    // كود لتحميل الصورة مباشرة بدلاً من فتحها في نافذة قد يحجبها المتصفح
-    const link = document.createElement('a');
-    link.download = `سؤال-${current+1}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  });
-}
+    function saveCard() {
+        const targetElement = document.getElementById('captureArea');
+        html2canvas(targetElement, {
+            scale: 2, // جودة عالية، مناسبة للطباعة والمشاركة
+            backgroundColor: null, // للحفاظ على خلفية ورق البردي
+            useCORS: true,
+            logging: false,
+            // ignoreElements: (element) => element.classList.contains('watermark-on-screen-only') // لو أردت علامة مائية تظهر فقط في المتصفح
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `معلومة_جغرافية_تاريخية_${currentQuestionIndex + 1}.png`;
+            link.href = canvas.toDataURL("image/png", 1.0);
+            link.click();
+        });
+    }
 </script>
 
 </body>
