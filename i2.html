@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المنصة الذكية | أ. إيهاب أشرف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gold: #ffd369;
+            --accent-blue: #3498db;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --card-gradient: linear-gradient(145deg, #1e2a44, #0f172a);
+            --text-main: #f8fafc;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a, #020617);
+            font-family: 'Cairo', sans-serif;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-wrapper {
+            width: 95%;
+            max-width: 850px;
+            padding: 20px;
+        }
+
+        /* واجهة الإدخال */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        h1 {
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #fff, var(--primary-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 180px;
+            background: rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.05);
+            border-radius: 15px;
+            color: #fff;
+            padding: 20px;
+            font-family: 'Cairo';
+            font-size: 15px;
+            resize: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 15px rgba(255, 211, 105, 0.2);
+        }
+
+        .btn-glow {
+            background: linear-gradient(45deg, #ffd369, #fbbf24);
+            color: #1e293b;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(251, 191, 36, 0.3);
+            width: 100%;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(251, 191, 36, 0.4);
+        }
+
+        /* بطاقة السؤال الفاخرة المصممة للتصوير */
+        #captureArea {
+            background: var(--card-gradient);
+            padding: 45px;
+            border-radius: 35px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 25px;
+        }
+
+        /* علامة مائية احترافية تظهر في الصورة فقط */
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            left: 30px;
+            font-size: 12px;
+            opacity: 0.3;
+            letter-spacing: 2px;
+        }
+
+        #question {
+            font-size: 26px;
+            font-weight: 700;
+            line-height: 1.5;
+            margin-bottom: 35px;
+            position: relative;
+            padding-right: 15px;
+            border-right: 4px solid var(--primary-gold);
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .opt-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 18px 25px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .opt-card:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateX(-5px);
+        }
+
+        .opt-card.selected {
+            background: var(--primary-gold);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(255,211,105,0.4);
+        }
+
+        /* شريط التقدم */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            background: var(--primary-gold);
+            width: 0%;
+            transition: 0.5s ease;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .secondary-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Cairo';
+            transition: 0.3s;
+            flex: 1;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .hidden { display: none; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    
+    <div id="setupView" class="glass-panel">
+        <h1>✨ صانع الاختبارات الذكي</h1>
+        <textarea id="inputData" placeholder="أدخل الأسئلة هنا..
+س: ما هو العلم الذي يدرس المادة والطاقة؟
+أ: الكيمياء
+ب: الفيزياء
+ج: الأحياء
+د: الجيولوجيا
+الإجابة: الفيزياء"></textarea>
+        <button onclick="initQuiz()" class="btn-glow">توليد الاختبار الآن 🚀</button>
+    </div>
+
+    <div id="quizView" class="hidden">
+        <div class="progress-container">
+            <div id="progressBar"></div>
+        </div>
+
+        <div id="captureArea">
+            <div class="watermark">PROF. EIHAB ASHRAF | SMART QUIZ</div>
+            <div id="question">جاري التحميل..</div>
+            <div id="options" class="options-grid"></div>
+        </div>
+
+        <div class="actions">
+            <button onclick="downloadCard()" class="btn-glow" style="margin:0; flex: 2;">📸 حفظ كصورة احترافية</button>
+            <button onclick="nextStep()" class="secondary-btn">التالي ⏭️</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+    let examData = [];
+    let idx = 0;
+
+    function initQuiz() {
+        const raw = document.getElementById('inputData').value.trim();
+        if(!raw) return alert("لطفاً، ضع الأسئلة أولاً!");
+
+        const chunks = raw.split("\n\n");
+        examData = chunks.map(chunk => {
+            const lines = chunk.split("\n").map(l => l.trim()).filter(l => l !== "");
+            if(lines.length >= 6) {
+                return {
+                    q: lines[0].replace(/س: ?/g, ""),
+                    opts: lines.slice(1, 5),
+                    ans: lines[5]
+                };
+            }
+            return null;
+        }).filter(item => item !== null);
+
+        if(examData.length === 0) return alert("تأكد من تنسيق الأسئلة بشكل صحيح");
+
+        document.getElementById('setupView').style.display = 'none';
+        document.getElementById('quizView').classList.remove('hidden');
+        renderQuestion();
+    }
+
+    function renderQuestion() {
+        const item = examData[idx];
+        const qEl = document.getElementById('question');
+        const oEl = document.getElementById('options');
+        
+        // تحديث شريط التقدم
+        const progress = ((idx + 1) / examData.length) * 100;
+        document.getElementById('progressBar').style.width = progress + '%';
+
+        qEl.innerText = `س${idx + 1}: ${item.q}`;
+        oEl.innerHTML = '';
+
+        item.opts.forEach(opt => {
+            const div = document.createElement('div');
+            div.className = 'opt-card';
+            div.innerText = opt;
+            div.onclick = function() {
+                document.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+            };
+            oEl.appendChild(div);
+        });
+    }
+
+    function nextStep() {
+        if(idx < examData.length - 1) {
+            idx++;
+            renderQuestion();
+        } else {
+            alert("تم إكمال جميع الأسئلة بنجاح! 🎊");
+            location.reload();
+        }
+    }
+
+    function downloadCard() {
+        const target = document.getElementById('captureArea');
+        
+        // إعدادات التصوير القصوى
+        html2canvas(target, {
+            scale: 3, // دقة 3K
+            useCORS: true,
+            backgroundColor: null,
+            borderRadius: 35,
+            logging: false
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `Question_Card_${idx+1}.png`;
+            link.href = canvas.toDataURL("image/png", 1.0);
+            link.click();
+        });
+    }
+</script>
+
+</body>
+</html>
