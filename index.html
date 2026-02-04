@@ -3,417 +3,482 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أرشيف التاريخ والجغرافيا | أ. إيهاب أشرف</title>
-    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>أرشيف الفراعنة | أ. إيهاب أشرف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --paper-cream: #f8f5e7;
-            --dark-brown: #3e2723;
-            --aged-gold: #c39a51;
-            --light-gold: #e2c07e;
-            --ocean-blue: #2a5a6a;
-            --text-color: #3e2723;
-            --border-color: #8d6e63; /* لون خشبي/عتيق */
-            --shadow-color: rgba(0, 0, 0, 0.4);
+            --pharaoh-gold-light: #FFD700; /* ذهبي فاتح */
+            --pharaoh-gold-dark: #DAA520; /* ذهبي غامق / برونزي */
+            --pharaoh-blue: #0A2E36;    /* أزرق فرعوني داكن */
+            --pharaoh-text: #E0E0E0;    /* لون نص فاتح */
+            --pharaoh-bg-dark: #2F3640; /* خلفية داكنة رئيسية */
+            --pharaoh-sand: #C69F65;    /* لون رملي / حجري */
+            --pharaoh-accent-light: #F0E6D2; /* لون عاجي فاتح */
+            --pharaoh-border-dark: #4A4A4A;
         }
 
         body {
             margin: 0;
-            background: url('https://i.imgur.com/uR1g4hB.jpg') no-repeat center center fixed; /* خريطة عتيقة */
+            background: url('https://i.imgur.com/r3S1q1m.jpg') no-repeat center center fixed; /* خلفية هيروغليفية */
             background-size: cover;
             font-family: 'Cairo', sans-serif;
-            color: var(--text-color);
+            color: var(--pharaoh-text);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            text-rendering: optimizeLegibility;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 600px; /* حجم مناسب للمحتوى التاريخي والجغرافي */
-            animation: fadeInScale 0.8s ease-out;
-        }
-
-        /* الإطار الخشبي/المعدني العتيق */
-        .aged-frame {
-            background-color: var(--paper-cream);
-            border: 8px solid var(--border-color); /* إطار سميك */
-            border-radius: 12px;
-            box-shadow: 0 15px 30px var(--shadow-color);
-            padding: 30px;
+            overflow: hidden; /* لمنع ظهور scrollbars غير مرغوبة بسبب الزخارف */
             position: relative;
-            overflow: hidden; /* لإخفاء أي حواف زائدة */
-            transition: all 0.3s ease;
         }
 
-        /* لإضافة تأثير ورق البردي أو المخطوطة */
-        .aged-frame::before {
+        /* الطبقة الزخرفية الخارجية للبودي */
+        body::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('https://i.imgur.com/T09M3tK.png') repeat; /* تأثير ورق البردي */
-            opacity: 0.1;
-            pointer-events: none; /* لا يتداخل مع التفاعل */
+            background: rgba(0, 0, 0, 0.4); /* طبقة داكنة خفيفة لجعل النص أوضح */
+            z-index: 1;
         }
-        
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            position: relative; /* ليكون فوق طبقة التعتيم */
+            z-index: 2;
+            animation: fadeInPharaoh 1s ease-out;
+            border: 5px solid var(--pharaoh-gold-dark); /* إطار ذهبي سميك */
+            border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="pattern-border" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="10" height="10" fill="transparent"/><rect x="0" y="0" width="1" height="10" fill="%23DAA520"/><rect x="0" y="0" width="10" height="1" fill="%23DAA520"/></pattern></defs><rect x="0" y="0" width="100" height="100" fill="url(%23pattern-border)"/></svg>') 30 / 10px repeat;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            background-color: var(--pharaoh-bg-dark); /* خلفية داكنة داخلية */
+            border-radius: 15px;
+            padding: 0; /* سنضيف ال padding للعناصر الداخلية */
+        }
+        /* الزوايا الذهبية المزخرفة */
+        .container::before, .container::after {
+            content: '';
+            position: absolute;
+            width: 50px; /* حجم الزخرفة */
+            height: 50px;
+            border: 2px solid var(--pharaoh-gold-light);
+            z-index: 3;
+        }
+        .container::before { top: -2px; left: -2px; border-right: none; border-bottom: none; border-radius: 10px 0 0 0; }
+        .container::after { top: -2px; right: -2px; border-left: none; border-bottom: none; border-radius: 0 10px 0 0; }
+        .container .bottom-left::before, .container .bottom-right::before {
+            content: '';
+            position: absolute;
+            width: 50px; height: 50px;
+            border: 2px solid var(--pharaoh-gold-light);
+            z-index: 3;
+        }
+        .container .bottom-left::before { bottom: -2px; left: -2px; border-right: none; border-top: none; border-radius: 0 0 0 10px; }
+        .container .bottom-right::before { bottom: -2px; right: -2px; border-left: none; border-top: none; border-radius: 0 0 10px 0; }
+        /* زخرفة إضافية داخل الزوايا */
+        .container::before {
+            background: linear-gradient(135deg, var(--pharaoh-gold-light) 50%, transparent 50.1%);
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain;
+            transform: scaleX(-1); /* لتدوير الزخرفة للزاوية العلوية اليسرى */
+        }
+        .container::after {
+            background: linear-gradient(225deg, var(--pharaoh-gold-light) 50%, transparent 50.1%);
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain;
+        }
+        /* الزوايا السفلية */
+        .container .bottom-left::before {
+             background: linear-gradient(45deg, var(--pharaoh-gold-light) 50%, transparent 50.1%);
+             -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain;
+            transform: scaleY(-1);
+        }
+        .container .bottom-right::before {
+            background: linear-gradient(315deg, var(--pharaoh-gold-light) 50%, transparent 50.1%);
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain;
+            transform: scaleX(-1) scaleY(-1);
+        }
+
+        .inner-content-wrapper {
+            padding: 30px; /* البادينج الرئيسي للمحتوى */
+        }
+
         h1 {
-            font-family: 'Scheherazade New', serif; /* خط عربي كلاسيكي */
-            font-size: 32px;
+            font-family: 'Scheherazade New', serif;
+            font-size: 38px;
             font-weight: 700;
             text-align: center;
             margin-bottom: 25px;
-            color: var(--dark-brown);
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            color: var(--pharaoh-gold-light);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6), 0 0 5px rgba(255, 215, 0, 0.9);
             position: relative;
-            padding-bottom: 10px;
         }
         h1::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -10px;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 2px;
-            background: var(--aged-gold);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--pharaoh-gold-light), transparent);
             border-radius: 2px;
         }
 
         textarea {
             width: 100%;
-            height: 160px;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--dark-brown);
+            height: 150px;
+            background: rgba(0, 0, 0, 0.4); /* خلفية شفافة داكنة */
+            border: 2px solid var(--pharaoh-gold-dark);
+            border-radius: 10px;
+            color: var(--pharaoh-text);
             padding: 15px;
             font-family: 'Cairo', sans-serif;
             font-size: 15px;
             resize: none;
             box-sizing: border-box;
             outline: none;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
         }
         textarea:focus {
-            border-color: var(--aged-gold);
-            box-shadow: 0 0 8px rgba(195, 154, 81, 0.4);
+            border-color: var(--pharaoh-gold-light);
+            box-shadow: inset 0 0 8px rgba(255, 215, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
-        .btn-ancient {
-            background: linear-gradient(135deg, var(--aged-gold), var(--light-gold));
-            color: var(--dark-brown);
-            border: 1px solid #a68449;
-            padding: 14px 25px;
-            border-radius: 8px;
+        .btn-pharaoh {
+            background: linear-gradient(135deg, var(--pharaoh-gold-light), var(--pharaoh-gold-dark));
+            color: var(--pharaoh-blue);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
             margin-top: 20px;
-            font-size: 17px;
+            font-size: 18px;
             transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
             font-family: 'Cairo', sans-serif;
         }
-        .btn-ancient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            background: linear-gradient(135deg, var(--light-gold), var(--aged-gold));
+        .btn-pharaoh:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+            background: linear-gradient(135deg, var(--pharaoh-gold-dark), var(--pharaoh-gold-light));
+        }
+        .btn-pharaoh:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
         }
 
-        /* منطقة تصوير السؤال كبطاقة تاريخية */
-        #captureArea {
-            background-color: var(--paper-cream);
-            border: 5px solid var(--border-color);
-            border-radius: 10px;
+        /* منطقة عرض السؤال */
+        #quizDisplayArea {
+            background: url('https://i.imgur.com/QkF2f4d.jpg') no-repeat center center; /* خلفية حجرية داخلية */
+            background-size: cover;
+            border: 3px solid var(--pharaoh-gold-dark);
+            border-radius: 12px;
             padding: 35px;
             margin-bottom: 25px;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 8px 20px var(--shadow-color);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7), 0 10px 30px rgba(0, 0, 0, 0.6);
+            overflow: hidden; /* للحفاظ على حدود الصورة */
         }
-        #captureArea::before { /* نفس تأثير البردي */
+        /* تراكب خفيف فوق الخلفية الحجرية لجعل النص أوضح */
+        #quizDisplayArea::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('https://i.imgur.com/T09M3tK.png') repeat;
-            opacity: 0.15; /* أوضح قليلاً للصورة النهائية */
-            pointer-events: none;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 1;
         }
-        /* إطار زخرفي أعلى وأسفل البطاقة */
-        #captureArea::after {
-            content: '';
-            position: absolute;
-            left: 15px;
-            right: 15px;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--aged-gold), transparent);
-            opacity: 0.7;
+        #quizDisplayArea > * { /* كل العناصر الداخلية فوق التراكب */
+            position: relative;
+            z-index: 2;
         }
-        #captureArea::after { top: 15px; }
-        #captureArea #question::before {
-            content: "📜"; /* أيقونة مخطوطة */
+
+
+        #questionText {
+            font-family: 'Scheherazade New', serif;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: var(--pharaoh-accent-light);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+            position: relative;
+            padding-right: 15px; /* مسافة للرمز */
+            border-right: 3px solid var(--pharaoh-gold-light);
+        }
+        #questionText::before {
+            content: '☥'; /* علامة عنخ فرعونية */
             position: absolute;
             right: -25px;
-            top: 0px;
-            font-size: 20px;
-            opacity: 0.7;
-        }
-
-
-        #question {
-            font-family: 'Scheherazade New', serif;
-            font-size: 26px;
-            font-weight: 700;
-            line-height: 1.5;
-            margin-bottom: 30px;
-            color: var(--dark-brown);
-            position: relative;
-            padding-right: 15px;
+            top: 0;
+            font-size: 24px;
+            color: var(--pharaoh-gold-light);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
 
         .options-list {
             display: grid;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .option-parchment {
-            background-color: rgba(255, 255, 255, 0.7);
-            border: 1px solid var(--border-color);
-            padding: 12px 18px;
+        .option-pharaoh {
+            background: var(--pharaoh-blue);
+            border: 2px solid var(--pharaoh-gold-dark);
+            padding: 15px 20px;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            color: var(--dark-brown);
+            transition: all 0.3s ease;
+            color: var(--pharaoh-text);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
             position: relative;
-            padding-right: 35px; /* لمكان الرقم */
+            padding-right: 40px; /* مسافة لحرف الاختيار */
         }
-        .option-parchment:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-color: var(--aged-gold);
-            transform: translateX(-3px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .option-pharaoh:hover {
+            background-color: #1A4D59; /* أزرق أفتح قليلاً */
+            border-color: var(--pharaoh-gold-light);
+            transform: translateX(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
         }
-        .option-parchment.selected {
-            background-color: var(--aged-gold);
-            color: var(--dark-brown);
-            font-weight: 600;
-            border-color: var(--dark-brown);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        .option-pharaoh.selected {
+            background: linear-gradient(90deg, var(--pharaoh-gold-dark), var(--pharaoh-gold-light));
+            color: var(--pharaoh-blue);
+            font-weight: 700;
+            border-color: var(--pharaoh-blue);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            text-shadow: none;
         }
-        .option-parchment::before {
-            content: attr(data-prefix); /* لإظهار أ, ب, ج, د */
+        .option-pharaoh::before {
+            content: attr(data-prefix);
             position: absolute;
             right: 15px;
             font-weight: 700;
-            color: var(--aged-gold);
-            text-shadow: 0 0 2px rgba(0,0,0,0.1);
+            color: var(--pharaoh-gold-light);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .option-pharaoh.selected::before {
+            color: var(--pharaoh-blue);
+            text-shadow: none;
         }
 
-        /* شريط التقدم كشريط قياس أو مؤشر */
-        .progress-bar {
+        /* شريط التقدم كقاعدة هرم */
+        .progress-base {
             width: 100%;
-            height: 6px;
-            background: rgba(0, 0, 0, 0.1);
+            height: 10px;
+            background: var(--pharaoh-border-dark);
             border-radius: 5px;
             margin-bottom: 25px;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            border: 1px solid var(--pharaoh-gold-dark);
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
         }
         #progressFill {
             height: 100%;
-            background: linear-gradient(90deg, var(--aged-gold), #b38b4d);
+            background: linear-gradient(90deg, var(--pharaoh-gold-dark), var(--pharaoh-gold-light));
             width: 0%;
-            transition: width 0.5s ease-out;
-            border-radius: 5px;
+            transition: width 0.6s ease-out;
+            border-radius: 4px;
         }
 
-        .action-buttons {
+        .control-buttons {
             display: flex;
             gap: 15px;
-            margin-top: 15px;
         }
-        .btn-secondary-ancient {
-            background-color: var(--dark-brown);
-            color: var(--paper-cream);
-            border: 1px solid var(--aged-gold);
+        .btn-secondary-pharaoh {
+            background-color: var(--pharaoh-blue);
+            color: var(--pharaoh-accent-light);
+            border: 2px solid var(--pharaoh-gold-dark);
             padding: 12px 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             flex: 1;
             font-family: 'Cairo', sans-serif;
             transition: all 0.3s ease;
             font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
         }
-        .btn-secondary-ancient:hover {
-            background-color: var(--ocean-blue);
-            border-color: var(--paper-cream);
-            color: var(--paper-cream);
+        .btn-secondary-pharaoh:hover {
+            background-color: #1A4D59;
+            border-color: var(--pharaoh-gold-light);
+            color: var(--pharaoh-gold-light);
         }
 
         .watermark {
             position: absolute;
             bottom: 15px;
             left: 20px;
-            font-size: 11px;
-            color: rgba(62, 39, 35, 0.4); /* لون خفيف */
+            font-size: 12px;
+            color: rgba(255, 215, 0, 0.5); /* ذهبي باهت */
             font-family: 'Scheherazade New', serif;
             letter-spacing: 1px;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
         }
         
         .hidden { display: none; }
 
-        @keyframes fadeInScale {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes fadeInPharaoh {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         /* تحسينات لأجهزة الجوال */
         @media (max-width: 480px) {
-            .aged-frame, #captureArea {
-                padding: 20px;
-                border-width: 5px;
+            .container { padding: 0; border-width: 3px; border-radius: 10px; }
+            .inner-content-wrapper { padding: 20px; }
+            h1 { font-size: 28px; margin-bottom: 20px; }
+            h1::after { width: 60px; bottom: -8px; }
+            textarea { height: 120px; font-size: 14px; padding: 12px; border-radius: 8px; }
+            .btn-pharaoh { padding: 12px 20px; font-size: 16px; margin-top: 15px; border-radius: 8px; }
+            
+            #quizDisplayArea { padding: 25px; border-radius: 10px; }
+            #questionText { font-size: 22px; margin-bottom: 20px; padding-right: 10px; }
+            #questionText::before { font-size: 20px; right: -18px; }
+            .option-pharaoh { font-size: 15px; padding: 12px 18px; border-radius: 6px; padding-right: 35px; }
+            .option-pharaoh::before { right: 10px; }
+            .progress-base { height: 8px; margin-bottom: 20px; }
+            .control-buttons { flex-direction: column; gap: 10px; }
+            .btn-secondary-pharaoh { padding: 10px 15px; font-size: 15px; border-radius: 8px; }
+            .watermark { font-size: 10px; bottom: 10px; left: 15px; }
+            
+            /* تعديل الزخارف في الزوايا لتناسب الشاشات الصغيرة */
+            .container::before, .container::after, .container .bottom-left::before, .container .bottom-right::before {
+                width: 35px; height: 35px; border-width: 1px;
             }
-            h1 { font-size: 26px; }
-            #question { font-size: 20px; padding-right: 10px; }
-            .option-parchment { font-size: 14px; padding: 10px 15px; padding-right: 30px; }
-            .action-buttons { flex-direction: column; gap: 10px; }
-            .btn-ancient, .btn-secondary-ancient { font-size: 15px; padding: 10px 15px; }
-            .watermark { font-size: 9px; }
         }
-
     </style>
 </head>
 <body>
 
 <div class="container">
-    
-    <div id="startSection" class="aged-frame">
-        <h1>أرشيف المعرفة التاريخية والجغرافية</h1>
-        <textarea id="rawData" placeholder="الصق أسئلتك عن التاريخ والجغرافيا هنا...
+    <div class="inner-content-wrapper">
+        <div id="setupView" class="">
+            <h1>أرشيف المعرفة الفرعونية 𓂀</h1>
+            <textarea id="questionInput" placeholder="أدخل الأسئلة والخيارات هنا بالصيغة الهيروغليفية...
 مثال:
-س: من هو فاتح القسطنطينية؟
-أ: محمد الفاتح
-ب: صلاح الدين الأيوبي
-ج: طارق بن زياد
-د: خالد بن الوليد
-الإجابة: محمد الفاتح"></textarea>
-        <button onclick="startStudy()" class="btn-ancient">بدء رحلة الاكتشاف 🧭</button>
-    </div>
-
-    <div id="quizSection" class="aged-frame hidden">
-        <div class="progress-bar"><div id="progressFill"></div></div>
-
-        <div id="captureArea">
-            <div id="question">جاري تحميل المعلومات...</div>
-            <div id="options" class="options-list"></div>
-            <div class="watermark">PROF. EIHAB ASHRAF | EXPLORE & LEARN</div>
+س: من هو الإله الرئيسي في الديانة المصرية القديمة؟
+أ: رع
+ب: أوزوريس
+ج: إيزيس
+د: حورس
+الإجابة: رع"></textarea>
+            <button onclick="startPharaohQuiz()" class="btn-pharaoh">بدء رحلة الكشف 🏺</button>
         </div>
 
-        <div class="action-buttons">
-            <button onclick="saveCard()" class="btn-ancient" style="flex: 2;">💾 حفظ بطاقة المعرفة</button>
-            <button onclick="nextEntry()" class="btn-secondary-ancient">التالي ▶️</button>
+        <div id="quizView" class="hidden">
+            <div class="progress-base"><div id="progressFill"></div></div>
+
+            <div id="quizDisplayArea">
+                <div id="questionText">جاري فك رموز السؤال...</div>
+                <div id="optionsList" class="options-list"></div>
+                <div class="watermark">أ. إيهاب أشرف | علوم الحضارة 🏛️</div>
+            </div>
+
+            <div class="control-buttons">
+                <button onclick="capturePharaohCard()" class="btn-pharaoh" style="flex: 2;">📸 نقش بطاقة المعرفة</button>
+                <button onclick="nextPharaohQuestion()" class="btn-secondary-pharaoh">اللفافة التالية 📜</button>
+            </div>
         </div>
     </div>
+    <div class="bottom-left"></div>
+    <div class="bottom-right"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <script>
-    let questionsData = [];
-    let currentQuestionIndex = 0;
-    const optionPrefixes = ['أ:', 'ب:', 'ج:', 'د:']; // لتوليد أ, ب, ج, د تلقائياً
+    let pharaohQuestions = [];
+    let currentPharaohIndex = 0;
+    const hieroglyphPrefixes = ['أ:', 'ب:', 'ج:', 'د:'];
 
-    function startStudy() {
-        const inputContent = document.getElementById('rawData').value.trim();
-        if(!inputContent) {
-            alert("يرجى إدخال الأسئلة أولاً لبدء الاكتشاف!");
+    function startPharaohQuiz() {
+        const rawText = document.getElementById('questionInput').value.trim();
+        if(!rawText) {
+            alert("لا يمكن بدء الرحلة بدون نقوش! يرجى إدخال الأسئلة.");
             return;
         }
 
-        const questionBlocks = inputContent.split("\n\n");
-        questionsData = questionBlocks.map(block => {
+        const blocks = rawText.split("\n\n");
+        pharaohQuestions = blocks.map(block => {
             const lines = block.split("\n").map(l => l.trim()).filter(l => l !== "");
-            if(lines.length >= 6) { // سؤال + 4 خيارات + إجابة
+            if(lines.length >= 6) {
                 return { 
                     q: lines[0].replace(/س: ?/g, ""),
                     opts: lines.slice(1, 5),
-                    ans: lines[5] // يمكن استخدامه للتحقق لاحقاً إذا أردت
+                    ans: lines[5]
                 };
             }
             return null;
         }).filter(item => item !== null);
 
-        if(questionsData.length === 0) {
-            alert("يبدو أن هناك مشكلة في تنسيق الأسئلة المدخلة. يرجى مراجعة المثال.");
+        if(pharaohQuestions.length === 0) {
+            alert("يبدو أن النقوش غير واضحة! يرجى مراجعة تنسيق الأسئلة.");
             return;
         }
 
-        document.getElementById('startSection').classList.add('hidden');
-        document.getElementById('quizSection').classList.remove('hidden');
-        displayQuestion();
+        document.getElementById('setupView').classList.add('hidden');
+        document.getElementById('quizView').classList.remove('hidden');
+        displayPharaohQuestion();
     }
 
-    function displayQuestion() {
-        const currentItem = questionsData[currentQuestionIndex];
-        document.getElementById('question').innerHTML = `س${currentQuestionIndex + 1}: ${currentItem.q}`;
+    function displayPharaohQuestion() {
+        const currentItem = pharaohQuestions[currentPharaohIndex];
+        document.getElementById('questionText').innerHTML = `س${currentPharaohIndex + 1}: ${currentItem.q}`;
 
-        const optionsContainer = document.getElementById('options');
+        const optionsContainer = document.getElementById('optionsList');
         optionsContainer.innerHTML = '';
 
         currentItem.opts.forEach((opt, index) => {
             const div = document.createElement('div');
-            div.className = 'option-parchment';
-            div.innerText = opt.replace(/^[أ-د]: ?/g, ""); // إزالة الألفباء من النص الأصلي
-            div.setAttribute('data-prefix', optionPrefixes[index]); // استخدام الخاصية لعرض الألفباء
+            div.className = 'option-pharaoh';
+            div.innerText = opt.replace(/^[أ-د]: ?/g, "");
+            div.setAttribute('data-prefix', hieroglyphPrefixes[index]);
             div.onclick = function() {
-                document.querySelectorAll('.option-parchment').forEach(c => c.classList.remove('selected'));
+                document.querySelectorAll('.option-pharaoh').forEach(c => c.classList.remove('selected'));
                 this.classList.add('selected');
             };
             optionsContainer.appendChild(div);
         });
 
-        updateProgressBar();
+        updatePharaohProgress();
     }
 
-    function updateProgressBar() {
-        const progress = ((currentQuestionIndex + 1) / questionsData.length) * 100;
+    function updatePharaohProgress() {
+        const progress = ((currentPharaohIndex + 1) / pharaohQuestions.length) * 100;
         document.getElementById('progressFill').style.width = progress + '%';
     }
 
-    function nextEntry() {
-        if(currentQuestionIndex < questionsData.length - 1) {
-            currentQuestionIndex++;
-            displayQuestion();
+    function nextPharaohQuestion() {
+        if(currentPharaohIndex < pharaohQuestions.length - 1) {
+            currentPharaohIndex++;
+            displayPharaohQuestion();
         } else {
-            alert("تم الانتهاء من استكشاف جميع المدخلات التاريخية والجغرافية! 🌍");
-            location.reload(); // للبدء من جديد
+            alert("لقد اكتملت جميع نقوش الأسئلة! حورس يحميك 🌅");
+            location.reload(); 
         }
     }
 
-    function saveCard() {
-        const targetElement = document.getElementById('captureArea');
+    function capturePharaohCard() {
+        const targetElement = document.getElementById('quizDisplayArea');
         html2canvas(targetElement, {
-            scale: 2, // جودة عالية، مناسبة للطباعة والمشاركة
-            backgroundColor: null, // للحفاظ على خلفية ورق البردي
+            scale: 2, 
+            backgroundColor: null, 
             useCORS: true,
             logging: false,
-            // ignoreElements: (element) => element.classList.contains('watermark-on-screen-only') // لو أردت علامة مائية تظهر فقط في المتصفح
         }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `معلومة_جغرافية_تاريخية_${currentQuestionIndex + 1}.png`;
+            link.download = `نقوش_فرعونية_${currentPharaohIndex + 1}.png`;
             link.href = canvas.toDataURL("image/png", 1.0);
             link.click();
         });
