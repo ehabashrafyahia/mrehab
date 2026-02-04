@@ -8,141 +8,157 @@
     
     <style>
         :root {
-            --pharaoh-gold-light: #FFD700; /* ذهبي فاتح */
-            --pharaoh-gold-dark: #DAA520; /* ذهبي غامق / برونزي */
-            --pharaoh-blue: #0A2E36;    /* أزرق فرعوني داكن */
-            --pharaoh-text: #E0E0E0;    /* لون نص فاتح */
-            --pharaoh-bg-dark: #121212; /* خلفية داكنة جداً */
-            --pharaoh-accent-light: #F0E6D2; /* لون عاجي فاتح */
+            --pharaoh-gold-light: #FFD700;
+            --pharaoh-gold-dark: #DAA520;
+            --pharaoh-blue: #0A2E36;
+            --pharaoh-text: #E0E0E0;
+            --pharaoh-bg-dark: #121212;
+            --pharaoh-accent-light: #F0E6D2;
         }
 
         body {
             margin: 0;
-            background-color: black; /* تم تغيير الخلفية للأسود فقط */
+            background-color: black;
             font-family: 'Cairo', sans-serif;
             color: var(--pharaoh-text);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            position: relative;
+            padding: 15px; /* مسافة أمان للموبايل */
+            box-sizing: border-box;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 550px; /* حجم وسط ومثالي */
             position: relative;
             z-index: 2;
-            animation: fadeInPharaoh 1s ease-out;
-            border: 5px solid var(--pharaoh-gold-dark);
-            border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="pattern-border" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="10" height="10" fill="transparent"/><rect x="0" y="0" width="1" height="10" fill="%23DAA520"/><rect x="0" y="0" width="10" height="1" fill="%23DAA520"/></pattern></defs><rect x="0" y="0" width="100" height="100" fill="url(%23pattern-border)"/></svg>') 30 / 10px repeat;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 1);
+            animation: fadeInPharaoh 0.8s ease-out;
+            border: 4px solid var(--pharaoh-gold-dark);
+            /* زخرفة الإطار */
+            border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="p" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="10" height="10" fill="transparent"/><rect x="0" y="0" width="1" height="10" fill="%23DAA520"/><rect x="0" y="0" width="10" height="1" fill="%23DAA520"/></pattern></defs><rect x="0" y="0" width="100" height="100" fill="url(%23p)"/></svg>') 30 / 8px repeat;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 1);
             background-color: var(--pharaoh-bg-dark);
-            border-radius: 15px;
+            border-radius: 12px;
             padding: 0;
+            overflow: hidden;
         }
 
-        /* الزوايا الذهبية المزخرفة */
+        /* الزوايا الفرعونية (متجاوبة الحجم) */
         .container::before, .container::after {
             content: '';
             position: absolute;
-            width: 50px; height: 50px;
+            width: 40px; height: 40px;
             border: 2px solid var(--pharaoh-gold-light);
             z-index: 3;
+            pointer-events: none;
         }
         .container::before { top: -2px; left: -2px; transform: scaleX(-1); background: linear-gradient(135deg, var(--pharaoh-gold-light) 50%, transparent 50.1%); -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain; mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain; }
         .container::after { top: -2px; right: -2px; background: linear-gradient(225deg, var(--pharaoh-gold-light) 50%, transparent 50.1%); -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain; mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain; }
 
-        .inner-content-wrapper { padding: 30px; }
+        .inner-content-wrapper { padding: 25px 20px; }
 
         h1 {
             font-family: 'Scheherazade New', serif;
-            font-size: 38px;
+            font-size: clamp(1.8rem, 5vw, 2.2rem); /* حجم متجاوب */
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: var(--pharaoh-gold-light);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
         }
 
         textarea {
             width: 100%;
-            height: 150px;
+            height: 120px;
             background: #1a1a1a;
             border: 2px solid var(--pharaoh-gold-dark);
             border-radius: 10px;
             color: var(--pharaoh-text);
-            padding: 15px;
+            padding: 12px;
             font-family: 'Cairo', sans-serif;
+            font-size: 14px;
             box-sizing: border-box;
             outline: none;
+            resize: vertical;
         }
 
         .btn-pharaoh {
             background: linear-gradient(135deg, var(--pharaoh-gold-light), var(--pharaoh-gold-dark));
             color: #000;
             border: none;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            margin-top: 20px;
-            font-size: 18px;
+            margin-top: 15px;
+            font-size: 16px;
+            transition: 0.3s;
         }
+        .btn-pharaoh:active { transform: scale(0.98); }
 
         #quizDisplayArea {
-            background-color: black; /* تم تغيير الخلفية للأسود فقط */
-            border: 3px solid var(--pharaoh-gold-dark);
-            border-radius: 12px;
-            padding: 35px;
-            margin-bottom: 25px;
+            background-color: black;
+            border: 2px solid var(--pharaoh-gold-dark);
+            border-radius: 10px;
+            padding: 25px 15px;
+            margin-bottom: 20px;
             position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 10px rgba(218, 165, 32, 0.2);
         }
 
         #questionText {
             font-family: 'Scheherazade New', serif;
-            font-size: 28px;
+            font-size: clamp(1.3rem, 4vw, 1.6rem);
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             color: var(--pharaoh-accent-light);
-            border-right: 3px solid var(--pharaoh-gold-light);
-            padding-right: 15px;
+            border-right: 4px solid var(--pharaoh-gold-light);
+            padding-right: 12px;
+            line-height: 1.4;
         }
 
         .option-pharaoh {
             background: #1a1a1a;
             border: 2px solid var(--pharaoh-gold-dark);
-            padding: 15px 20px;
+            padding: 12px 15px;
             border-radius: 8px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             cursor: pointer;
             color: var(--pharaoh-text);
             position: relative;
             padding-right: 45px;
-            transition: 0.3s;
+            transition: 0.2s;
+            font-size: 15px;
         }
-        .option-pharaoh:hover { border-color: var(--pharaoh-gold-light); transform: scale(1.02); }
-        .option-pharaoh.selected { background: var(--pharaoh-gold-light); color: black; font-weight: bold; }
+        .option-pharaoh.selected { background: var(--pharaoh-gold-light); color: black; font-weight: bold; border-color: white; }
 
-        /* تعديل الـ prefix ليصبح إنجليزي */
         .option-pharaoh::before {
             content: attr(data-prefix);
             position: absolute;
-            right: 15px;
+            right: 12px;
             color: var(--pharaoh-gold-light);
             font-weight: bold;
             text-transform: uppercase;
         }
         .option-pharaoh.selected::before { color: black; }
 
-        .progress-base { width: 100%; height: 8px; background: #333; border-radius: 5px; margin-bottom: 20px; overflow: hidden; }
+        .progress-base { width: 100%; height: 6px; background: #333; border-radius: 3px; margin-bottom: 15px; overflow: hidden; }
         #progressFill { height: 100%; background: var(--pharaoh-gold-light); width: 0%; transition: 0.5s; }
 
-        .watermark { text-align: left; font-size: 12px; color: #555; margin-top: 10px; }
+        .watermark { text-align: center; font-size: 11px; color: #666; margin-top: 15px; font-style: italic; }
+        
         .hidden { display: none; }
-        @keyframes fadeInPharaoh { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* تعديلات للموبايل الصغير جداً */
+        @media (max-width: 380px) {
+            .inner-content-wrapper { padding: 15px; }
+            #questionText { font-size: 1.2rem; }
+            .option-pharaoh { font-size: 14px; padding: 10px 12px; padding-right: 40px; }
+        }
+
+        @keyframes fadeInPharaoh { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -150,7 +166,7 @@
 <div class="container">
     <div class="inner-content-wrapper">
         <div id="setupView">
-            <h1>أرشيف المعرفة الفرعونية 𓂀</h1>
+            <h1>أرشيف المعرفة 𓂀</h1>
             <textarea id="questionInput" placeholder="أدخل الأسئلة هنا...
 س: من هو ملك توحيد القطرين؟
 a: مينا
@@ -158,7 +174,7 @@ b: أحمس
 c: رمسيس
 d: تحتمس
 الإجابة: مينا"></textarea>
-            <button onclick="startPharaohQuiz()" class="btn-pharaoh">بدء رحلة الكشف 🏺</button>
+            <button onclick="startPharaohQuiz()" class="btn-pharaoh">بدء الاختبار 🏺</button>
         </div>
 
         <div id="quizView" class="hidden">
@@ -168,10 +184,10 @@ d: تحتمس
                 <div id="optionsList"></div>
             </div>
             <div style="display:flex; gap:10px;">
-                <button onclick="capturePharaohCard()" class="btn-pharaoh" style="margin-top:0;">📸 حفظ الصورة</button>
-                <button onclick="nextPharaohQuestion()" class="btn-pharaoh" style="margin-top:0; background: #333; color: gold;">التالي 📜</button>
+                <button onclick="capturePharaohCard()" class="btn-pharaoh" style="margin-top:0; flex:1;">📸 حفظ</button>
+                <button onclick="nextPharaohQuestion()" class="btn-pharaoh" style="margin-top:0; flex:1; background: #333; color: gold; border: 1px solid gold;">التالي 📜</button>
             </div>
-            <div class="watermark">أ. إيهاب أشرف | علوم الحضارة 🏛️</div>
+            <div class="watermark">بواسطة: أ. إيهاب أشرف 🏛️</div>
         </div>
     </div>
 </div>
@@ -180,7 +196,6 @@ d: تحتمس
 <script>
     let pharaohQuestions = [];
     let currentPharaohIndex = 0;
-    // تم تغيير الحروف إلى إنجليزية
     const englishPrefixes = ['a:', 'b:', 'c:', 'd:'];
 
     function startPharaohQuiz() {
@@ -200,9 +215,11 @@ d: تحتمس
             return null;
         }).filter(item => item !== null);
 
-        document.getElementById('setupView').classList.add('hidden');
-        document.getElementById('quizView').classList.remove('hidden');
-        displayPharaohQuestion();
+        if(pharaohQuestions.length > 0) {
+            document.getElementById('setupView').classList.add('hidden');
+            document.getElementById('quizView').classList.remove('hidden');
+            displayPharaohQuestion();
+        }
     }
 
     function displayPharaohQuestion() {
@@ -215,7 +232,6 @@ d: تحتمس
         currentItem.opts.forEach((opt, index) => {
             const div = document.createElement('div');
             div.className = 'option-pharaoh';
-            // تنظيف النص من أي حروف قديمة مثل أ: أو a:
             div.innerText = opt.replace(/^[a-dA-Dأ-د]: ?/g, "");
             div.setAttribute('data-prefix', englishPrefixes[index]);
             div.onclick = function() {
@@ -233,16 +249,20 @@ d: تحتمس
             currentPharaohIndex++;
             displayPharaohQuestion();
         } else {
-            alert("تمت الرحلة بنجاح!");
+            alert("اكتمل الاختبار يا عبقري!");
             location.reload();
         }
     }
 
     function capturePharaohCard() {
         const targetElement = document.getElementById('quizDisplayArea');
-        html2canvas(targetElement, { scale: 2, backgroundColor: '#000000' }).then(canvas => {
+        html2canvas(targetElement, { 
+            scale: 2, 
+            backgroundColor: '#000000',
+            logging: false 
+        }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Pharaoh_Quiz_${currentPharaohIndex + 1}.png`;
+            link.download = `Pharaoh_Card_${currentPharaohIndex + 1}.png`;
             link.href = canvas.toDataURL();
             link.click();
         });
