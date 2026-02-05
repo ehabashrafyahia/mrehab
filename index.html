@@ -2,341 +2,316 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المنصة الذكية (مقالي) | أ. إيهاب أشرف</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <title>صانع الامتحانات الورقية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary-gold: #ffd369;
-            --accent-green: #4ade80; /* لون جديد للإجابة */
-            --card-bg: linear-gradient(145deg, #1e2a44, #0f172a);
-            --glass: rgba(255, 255, 255, 0.05);
+            --bg-color: #e2e8f0;
+            --paper-width: 210mm;
+            --paper-height: 297mm;
         }
 
         body {
+            background-color: var(--bg-color);
+            font-family: 'Amiri', 'Times New Roman', serif; /* خطوط رسمية */
             margin: 0;
-            background: radial-gradient(circle at top, #1e293b, #020617);
-            font-family: 'Cairo', sans-serif;
-            color: #f8fafc;
-            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            padding: 15px;
+            padding: 20px;
         }
 
-        .container {
+        /* واجهة الإدخال (لا تظهر في الطباعة) */
+        .controls {
+            background: #fff;
+            padding: 20px;
             width: 100%;
-            max-width: 550px;
-            animation: fadeIn 0.6s ease-out;
-        }
-
-        /* لوحة الإدخال */
-        .glass-panel {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-        }
-
-        h1 {
-            font-size: 22px;
-            font-weight: 900;
-            text-align: center;
-            margin-bottom: 10px;
-            color: var(--primary-gold);
-        }
-        
-        .subtitle {
-            text-align: center;
-            font-size: 12px;
-            opacity: 0.7;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        textarea {
-            width: 100%;
-            height: 140px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            color: #fff;
-            padding: 15px;
-            font-family: 'Cairo';
-            font-size: 14px;
-            resize: none;
-            box-sizing: border-box;
-            outline: none;
-            line-height: 1.8;
+        .controls h2 { margin: 0 0 10px 0; color: #333; }
+        
+        .input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
-        .btn-main {
-            background: linear-gradient(45deg, #ffd369, #fbbf24);
-            color: #1e293b;
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Amiri';
+            font-size: 16px;
+        }
+
+        textarea { height: 100px; resize: vertical; }
+
+        button {
+            background: #2563eb;
+            color: white;
             border: none;
             padding: 12px;
-            border-radius: 12px;
-            font-weight: 700;
+            border-radius: 4px;
             cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
             font-size: 16px;
-            transition: 0.3s;
+            font-weight: bold;
+        }
+        button:hover { background: #1d4ed8; }
+        .btn-print { background: #059669; }
+
+        /* ورقة الامتحان (A4) */
+        .sheet {
+            background: white;
+            width: var(--paper-width);
+            min-height: var(--paper-height);
+            padding: 20mm; /* هوامش الصفحة */
+            box-shadow: 0 0 15px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            position: relative;
+            margin-bottom: 30px;
+            border: 1px solid #ccc;
         }
 
-        /* منطقة تصوير السؤال (Card) */
-        #captureArea {
-            background: var(--card-bg);
-            padding: 30px 25px;
-            border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            margin-bottom: 20px;
+        /* الإطار الخارجي للامتحان */
+        .exam-border {
+            border: 2px solid #000;
+            height: 100%;
+            padding: 15px;
             position: relative;
-            min-height: 250px;
             display: flex;
             flex-direction: column;
         }
 
-        #questionType {
-            font-size: 12px;
-            background: rgba(255, 211, 105, 0.15);
-            color: var(--primary-gold);
-            padding: 4px 10px;
-            border-radius: 8px;
-            width: fit-content;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        #questionText {
-            font-size: 20px;
-            font-weight: 700;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            color: #fff;
-        }
-
-        /* منطقة الإجابة */
-        .answer-box {
-            background: rgba(255,255,255,0.03);
-            border: 1px dashed rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 20px;
-            flex-grow: 1;
-            position: relative;
-            transition: 0.3s;
-            min-height: 100px;
+        /* الترويسة */
+        .header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            border-bottom: 2px double #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
-        /* وضع الإجابة المخفية (سطور) */
-        .answer-box.hidden-mode {
-            background-image: repeating-linear-gradient(transparent, transparent 39px, rgba(255,255,255,0.1) 40px);
-            align-items: flex-start;
-        }
-        
-        .answer-box.hidden-mode .ans-text {
-            display: none;
-        }
-
-        /* وضع الإجابة الظاهرة */
-        .answer-box.visible-mode {
-            background: rgba(74, 222, 128, 0.1); /* خلفية خضراء خفيفة */
-            border: 1px solid var(--accent-green);
-        }
-
-        .ans-text {
-            font-size: 18px;
-            color: var(--accent-green);
-            font-weight: 600;
+        .header-section {
+            width: 30%;
+            font-size: 14px;
             line-height: 1.6;
+        }
+
+        .header-title {
+            width: 40%;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        /* بيانات الطالب */
+        .student-info {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            border: 1px solid #000;
+            padding: 5px 10px;
+        }
+        .student-field { flex: 1; border-left: 1px solid #000; padding-left: 10px; }
+        .student-field:last-child { border-left: none; }
+
+        /* منطقة الأسئلة */
+        .questions-area {
+            flex-grow: 1;
+        }
+
+        .question-block {
+            margin-bottom: 15px;
+            page-break-inside: avoid; /* يمنع انقسام السؤال بين صفحتين */
+        }
+
+        .q-text {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+        }
+
+        .q-number {
+            min-width: 25px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* خيارين في السطر */
+            gap: 5px 20px;
+            padding-right: 25px;
+            font-size: 16px;
+        }
+
+        .essay-lines {
+            margin-top: 10px;
+            border-bottom: 1px dotted #000;
+            height: 25px;
             width: 100%;
         }
 
-        /* شريط التحكم */
-        .controls-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            background: rgba(0,0,0,0.2);
-            padding: 5px;
-            border-radius: 10px;
+        /* تذييل الصفحة */
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 20px;
+            border-top: 1px solid #000;
+            padding-top: 5px;
         }
 
-        .toggle-btn {
-            background: transparent;
-            color: #cbd5e1;
-            border: none;
-            padding: 8px 15px;
-            font-family: 'Cairo';
-            cursor: pointer;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        /* إعدادات الطباعة */
+        @media print {
+            body { 
+                background: none; 
+                margin: 0; 
+                padding: 0; 
+                -webkit-print-color-adjust: exact; 
+            }
+            .controls { display: none; } /* إخفاء لوحة التحكم */
+            .sheet { 
+                box-shadow: none; 
+                margin: 0; 
+                width: 100%;
+                border: none;
+            }
+            @page {
+                size: A4;
+                margin: 0;
+            }
         }
-        .toggle-btn:hover { color: #fff; }
-
-        .footer-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .btn-sec {
-            background: rgba(255,255,255,0.08);
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            flex: 1;
-            font-family: 'Cairo';
-        }
-
-        .watermark {
-            position: absolute;
-            bottom: 10px;
-            left: 20px;
-            font-size: 10px;
-            opacity: 0.3;
-            letter-spacing: 1px;
-        }
-
-        .hidden { display: none; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    
-    <div id="startScreen" class="glass-panel">
-        <h1>📝 المقالي و أكمل</h1>
-        <div class="subtitle">ضع السؤال، ثم علامة (==)، ثم الإجابة.<br>مثال: عاصمة مصر؟ == القاهرة</div>
-        <textarea id="rawInput" placeholder="السؤال الأول هنا... == الإجابة النموذجية&#10;&#10;السؤال الثاني... == الإجابة"></textarea>
-        <button onclick="launch()" class="btn-main">تجهيز الأسئلة 🚀</button>
+<div class="controls">
+    <h2>🛠️ إعدادات الامتحان</h2>
+    <div class="input-group">
+        <input type="text" id="schoolName" placeholder="اسم المدرسة / السنتر" value="منصة الأوائل التعليمية">
+        <input type="text" id="examName" placeholder="عنوان الامتحان" value="اختبار شهر أكتوبر">
     </div>
+    <div class="input-group">
+        <input type="text" id="teacherName" placeholder="اسم المعلم" value="أ. إيهاب أشرف">
+        <input type="text" id="subject" placeholder="المادة" value="اللغة العربية">
+    </div>
+    
+    <textarea id="rawInput" placeholder="اكتب السؤال في سطر..&#10;ثم الخيارات كل واحد في سطر (للاختياري)..&#10;اترك سطراً فارغاً بين كل سؤال وآخر."></textarea>
+    
+    <div class="input-group">
+        <button onclick="generateExam()">📄 إنشاء الورقة</button>
+        <button class="btn-print" onclick="window.print()">🖨️ طباعة الامتحان</button>
+    </div>
+    <small style="color:red; margin-top:5px;">* ملحوظة: يمكنك الضغط على أي نص في ورقة الامتحان أدناه لتعديله يدوياً.</small>
+</div>
 
-    <div id="quizScreen" class="hidden">
+<div class="sheet">
+    <div class="exam-border">
         
-        <div class="controls-bar">
-            <button onclick="toggleAnswer()" class="toggle-btn">👁️ إظهار/إخفاء الإجابة</button>
-            <span style="color: #64748b; font-size: 12px; padding: 8px;">(للتحكم قبل التصوير)</span>
-        </div>
-
-        <div id="captureArea">
-            <div id="questionType">سؤال مقالي / أكمل</div>
-            <div id="questionText">جاري التحميل...</div>
-            
-            <div id="answerBox" class="answer-box hidden-mode">
-                <div id="answerText" class="ans-text"></div>
+        <div class="header" contenteditable="true">
+            <div class="header-section" style="text-align: right;">
+                <div id="dispSchool">اسم المدرسة</div>
+                <div>الإدارة التعليمية</div>
             </div>
-
-            <div class="watermark">By Mr.Ehab Ashraf</div>
+            
+            <div class="header-title" id="dispExamName">عنوان الامتحان</div>
+            
+            <div class="header-section" style="text-align: left;">
+                <div id="dispSubject">المادة</div>
+                <div id="dispTeacher">المعلم</div>
+                <div>الزمن: ساعة</div>
+            </div>
         </div>
 
-        <div class="footer-actions">
-            <button onclick="takeShot()" class="btn-main" style="margin:0; flex: 2;">📸 حفظ الصورة</button>
-            <button onclick="goNext()" class="btn-sec">التالي ⏭️</button>
+        <div class="student-info" contenteditable="true">
+            <div class="student-field">الاسم: ............................................</div>
+            <div class="student-field">الرقم: ...................</div>
+            <div class="student-field">الفصل: ...................</div>
         </div>
-        <button onclick="location.reload()" style="margin-top:10px; background:none; border:none; color:#64748b; width:100%; cursor:pointer;">عودة للبداية</button>
+
+        <div class="questions-area" id="questionsContainer" contenteditable="true">
+            <p style="text-align:center; color:#999; margin-top:50px;">اضغط "إنشاء الورقة" لرؤية الأسئلة هنا</p>
+        </div>
+
+        <div class="footer" contenteditable="true">
+            <div>مع أطيب التمنيات بالتوفيق والنجاح</div>
+            <div id="footerTeacher">أ. إيهاب أشرف</div>
+        </div>
+
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
 <script>
-    let data = [];
-    let currentIdx = 0;
-    let isAnswerVisible = false;
+    function generateExam() {
+        // تحديث البيانات الأساسية
+        document.getElementById('dispSchool').innerText = document.getElementById('schoolName').value;
+        document.getElementById('dispExamName').innerText = document.getElementById('examName').value;
+        document.getElementById('dispSubject').innerText = document.getElementById('subject').value;
+        document.getElementById('dispTeacher').innerText = document.getElementById('teacherName').value;
+        document.getElementById('footerTeacher').innerText = document.getElementById('teacherName').value;
 
-    function launch() {
+        // معالجة الأسئلة
         const input = document.getElementById('rawInput').value.trim();
-        if(!input) return alert("لطفاً أدخل الأسئلة");
+        const container = document.getElementById('questionsContainer');
+        container.innerHTML = '';
 
-        // التقسيم بناء على سطرين فارغين بين كل سؤال وآخر
-        const blocks = input.split("\n\n");
-        
-        data = blocks.map(b => {
-            // تقسيم السؤال عن الإجابة باستخدام "=="
-            const parts = b.split("==");
-            if(parts.length > 0) {
-                return { 
-                    q: parts[0].trim(), 
-                    a: parts[1] ? parts[1].trim() : "" // الإجابة قد تكون فارغة
-                };
+        if (!input) {
+            container.innerHTML = '<p style="text-align:center;">لا توجد أسئلة!</p>';
+            return;
+        }
+
+        const blocks = input.split('\n\n'); // تقسيم الأسئلة بالفراغ المزدوج
+
+        blocks.forEach((block, index) => {
+            const lines = block.split('\n').filter(l => l.trim() !== '');
+            if (lines.length === 0) return;
+
+            const questionText = lines[0];
+            const options = lines.slice(1);
+
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+
+            // رقم السؤال ونصه
+            let html = `
+                <div class="q-text">
+                    <span class="q-number">${index + 1}-</span>
+                    <span>${questionText}</span>
+                </div>
+            `;
+
+            // إذا كان هناك خيارات (سؤال اختياري)
+            if (options.length > 0) {
+                html += `<div class="options-grid">`;
+                options.forEach((opt, i) => {
+                    const char = String.fromCharCode(1571 + i); // أ، ب، ج... (تقريبي)
+                    // ترميز الحروف يدوياً لضمان الدقة
+                    const letters = ['أ', 'ب', 'ج', 'د', 'هـ'];
+                    html += `<div>(${letters[i] || '-'}) ${opt}</div>`;
+                });
+                html += `</div>`;
+            } else {
+                // إذا لم توجد خيارات، نعتبره سؤال مقالي ونضيف أسطر للكتابة
+                html += `
+                    <div class="essay-lines"></div>
+                    <div class="essay-lines"></div>
+                    <div class="essay-lines"></div>
+                `;
             }
-            return null;
-        }).filter(x => x);
 
-        if(!data.length) return alert("تنسيق النص غير صحيح");
-
-        document.getElementById('startScreen').classList.add('hidden');
-        document.getElementById('quizScreen').classList.remove('hidden');
-        render();
-    }
-
-    function render() {
-        const item = data[currentIdx];
-        
-        // إعادة تعيين حالة الإجابة للإخفاء عند كل سؤال جديد
-        isAnswerVisible = false;
-        updateAnswerState();
-
-        document.getElementById('questionText').innerText = item.q;
-        document.getElementById('answerText').innerText = item.a || "(لا توجد إجابة نموذجية مدخلة)";
-        
-        // تغيير نوع السؤال تلقائياً بناء على النص
-        const typeLabel = document.getElementById('questionType');
-        if(item.q.includes(".....") || item.q.includes("____")) {
-            typeLabel.innerText = "سؤال أكمل";
-        } else {
-            typeLabel.innerText = "سؤال مقالي";
-        }
-    }
-
-    function toggleAnswer() {
-        isAnswerVisible = !isAnswerVisible;
-        updateAnswerState();
-    }
-
-    function updateAnswerState() {
-        const box = document.getElementById('answerBox');
-        if(isAnswerVisible) {
-            box.classList.remove('hidden-mode');
-            box.classList.add('visible-mode');
-        } else {
-            box.classList.remove('visible-mode');
-            box.classList.add('hidden-mode');
-        }
-    }
-
-    function goNext() {
-        if(currentIdx < data.length - 1) {
-            currentIdx++;
-            render();
-        } else {
-            alert("تم الانتهاء من جميع الأسئلة!");
-        }
-    }
-
-    function takeShot() {
-        const area = document.getElementById('captureArea');
-        // إخفاء الـ border radius مؤقتاً لتفادي مشاكل التصوير أحياناً
-        html2canvas(area, {
-            scale: 2,
-            backgroundColor: null,
-            borderRadius: 25
-        }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `Eihab_Ashraf_Essay_${currentIdx+1}.png`;
-            link.href = canvas.toDataURL();
-            link.click();
+            qDiv.innerHTML = html;
+            container.appendChild(qDiv);
         });
     }
 </script>
