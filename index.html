@@ -3,92 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أرشيف الفراعنة | أ. إيهاب أشرف</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+    <title>المنصة الذكية (مقالي) | أ. إيهاب أشرف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --pharaoh-gold-light: #FFD700;
-            --pharaoh-gold-dark: #DAA520;
-            --pharaoh-blue: #0A2E36;
-            --pharaoh-text: #E0E0E0;
-            --pharaoh-bg-dark: #121212;
-            --pharaoh-accent-light: #F0E6D2;
+            --primary-gold: #ffd369;
+            --accent-green: #4ade80; /* لون جديد للإجابة */
+            --card-bg: linear-gradient(145deg, #1e2a44, #0f172a);
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
         body {
             margin: 0;
-            background-color: black;
+            background: radial-gradient(circle at top, #1e293b, #020617);
             font-family: 'Cairo', sans-serif;
-            color: var(--pharaoh-text);
+            color: #f8fafc;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px; /* مسافة أمان للموبايل */
-            box-sizing: border-box;
+            padding: 15px;
         }
 
         .container {
             width: 100%;
-            max-width: 550px; /* حجم وسط ومثالي */
-            position: relative;
-            z-index: 2;
-            animation: fadeInPharaoh 0.8s ease-out;
-            border: 4px solid var(--pharaoh-gold-dark);
-            /* زخرفة الإطار */
-            border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><pattern id="p" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="10" height="10" fill="transparent"/><rect x="0" y="0" width="1" height="10" fill="%23DAA520"/><rect x="0" y="0" width="10" height="1" fill="%23DAA520"/></pattern></defs><rect x="0" y="0" width="100" height="100" fill="url(%23p)"/></svg>') 30 / 8px repeat;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 1);
-            background-color: var(--pharaoh-bg-dark);
-            border-radius: 12px;
-            padding: 0;
-            overflow: hidden;
+            max-width: 550px;
+            animation: fadeIn 0.6s ease-out;
         }
 
-        /* الزوايا الفرعونية (متجاوبة الحجم) */
-        .container::before, .container::after {
-            content: '';
-            position: absolute;
-            width: 40px; height: 40px;
-            border: 2px solid var(--pharaoh-gold-light);
-            z-index: 3;
-            pointer-events: none;
+        /* لوحة الإدخال */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
         }
-        .container::before { top: -2px; left: -2px; transform: scaleX(-1); background: linear-gradient(135deg, var(--pharaoh-gold-light) 50%, transparent 50.1%); -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain; mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain; }
-        .container::after { top: -2px; right: -2px; background: linear-gradient(225deg, var(--pharaoh-gold-light) 50%, transparent 50.1%); -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain; mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M0,0 L100,0 L100,20 L20,20 L20,100 L0,100 Z"/></svg>') no-repeat center center / contain; }
-
-        .inner-content-wrapper { padding: 25px 20px; }
 
         h1 {
-            font-family: 'Scheherazade New', serif;
-            font-size: clamp(1.8rem, 5vw, 2.2rem); /* حجم متجاوب */
+            font-size: 22px;
+            font-weight: 900;
             text-align: center;
+            margin-bottom: 10px;
+            color: var(--primary-gold);
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.7;
             margin-bottom: 20px;
-            color: var(--pharaoh-gold-light);
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
         }
 
         textarea {
             width: 100%;
-            height: 120px;
-            background: #1a1a1a;
-            border: 2px solid var(--pharaoh-gold-dark);
-            border-radius: 10px;
-            color: var(--pharaoh-text);
-            padding: 12px;
-            font-family: 'Cairo', sans-serif;
+            height: 140px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            padding: 15px;
+            font-family: 'Cairo';
             font-size: 14px;
+            resize: none;
             box-sizing: border-box;
             outline: none;
-            resize: vertical;
+            line-height: 1.8;
         }
 
-        .btn-pharaoh {
-            background: linear-gradient(135deg, var(--pharaoh-gold-light), var(--pharaoh-gold-dark));
-            color: #000;
+        .btn-main {
+            background: linear-gradient(45deg, #ffd369, #fbbf24);
+            color: #1e293b;
             border: none;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
@@ -96,173 +86,255 @@
             font-size: 16px;
             transition: 0.3s;
         }
-        .btn-pharaoh:active { transform: scale(0.98); }
 
-        #quizDisplayArea {
-            background-color: black;
-            border: 2px solid var(--pharaoh-gold-dark);
-            border-radius: 10px;
-            padding: 25px 15px;
+        /* منطقة تصوير السؤال (Card) */
+        #captureArea {
+            background: var(--card-bg);
+            padding: 30px 25px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             margin-bottom: 20px;
             position: relative;
-            box-shadow: inset 0 0 10px rgba(218, 165, 32, 0.2);
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #questionType {
+            font-size: 12px;
+            background: rgba(255, 211, 105, 0.15);
+            color: var(--primary-gold);
+            padding: 4px 10px;
+            border-radius: 8px;
+            width: fit-content;
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
         #questionText {
-            font-family: 'Scheherazade New', serif;
-            font-size: clamp(1.3rem, 4vw, 1.6rem);
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 25px;
-            color: var(--pharaoh-accent-light);
-            border-right: 4px solid var(--pharaoh-gold-light);
-            padding-right: 12px;
-            line-height: 1.4;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #fff;
         }
 
-        .option-pharaoh {
-            background: #1a1a1a;
-            border: 2px solid var(--pharaoh-gold-dark);
-            padding: 12px 15px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            color: var(--pharaoh-text);
+        /* منطقة الإجابة */
+        .answer-box {
+            background: rgba(255,255,255,0.03);
+            border: 1px dashed rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            flex-grow: 1;
             position: relative;
-            padding-right: 45px;
-            transition: 0.2s;
-            font-size: 15px;
+            transition: 0.3s;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
         }
-        .option-pharaoh.selected { background: var(--pharaoh-gold-light); color: black; font-weight: bold; border-color: white; }
 
-        .option-pharaoh::before {
-            content: attr(data-prefix);
-            position: absolute;
-            right: 12px;
-            color: var(--pharaoh-gold-light);
-            font-weight: bold;
-            text-transform: uppercase;
+        /* وضع الإجابة المخفية (سطور) */
+        .answer-box.hidden-mode {
+            background-image: repeating-linear-gradient(transparent, transparent 39px, rgba(255,255,255,0.1) 40px);
+            align-items: flex-start;
         }
-        .option-pharaoh.selected::before { color: black; }
-
-        .progress-base { width: 100%; height: 6px; background: #333; border-radius: 3px; margin-bottom: 15px; overflow: hidden; }
-        #progressFill { height: 100%; background: var(--pharaoh-gold-light); width: 0%; transition: 0.5s; }
-
-        .watermark { text-align: center; font-size: 11px; color: #666; margin-top: 15px; font-style: italic; }
         
-        .hidden { display: none; }
-
-        /* تعديلات للموبايل الصغير جداً */
-        @media (max-width: 380px) {
-            .inner-content-wrapper { padding: 15px; }
-            #questionText { font-size: 1.2rem; }
-            .option-pharaoh { font-size: 14px; padding: 10px 12px; padding-right: 40px; }
+        .answer-box.hidden-mode .ans-text {
+            display: none;
         }
 
-        @keyframes fadeInPharaoh { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* وضع الإجابة الظاهرة */
+        .answer-box.visible-mode {
+            background: rgba(74, 222, 128, 0.1); /* خلفية خضراء خفيفة */
+            border: 1px solid var(--accent-green);
+        }
+
+        .ans-text {
+            font-size: 18px;
+            color: var(--accent-green);
+            font-weight: 600;
+            line-height: 1.6;
+            width: 100%;
+        }
+
+        /* شريط التحكم */
+        .controls-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            background: rgba(0,0,0,0.2);
+            padding: 5px;
+            border-radius: 10px;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            color: #cbd5e1;
+            border: none;
+            padding: 8px 15px;
+            font-family: 'Cairo';
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .toggle-btn:hover { color: #fff; }
+
+        .footer-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-sec {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            flex: 1;
+            font-family: 'Cairo';
+        }
+
+        .watermark {
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            font-size: 10px;
+            opacity: 0.3;
+            letter-spacing: 1px;
+        }
+
+        .hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="inner-content-wrapper">
-        <div id="setupView">
-            <h1>أرشيف المعرفة 𓂀</h1>
-            <textarea id="questionInput" placeholder="أدخل الأسئلة هنا...
-س: من هو ملك توحيد القطرين؟
-a: مينا
-b: أحمس
-c: رمسيس
-d: تحتمس
-الإجابة: مينا"></textarea>
-            <button onclick="startPharaohQuiz()" class="btn-pharaoh">بدء الاختبار 🏺</button>
+    
+    <div id="startScreen" class="glass-panel">
+        <h1>📝 المقالي و أكمل</h1>
+        <div class="subtitle">ضع السؤال، ثم علامة (==)، ثم الإجابة.<br>مثال: عاصمة مصر؟ == القاهرة</div>
+        <textarea id="rawInput" placeholder="السؤال الأول هنا... == الإجابة النموذجية&#10;&#10;السؤال الثاني... == الإجابة"></textarea>
+        <button onclick="launch()" class="btn-main">تجهيز الأسئلة 🚀</button>
+    </div>
+
+    <div id="quizScreen" class="hidden">
+        
+        <div class="controls-bar">
+            <button onclick="toggleAnswer()" class="toggle-btn">👁️ إظهار/إخفاء الإجابة</button>
+            <span style="color: #64748b; font-size: 12px; padding: 8px;">(للتحكم قبل التصوير)</span>
         </div>
 
-        <div id="quizView" class="hidden">
-            <div class="progress-base"><div id="progressFill"></div></div>
-            <div id="quizDisplayArea">
-                <div id="questionText"></div>
-                <div id="optionsList"></div>
+        <div id="captureArea">
+            <div id="questionType">سؤال مقالي / أكمل</div>
+            <div id="questionText">جاري التحميل...</div>
+            
+            <div id="answerBox" class="answer-box hidden-mode">
+                <div id="answerText" class="ans-text"></div>
             </div>
-            <div style="display:flex; gap:10px;">
-                <button onclick="capturePharaohCard()" class="btn-pharaoh" style="margin-top:0; flex:1;">📸 حفظ</button>
-                <button onclick="nextPharaohQuestion()" class="btn-pharaoh" style="margin-top:0; flex:1; background: #333; color: gold; border: 1px solid gold;">التالي 📜</button>
-            </div>
-            <div class="watermark">بواسطة: أ. إيهاب أشرف 🏛️</div>
+
+            <div class="watermark">By Mr.Ehab Ashraf</div>
         </div>
+
+        <div class="footer-actions">
+            <button onclick="takeShot()" class="btn-main" style="margin:0; flex: 2;">📸 حفظ الصورة</button>
+            <button onclick="goNext()" class="btn-sec">التالي ⏭️</button>
+        </div>
+        <button onclick="location.reload()" style="margin-top:10px; background:none; border:none; color:#64748b; width:100%; cursor:pointer;">عودة للبداية</button>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 <script>
-    let pharaohQuestions = [];
-    let currentPharaohIndex = 0;
-    const englishPrefixes = ['a:', 'b:', 'c:', 'd:'];
+    let data = [];
+    let currentIdx = 0;
+    let isAnswerVisible = false;
 
-    function startPharaohQuiz() {
-        const rawText = document.getElementById('questionInput').value.trim();
-        if(!rawText) return;
+    function launch() {
+        const input = document.getElementById('rawInput').value.trim();
+        if(!input) return alert("لطفاً أدخل الأسئلة");
 
-        const blocks = rawText.split("\n\n");
-        pharaohQuestions = blocks.map(block => {
-            const lines = block.split("\n").map(l => l.trim()).filter(l => l !== "");
-            if(lines.length >= 6) {
+        // التقسيم بناء على سطرين فارغين بين كل سؤال وآخر
+        const blocks = input.split("\n\n");
+        
+        data = blocks.map(b => {
+            // تقسيم السؤال عن الإجابة باستخدام "=="
+            const parts = b.split("==");
+            if(parts.length > 0) {
                 return { 
-                    q: lines[0].replace(/س: ?/g, ""),
-                    opts: lines.slice(1, 5),
-                    ans: lines[5]
+                    q: parts[0].trim(), 
+                    a: parts[1] ? parts[1].trim() : "" // الإجابة قد تكون فارغة
                 };
             }
             return null;
-        }).filter(item => item !== null);
+        }).filter(x => x);
 
-        if(pharaohQuestions.length > 0) {
-            document.getElementById('setupView').classList.add('hidden');
-            document.getElementById('quizView').classList.remove('hidden');
-            displayPharaohQuestion();
-        }
+        if(!data.length) return alert("تنسيق النص غير صحيح");
+
+        document.getElementById('startScreen').classList.add('hidden');
+        document.getElementById('quizScreen').classList.remove('hidden');
+        render();
     }
 
-    function displayPharaohQuestion() {
-        const currentItem = pharaohQuestions[currentPharaohIndex];
-        document.getElementById('questionText').innerText = `Q${currentPharaohIndex + 1}: ${currentItem.q}`;
+    function render() {
+        const item = data[currentIdx];
+        
+        // إعادة تعيين حالة الإجابة للإخفاء عند كل سؤال جديد
+        isAnswerVisible = false;
+        updateAnswerState();
 
-        const optionsContainer = document.getElementById('optionsList');
-        optionsContainer.innerHTML = '';
-
-        currentItem.opts.forEach((opt, index) => {
-            const div = document.createElement('div');
-            div.className = 'option-pharaoh';
-            div.innerText = opt.replace(/^[a-dA-Dأ-د]: ?/g, "");
-            div.setAttribute('data-prefix', englishPrefixes[index]);
-            div.onclick = function() {
-                document.querySelectorAll('.option-pharaoh').forEach(c => c.classList.remove('selected'));
-                this.classList.add('selected');
-            };
-            optionsContainer.appendChild(div);
-        });
-
-        document.getElementById('progressFill').style.width = ((currentPharaohIndex + 1) / pharaohQuestions.length) * 100 + '%';
-    }
-
-    function nextPharaohQuestion() {
-        if(currentPharaohIndex < pharaohQuestions.length - 1) {
-            currentPharaohIndex++;
-            displayPharaohQuestion();
+        document.getElementById('questionText').innerText = item.q;
+        document.getElementById('answerText').innerText = item.a || "(لا توجد إجابة نموذجية مدخلة)";
+        
+        // تغيير نوع السؤال تلقائياً بناء على النص
+        const typeLabel = document.getElementById('questionType');
+        if(item.q.includes(".....") || item.q.includes("____")) {
+            typeLabel.innerText = "سؤال أكمل";
         } else {
-            alert("اكتمل الاختبار يا عبقري!");
-            location.reload();
+            typeLabel.innerText = "سؤال مقالي";
         }
     }
 
-    function capturePharaohCard() {
-        const targetElement = document.getElementById('quizDisplayArea');
-        html2canvas(targetElement, { 
-            scale: 2, 
-            backgroundColor: '#000000',
-            logging: false 
+    function toggleAnswer() {
+        isAnswerVisible = !isAnswerVisible;
+        updateAnswerState();
+    }
+
+    function updateAnswerState() {
+        const box = document.getElementById('answerBox');
+        if(isAnswerVisible) {
+            box.classList.remove('hidden-mode');
+            box.classList.add('visible-mode');
+        } else {
+            box.classList.remove('visible-mode');
+            box.classList.add('hidden-mode');
+        }
+    }
+
+    function goNext() {
+        if(currentIdx < data.length - 1) {
+            currentIdx++;
+            render();
+        } else {
+            alert("تم الانتهاء من جميع الأسئلة!");
+        }
+    }
+
+    function takeShot() {
+        const area = document.getElementById('captureArea');
+        // إخفاء الـ border radius مؤقتاً لتفادي مشاكل التصوير أحياناً
+        html2canvas(area, {
+            scale: 2,
+            backgroundColor: null,
+            borderRadius: 25
         }).then(canvas => {
             const link = document.createElement('a');
-            link.download = `Pharaoh_Card_${currentPharaohIndex + 1}.png`;
+            link.download = `Eihab_Ashraf_Essay_${currentIdx+1}.png`;
             link.href = canvas.toDataURL();
             link.click();
         });
