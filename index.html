@@ -2,319 +2,253 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>صانع الامتحانات الورقية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة شرف الطلاب المتميزين</title>
     <style>
-        :root {
-            --bg-color: #e2e8f0;
-            --paper-width: 210mm;
-            --paper-height: 297mm;
-        }
-
+        /* تنسيق الصفحة العامة */
         body {
-            background-color: var(--bg-color);
-            font-family: 'Amiri', 'Times New Roman', serif; /* خطوط رسمية */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
+            padding: 20px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px;
         }
 
-        /* واجهة الإدخال (لا تظهر في الطباعة) */
-        .controls {
-            background: #fff;
+        /* عنوان اللوحة */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* منطقة الإدخال */
+        .input-area {
+            background: white;
             padding: 20px;
-            width: 100%;
-            max-width: 800px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             display: flex;
-            flex-direction: column;
             gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 500px;
         }
 
-        .controls h2 { margin: 0 0 10px 0; color: #333; }
-        
-        .input-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        input, textarea {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: 'Amiri';
+        input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             font-size: 16px;
+            outline: none;
+            transition: 0.3s;
         }
 
-        textarea { height: 100px; resize: vertical; }
+        input:focus {
+            border-color: #27ae60;
+        }
 
-        button {
-            background: #2563eb;
+        button.add-btn {
+            background-color: #27ae60;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
             font-weight: bold;
-        }
-        button:hover { background: #1d4ed8; }
-        .btn-print { background: #059669; }
-
-        /* ورقة الامتحان (A4) */
-        .sheet {
-            background: white;
-            width: var(--paper-width);
-            min-height: var(--paper-height);
-            padding: 20mm; /* هوامش الصفحة */
-            box-shadow: 0 0 15px rgba(0,0,0,0.15);
-            box-sizing: border-box;
-            position: relative;
-            margin-bottom: 30px;
-            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: 0.3s;
         }
 
-        /* الإطار الخارجي للامتحان */
-        .exam-border {
-            border: 2px solid #000;
-            height: 100%;
-            padding: 15px;
+        button.add-btn:hover {
+            background-color: #219150;
+            transform: scale(1.05);
+        }
+
+        /* منطقة عرض الأسماء (لوحة الشرف) */
+        .board-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .student-card {
+            background: linear-gradient(to bottom right, #ffffff, #fffde7);
+            border: 2px solid #f1c40f;
+            border-radius: 12px;
+            padding: 15px 25px;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             position: relative;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             display: flex;
             flex-direction: column;
-        }
-
-        /* الترويسة */
-        .header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-bottom: 2px double #000;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            text-align: center;
         }
 
-        .header-section {
-            width: 30%;
-            font-size: 14px;
-            line-height: 1.6;
+        .student-card h3 {
+            margin: 10px 0;
+            color: #2c3e50;
+            font-size: 1.2rem;
         }
 
-        .header-title {
-            width: 40%;
-            font-size: 22px;
-            font-weight: bold;
-            text-decoration: underline;
+        .medal {
+            font-size: 2rem;
+            margin-bottom: 5px;
         }
 
-        /* بيانات الطالب */
-        .student-info {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            font-weight: bold;
-            font-size: 16px;
-            border: 1px solid #000;
-            padding: 5px 10px;
-        }
-        .student-field { flex: 1; border-left: 1px solid #000; padding-left: 10px; }
-        .student-field:last-child { border-left: none; }
-
-        /* منطقة الأسئلة */
-        .questions-area {
-            flex-grow: 1;
-        }
-
-        .question-block {
-            margin-bottom: 15px;
-            page-break-inside: avoid; /* يمنع انقسام السؤال بين صفحتين */
-        }
-
-        .q-text {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: flex;
-        }
-
-        .q-number {
-            min-width: 25px;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* خيارين في السطر */
-            gap: 5px 20px;
-            padding-right: 25px;
-            font-size: 16px;
-        }
-
-        .essay-lines {
-            margin-top: 10px;
-            border-bottom: 1px dotted #000;
-            height: 25px;
-            width: 100%;
-        }
-
-        /* تذييل الصفحة */
-        .footer {
-            text-align: center;
+        /* زر الحذف الصغير */
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
             font-size: 12px;
-            margin-top: 20px;
-            border-top: 1px solid #000;
-            padding-top: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: 0.3s;
         }
 
-        /* إعدادات الطباعة */
-        @media print {
-            body { 
-                background: none; 
-                margin: 0; 
-                padding: 0; 
-                -webkit-print-color-adjust: exact; 
-            }
-            .controls { display: none; } /* إخفاء لوحة التحكم */
-            .sheet { 
-                box-shadow: none; 
-                margin: 0; 
-                width: 100%;
-                border: none;
-            }
-            @page {
-                size: A4;
-                margin: 0;
-            }
+        .student-card:hover .delete-btn {
+            opacity: 1;
+        }
+
+        /* زر مسح الكل */
+        .clear-all {
+            margin-top: 30px;
+            background: none;
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .clear-all:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-<div class="controls">
-    <h2>🛠️ إعدادات الامتحان</h2>
-    <div class="input-group">
-        <input type="text" id="schoolName" placeholder="اسم المدرسة / السنتر" value="منصة الأوائل التعليمية">
-        <input type="text" id="examName" placeholder="عنوان الامتحان" value="اختبار شهر أكتوبر">
-    </div>
-    <div class="input-group">
-        <input type="text" id="teacherName" placeholder="اسم المعلم" value="أ. إيهاب أشرف">
-        <input type="text" id="subject" placeholder="المادة" value="اللغة العربية">
-    </div>
-    
-    <textarea id="rawInput" placeholder="اكتب السؤال في سطر..&#10;ثم الخيارات كل واحد في سطر (للاختياري)..&#10;اترك سطراً فارغاً بين كل سؤال وآخر."></textarea>
-    
-    <div class="input-group">
-        <button onclick="generateExam()">📄 إنشاء الورقة</button>
-        <button class="btn-print" onclick="window.print()">🖨️ طباعة الامتحان</button>
-    </div>
-    <small style="color:red; margin-top:5px;">* ملحوظة: يمكنك الضغط على أي نص في ورقة الامتحان أدناه لتعديله يدوياً.</small>
-</div>
+    <header>
+        <h1>🏆 لوحة الشرف 🏆</h1>
+        <p>أبطالنا المتميزين اليوم</p>
+    </header>
 
-<div class="sheet">
-    <div class="exam-border">
-        
-        <div class="header" contenteditable="true">
-            <div class="header-section" style="text-align: right;">
-                <div id="dispSchool">اسم المدرسة</div>
-                <div>الإدارة التعليمية</div>
-            </div>
-            
-            <div class="header-title" id="dispExamName">عنوان الامتحان</div>
-            
-            <div class="header-section" style="text-align: left;">
-                <div id="dispSubject">المادة</div>
-                <div id="dispTeacher">المعلم</div>
-                <div>الزمن: ساعة</div>
-            </div>
+    <div class="input-area">
+        <input type="text" id="studentName" placeholder="أدخل اسم الطالب هنا..." onkeypress="handleEnter(event)">
+        <button class="add-btn" onclick="addStudent()">إضافة +</button>
+    </div>
+
+    <div id="honorBoard" class="board-container">
         </div>
 
-        <div class="student-info" contenteditable="true">
-            <div class="student-field">الاسم: ............................................</div>
-            <div class="student-field">الرقم: ...................</div>
-            <div class="student-field">الفصل: ...................</div>
-        </div>
+    <button class="clear-all" onclick="clearAll()">بدء حصة جديدة (مسح الكل)</button>
 
-        <div class="questions-area" id="questionsContainer" contenteditable="true">
-            <p style="text-align:center; color:#999; margin-top:50px;">اضغط "إنشاء الورقة" لرؤية الأسئلة هنا</p>
-        </div>
+    <script>
+        // تحميل البيانات المحفوظة عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', loadStudents);
 
-        <div class="footer" contenteditable="true">
-            <div>مع أطيب التمنيات بالتوفيق والنجاح</div>
-            <div id="footerTeacher">أ. إيهاب أشرف</div>
-        </div>
+        function addStudent() {
+            const input = document.getElementById('studentName');
+            const name = input.value.trim();
 
-    </div>
-</div>
-
-<script>
-    function generateExam() {
-        // تحديث البيانات الأساسية
-        document.getElementById('dispSchool').innerText = document.getElementById('schoolName').value;
-        document.getElementById('dispExamName').innerText = document.getElementById('examName').value;
-        document.getElementById('dispSubject').innerText = document.getElementById('subject').value;
-        document.getElementById('dispTeacher').innerText = document.getElementById('teacherName').value;
-        document.getElementById('footerTeacher').innerText = document.getElementById('teacherName').value;
-
-        // معالجة الأسئلة
-        const input = document.getElementById('rawInput').value.trim();
-        const container = document.getElementById('questionsContainer');
-        container.innerHTML = '';
-
-        if (!input) {
-            container.innerHTML = '<p style="text-align:center;">لا توجد أسئلة!</p>';
-            return;
-        }
-
-        const blocks = input.split('\n\n'); // تقسيم الأسئلة بالفراغ المزدوج
-
-        blocks.forEach((block, index) => {
-            const lines = block.split('\n').filter(l => l.trim() !== '');
-            if (lines.length === 0) return;
-
-            const questionText = lines[0];
-            const options = lines.slice(1);
-
-            const qDiv = document.createElement('div');
-            qDiv.className = 'question-block';
-
-            // رقم السؤال ونصه
-            let html = `
-                <div class="q-text">
-                    <span class="q-number">${index + 1}-</span>
-                    <span>${questionText}</span>
-                </div>
-            `;
-
-            // إذا كان هناك خيارات (سؤال اختياري)
-            if (options.length > 0) {
-                html += `<div class="options-grid">`;
-                options.forEach((opt, i) => {
-                    const char = String.fromCharCode(1571 + i); // أ، ب، ج... (تقريبي)
-                    // ترميز الحروف يدوياً لضمان الدقة
-                    const letters = ['أ', 'ب', 'ج', 'د', 'هـ'];
-                    html += `<div>(${letters[i] || '-'}) ${opt}</div>`;
-                });
-                html += `</div>`;
-            } else {
-                // إذا لم توجد خيارات، نعتبره سؤال مقالي ونضيف أسطر للكتابة
-                html += `
-                    <div class="essay-lines"></div>
-                    <div class="essay-lines"></div>
-                    <div class="essay-lines"></div>
-                `;
+            if (name === "") {
+                alert("الرجاء كتابة اسم الطالب!");
+                return;
             }
 
-            qDiv.innerHTML = html;
-            container.appendChild(qDiv);
-        });
-    }
-</script>
+            createCard(name);
+            saveToStorage(name);
+            
+            // تفريغ الخانة والتركيز عليها مرة أخرى للكتابة السريعة
+            input.value = "";
+            input.focus();
+        }
+
+        function createCard(name) {
+            const board = document.getElementById('honorBoard');
+            
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            
+            card.innerHTML = `
+                <button class="delete-btn" onclick="removeStudent(this, '${name}')">✕</button>
+                <div class="medal">🥇</div>
+                <h3>${name}</h3>
+            `;
+
+            board.appendChild(card);
+        }
+
+        function handleEnter(event) {
+            if (event.key === "Enter") {
+                addStudent();
+            }
+        }
+
+        // حفظ الاسم في ذاكرة المتصفح
+        function saveToStorage(name) {
+            let students = JSON.parse(localStorage.getItem('honorStudents')) || [];
+            students.push(name);
+            localStorage.setItem('honorStudents', JSON.stringify(students));
+        }
+
+        // استرجاع الأسماء عند فتح الصفحة
+        function loadStudents() {
+            let students = JSON.parse(localStorage.getItem('honorStudents')) || [];
+            students.forEach(name => createCard(name));
+        }
+
+        // حذف طالب واحد
+        function removeStudent(btn, name) {
+            if(confirm('هل تريد حذف هذا الطالب؟')) {
+                // إزالة من الشاشة
+                btn.parentElement.remove();
+                
+                // إزالة من الذاكرة
+                let students = JSON.parse(localStorage.getItem('honorStudents')) || [];
+                students = students.filter(student => student !== name); // حذف الاسم
+                localStorage.setItem('honorStudents', JSON.stringify(students));
+            }
+        }
+
+        // مسح كل اللوحة
+        function clearAll() {
+            if(confirm('هل أنت متأكد من بدء حصة جديدة ومسح جميع الأسماء؟')) {
+                document.getElementById('honorBoard').innerHTML = '';
+                localStorage.removeItem('honorStudents');
+            }
+        }
+    </script>
 
 </body>
 </html>
