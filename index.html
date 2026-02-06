@@ -5,26 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>لوحة شرف ملوك الخريطة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
         :root {
             --pl-purple: #3d195b;
             --pl-neon: #00ff87;
-            --glass: rgba(255, 255, 255, 0.07); /* تقليل الشفافية لإظهار الخريطة */
+            --glass: rgba(255, 255, 255, 0.07);
         }
 
         body {
             margin: 0;
             padding: 20px;
             font-family: 'Cairo', sans-serif;
-            background-color: #000; /* لون احتياطي */
-            /* خلفية الخريطة مع الجرادينت */
             background: 
                 linear-gradient(135deg, rgba(61, 25, 91, 0.9) 0%, rgba(15, 12, 41, 0.95) 100%),
                 url('https://png.pngtree.com/png-vector/20220816/ourmid/pngtree-outline-map-of-arab-world-isolated-on-white-background-png-image_6111818.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            background-blend-mode: overlay; /* دمج الخريطة مع الألوان */
+            background-blend-mode: overlay;
             color: white;
             min-height: 100vh;
             display: flex;
@@ -32,12 +32,7 @@
             align-items: center;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-            z-index: 2;
-        }
-        
+        .header { text-align: center; margin-bottom: 25px; }
         .header h1 {
             font-size: 2.8rem;
             font-weight: 900;
@@ -45,10 +40,18 @@
             background: linear-gradient(to left, #fff, var(--pl-neon));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        /* منطقة الإدخال */
+        /* منطقة الإدخال والتحكم */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
         .input-group {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
@@ -57,10 +60,6 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             gap: 10px;
-            margin-bottom: 30px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
         input {
@@ -74,26 +73,38 @@
             outline: none;
         }
 
-        button.add-btn {
-            background: var(--pl-neon);
-            color: var(--pl-purple);
+        button {
             border: none;
-            padding: 10px 25px;
+            padding: 10px 20px;
             font-weight: 900;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.3s ease;
+            transition: 0.3s;
+            font-family: 'Cairo';
         }
 
-        button.add-btn:hover {
-            box-shadow: 0 0 20px var(--pl-neon);
-            transform: translateY(-2px);
+        .add-btn { background: var(--pl-neon); color: var(--pl-purple); }
+        
+        .download-btn {
+            background: #ffffff1a;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
+        .download-btn:hover { background: #fff; color: var(--pl-purple); }
 
-        /* الجدول الزجاجي */
-        .table-container {
+        /* الجدول المراد تصويره */
+        .capture-area {
             width: 100%;
             max-width: 950px;
+            padding: 20px; /* مساحة جمالية عند التصوير */
+            border-radius: 30px;
+        }
+
+        .table-container {
             background: var(--glass);
             backdrop-filter: blur(20px);
             border-radius: 25px;
@@ -102,39 +113,12 @@
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-        }
+        table { width: 100%; border-collapse: collapse; text-align: center; }
+        thead { background: rgba(0, 0, 0, 0.5); color: var(--pl-neon); }
+        th { padding: 18px; text-transform: uppercase; }
+        td { padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-weight: 700; }
 
-        thead {
-            background: rgba(0, 0, 0, 0.5);
-            color: var(--pl-neon);
-        }
-
-        th {
-            padding: 18px;
-            font-size: 1rem;
-            text-transform: uppercase;
-        }
-
-        td {
-            padding: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        /* تمييز المراكز الأولى */
-        .rank {
-            width: 60px;
-            font-size: 1.4rem;
-        }
         .rank-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
-        .rank-2 { color: #e0e0e0; }
-        .rank-3 { color: #cd7f32; }
-
         .tag-badge {
             background: rgba(0, 255, 135, 0.1);
             color: var(--pl-neon);
@@ -144,99 +128,109 @@
             font-size: 0.8rem;
         }
 
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #ff5e5e;
-            cursor: pointer;
-            font-weight: bold;
-            opacity: 0.5;
-        }
-        .delete-btn:hover { opacity: 1; }
+        .delete-btn { background: none; color: #ff5e5e; font-size: 1.2rem; cursor: pointer; }
 
-        /* لقطة شاشة للموبايل */
-        @media (max-width: 600px) {
-            .input-group { flex-direction: column; }
-            th:nth-child(3), td:nth-child(3) { display: none; }
-        }
+        /* إخفاء زر الحذف عند تحميل الصورة */
+        .no-export { transition: 0s; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>لوحة شرف ابطال التحدي</h1>
-        <p style="color: #fff; opacity: 0.8;">فريق المقاتلين</p>
+        <h1>ARAB WORLD ELITE</h1>
+        <p>لوحة شرف ملوك الجغرافيا والتاريخ</p>
     </div>
 
-    <div class="input-group">
-        <input type="text" id="nameInp" placeholder="ادخل اسم البطل العربي...">
-        <button class="add-btn" onclick="addPlayer()">تثبيت في القائمة</button>
+    <div class="controls">
+        <div class="input-group">
+            <input type="text" id="nameInp" placeholder="ادخل اسم البطل العربي..." onkeypress="if(event.key==='Enter') addPlayer()">
+            <button class="add-btn" onclick="addPlayer()">إضافة للقائمة</button>
+        </div>
+        <button class="download-btn" onclick="downloadBoard()">
+            📸 حفظ لوحة الشرف كصورة (PNG)
+        </button>
     </div>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>الترتيب</th>
-                    <th>الاسم</th>
-                    <th>لقب الجدارة</th>
-                    <th>الحالة</th>
-                    <th>-</th>
-                </tr>
-            </thead>
-            <tbody id="leagueBody">
-                </tbody>
-        </table>
+    <div id="capture" class="capture-area">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>الاسم</th>
+                        <th>اللقب</th>
+                        <th>الحالة</th>
+                        <th class="no-export">حذف</th>
+                    </tr>
+                </thead>
+                <tbody id="leagueBody"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', loadData);
-
         function addPlayer() {
             const inp = document.getElementById('nameInp');
             const name = inp.value.trim();
             if(!name) return;
 
-            const titles = ["الفتح العربي", "جنرال الخريطة", "رحالة العصر", "حارس التاريخ", "الأسطورة"];
-            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-
-            const player = { id: Date.now(), name: name, title: randomTitle };
-            savePlayer(player);
-            inp.value = '';
-            loadData();
-        }
-
-        function savePlayer(p) {
-            let list = JSON.parse(localStorage.getItem('arab_league')) || [];
+            const titles = ["جنرال الخريطة", "نابغة التاريخ", "رحالة العصر", "مكتشف"];
+            const p = { id: Date.now(), name, title: titles[Math.floor(Math.random()*titles.length)] };
+            
+            let list = JSON.parse(localStorage.getItem('arab_v3')) || [];
             list.push(p);
-            localStorage.setItem('arab_league', JSON.stringify(list));
+            localStorage.setItem('arab_v3', JSON.stringify(list));
+            inp.value = '';
+            render();
         }
 
-        function loadData() {
+        function render() {
             const body = document.getElementById('leagueBody');
-            let list = JSON.parse(localStorage.getItem('arab_league')) || [];
+            let list = JSON.parse(localStorage.getItem('arab_v3')) || [];
             body.innerHTML = '';
-
-            list.forEach((p, index) => {
-                const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+            list.forEach((p, i) => {
                 body.innerHTML += `
                     <tr>
-                        <td class="rank ${rankClass}">${index + 1}</td>
+                        <td class="${i<3?'rank-'+(i+1):''}">${i+1}</td>
                         <td>${p.name}</td>
-                        <td style="color: #ccc; font-weight: 400;">${p.title}</td>
-                        <td><span class="tag-badge">متميز</span></td>
-                        <td><button class="delete-btn" onclick="removePlayer(${p.id})">✕</button></td>
-                    </tr>
-                `;
+                        <td style="color:#aaa">${p.title}</td>
+                        <td><span class="tag-badge">TOP</span></td>
+                        <td class="no-export"><button class="delete-btn" onclick="remove(${p.id})">✕</button></td>
+                    </tr>`;
             });
         }
 
-        function removePlayer(id) {
-            let list = JSON.parse(localStorage.getItem('arab_league')) || [];
-            list = list.filter(p => p.id !== id);
-            localStorage.setItem('arab_league', JSON.stringify(list));
-            loadData();
+        function remove(id) {
+            let list = JSON.parse(localStorage.getItem('arab_v3')) || [];
+            localStorage.setItem('arab_v3', JSON.stringify(list.filter(p=>p.id!==id)));
+            render();
         }
+
+        // دالة تحويل الكود لصورة
+        function downloadBoard() {
+            const btn = document.querySelector('.download-btn');
+            btn.innerText = "جاري التحضير...";
+            
+            // إخفاء أزرار الحذف مؤقتاً لكي لا تظهر في الصورة
+            document.querySelectorAll('.no-export').forEach(el => el.style.display = 'none');
+
+            html2canvas(document.querySelector("#capture"), {
+                backgroundColor: null, // الحفاظ على خلفية الجرادينت
+                scale: 2, // جودة عالية
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'لوحة-شرف-الأبطال.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                
+                // إعادة إظهار الأزرار
+                document.querySelectorAll('.no-export').forEach(el => el.style.display = 'table-cell');
+                btn.innerHTML = "📸 حفظ لوحة الشرف كصورة (PNG)";
+            });
+        }
+
+        window.onload = render;
     </script>
 </body>
 </html>
