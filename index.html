@@ -2,290 +2,209 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة الشرف الملكية - رواد التاريخ والجغرافيا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    
+    <title>لوحة شرف المتميزين</title>
     <style>
-        :root {
-            --primary-bg: #0f172a; /* كحلي غامق جداً */
-            --card-bg: #1e293b;
-            --gold-light: #fcd34d;
-            --gold-dark: #b45309;
-            --text-color: #f8fafc;
-            --accent-green: #059669;
-        }
-
+        /* التنسيق العام - فخامة داكنة مع ذهبي */
         body {
-            background-color: var(--primary-bg);
-            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
-            color: var(--text-color);
-            font-family: 'Tajawal', sans-serif;
+            background-color: #1a1a2e; /* خلفية كحلية ملكية */
+            color: #e94560;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* --- الهيدر (العنوان) --- */
-        header {
+        /* رأس الصفحة */
+        .header {
             text-align: center;
-            margin-bottom: 40px;
-            position: relative;
-            padding: 20px;
-            border-bottom: 2px solid transparent;
-            border-image: linear-gradient(to right, transparent, var(--gold-light), transparent) 1;
+            border-bottom: 2px solid #c5a059;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            width: 80%;
         }
 
-        h1 {
-            font-family: 'Aref Ruqaa', serif;
-            font-size: 3.5rem;
+        .header h1 {
+            color: #c5a059; /* لون ذهبي */
+            font-size: 35px;
             margin: 0;
-            background: linear-gradient(to bottom, #fff, #fcd34d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 10px rgba(252, 211, 77, 0.3));
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
         }
 
-        p.subtitle {
-            color: #94a3b8;
-            font-size: 1.2rem;
-            margin-top: 10px;
-            letter-spacing: 1px;
-        }
-
-        /* --- شريط التحكم (الإدخال) --- */
-        .controls {
-            display: flex;
-            gap: 15px;
-            background: rgba(30, 41, 59, 0.8);
+        /* منطقة الإدخال - بسيطة واحترافية */
+        .admin-section {
+            background: #16213e;
             padding: 15px;
-            border-radius: 50px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            border: 1px solid rgba(252, 211, 77, 0.2);
-            backdrop-filter: blur(10px);
-            margin-bottom: 50px;
-            width: 90%;
-            max-width: 600px;
-            transition: 0.3s;
-        }
-
-        .controls:focus-within {
-            border-color: var(--gold-light);
-            box-shadow: 0 0 20px rgba(252, 211, 77, 0.2);
+            border-radius: 10px;
+            border: 1px solid #c5a059;
+            margin-bottom: 40px;
+            display: flex;
+            gap: 10px;
         }
 
         input {
-            flex: 1;
-            background: transparent;
+            padding: 10px;
+            border-radius: 5px;
             border: none;
-            color: white;
-            font-size: 1.2rem;
+            width: 250px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #c5a059;
+            color: #1a1a2e;
+            border: none;
             padding: 10px 20px;
-            font-family: 'Tajawal', sans-serif;
-            outline: none;
-        }
-
-        button.add-btn {
-            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
-            border: none;
-            padding: 10px 30px;
-            border-radius: 30px;
-            color: #0f172a;
+            border-radius: 5px;
             font-weight: bold;
-            font-size: 1.1rem;
             cursor: pointer;
-            transition: transform 0.2s;
-            font-family: 'Aref Ruqaa', serif;
+            transition: 0.3s;
         }
 
-        button.add-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px var(--gold-light);
+        button:hover {
+            background-color: #fff;
         }
 
-        /* --- شبكة العرض (اللوحة) --- */
-        .grid-container {
+        /* شبكة عرض الطلاب - تملأ الصفحة */
+        .honor-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
             width: 100%;
             max-width: 1200px;
-            padding-bottom: 50px;
         }
 
+        /* تصميم الكرت الواحد */
         .student-card {
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border: 1px solid rgba(252, 211, 77, 0.3);
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            border: 2px solid #c5a059;
             border-radius: 15px;
             padding: 20px;
             text-align: center;
             position: relative;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-            animation: slideUp 0.5s ease-out forwards;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            animation: fadeIn 0.5s ease;
         }
 
-        .student-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold-light);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(252, 211, 77, 0.1);
-        }
-
-        /* زخرفة إسلامية خفيفة في خلفية الكرت */
-        .student-card::before {
-            content: "۞";
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            font-size: 8rem;
-            color: rgba(255, 255, 255, 0.03);
-            font-family: serif;
-            pointer-events: none;
-        }
-
-        .rank-badge {
-            font-size: 2.5rem;
+        .student-card .icon {
+            font-size: 40px;
             margin-bottom: 10px;
-            display: inline-block;
-            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.3));
         }
 
-        .student-name {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            margin: 10px 0;
-            word-wrap: break-word;
+        .student-card .name {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
         }
 
-        .tag {
-            font-size: 0.8rem;
-            color: var(--gold-light);
-            border: 1px solid rgba(252, 211, 77, 0.2);
-            padding: 3px 10px;
-            border-radius: 10px;
-            background: rgba(252, 211, 77, 0.05);
+        .student-card .title {
+            color: #c5a059;
+            font-size: 14px;
+            margin-top: 5px;
+            font-style: italic;
         }
 
-        /* زر الحذف */
-        .delete-icon {
+        /* زر الحذف الصغير */
+        .delete-btn {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            color: #ef4444;
+            top: 5px;
+            right: 5px;
+            color: #ff4d4d;
             cursor: pointer;
-            opacity: 0;
-            transition: 0.2s;
-            font-size: 1.2rem;
-            padding: 5px;
-            z-index: 10;
+            font-size: 12px;
+            background: none;
+            border: none;
         }
 
-        .student-card:hover .delete-icon {
-            opacity: 1;
-        }
-
-        /* التأثيرات الحركية */
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* شريط الأدوات السفلي */
-        .toolbar {
-            position: fixed;
-            bottom: 20px;
-            background: rgba(15, 23, 42, 0.9);
-            padding: 10px 20px;
-            border-radius: 30px;
-            border: 1px solid #334155;
-            display: flex;
-            gap: 20px;
-            backdrop-filter: blur(5px);
-            z-index: 100;
-        }
-
-        .tool-btn {
+        .clear-btn {
+            margin-top: 50px;
             background: none;
-            border: none;
-            color: #94a3b8;
-            cursor: pointer;
-            font-family: 'Tajawal', sans-serif;
-            font-size: 0.9rem;
-            transition: 0.3s;
+            border: 1px solid #ff4d4d;
+            color: #ff4d4d;
         }
-
-        .tool-btn:hover {
-            color: #fff;
-        }
-
-        .tool-btn.danger:hover {
-            color: #ef4444;
-        }
-
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🏛️ جدارية العظماء 🏛️</h1>
-        <p class="subtitle">سجل نخب طلاب الجغرافيا والتاريخ</p>
-    </header>
-
-    <div class="controls">
-        <input type="text" id="nameInput" placeholder="اكتب اسم الطالب المتميز..." onkeypress="handleEnter(event)">
-        <button class="add-btn" onclick="addStudent()">تخليد الاسم</button>
+    <div class="header">
+        <h1>🏆 لوحة شرف المؤرخين والجغرافيين 🌍</h1>
+        <p style="color: #999;">فرسان الحصة المتميزون</p>
     </div>
 
-    <div class="grid-container" id="honorGrid">
+    <div class="admin-section">
+        <input type="text" id="studentName" placeholder="اكتب اسم الطالب هنا...">
+        <button onclick="addStudent()">تتويج الطالب</button>
+    </div>
+
+    <div class="honor-grid" id="honorGrid">
         </div>
 
-    <div class="toolbar">
-        <button class="tool-btn" onclick="exportToImage()">📸 لقطة شاشة (قريباً)</button>
-        <span style="color:#334155">|</span>
-        <button class="tool-btn danger" onclick="clearAll()">🗑️ مسح السجل بالكامل</button>
-    </div>
+    <button class="clear-btn" onclick="clearBoard()">مسح اللوحة بالكامل</button>
 
     <script>
-        // الأيقونات التي ستظهر عشوائياً
-        const badges = ['🌍', '🧭', '🕌', '⚔️', '🛡️', '📜', '🏺', '👑', '🔭'];
-        const titles = ['مؤرخ', 'رحالة', 'قائد', 'جغرافي', 'مستكشف'];
-
-        document.addEventListener('DOMContentLoaded', loadStudents);
+        // تحميل الأسماء عند فتح الصفحة
+        window.onload = function() {
+            const saved = JSON.parse(localStorage.getItem('heroList')) || [];
+            saved.forEach(s => createCard(s.name, s.title, s.icon));
+        };
 
         function addStudent() {
-            const input = document.getElementById('nameInput');
-            const name = input.value.trim();
+            const nameInput = document.getElementById('studentName');
+            const name = nameInput.value.trim();
             
-            if (!name) return;
+            if(name === "") return;
 
-            // اختيار أيقونة ولقب عشوائي
-            const randomBadge = badges[Math.floor(Math.random() * badges.length)];
+            // قائمة ألقاب وأيقونات عشوائية (تاريخ وجغرافيا)
+            const titles = ["المستكشف البطل", "المؤرخ الذكي", "قائد الرحلة", "نابغة الخرائط", "ملك التاريخ"];
+            const icons = ["🧭", "📜", "🌍", "🏺", "⚔️"];
+            
             const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+            const randomIcon = icons[Math.floor(Math.random() * icons.length)];
 
-            const studentData = {
-                id: Date.now(),
-                name: name,
-                badge: randomBadge,
-                title: randomTitle
-            };
+            createCard(name, randomTitle, randomIcon);
+            saveToStorage(name, randomTitle, randomIcon);
 
-            saveStudent(studentData);
-            renderCard(studentData);
-            
-            input.value = '';
-            input.focus();
+            nameInput.value = "";
+            nameInput.focus();
         }
 
-        function renderCard(data) {
+        function createCard(name, title, icon) {
             const grid = document.getElementById('honorGrid');
-            const card = document.createElement('div');
-            card.className = 'student-card';
-            card.setAttribute('id', `card-${data.id}`);
-            
-            card.innerHTML = `
-                <div class="delete-
+            const div = document.createElement('div');
+            div.className = 'student-card';
+            div.innerHTML = `
+                <button class="delete-btn" onclick="this.parentElement.remove(); removeFromStorage('${name}')">X</button>
+                <div class="icon">${icon}</div>
+                <div class="name">${name}</div>
+                <div class="title">${title}</div>
+            `;
+            grid.appendChild(div);
+        }
+
+        function saveToStorage(name, title, icon) {
+            let list = JSON.parse(localStorage.getItem('heroList')) || [];
+            list.push({name, title, icon});
+            localStorage.setItem('heroList', JSON.stringify(list));
+        }
+
+        function removeFromStorage(name) {
+            let list = JSON.parse(localStorage.getItem('heroList')) || [];
+            list = list.filter(s => s.name !== name);
+            localStorage.setItem('heroList', JSON.stringify(list));
+        }
+
+        function clearBoard() {
+            if(confirm("هل تريد مسح جميع الأسماء؟")) {
+                localStorage.removeItem('heroList');
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
