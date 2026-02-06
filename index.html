@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دوري النخبة - الجغرافيا والتاريخ</title>
+    <title>لوحة شرف ملوك الخريطة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --pl-purple: #3d195b; /* بنفسجي الدوري الإنجليزي */
-            --pl-neon: #00ff87;   /* أخضر الفسفوري المشهور */
-            --glass: rgba(255, 255, 255, 0.1);
+            --pl-purple: #3d195b;
+            --pl-neon: #00ff87;
+            --glass: rgba(255, 255, 255, 0.07); /* تقليل الشفافية لإظهار الخريطة */
         }
 
         body {
             margin: 0;
             padding: 20px;
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #3d195b 0%, #000000 100%);
+            background-color: #000; /* لون احتياطي */
+            /* خلفية الخريطة مع الجرادينت */
+            background: 
+                linear-gradient(135deg, rgba(61, 25, 91, 0.9) 0%, rgba(15, 12, 41, 0.95) 100%),
+                url('https://png.pngtree.com/png-vector/20220816/ourmid/pngtree-outline-map-of-arab-world-isolated-on-white-background-png-image_6111818.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-blend-mode: overlay; /* دمج الخريطة مع الألوان */
             color: white;
             min-height: 100vh;
             display: flex;
@@ -24,45 +32,46 @@
             align-items: center;
         }
 
-        /* --- الهيدر --- */
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            z-index: 2;
         }
         
         .header h1 {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 900;
             margin: 0;
-            text-transform: uppercase;
-            background: linear-gradient(to bottom, #fff, var(--pl-neon));
+            background: linear-gradient(to left, #fff, var(--pl-neon));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        /* --- منطقة الإدخال الزجاجية --- */
+        /* منطقة الإدخال */
         .input-group {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            padding: 12px;
+            border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             gap: 10px;
             margin-bottom: 30px;
             width: 100%;
             max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
         input {
             flex: 1;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
+            padding: 10px 15px;
             color: white;
             border-radius: 8px;
             font-family: 'Cairo';
+            outline: none;
         }
 
         button.add-btn {
@@ -73,113 +82,106 @@
             font-weight: 900;
             border-radius: 8px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.3s ease;
         }
 
         button.add-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px var(--pl-neon);
+            box-shadow: 0 0 20px var(--pl-neon);
+            transform: translateY(-2px);
         }
 
-        /* --- الجدول الزجاجي الاحترافي --- */
+        /* الجدول الزجاجي */
         .table-container {
             width: 100%;
-            max-width: 900px;
+            max-width: 950px;
             background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             overflow: hidden;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: right;
+            text-align: center;
         }
 
         thead {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             color: var(--pl-neon);
         }
 
         th {
-            padding: 15px 20px;
-            font-size: 0.9rem;
+            padding: 18px;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         td {
-            padding: 15px 20px;
+            padding: 16px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             font-weight: 700;
+            font-size: 1.1rem;
         }
 
-        tr:last-child td { border: none; }
-
-        tr:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        /* أرقام الترتيب */
+        /* تمييز المراكز الأولى */
         .rank {
-            font-weight: 900;
-            width: 40px;
-            text-align: center;
+            width: 60px;
+            font-size: 1.4rem;
         }
-
-        .rank-1 { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
-        .rank-2 { color: #c0c0c0; }
+        .rank-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255,215,0,0.5); }
+        .rank-2 { color: #e0e0e0; }
         .rank-3 { color: #cd7f32; }
 
-        /* الأوسمة */
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            background: var(--pl-purple);
-            border: 1px solid var(--pl-neon);
+        .tag-badge {
+            background: rgba(0, 255, 135, 0.1);
             color: var(--pl-neon);
+            border: 1px solid var(--pl-neon);
+            padding: 3px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
         }
 
-        /* زر الحذف */
         .delete-btn {
             background: none;
             border: none;
-            color: #ff4b2b;
+            color: #ff5e5e;
             cursor: pointer;
-            font-size: 1.1rem;
-            opacity: 0.3;
-            transition: 0.3s;
+            font-weight: bold;
+            opacity: 0.5;
         }
-        tr:hover .delete-btn { opacity: 1; }
+        .delete-btn:hover { opacity: 1; }
 
+        /* لقطة شاشة للموبايل */
+        @media (max-width: 600px) {
+            .input-group { flex-direction: column; }
+            th:nth-child(3), td:nth-child(3) { display: none; }
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>PREMIER HONOR LEAGUE</h1>
-        <p style="color: var(--pl-neon); font-weight: bold;">دوري أبطال التاريخ والجغرافيا</p>
+        <h1>ARAB WORLD ELITE</h1>
+        <p style="color: #fff; opacity: 0.8;">لوحة شرف ملوك الجغرافيا والتاريخ</p>
     </div>
 
     <div class="input-group">
-        <input type="text" id="nameInp" placeholder="اسم الطالب المتميز...">
-        <button class="add-btn" onclick="addPlayer()">إضافة للترتيب</button>
+        <input type="text" id="nameInp" placeholder="ادخل اسم البطل العربي...">
+        <button class="add-btn" onclick="addPlayer()">تثبيت في القائمة</button>
     </div>
 
     <div class="table-container">
         <table>
             <thead>
                 <tr>
-                    <th class="rank">#</th>
+                    <th>الترتيب</th>
                     <th>الاسم</th>
-                    <th>اللقب الأكاديمي</th>
+                    <th>لقب الجدارة</th>
                     <th>الحالة</th>
-                    <th>إجراء</th>
+                    <th>-</th>
                 </tr>
             </thead>
             <tbody id="leagueBody">
@@ -195,49 +197,44 @@
             const name = inp.value.trim();
             if(!name) return;
 
-            const titles = ["TOP SCORER", "STRATEGIST", "EXPLORER", "HISTORIAN", "LEGEND"];
+            const titles = ["الفتح العربي", "جنرال الخريطة", "رحالة العصر", "حارس التاريخ", "الأسطورة"];
             const randomTitle = titles[Math.floor(Math.random() * titles.length)];
 
-            const player = {
-                id: Date.now(),
-                name: name,
-                title: randomTitle
-            };
-
+            const player = { id: Date.now(), name: name, title: randomTitle };
             savePlayer(player);
             inp.value = '';
             loadData();
         }
 
-        function savePlayer(player) {
-            let players = JSON.parse(localStorage.getItem('pl_honor')) || [];
-            players.push(player);
-            localStorage.setItem('pl_honor', JSON.stringify(players));
+        function savePlayer(p) {
+            let list = JSON.parse(localStorage.getItem('arab_league')) || [];
+            list.push(p);
+            localStorage.setItem('arab_league', JSON.stringify(list));
         }
 
         function loadData() {
             const body = document.getElementById('leagueBody');
-            let players = JSON.parse(localStorage.getItem('pl_honor')) || [];
+            let list = JSON.parse(localStorage.getItem('arab_league')) || [];
             body.innerHTML = '';
 
-            players.forEach((p, index) => {
+            list.forEach((p, index) => {
                 const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
                 body.innerHTML += `
                     <tr>
                         <td class="rank ${rankClass}">${index + 1}</td>
-                        <td style="font-size: 1.1rem;">${p.name}</td>
-                        <td style="color: #94a3b8;">${p.title}</td>
-                        <td><span class="badge">In Form</span></td>
-                        <td><button class="delete-btn" onclick="removePlayer(${p.id})">🗑</button></td>
+                        <td>${p.name}</td>
+                        <td style="color: #ccc; font-weight: 400;">${p.title}</td>
+                        <td><span class="tag-badge">متميز</span></td>
+                        <td><button class="delete-btn" onclick="removePlayer(${p.id})">✕</button></td>
                     </tr>
                 `;
             });
         }
 
         function removePlayer(id) {
-            let players = JSON.parse(localStorage.getItem('pl_honor')) || [];
-            players = players.filter(p => p.id !== id);
-            localStorage.setItem('pl_honor', JSON.stringify(players));
+            let list = JSON.parse(localStorage.getItem('arab_league')) || [];
+            list = list.filter(p => p.id !== id);
+            localStorage.setItem('arab_league', JSON.stringify(list));
             loadData();
         }
     </script>
