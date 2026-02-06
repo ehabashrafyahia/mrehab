@@ -3,252 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة شرف الطلاب المتميزين</title>
+    <title>سجل المتميزين - التاريخ والجغرافيا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,700;1,700&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    
     <style>
-        /* تنسيق الصفحة العامة */
+        :root {
+            --sand-color: #fdfbf7;
+            --paper-color: #f4e4bc;
+            --ink-color: #2c3e50;
+            --gold-color: #c5a059;
+            --history-red: #8b0000;
+            --border-pattern: url('https://www.transparenttextures.com/patterns/arabesque.png');
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            font-family: 'Amiri', serif;
+            background-color: #e6dec8;
+            overflow-x: hidden;
             min-height: 100vh;
+        }
+
+        /* --- قسم لوحة التحكم (للمعلم) --- */
+        #adminPanel {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.freepik.com/free-photo/old-world-map_1150-12739.jpg?w=1380');
+            background-size: cover;
+            color: white;
+            transition: 0.5s;
         }
 
-        /* عنوان اللوحة */
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            color: #2c3e50;
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-
-        /* منطقة الإدخال */
-        .input-area {
-            background: white;
-            padding: 20px;
+        .control-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 4px double var(--history-red);
+            width: 90%;
             max-width: 500px;
         }
 
+        .control-box h2 {
+            color: var(--history-red);
+            font-family: 'Reem Kufi', sans-serif;
+            margin-bottom: 20px;
+        }
+
         input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s;
+            width: 70%;
+            padding: 12px;
+            font-size: 18px;
+            font-family: 'Amiri', serif;
+            border: 2px solid var(--gold-color);
+            border-radius: 5px;
+            text-align: center;
         }
 
-        input:focus {
-            border-color: #27ae60;
-        }
-
-        button.add-btn {
-            background-color: #27ae60;
+        .btn-add {
+            padding: 12px 25px;
+            font-size: 18px;
+            background: var(--history-red);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
             cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Reem Kufi', sans-serif;
+        }
+
+        .btn-show {
+            margin-top: 20px;
+            padding: 15px 40px;
+            font-size: 22px;
+            background: var(--gold-color);
+            color: var(--ink-color);
+            border: 2px solid var(--ink-color);
+            cursor: pointer;
+            border-radius: 50px;
             font-weight: bold;
-            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             transition: 0.3s;
+            width: 100%;
         }
 
-        button.add-btn:hover {
-            background-color: #219150;
+        .btn-show:hover {
             transform: scale(1.05);
+            background: #d4af37;
         }
 
-        /* منطقة عرض الأسماء (لوحة الشرف) */
-        .board-container {
+        .names-list-preview {
+            margin-top: 20px;
+            text-align: right;
+            max-height: 150px;
+            overflow-y: auto;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        .preview-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px;
+            border-bottom: 1px dashed #ddd;
+            color: #333;
+        }
+
+        /* --- قسم لوحة الشرف (شاشة العرض) --- */
+        #displayBoard {
+            display: none; /* مخفي في البداية */
+            min-height: 100vh;
+            background-image: var(--border-pattern);
+            background-color: #fdf5e6;
+            padding: 40px;
+            position: relative;
+        }
+
+        /* زخرفة حدود الصفحة */
+        #displayBoard::before {
+            content: "";
+            position: fixed;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 3px solid var(--history-red);
+            pointer-events: none;
+            z-index: 0;
+        }
+        #displayBoard::after {
+            content: "";
+            position: fixed;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 2px dashed var(--gold-color);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .board-header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .board-header h1 {
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 3.5rem;
+            color: var(--history-red);
+            text-shadow: 2px 2px 0px var(--gold-color);
+            margin: 0;
+        }
+
+        .board-header p {
+            font-size: 1.5rem;
+            color: var(--ink-color);
+            margin-top: 10px;
+        }
+
+        .scrolls-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            width: 100%;
-            max-width: 1000px;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
         }
 
-        .student-card {
-            background: linear-gradient(to bottom right, #ffffff, #fffde7);
-            border: 2px solid #f1c40f;
-            border-radius: 12px;
-            padding: 15px 25px;
-            min-width: 150px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        /* تصميم البردية (Scroll) */
+        .scroll-card {
+            width: 220px;
+            height: 300px;
+            background: var(--paper-color);
             position: relative;
-            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        .student-card h3 {
-            margin: 10px 0;
-            color: #2c3e50;
-            font-size: 1.2rem;
-        }
-
-        .medal {
-            font-size: 2rem;
-            margin-bottom: 5px;
-        }
-
-        /* زر الحذف الصغير */
-        .delete-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            font-size: 12px;
-            cursor: pointer;
-            position: absolute;
-            top: -8px;
-            left: -8px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            opacity: 0;
-            transition: 0.3s;
+            padding: 20px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+            border-radius: 5px;
+            animation: unroll 0.8s ease-out forwards;
+            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 10%, transparent 90%, rgba(0,0,0,0.05) 100%);
         }
 
-        .student-card:hover .delete-btn {
-            opacity: 1;
+        /* أطراف البردية من الأعلى والأسفل */
+        .scroll-card::before, .scroll-card::after {
+            content: "";
+            position: absolute;
+            left: -10px;
+            right: -10px;
+            height: 20px;
+            background: #d2b48c;
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+            background: linear-gradient(to bottom, #8B4513, #cd853f);
+        }
+        .scroll-card::before { top: -10px; }
+        .scroll-card::after { bottom: -10px; }
+
+        .rank-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));
         }
 
-        /* زر مسح الكل */
-        .clear-all {
-            margin-top: 30px;
-            background: none;
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
-            padding: 8px 15px;
+        .student-name {
+            font-size: 1.8rem;
+            color: var(--history-red);
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .decoration {
+            font-size: 1.2rem;
+            color: var(--gold-color);
+            margin-top: 10px;
+        }
+
+        /* زر العودة */
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--ink-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-family: 'Amiri', serif;
+            z-index: 100;
         }
 
-        .clear-all:hover {
-            background: #e74c3c;
-            color: white;
+        @keyframes unroll {
+            0% { height: 0; opacity: 0; transform: translateY(20px); }
+            100% { height: 300px; opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>🏆 لوحة الشرف 🏆</h1>
-        <p>أبطالنا المتميزين اليوم</p>
-    </header>
+    <div id="adminPanel">
+        <div class="control-box">
+            <h2>📜 سجل المؤرخين والرحالة</h2>
+            <div style="display: flex; gap: 5px;">
+                <input type="text" id="inputName" placeholder="اكتب اسم الطالب..." onkeypress="handleEnter(event)">
+                <button class="btn-add" onclick="addStudent()">تدوين</button>
+            </div>
+            
+            <div class="names-list-preview" id="previewList">
+                </div>
 
-    <div class="input-area">
-        <input type="text" id="studentName" placeholder="أدخل اسم الطالب هنا..." onkeypress="handleEnter(event)">
-        <button class="add-btn" onclick="addStudent()">إضافة +</button>
+            <button class="btn-show" onclick="showBoard()">🌍 عرض الخريطة الشرفية 🏺</button>
+            <br><br>
+            <button onclick="clearAll()" style="background:none; border:none; color:#8b0000; cursor:pointer; text-decoration:underline;">بدء حقبة جديدة (مسح الكل)</button>
+        </div>
     </div>
 
-    <div id="honorBoard" class="board-container">
-        </div>
+    <div id="displayBoard">
+        <header class="board-header">
+            <h1>أعلام الجغرافيا والتاريخ</h1>
+            <p>رواد المستقبل وحماة التراث</p>
+            <p style="font-size: 2rem;">🏺 📜 🧭</p>
+        </header>
 
-    <button class="clear-all" onclick="clearAll()">بدء حصة جديدة (مسح الكل)</button>
+        <div class="scrolls-container" id="scrollsContainer">
+            </div>
+
+        <button class="back-btn" onclick="hideBoard()">⟵ العودة للسجل</button>
+    </div>
 
     <script>
-        // تحميل البيانات المحفوظة عند فتح الصفحة
-        document.addEventListener('DOMContentLoaded', loadStudents);
+        document.addEventListener('DOMContentLoaded', loadPreview);
 
         function addStudent() {
-            const input = document.getElementById('studentName');
+            const input = document.getElementById('inputName');
             const name = input.value.trim();
+            if(!name) return;
 
-            if (name === "") {
-                alert("الرجاء كتابة اسم الطالب!");
+            let students = JSON.parse(localStorage.getItem('geoHistoryStudents')) || [];
+            students.push(name);
+            localStorage.setItem('geoHistoryStudents', JSON.stringify(students));
+
+            input.value = '';
+            input.focus();
+            loadPreview();
+        }
+
+        function handleEnter(e) {
+            if(e.key === 'Enter') addStudent();
+        }
+
+        function loadPreview() {
+            const list = document.getElementById('previewList');
+            let students = JSON.parse(localStorage.getItem('geoHistoryStudents')) || [];
+            
+            list.innerHTML = students.map((s, index) => `
+                <div class="preview-item">
+                    <span>${index + 1}. ${s}</span>
+                    <span onclick="removeOne('${s}')" style="cursor:pointer; color:red; font-weight:bold;">✕</span>
+                </div>
+            `).join('');
+        }
+
+        function removeOne(name) {
+            let students = JSON.parse(localStorage.getItem('geoHistoryStudents')) || [];
+            students = students.filter(s => s !== name);
+            localStorage.setItem('geoHistoryStudents', JSON.stringify(students));
+            loadPreview();
+        }
+
+        function clearAll() {
+            if(confirm("هل تريد مسح جميع الأسماء؟")) {
+                localStorage.removeItem('geoHistoryStudents');
+                loadPreview();
+            }
+        }
+
+        // --- وظائف الانتقال بين الشاشات ---
+
+        function showBoard() {
+            const admin = document.getElementById('adminPanel');
+            const board = document.getElementById('displayBoard');
+            const container = document.getElementById('scrollsContainer');
+
+            // إخفاء الأدمن وإظهار اللوحة
+            admin.style.display = 'none';
+            board.style.display = 'block';
+
+            // تحميل الأسماء وعمل الريندر
+            let students = JSON.parse(localStorage.getItem('geoHistoryStudents')) || [];
+            container.innerHTML = ''; // تنظيف
+
+            if(students.length === 0) {
+                container.innerHTML = '<h2 style="color:#8b0000;">لا يوجد رحالة مسجلين حتى الآن...</h2>';
                 return;
             }
 
-            createCard(name);
-            saveToStorage(name);
-            
-            // تفريغ الخانة والتركيز عليها مرة أخرى للكتابة السريعة
-            input.value = "";
-            input.focus();
+            // أيقونات عشوائية للتنويع
+            const icons = ['🧭', '🏺', '📜', '🌍', '⚔️', '🕌', '🔭'];
+
+            students.forEach((student, index) => {
+                const randomIcon = icons[index % icons.length];
+                const scrollHTML = `
+                    <div class="scroll-card" style="animation-delay: ${index * 0.1}s">
+                        <div class="rank-icon">${randomIcon}</div>
+                        <div class="student-name">${student}</div>
+                        <div class="decoration">✧ ✦ ✧</div>
+                    </div>
+                `;
+                container.innerHTML += scrollHTML;
+            });
         }
 
-        function createCard(name) {
-            const board = document.getElementById('honorBoard');
-            
-            const card = document.createElement('div');
-            card.className = 'student-card';
-            
-            card.innerHTML = `
-                <button class="delete-btn" onclick="removeStudent(this, '${name}')">✕</button>
-                <div class="medal">🥇</div>
-                <h3>${name}</h3>
-            `;
-
-            board.appendChild(card);
-        }
-
-        function handleEnter(event) {
-            if (event.key === "Enter") {
-                addStudent();
-            }
-        }
-
-        // حفظ الاسم في ذاكرة المتصفح
-        function saveToStorage(name) {
-            let students = JSON.parse(localStorage.getItem('honorStudents')) || [];
-            students.push(name);
-            localStorage.setItem('honorStudents', JSON.stringify(students));
-        }
-
-        // استرجاع الأسماء عند فتح الصفحة
-        function loadStudents() {
-            let students = JSON.parse(localStorage.getItem('honorStudents')) || [];
-            students.forEach(name => createCard(name));
-        }
-
-        // حذف طالب واحد
-        function removeStudent(btn, name) {
-            if(confirm('هل تريد حذف هذا الطالب؟')) {
-                // إزالة من الشاشة
-                btn.parentElement.remove();
-                
-                // إزالة من الذاكرة
-                let students = JSON.parse(localStorage.getItem('honorStudents')) || [];
-                students = students.filter(student => student !== name); // حذف الاسم
-                localStorage.setItem('honorStudents', JSON.stringify(students));
-            }
-        }
-
-        // مسح كل اللوحة
-        function clearAll() {
-            if(confirm('هل أنت متأكد من بدء حصة جديدة ومسح جميع الأسماء؟')) {
-                document.getElementById('honorBoard').innerHTML = '';
-                localStorage.removeItem('honorStudents');
-            }
+        function hideBoard() {
+            document.getElementById('adminPanel').style.display = 'flex';
+            document.getElementById('displayBoard').style.display = 'none';
         }
     </script>
-
 </body>
 </html>
