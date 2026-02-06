@@ -3,367 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سجل المتميزين - التاريخ والجغرافيا</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,700;1,700&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <title>لوحة الشرف الملكية - رواد التاريخ والجغرافيا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --sand-color: #fdfbf7;
-            --paper-color: #f4e4bc;
-            --ink-color: #2c3e50;
-            --gold-color: #c5a059;
-            --history-red: #8b0000;
-            --border-pattern: url('https://www.transparenttextures.com/patterns/arabesque.png');
+            --primary-bg: #0f172a; /* كحلي غامق جداً */
+            --card-bg: #1e293b;
+            --gold-light: #fcd34d;
+            --gold-dark: #b45309;
+            --text-color: #f8fafc;
+            --accent-green: #059669;
         }
 
         body {
+            background-color: var(--primary-bg);
+            background-image: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 70%);
+            color: var(--text-color);
+            font-family: 'Tajawal', sans-serif;
             margin: 0;
-            padding: 0;
-            font-family: 'Amiri', serif;
-            background-color: #e6dec8;
-            overflow-x: hidden;
+            padding: 20px;
             min-height: 100vh;
-        }
-
-        /* --- قسم لوحة التحكم (للمعلم) --- */
-        #adminPanel {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://img.freepik.com/free-photo/old-world-map_1150-12739.jpg?w=1380');
-            background-size: cover;
-            color: white;
-            transition: 0.5s;
         }
 
-        .control-box {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 15px;
+        /* --- الهيدر (العنوان) --- */
+        header {
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 4px double var(--history-red);
-            width: 90%;
-            max-width: 500px;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 20px;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(to right, transparent, var(--gold-light), transparent) 1;
         }
 
-        .control-box h2 {
-            color: var(--history-red);
-            font-family: 'Reem Kufi', sans-serif;
-            margin-bottom: 20px;
+        h1 {
+            font-family: 'Aref Ruqaa', serif;
+            font-size: 3.5rem;
+            margin: 0;
+            background: linear-gradient(to bottom, #fff, #fcd34d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(252, 211, 77, 0.3));
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* --- شريط التحكم (الإدخال) --- */
+        .controls {
+            display: flex;
+            gap: 15px;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 15px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(252, 211, 77, 0.2);
+            backdrop-filter: blur(10px);
+            margin-bottom: 50px;
+            width: 90%;
+            max-width: 600px;
+            transition: 0.3s;
+        }
+
+        .controls:focus-within {
+            border-color: var(--gold-light);
+            box-shadow: 0 0 20px rgba(252, 211, 77, 0.2);
         }
 
         input {
-            width: 70%;
-            padding: 12px;
-            font-size: 18px;
-            font-family: 'Amiri', serif;
-            border: 2px solid var(--gold-color);
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .btn-add {
-            padding: 12px 25px;
-            font-size: 18px;
-            background: var(--history-red);
-            color: white;
+            flex: 1;
+            background: transparent;
             border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            font-family: 'Reem Kufi', sans-serif;
+            color: white;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            font-family: 'Tajawal', sans-serif;
+            outline: none;
         }
 
-        .btn-show {
-            margin-top: 20px;
-            padding: 15px 40px;
-            font-size: 22px;
-            background: var(--gold-color);
-            color: var(--ink-color);
-            border: 2px solid var(--ink-color);
-            cursor: pointer;
-            border-radius: 50px;
+        button.add-btn {
+            background: linear-gradient(45deg, var(--gold-dark), var(--gold-light));
+            border: none;
+            padding: 10px 30px;
+            border-radius: 30px;
+            color: #0f172a;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: 0.3s;
-            width: 100%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-family: 'Aref Ruqaa', serif;
         }
 
-        .btn-show:hover {
+        button.add-btn:hover {
             transform: scale(1.05);
-            background: #d4af37;
+            box-shadow: 0 0 15px var(--gold-light);
         }
 
-        .names-list-preview {
-            margin-top: 20px;
-            text-align: right;
-            max-height: 150px;
-            overflow-y: auto;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
+        /* --- شبكة العرض (اللوحة) --- */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+            padding-bottom: 50px;
         }
 
-        .preview-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 5px;
-            border-bottom: 1px dashed #ddd;
-            color: #333;
-        }
-
-        /* --- قسم لوحة الشرف (شاشة العرض) --- */
-        #displayBoard {
-            display: none; /* مخفي في البداية */
-            min-height: 100vh;
-            background-image: var(--border-pattern);
-            background-color: #fdf5e6;
-            padding: 40px;
-            position: relative;
-        }
-
-        /* زخرفة حدود الصفحة */
-        #displayBoard::before {
-            content: "";
-            position: fixed;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
-            border: 3px solid var(--history-red);
-            pointer-events: none;
-            z-index: 0;
-        }
-        #displayBoard::after {
-            content: "";
-            position: fixed;
-            top: 15px; left: 15px; right: 15px; bottom: 15px;
-            border: 2px dashed var(--gold-color);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .board-header {
-            text-align: center;
-            margin-bottom: 50px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .board-header h1 {
-            font-family: 'Reem Kufi', sans-serif;
-            font-size: 3.5rem;
-            color: var(--history-red);
-            text-shadow: 2px 2px 0px var(--gold-color);
-            margin: 0;
-        }
-
-        .board-header p {
-            font-size: 1.5rem;
-            color: var(--ink-color);
-            margin-top: 10px;
-        }
-
-        .scrolls-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 30px;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* تصميم البردية (Scroll) */
-        .scroll-card {
-            width: 220px;
-            height: 300px;
-            background: var(--paper-color);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+        .student-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(252, 211, 77, 0.3);
+            border-radius: 15px;
             padding: 20px;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-            border-radius: 5px;
-            animation: unroll 0.8s ease-out forwards;
-            background-image: linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 10%, transparent 90%, rgba(0,0,0,0.05) 100%);
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out forwards;
         }
 
-        /* أطراف البردية من الأعلى والأسفل */
-        .scroll-card::before, .scroll-card::after {
-            content: "";
+        .student-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-light);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(252, 211, 77, 0.1);
+        }
+
+        /* زخرفة إسلامية خفيفة في خلفية الكرت */
+        .student-card::before {
+            content: "۞";
             position: absolute;
-            left: -10px;
-            right: -10px;
-            height: 20px;
-            background: #d2b48c;
-            border-radius: 10px;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-            background: linear-gradient(to bottom, #8B4513, #cd853f);
+            top: -20px;
+            right: -20px;
+            font-size: 8rem;
+            color: rgba(255, 255, 255, 0.03);
+            font-family: serif;
+            pointer-events: none;
         }
-        .scroll-card::before { top: -10px; }
-        .scroll-card::after { bottom: -10px; }
 
-        .rank-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.2));
+        .rank-badge {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.3));
         }
 
         .student-name {
-            font-size: 1.8rem;
-            color: var(--history-red);
-            font-weight: bold;
-            text-align: center;
-            line-height: 1.4;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 10px 0;
+            word-wrap: break-word;
         }
 
-        .decoration {
+        .tag {
+            font-size: 0.8rem;
+            color: var(--gold-light);
+            border: 1px solid rgba(252, 211, 77, 0.2);
+            padding: 3px 10px;
+            border-radius: 10px;
+            background: rgba(252, 211, 77, 0.05);
+        }
+
+        /* زر الحذف */
+        .delete-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #ef4444;
+            cursor: pointer;
+            opacity: 0;
+            transition: 0.2s;
             font-size: 1.2rem;
-            color: var(--gold-color);
-            margin-top: 10px;
+            padding: 5px;
+            z-index: 10;
         }
 
-        /* زر العودة */
-        .back-btn {
+        .student-card:hover .delete-icon {
+            opacity: 1;
+        }
+
+        /* التأثيرات الحركية */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* شريط الأدوات السفلي */
+        .toolbar {
             position: fixed;
             bottom: 20px;
-            left: 20px;
-            background: var(--ink-color);
-            color: white;
+            background: rgba(15, 23, 42, 0.9);
             padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-family: 'Amiri', serif;
+            border-radius: 30px;
+            border: 1px solid #334155;
+            display: flex;
+            gap: 20px;
+            backdrop-filter: blur(5px);
             z-index: 100;
         }
 
-        @keyframes unroll {
-            0% { height: 0; opacity: 0; transform: translateY(20px); }
-            100% { height: 300px; opacity: 1; transform: translateY(0); }
+        .tool-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .tool-btn:hover {
+            color: #fff;
+        }
+
+        .tool-btn.danger:hover {
+            color: #ef4444;
         }
 
     </style>
 </head>
 <body>
 
-    <div id="adminPanel">
-        <div class="control-box">
-            <h2>📜 سجل المؤرخين والرحالة</h2>
-            <div style="display: flex; gap: 5px;">
-                <input type="text" id="inputName" placeholder="اكتب اسم الطالب..." onkeypress="handleEnter(event)">
-                <button class="btn-add" onclick="addStudent()">تدوين</button>
-            </div>
-            
-            <div class="names-list-preview" id="previewList">
-                </div>
+    <header>
+        <h1>🏛️ جدارية العظماء 🏛️</h1>
+        <p class="subtitle">سجل نخب طلاب الجغرافيا والتاريخ</p>
+    </header>
 
-            <button class="btn-show" onclick="showBoard()">🌍 عرض الخريطة الشرفية 🏺</button>
-            <br><br>
-            <button onclick="clearAll()" style="background:none; border:none; color:#8b0000; cursor:pointer; text-decoration:underline;">بدء حقبة جديدة (مسح الكل)</button>
-        </div>
+    <div class="controls">
+        <input type="text" id="nameInput" placeholder="اكتب اسم الطالب المتميز..." onkeypress="handleEnter(event)">
+        <button class="add-btn" onclick="addStudent()">تخليد الاسم</button>
     </div>
 
-    <div id="displayBoard">
-        <header class="board-header">
-            <h1>أعلام الجغرافيا والتاريخ</h1>
-            <p>رواد المستقبل وحماة التراث</p>
-            <p style="font-size: 2rem;">🏺 📜 🧭</p>
-        </header>
+    <div class="grid-container" id="honorGrid">
+        </div>
 
-        <div class="scrolls-container" id="scrollsContainer">
-            </div>
-
-        <button class="back-btn" onclick="hideBoard()">⟵ العودة للسجل</button>
+    <div class="toolbar">
+        <button class="tool-btn" onclick="exportToImage()">📸 لقطة شاشة (قريباً)</button>
+        <span style="color:#334155">|</span>
+        <button class="tool-btn danger" onclick="clearAll()">🗑️ مسح السجل بالكامل</button>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', loadPreview);
+        // الأيقونات التي ستظهر عشوائياً
+        const badges = ['🌍', '🧭', '🕌', '⚔️', '🛡️', '📜', '🏺', '👑', '🔭'];
+        const titles = ['مؤرخ', 'رحالة', 'قائد', 'جغرافي', 'مستكشف'];
+
+        document.addEventListener('DOMContentLoaded', loadStudents);
 
         function addStudent() {
-            const input = document.getElementById('inputName');
+            const input = document.getElementById('nameInput');
             const name = input.value.trim();
-            if(!name) return;
+            
+            if (!name) return;
 
-            let students = JSON.parse(localStorage.getItem('geoHistoryStudents')) || [];
-            students.push(name);
-            localStorage.setItem('geoHistoryStudents', JSON.stringify(students));
+            // اختيار أيقونة ولقب عشوائي
+            const randomBadge = badges[Math.floor(Math.random() * badges.length)];
+            const randomTitle = titles[Math.floor(Math.random() * titles.length)];
 
+            const studentData = {
+                id: Date.now(),
+                name: name,
+                badge: randomBadge,
+                title: randomTitle
+            };
+
+            saveStudent(studentData);
+            renderCard(studentData);
+            
             input.value = '';
             input.focus();
-            loadPreview();
         }
 
-        function handleEnter(e) {
-            if(e.key === 'Enter') addStudent();
-        }
-
-        function loadPreview() {
-            const list = document.getElementById('previewList');
-            let students = JSON.parse(localStorage.getItem('geoHistoryStudents')) || [];
+        function renderCard(data) {
+            const grid = document.getElementById('honorGrid');
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            card.setAttribute('id', `card-${data.id}`);
             
-            list.innerHTML = students.map((s, index) => `
-                <div class="preview-item">
-                    <span>${index + 1}. ${s}</span>
-                    <span onclick="removeOne('${s}')" style="cursor:pointer; color:red; font-weight:bold;">✕</span>
-                </div>
-            `).join('');
-        }
-
-        function removeOne(name) {
-            let students = JSON.parse(localStorage.getItem('geoHistoryStudents')) || [];
-            students = students.filter(s => s !== name);
-            localStorage.setItem('geoHistoryStudents', JSON.stringify(students));
-            loadPreview();
-        }
-
-        function clearAll() {
-            if(confirm("هل تريد مسح جميع الأسماء؟")) {
-                localStorage.removeItem('geoHistoryStudents');
-                loadPreview();
-            }
-        }
-
-        // --- وظائف الانتقال بين الشاشات ---
-
-        function showBoard() {
-            const admin = document.getElementById('adminPanel');
-            const board = document.getElementById('displayBoard');
-            const container = document.getElementById('scrollsContainer');
-
-            // إخفاء الأدمن وإظهار اللوحة
-            admin.style.display = 'none';
-            board.style.display = 'block';
-
-            // تحميل الأسماء وعمل الريندر
-            let students = JSON.parse(localStorage.getItem('geoHistoryStudents')) || [];
-            container.innerHTML = ''; // تنظيف
-
-            if(students.length === 0) {
-                container.innerHTML = '<h2 style="color:#8b0000;">لا يوجد رحالة مسجلين حتى الآن...</h2>';
-                return;
-            }
-
-            // أيقونات عشوائية للتنويع
-            const icons = ['🧭', '🏺', '📜', '🌍', '⚔️', '🕌', '🔭'];
-
-            students.forEach((student, index) => {
-                const randomIcon = icons[index % icons.length];
-                const scrollHTML = `
-                    <div class="scroll-card" style="animation-delay: ${index * 0.1}s">
-                        <div class="rank-icon">${randomIcon}</div>
-                        <div class="student-name">${student}</div>
-                        <div class="decoration">✧ ✦ ✧</div>
-                    </div>
-                `;
-                container.innerHTML += scrollHTML;
-            });
-        }
-
-        function hideBoard() {
-            document.getElementById('adminPanel').style.display = 'flex';
-            document.getElementById('displayBoard').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+            card.innerHTML = `
+                <div class="delete-
