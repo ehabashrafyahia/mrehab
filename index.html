@@ -2,208 +2,243 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>لوحة شرف المتميزين</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دوري النخبة - الجغرافيا والتاريخ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* التنسيق العام - فخامة داكنة مع ذهبي */
+        :root {
+            --pl-purple: #3d195b; /* بنفسجي الدوري الإنجليزي */
+            --pl-neon: #00ff87;   /* أخضر الفسفوري المشهور */
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
         body {
-            background-color: #1a1a2e; /* خلفية كحلية ملكية */
-            color: #e94560;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #3d195b 0%, #000000 100%);
+            color: white;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* رأس الصفحة */
+        /* --- الهيدر --- */
         .header {
             text-align: center;
-            border-bottom: 2px solid #c5a059;
-            padding-bottom: 10px;
             margin-bottom: 30px;
-            width: 80%;
         }
-
+        
         .header h1 {
-            color: #c5a059; /* لون ذهبي */
-            font-size: 35px;
+            font-size: 2.5rem;
+            font-weight: 900;
             margin: 0;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            text-transform: uppercase;
+            background: linear-gradient(to bottom, #fff, var(--pl-neon));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
         }
 
-        /* منطقة الإدخال - بسيطة واحترافية */
-        .admin-section {
-            background: #16213e;
+        /* --- منطقة الإدخال الزجاجية --- */
+        .input-group {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
             padding: 15px;
-            border-radius: 10px;
-            border: 1px solid #c5a059;
-            margin-bottom: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             display: flex;
             gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 600px;
         }
 
         input {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            width: 250px;
-            font-size: 16px;
+            flex: 1;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
+            color: white;
+            border-radius: 8px;
+            font-family: 'Cairo';
         }
 
-        button {
-            background-color: #c5a059;
-            color: #1a1a2e;
+        button.add-btn {
+            background: var(--pl-neon);
+            color: var(--pl-purple);
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
+            padding: 10px 25px;
+            font-weight: 900;
+            border-radius: 8px;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        button:hover {
-            background-color: #fff;
+        button.add-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--pl-neon);
         }
 
-        /* شبكة عرض الطلاب - تملأ الصفحة */
-        .honor-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+        /* --- الجدول الزجاجي الاحترافي --- */
+        .table-container {
             width: 100%;
-            max-width: 1200px;
+            max-width: 900px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5);
         }
 
-        /* تصميم الكرت الواحد */
-        .student-card {
-            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
-            border: 2px solid #c5a059;
-            border-radius: 15px;
-            padding: 20px;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        thead {
+            background: rgba(0, 0, 0, 0.4);
+            color: var(--pl-neon);
+        }
+
+        th {
+            padding: 15px 20px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 700;
+        }
+
+        tr:last-child td { border: none; }
+
+        tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* أرقام الترتيب */
+        .rank {
+            font-weight: 900;
+            width: 40px;
             text-align: center;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            animation: fadeIn 0.5s ease;
         }
 
-        .student-card .icon {
-            font-size: 40px;
-            margin-bottom: 10px;
+        .rank-1 { color: #ffd700; text-shadow: 0 0 10px #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+
+        /* الأوسمة */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            background: var(--pl-purple);
+            border: 1px solid var(--pl-neon);
+            color: var(--pl-neon);
         }
 
-        .student-card .name {
-            color: white;
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .student-card .title {
-            color: #c5a059;
-            font-size: 14px;
-            margin-top: 5px;
-            font-style: italic;
-        }
-
-        /* زر الحذف الصغير */
+        /* زر الحذف */
         .delete-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #ff4d4d;
-            cursor: pointer;
-            font-size: 12px;
             background: none;
             border: none;
+            color: #ff4b2b;
+            cursor: pointer;
+            font-size: 1.1rem;
+            opacity: 0.3;
+            transition: 0.3s;
         }
+        tr:hover .delete-btn { opacity: 1; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .clear-btn {
-            margin-top: 50px;
-            background: none;
-            border: 1px solid #ff4d4d;
-            color: #ff4d4d;
-        }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>🏆 لوحة شرف المؤرخين والجغرافيين 🌍</h1>
-        <p style="color: #999;">فرسان الحصة المتميزون</p>
+        <h1>PREMIER HONOR LEAGUE</h1>
+        <p style="color: var(--pl-neon); font-weight: bold;">دوري أبطال التاريخ والجغرافيا</p>
     </div>
 
-    <div class="admin-section">
-        <input type="text" id="studentName" placeholder="اكتب اسم الطالب هنا...">
-        <button onclick="addStudent()">تتويج الطالب</button>
+    <div class="input-group">
+        <input type="text" id="nameInp" placeholder="اسم الطالب المتميز...">
+        <button class="add-btn" onclick="addPlayer()">إضافة للترتيب</button>
     </div>
 
-    <div class="honor-grid" id="honorGrid">
-        </div>
-
-    <button class="clear-btn" onclick="clearBoard()">مسح اللوحة بالكامل</button>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th class="rank">#</th>
+                    <th>الاسم</th>
+                    <th>اللقب الأكاديمي</th>
+                    <th>الحالة</th>
+                    <th>إجراء</th>
+                </tr>
+            </thead>
+            <tbody id="leagueBody">
+                </tbody>
+        </table>
+    </div>
 
     <script>
-        // تحميل الأسماء عند فتح الصفحة
-        window.onload = function() {
-            const saved = JSON.parse(localStorage.getItem('heroList')) || [];
-            saved.forEach(s => createCard(s.name, s.title, s.icon));
-        };
+        document.addEventListener('DOMContentLoaded', loadData);
 
-        function addStudent() {
-            const nameInput = document.getElementById('studentName');
-            const name = nameInput.value.trim();
-            
-            if(name === "") return;
+        function addPlayer() {
+            const inp = document.getElementById('nameInp');
+            const name = inp.value.trim();
+            if(!name) return;
 
-            // قائمة ألقاب وأيقونات عشوائية (تاريخ وجغرافيا)
-            const titles = ["المستكشف البطل", "المؤرخ الذكي", "قائد الرحلة", "نابغة الخرائط", "ملك التاريخ"];
-            const icons = ["🧭", "📜", "🌍", "🏺", "⚔️"];
-            
+            const titles = ["TOP SCORER", "STRATEGIST", "EXPLORER", "HISTORIAN", "LEGEND"];
             const randomTitle = titles[Math.floor(Math.random() * titles.length)];
-            const randomIcon = icons[Math.floor(Math.random() * icons.length)];
 
-            createCard(name, randomTitle, randomIcon);
-            saveToStorage(name, randomTitle, randomIcon);
+            const player = {
+                id: Date.now(),
+                name: name,
+                title: randomTitle
+            };
 
-            nameInput.value = "";
-            nameInput.focus();
+            savePlayer(player);
+            inp.value = '';
+            loadData();
         }
 
-        function createCard(name, title, icon) {
-            const grid = document.getElementById('honorGrid');
-            const div = document.createElement('div');
-            div.className = 'student-card';
-            div.innerHTML = `
-                <button class="delete-btn" onclick="this.parentElement.remove(); removeFromStorage('${name}')">X</button>
-                <div class="icon">${icon}</div>
-                <div class="name">${name}</div>
-                <div class="title">${title}</div>
-            `;
-            grid.appendChild(div);
+        function savePlayer(player) {
+            let players = JSON.parse(localStorage.getItem('pl_honor')) || [];
+            players.push(player);
+            localStorage.setItem('pl_honor', JSON.stringify(players));
         }
 
-        function saveToStorage(name, title, icon) {
-            let list = JSON.parse(localStorage.getItem('heroList')) || [];
-            list.push({name, title, icon});
-            localStorage.setItem('heroList', JSON.stringify(list));
+        function loadData() {
+            const body = document.getElementById('leagueBody');
+            let players = JSON.parse(localStorage.getItem('pl_honor')) || [];
+            body.innerHTML = '';
+
+            players.forEach((p, index) => {
+                const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : '';
+                body.innerHTML += `
+                    <tr>
+                        <td class="rank ${rankClass}">${index + 1}</td>
+                        <td style="font-size: 1.1rem;">${p.name}</td>
+                        <td style="color: #94a3b8;">${p.title}</td>
+                        <td><span class="badge">In Form</span></td>
+                        <td><button class="delete-btn" onclick="removePlayer(${p.id})">🗑</button></td>
+                    </tr>
+                `;
+            });
         }
 
-        function removeFromStorage(name) {
-            let list = JSON.parse(localStorage.getItem('heroList')) || [];
-            list = list.filter(s => s.name !== name);
-            localStorage.setItem('heroList', JSON.stringify(list));
-        }
-
-        function clearBoard() {
-            if(confirm("هل تريد مسح جميع الأسماء؟")) {
-                localStorage.removeItem('heroList');
-                location.reload();
-            }
+        function removePlayer(id) {
+            let players = JSON.parse(localStorage.getItem('pl_honor')) || [];
+            players = players.filter(p => p.id !== id);
+            localStorage.setItem('pl_honor', JSON.stringify(players));
+            loadData();
         }
     </script>
 </body>
