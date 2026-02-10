@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مولد الأسئلة التعليمية - تحويل الدروس إلى أسئلة</title>
+    <title>تهنئة رمضان كريم - معرض الفوانيس الرمضاني</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #7209b7;
-            --accent: #f72585;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --gray-light: #e9ecef;
-            --success: #4cc9f0;
-            --border-radius: 12px;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --primary: #0c3b2e;
+            --secondary: #6d8c54;
+            --accent: #ff9a00;
+            --gold: #d4af37;
+            --light: #f8f5e6;
+            --dark: #1a472a;
+            --lantern-red: #c62828;
+            --lantern-blue: #1565c0;
+            --lantern-green: #2e7d32;
+            --lantern-purple: #6a1b9a;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             --transition: all 0.3s ease;
         }
 
@@ -25,13 +26,15 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #f5f7ff;
-            color: var(--dark);
-            line-height: 1.6;
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0c3b2e 0%, #1a472a 50%, #0c3b2e 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
         }
 
         .container {
@@ -40,880 +43,1000 @@
             padding: 0 20px;
         }
 
-        /* الترويسة */
+        /* ترويسة الموقع */
         header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
             padding: 1.5rem 0;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: relative;
+            z-index: 2;
         }
 
         .logo {
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            font-weight: 700;
+            gap: 15px;
+            margin-bottom: 1rem;
         }
 
         .logo i {
-            font-size: 2rem;
-            color: var(--accent);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 1.5rem;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        nav a:hover {
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        /* المحتوى الرئيسي */
-        main {
-            padding: 2rem 0;
-        }
-
-        .hero {
-            text-align: center;
-            padding: 3rem 0;
-            background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            border-radius: var(--border-radius);
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-        }
-
-        .hero h1 {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            color: var(--gray);
-        }
-
-        /* منطقة التحميل */
-        .upload-section {
-            background-color: white;
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .section-title i {
             color: var(--accent);
+            animation: glow 2s infinite alternate;
         }
 
-        .upload-area {
-            border: 3px dashed var(--gray-light);
-            border-radius: var(--border-radius);
-            padding: 3rem 2rem;
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--gold);
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .moon {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #f8f5e6, #d4af37);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.7);
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px var(--accent); }
+            100% { text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        /* قسم التهنئة الرئيسي */
+        .greeting-section {
+            padding: 2rem 0;
             text-align: center;
-            transition: var(--transition);
-            cursor: pointer;
-            margin-bottom: 1.5rem;
         }
 
-        .upload-area:hover, .upload-area.dragover {
-            border-color: var(--primary);
-            background-color: rgba(67, 97, 238, 0.05);
-        }
-
-        .upload-area i {
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .upload-area h3 {
-            margin-bottom: 0.5rem;
-            color: var(--dark);
-        }
-
-        .upload-area p {
-            color: var(--gray);
-            margin-bottom: 1rem;
-        }
-
-        .btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background-color: var(--secondary);
-        }
-
-        .btn-secondary:hover {
-            background-color: #6411a5;
-        }
-
-        .btn-accent {
-            background-color: var(--accent);
-        }
-
-        .btn-accent:hover {
-            background-color: #e11576;
-        }
-
-        .file-types {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-
-        .file-type {
-            background-color: var(--gray-light);
-            padding: 0.5rem 1rem;
+        .greeting-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
             border-radius: 20px;
-            font-size: 0.9rem;
-            color: var(--dark);
-        }
-
-        /* إعدادات التوليد */
-        .generation-settings {
-            background-color: white;
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
+            padding: 2.5rem;
             margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .settings-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
+        .greeting-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
         }
 
-        .setting-item {
+        .ramadan-kareem {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.5);
+            line-height: 1.3;
+        }
+
+        .student-name-input {
+            margin: 2rem 0;
+        }
+
+        .input-group {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            align-items: center;
+            gap: 1rem;
         }
 
-        label {
+        .input-group label {
+            font-size: 1.3rem;
             font-weight: 600;
-            color: var(--dark);
+            color: var(--accent);
         }
 
-        select, input {
-            padding: 0.8rem;
-            border: 1px solid var(--gray-light);
-            border-radius: 8px;
-            font-size: 1rem;
+        .input-group input {
+            width: 100%;
+            max-width: 400px;
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            font-family: 'Cairo', sans-serif;
+            border: none;
+            border-radius: 50px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transition: var(--transition);
         }
 
-        select:focus, input:focus {
+        .input-group input:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            box-shadow: 0 0 0 3px var(--accent);
+            transform: scale(1.02);
         }
 
-        /* منطقة النتائج */
-        .results-section {
-            background-color: white;
-            border-radius: var(--border-radius);
-            padding: 2rem;
-            box-shadow: var(--shadow);
-            margin-bottom: 2rem;
+        .personalized-greeting {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: rgba(109, 140, 84, 0.2);
+            border-radius: 15px;
+            border-right: 5px solid var(--accent);
             display: none;
+            animation: fadeIn 1s ease;
         }
 
-        .results-section.active {
+        .personalized-greeting.show {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .results-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .questions-container {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .question-card {
-            border: 1px solid var(--gray-light);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            transition: var(--transition);
-        }
-
-        .question-card:hover {
-            box-shadow: var(--shadow);
-        }
-
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .question-type {
-            background-color: var(--primary);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .question-type.essay {
-            background-color: var(--secondary);
-        }
-
-        .question-number {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 1.2rem;
-        }
-
-        .question-text {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            line-height: 1.7;
-        }
-
-        .options-list {
-            list-style: none;
-            margin: 1rem 0;
-        }
-
-        .option-item {
-            padding: 0.8rem;
+        .personalized-greeting h3 {
+            font-size: 1.8rem;
+            color: var(--gold);
             margin-bottom: 0.5rem;
-            border-radius: 8px;
-            background-color: var(--gray-light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        .option-letter {
-            background-color: var(--primary);
-            color: white;
-            width: 30px;
-            height: 30px;
+        .personalized-greeting p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+
+        /* معرض الفوانيس */
+        .lanterns-section {
+            padding: 2rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .lanterns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .lantern-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lantern-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(255, 154, 0, 0.3);
+        }
+
+        .lantern-card.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+
+        .lantern-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            animation: swing 3s infinite alternate;
+        }
+
+        @keyframes swing {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+
+        .lantern-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .lantern-desc {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        /* شخصيات الفانوس */
+        .fanous-characters {
+            padding: 2rem 0;
+        }
+
+        .characters-slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) rgba(255, 255, 255, 0.1);
+        }
+
+        .characters-slider::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .characters-slider::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .characters-slider::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        .character-card {
+            flex: 0 0 auto;
+            width: 200px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .character-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+
+        .character-image {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
+            margin: 0 auto 1rem;
+            background-color: var(--secondary);
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 3rem;
+            color: var(--light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .character-name {
+            font-size: 1.3rem;
             font-weight: 700;
-        }
-
-        .answer-key {
-            background-color: #e7f7ef;
-            border: 1px solid #b8e6cf;
-            border-radius: 8px;
-            padding: 1rem;
-            margin-top: 1rem;
-        }
-
-        .answer-key h4 {
-            color: #2e8b57;
             margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+
+        .character-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* بطاقة التهنئة النهائية */
+        .final-greeting {
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .final-card {
+            background: linear-gradient(145deg, rgba(255, 154, 0, 0.1), rgba(212, 175, 55, 0.1));
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+
+        .final-card.show {
+            display: block;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .final-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 154, 0, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .final-title {
+            font-size: 2.2rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-family: 'Amiri', serif;
+        }
+
+        .final-message {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-lantern {
+            font-size: 4rem;
+            color: var(--accent);
+            margin: 1rem 0;
+            display: inline-block;
+            animation: swing 3s infinite alternate;
+        }
+
+        .share-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .share-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* الفوتر */
+        .share-btn:hover {
+            background-color: var(--gold);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 154, 0, 0.4);
+        }
+
+        /* أزرار التحكم */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 154, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--light);
+            border: 2px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 154, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        /* النجوم في الخلفية */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* التذييل */
         footer {
-            background-color: var(--dark);
-            color: white;
+            text-align: center;
             padding: 2rem 0;
             margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .footer-content {
             display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 2rem;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .footer-section {
-            flex: 1;
-            min-width: 250px;
+        .social-icons {
+            display: flex;
+            gap: 1rem;
         }
 
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: var(--success);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-links a {
-            color: #adb5bd;
-            text-decoration: none;
+        .social-icons a {
+            color: var(--light);
+            font-size: 1.5rem;
             transition: var(--transition);
         }
 
-        .footer-links a:hover {
-            color: var(--success);
-            padding-right: 5px;
+        .social-icons a:hover {
+            color: var(--accent);
+            transform: translateY(-3px);
         }
 
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            margin-top: 2rem;
-            border-top: 1px solid #495057;
-            color: #adb5bd;
-            font-size: 0.9rem;
-        }
-
-        /* التجاوب مع الشاشات المختلفة */
+        /* تصميم متجاوب */
         @media (max-width: 768px) {
-            .header-content {
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .ramadan-kareem {
+                font-size: 2.5rem;
+            }
+            
+            .lanterns-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .controls {
                 flex-direction: column;
-                gap: 1rem;
+                align-items: center;
             }
-
-            nav ul {
-                gap: 1rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .results-header {
-                flex-direction: column;
-                align-items: flex-start;
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <!-- الترويسة -->
+    <!-- النجوم في الخلفية -->
+    <div class="stars" id="starsContainer"></div>
+    
+    <!-- القمر -->
+    <div class="moon"></div>
+    
+    <!-- ترويسة الموقع -->
     <header>
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-brain"></i>
-                    <span>مولد الأسئلة التعليمية</span>
+                    <i class="fas fa-moon"></i>
+                    <h1>تهنئة رمضان كريم</h1>
                 </div>
-                <nav>
-                    <ul>
-                        <li><a href="#"><i class="fas fa-home"></i> الرئيسية</a></li>
-                        <li><a href="#"><i class="fas fa-question-circle"></i> كيف يعمل</a></li>
-                        <li><a href="#"><i class="fas fa-envelope"></i> اتصل بنا</a></li>
-                    </ul>
-                </nav>
+                <p style="font-size: 1.2rem;">موقع التهنئة الرمضاني الخاص بالطلاب</p>
             </div>
         </div>
     </header>
-
-    <!-- المحتوى الرئيسي -->
-    <main class="container">
-        <!-- قسم البطل -->
-        <section class="hero">
-            <h1>حوّل دروسك إلى أسئلة اختبارية بسهولة</h1>
-            <p>قم بتحميل ملفات الدروس (PDF أو صور) واحصل على أسئلة اختبارية ومقالية منظمة وجذابة بشكل تلقائي</p>
-            <a href="#upload" class="btn btn-secondary">
-                <i class="fas fa-magic"></i> جرب الآن
-            </a>
-        </section>
-
-        <!-- منطقة تحميل الملفات -->
-        <section id="upload" class="upload-section">
-            <h2 class="section-title">
-                <i class="fas fa-cloud-upload-alt"></i> تحميل المواد التعليمية
-            </h2>
-            
-            <div class="upload-area" id="uploadArea">
-                <i class="fas fa-file-upload"></i>
-                <h3>اسحب وأفلت الملفات هنا</h3>
-                <p>أو انقر لاختيار الملفات من جهازك</p>
-                <div class="file-types">
-                    <span class="file-type"><i class="fas fa-file-pdf"></i> ملفات PDF</span>
-                    <span class="file-type"><i class="fas fa-file-image"></i> صور (JPG, PNG)</span>
-                    <span class="file-type"><i class="fas fa-file-word"></i> مستندات Word</span>
-                </div>
-                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" style="display: none;">
-            </div>
-
-            <div class="selected-files" id="selectedFiles">
-                <!-- سيتم عرض الملفات المختارة هنا -->
-            </div>
-        </section>
-
-        <!-- إعدادات توليد الأسئلة -->
-        <section class="generation-settings">
-            <h2 class="section-title">
-                <i class="fas fa-cogs"></i> إعدادات توليد الأسئلة
-            </h2>
-            
-            <div class="settings-grid">
-                <div class="setting-item">
-                    <label for="questionType"><i class="fas fa-question"></i> أنواع الأسئلة</label>
-                    <select id="questionType" multiple>
-                        <option value="mcq" selected>أسئلة اختيار من متعدد</option>
-                        <option value="trueFalse" selected>أسئلة صح/خطأ</option>
-                        <option value="essay" selected>أسئلة مقالية</option>
-                    </select>
+    
+    <!-- قسم التهنئة الرئيسي -->
+    <section class="greeting-section">
+        <div class="container">
+            <div class="greeting-card">
+                <h2 class="ramadan-kareem">رمضان كريم</h2>
+                <p style="font-size: 1.3rem; margin-bottom: 1.5rem;">كل عام وأنتم بخير، تقبل الله منا ومنكم صالح الأعمال</p>
+                
+                <div class="student-name-input">
+                    <div class="input-group">
+                        <label for="studentName"><i class="fas fa-user-graduate"></i> أدخل اسم الطالب</label>
+                        <input type="text" id="studentName" placeholder="اكتب اسمك هنا..." maxlength="30">
+                    </div>
                 </div>
                 
-                <div class="setting-item">
-                    <label for="questionCount"><i class="fas fa-list-ol"></i> عدد الأسئلة</label>
-                    <input type="range" id="questionCount" min="5" max="30" value="15">
-                    <div>عدد الأسئلة: <span id="countValue">15</span></div>
-                </div>
-                
-                <div class="setting-item">
-                    <label for="difficulty"><i class="fas fa-chart-line"></i> مستوى الصعوبة</label>
-                    <select id="difficulty">
-                        <option value="easy">سهل</option>
-                        <option value="medium" selected>متوسط</option>
-                        <option value="hard">صعب</option>
-                    </select>
-                </div>
-                
-                <div class="setting-item">
-                    <label for="language"><i class="fas fa-language"></i> لغة الأسئلة</label>
-                    <select id="language">
-                        <option value="ar" selected>العربية</option>
-                        <option value="en">الإنجليزية</option>
-                    </select>
+                <div class="personalized-greeting" id="personalizedGreeting">
+                    <!-- سيتم عرض التهنئة الشخصية هنا -->
                 </div>
             </div>
-            
-            <button class="btn btn-secondary" id="generateBtn">
-                <i class="fas fa-bolt"></i> توليد الأسئلة
-            </button>
-        </section>
-
-        <!-- منطقة النتائج -->
-        <section class="results-section" id="resultsSection">
-            <div class="results-header">
-                <h2 class="section-title">
-                    <i class="fas fa-file-alt"></i> الأسئلة المُنشأة
-                </h2>
-                <div class="actions">
-                    <button class="btn" id="printBtn">
-                        <i class="fas fa-print"></i> طباعة
-                    </button>
-                    <button class="btn btn-secondary" id="downloadBtn">
-                        <i class="fas fa-download"></i> تحميل كملف PDF
-                    </button>
-                    <button class="btn btn-accent" id="newGenerationBtn">
-                        <i class="fas fa-redo"></i> توليد جديد
-                    </button>
-                </div>
+        </div>
+    </section>
+    
+    <!-- معرض الفوانيس -->
+    <section class="lanterns-section">
+        <div class="container">
+            <h2 class="section-title">اختر فانوسك المفضل</h2>
+            <div class="lanterns-grid" id="lanternsGrid">
+                <!-- سيتم إضافة الفوانيس هنا عبر JavaScript -->
             </div>
-            
-            <div class="questions-container" id="questionsContainer">
-                <!-- سيتم عرض الأسئلة هنا -->
+        </div>
+    </section>
+    
+    <!-- شخصيات الفانوس -->
+    <section class="fanous-characters">
+        <div class="container">
+            <h2 class="section-title">شخصيات الفانوس الرمضانية</h2>
+            <div class="characters-slider" id="charactersSlider">
+                <!-- سيتم إضافة شخصيات الفانوس هنا عبر JavaScript -->
             </div>
-        </section>
-    </main>
-
-    <!-- الفوتر -->
+        </div>
+    </section>
+    
+    <!-- أزرار التحكم -->
+    <section class="controls-section">
+        <div class="container">
+            <div class="controls">
+                <button class="btn btn-primary" id="generateGreetingBtn">
+                    <i class="fas fa-gift"></i> أنشئ تهنئتي الخاصة
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    <i class="fas fa-redo"></i> إعادة تعيين
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- بطاقة التهنئة النهائية -->
+    <section class="final-greeting">
+        <div class="container">
+            <div class="final-card" id="finalCard">
+                <!-- سيتم عرض التهنئة النهائية هنا -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- التذييل -->
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-section">
-                    <h3>مولد الأسئلة التعليمية</h3>
-                    <p>أداة مبتكرة لتحويل المواد التعليمية إلى أسئلة اختبارية بشكل تلقائي ومنظم، مصممة لتسهيل عملية التحضير للاختبارات.</p>
+                <p>© 2023 موقع تهنئة رمضان كريم - معرض الفوانيس الرمضاني</p>
+                <p>كل عام وأنتم بخير، رمضان مبارك</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
                 </div>
-                
-                <div class="footer-section">
-                    <h3>روابط سريعة</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">الرئيسية</a></li>
-                        <li><a href="#">كيف يعمل</a></li>
-                        <li><a href="#">الميزات</a></li>
-                        <li><a href="#">الأسعار</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>اتصل بنا</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-envelope"></i> info@example.com</a></li>
-                        <li><a href="#"><i class="fas fa-phone"></i> +966 123 456 789</a></li>
-                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> الرياض، المملكة العربية السعودية</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>جميع الحقوق محفوظة &copy; 2023 مولد الأسئلة التعليمية</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // عناصر DOM
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const selectedFiles = document.getElementById('selectedFiles');
-        const questionCount = document.getElementById('questionCount');
-        const countValue = document.getElementById('countValue');
-        const generateBtn = document.getElementById('generateBtn');
-        const resultsSection = document.getElementById('resultsSection');
-        const questionsContainer = document.getElementById('questionsContainer');
-        const printBtn = document.getElementById('printBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const newGenerationBtn = document.getElementById('newGenerationBtn');
-        
-        // تحديث عرض عدد الأسئلة
-        questionCount.addEventListener('input', function() {
-            countValue.textContent = this.value;
-        });
-        
-        // التعامل مع سحب وإفلات الملفات
-        uploadArea.addEventListener('click', () => fileInput.click());
-        
-        uploadArea.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            uploadArea.classList.add('dragover');
-        });
-        
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.classList.remove('dragover');
-        });
-        
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.classList.remove('dragover');
-            
-            if (e.dataTransfer.files.length) {
-                fileInput.files = e.dataTransfer.files;
-                handleFiles(fileInput.files);
+        // بيانات الفوانيس
+        const lanterns = [
+            {
+                id: 1,
+                name: "الفانوس الأحمر",
+                icon: "fas fa-mosque",
+                color: "#c62828",
+                desc: "فانوس تقليدي أحمر يرمز إلى البهجة والفرح في ليالي رمضان"
+            },
+            {
+                id: 2,
+                name: "الفانوس الذهبي",
+                icon: "fas fa-star-and-crescent",
+                color: "#d4af37",
+                desc: "فانوس ذهبي فاخر يرمز إلى النور والبركة في الشهر الكريم"
+            },
+            {
+                id: 3,
+                name: "الفانوس الأزرق",
+                icon: "fas fa-place-of-worship",
+                color: "#1565c0",
+                desc: "فانوس أزرق ملكي يرمز إلى السكينة والروحانية في رمضان"
+            },
+            {
+                id: 4,
+                name: "فانوس الزخرفة",
+                icon: "fas fa-dharmachakra",
+                color: "#ff9a00",
+                desc: "فانوس مزخرف بأنماط إسلامية تقليدية"
+            },
+            {
+                id: 5,
+                name: "فانوس المسجد",
+                icon: "fas fa-kaaba",
+                color: "#2e7d32",
+                desc: "فانوس على شكل مسجد يرمز إلى العبادة والتقوى"
+            },
+            {
+                id: 6,
+                name: "فانوس الهلال",
+                icon: "fas fa-moon",
+                color: "#6a1b9a",
+                desc: "فانوس هلالي يرمز إلى بداية شهر رمضان المبارك"
             }
-        });
+        ];
         
-        // التعامل مع اختيار الملفات
-        fileInput.addEventListener('change', () => {
-            handleFiles(fileInput.files);
-        });
+        // بيانات شخصيات الفانوس
+        const fanousCharacters = [
+            {
+                id: 1,
+                name: "حامل الفانوس",
+                icon: "fas fa-user",
+                desc: "الشخصية التقليدية التي تحمل الفانوس وتنير الطريق"
+            },
+            {
+                id: 2,
+                name: "المسحراتي",
+                icon: "fas fa-drum",
+                desc: "يوقظ الناس للسحور بأغانيه الرمضانية الشهيرة"
+            },
+            {
+                id: 3,
+                name: "الجد الرمضاني",
+                icon: "fas fa-user-tie",
+                desc: "يروي قصص رمضان للأحفاد ويجمع العائلة على مائدة الإفطار"
+            },
+            {
+                id: 4,
+                name: "طباخة رمضان",
+                icon: "fas fa-utensils",
+                desc: "تعد أشهى المأكولات الرمضانية التقليدية"
+            },
+            {
+                id: 5,
+                name: "طفل الفانوس",
+                icon: "fas fa-child",
+                desc: "يحمل فانوسه ويمشي في الأزقة مرددًا الأغاني الرمضانية"
+            },
+            {
+                id: 6,
+                name: "قارئ القرآن",
+                icon: "fas fa-book-quran",
+                desc: "يتلو القرآن الكريم في ليالي رمضان المباركة"
+            },
+            {
+                id: 7,
+                name: "بائع الفوانيس",
+                icon: "fas fa-store",
+                desc: "يبيع أجمل الفوانيس في سوق رمضان"
+            },
+            {
+                id: 8,
+                name: "المصلي",
+                icon: "fas fa-person-praying",
+                desc: "يؤدي الصلوات في ليالي رمضان بخشوع ووقار"
+            }
+        ];
         
-        // عرض الملفات المختارة
-        function handleFiles(files) {
-            selectedFiles.innerHTML = '';
+        // تهاني رمضانية
+        const ramadanGreetings = [
+            "كل عام وأنت بألف خير، تقبل الله منا ومنك صالح الأعمال",
+            "رمضان كريم، أسأل الله أن يبلغك رمضان وأنت في أحسن حال",
+            "أعاده الله عليك باليمن والبركات ووفقك فيه لصالح الأعمال",
+            "كل عام وأنت إلى الله أقرب، وإلى الخير أدوم، وإلى الجنة أسرع",
+            "تقبل الله منا ومنك الصيام والقيام وصالح الأعمال",
+            "أسأل الله أن يجعله شهر خير وبركة عليك وعلى جميع المسلمين"
+        ];
+        
+        // المتغيرات
+        let selectedLantern = null;
+        let selectedCharacter = null;
+        let studentName = "";
+        
+        // إنشاء النجوم في الخلفية
+        function createStars() {
+            const starsContainer = document.getElementById('starsContainer');
+            const starCount = 150;
             
-            if (files.length === 0) return;
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // حجم عشوائي للنجوم
+                const size = Math.random() * 3 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // موقع عشوائي
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // تأخير عشوائي للوميض
+                star.style.animationDelay = `${Math.random() * 3}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // عرض الفوانيس
+        function renderLanterns() {
+            const lanternsGrid = document.getElementById('lanternsGrid');
+            lanternsGrid.innerHTML = '';
             
-            const fileList = document.createElement('div');
-            fileList.className = 'file-list';
-            fileList.innerHTML = '<h4>الملفات المختارة:</h4>';
-            
-            Array.from(files).forEach((file, index) => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
-                fileItem.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 8px;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <i class="fas fa-file ${getFileIcon(file.type)}" style="color: #4361ee;"></i>
-                            <div>
-                                <div style="font-weight: 600;">${file.name}</div>
-                                <div style="font-size: 0.8rem; color: #6c757d;">${formatFileSize(file.size)}</div>
-                            </div>
-                        </div>
-                        <button class="btn remove-btn" data-index="${index}" style="padding: 5px 10px; font-size: 0.8rem;">
-                            <i class="fas fa-times"></i> حذف
-                        </button>
+            lanterns.forEach(lantern => {
+                const lanternCard = document.createElement('div');
+                lanternCard.className = 'lantern-card';
+                lanternCard.dataset.id = lantern.id;
+                
+                lanternCard.innerHTML = `
+                    <div class="lantern-icon" style="color: ${lantern.color}">
+                        <i class="${lantern.icon}"></i>
                     </div>
+                    <h3 class="lantern-name">${lantern.name}</h3>
+                    <p class="lantern-desc">${lantern.desc}</p>
                 `;
-                fileList.appendChild(fileItem);
-            });
-            
-            selectedFiles.appendChild(fileList);
-            
-            // إضافة أحداث لحذف الملفات
-            document.querySelectorAll('.remove-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    removeFile(index);
+                
+                lanternCard.addEventListener('click', () => {
+                    // إلغاء تحديد الفانوس السابق
+                    document.querySelectorAll('.lantern-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    
+                    // تحديد الفانوس الجديد
+                    lanternCard.classList.add('selected');
+                    selectedLantern = lantern;
+                    
+                    // عرض التهنئة الشخصية إذا كان الاسم مكتوبًا
+                    updatePersonalizedGreeting();
                 });
+                
+                lanternsGrid.appendChild(lanternCard);
             });
         }
         
-        // الحصول على أيقونة الملف المناسبة
-        function getFileIcon(fileType) {
-            if (fileType.includes('pdf')) return 'fa-file-pdf';
-            if (fileType.includes('image')) return 'fa-file-image';
-            if (fileType.includes('word')) return 'fa-file-word';
-            return 'fa-file';
-        }
-        
-        // تنسيق حجم الملف
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 بايت';
-            const k = 1024;
-            const sizes = ['بايت', 'كيلوبايت', 'ميجابايت', 'جيجابايت'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
-        }
-        
-        // حذف ملف
-        function removeFile(index) {
-            const dt = new DataTransfer();
-            const files = fileInput.files;
+        // عرض شخصيات الفانوس
+        function renderCharacters() {
+            const charactersSlider = document.getElementById('charactersSlider');
+            charactersSlider.innerHTML = '';
             
-            for (let i = 0; i < files.length; i++) {
-                if (i !== index) {
-                    dt.items.add(files[i]);
-                }
-            }
-            
-            fileInput.files = dt.files;
-            handleFiles(fileInput.files);
-        }
-        
-        // توليد أسئلة وهمية لعرض المثال
-        function generateSampleQuestions() {
-            const questionTypes = ['mcq', 'trueFalse', 'essay'];
-            const questionCountValue = parseInt(questionCount.value);
-            
-            questionsContainer.innerHTML = '';
-            
-            for (let i = 1; i <= questionCountValue; i++) {
-                const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
-                const question = createQuestion(i, type);
-                questionsContainer.appendChild(question);
-            }
-            
-            resultsSection.classList.add('active');
-            window.scrollTo({
-                top: resultsSection.offsetTop - 20,
-                behavior: 'smooth'
+            fanousCharacters.forEach(character => {
+                const characterCard = document.createElement('div');
+                characterCard.className = 'character-card';
+                characterCard.dataset.id = character.id;
+                
+                characterCard.innerHTML = `
+                    <div class="character-image">
+                        <i class="${character.icon}"></i>
+                    </div>
+                    <h3 class="character-name">${character.name}</h3>
+                    <p class="character-desc">${character.desc}</p>
+                `;
+                
+                characterCard.addEventListener('click', () => {
+                    // إلغاء تحديد الشخصية السابقة
+                    document.querySelectorAll('.character-card').forEach(card => {
+                        card.style.borderColor = 'transparent';
+                    });
+                    
+                    // تحديد الشخصية الجديدة
+                    characterCard.style.borderColor = 'var(--accent)';
+                    selectedCharacter = character;
+                    
+                    // عرض التهنئة الشخصية إذا كان الاسم مكتوبًا
+                    updatePersonalizedGreeting();
+                });
+                
+                charactersSlider.appendChild(characterCard);
             });
         }
         
-        // إنشاء سؤال واحد
-        function createQuestion(number, type) {
-            const questionCard = document.createElement('div');
-            questionCard.className = 'question-card';
+        // تحديث التهنئة الشخصية
+        function updatePersonalizedGreeting() {
+            const nameInput = document.getElementById('studentName');
+            const personalizedGreeting = document.getElementById('personalizedGreeting');
             
-            let questionContent = '';
-            const difficulty = document.getElementById('difficulty').value;
+            studentName = nameInput.value.trim();
             
-            if (type === 'mcq') {
-                questionContent = `
-                    <div class="question-header">
-                        <span class="question-type">اختيار من متعدد</span>
-                        <span class="question-number">سؤال ${number}</span>
-                    </div>
-                    <div class="question-text">
-                        ${getMCQQuestion(difficulty)}
-                    </div>
-                    <ul class="options-list">
-                        ${getMCQOptions()}
-                    </ul>
-                    <div class="answer-key">
-                        <h4><i class="fas fa-key"></i> الإجابة الصحيحة</h4>
-                        <p>${getCorrectAnswer()}</p>
-                    </div>
-                `;
-            } else if (type === 'trueFalse') {
-                questionContent = `
-                    <div class="question-header">
-                        <span class="question-type">صح/خطأ</span>
-                        <span class="question-number">سؤال ${number}</span>
-                    </div>
-                    <div class="question-text">
-                        ${getTrueFalseQuestion(difficulty)}
-                    </div>
-                    <div class="answer-key">
-                        <h4><i class="fas fa-key"></i> الإجابة الصحيحة</h4>
-                        <p>${Math.random() > 0.5 ? 'صح' : 'خطأ'}</p>
-                    </div>
-                `;
-            } else {
-                questionContent = `
-                    <div class="question-header">
-                        <span class="question-type essay">مقالي</span>
-                        <span class="question-number">سؤال ${number}</span>
-                    </div>
-                    <div class="question-text">
-                        ${getEssayQuestion(difficulty)}
-                    </div>
-                    <div class="answer-key">
-                        <h4><i class="fas fa-key"></i> النقاط الرئيسية للإجابة</h4>
-                        <p>${getEssayKeyPoints()}</p>
-                    </div>
-                `;
-            }
-            
-            questionCard.innerHTML = questionContent;
-            return questionCard;
-        }
-        
-        // أسئلة اختيار من متعدد عينة
-        function getMCQQuestion(difficulty) {
-            const questions = {
-                easy: "ما هي عاصمة المملكة العربية السعودية؟",
-                medium: "في أي عام تأسست المملكة العربية السعودية بالشكل الحالي؟",
-                hard: "أي من العناصر التالية يعتبر من أشباه الموصلات؟"
-            };
-            return questions[difficulty] || questions.medium;
-        }
-        
-        function getMCQOptions() {
-            const options = ["الرياض", "جدة", "الدمام", "مكة المكرمة"];
-            const letters = ["أ", "ب", "ج", "د"];
-            
-            let optionsHTML = '';
-            letters.forEach((letter, index) => {
-                optionsHTML += `
-                    <li class="option-item">
-                        <div class="option-letter">${letter}</div>
-                        <div class="option-text">${options[index]}</div>
-                    </li>
-                `;
-            });
-            
-            return optionsHTML;
-        }
-        
-        function getCorrectAnswer() {
-            const answers = ["أ) الرياض", "ب) 1932", "ج) السيليكون"];
-            return answers[Math.floor(Math.random() * answers.length)];
-        }
-        
-        // أسئلة صح/خطأ عينة
-        function getTrueFalseQuestion(difficulty) {
-            const questions = {
-                easy: "الشمس تدور حول الأرض.",
-                medium: "الخلية هي الوحدة الأساسية للحياة.",
-                hard: "سرعة الضوء في الفراغ ثابتة ولا تعتمد على حركة المصدر أو الراصد."
-            };
-            return questions[difficulty] || questions.medium;
-        }
-        
-        // أسئلة مقالية عينة
-        function getEssayQuestion(difficulty) {
-            const questions = {
-                easy: "ما هي فوائد القراءة؟",
-                medium: "ناقش أسباب وأثار التغير المناخي على البيئة.",
-                hard: "حلل العلاقة بين التنمية الاقتصادية وحماية البيئة، مع تقديم حلول لتحقيق التوازن بينهما."
-            };
-            return questions[difficulty] || questions.medium;
-        }
-        
-        function getEssayKeyPoints() {
-            const keyPoints = [
-                "توسيع المعرفة والثقافة العامة",
-                "تحسين القدرة على التركيز والتحليل",
-                "تنمية المهارات اللغوية والتعبيرية",
-                "تخفيف التوتر وتحسين الصحة النفسية"
-            ];
-            
-            let pointsHTML = '<ul>';
-            keyPoints.forEach(point => {
-                pointsHTML += `<li>${point}</li>`;
-            });
-            pointsHTML += '</ul>';
-            
-            return pointsHTML;
-        }
-        
-        // أحداث الأزرار
-        generateBtn.addEventListener('click', generateSampleQuestions);
-        
-        printBtn.addEventListener('click', () => {
-            window.print();
-        });
-        
-        downloadBtn.addEventListener('click', () => {
-            alert("سيتم تحميل الأسئلة كملف PDF. (هذه مجرد واجهة تجريبية)");
-        });
-        
-        newGenerationBtn.addEventListener('click', () => {
-            if (fileInput.files.length === 0) {
-                alert("الرجاء تحميل ملف أولاً");
+            if (studentName === "") {
+                personalizedGreeting.classList.remove('show');
                 return;
             }
-            generateSampleQuestions();
-        });
+            
+            let greetingText = `<h3>مرحبًا ${studentName}!</h3>`;
+            
+            if (selectedLantern) {
+                greetingText += `<p>لقد اخترت <strong>${selectedLantern.name}</strong> الذي يضيف بهجة خاصة لرمضانك.</p>`;
+            }
+            
+            if (selectedCharacter) {
+                greetingText += `<p>وشخصيتك الرمضانية المفضلة هي <strong>${selectedCharacter.name}</strong>.</p>`;
+            }
+            
+            if (!selectedLantern && !selectedCharacter) {
+                greetingText += `<p>${ramadanGreetings[Math.floor(Math.random() * ramadanGreetings.length)]}</p>`;
+            } else {
+                greetingText += `<p>${ramadanGreetings[Math.floor(Math.random() * ramadanGreetings.length)]}</p>`;
+            }
+            
+            personalizedGreeting.innerHTML = greetingText;
+            personalizedGreeting.classList.add('show');
+        }
         
-        // توليد بعض الأسئلة عند التحميل لعرض مثال
-        window.addEventListener('DOMContentLoaded', () => {
-            // إنشاء ملف وهمي لعرض المثال
-            const mockFile = new File([""], "درس_العلوم_الصف_الثاني_متوسط.pdf", { type: "application/pdf" });
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(mockFile);
-            fileInput.files = dataTransfer.files;
-            handleFiles(fileInput.files);
-        });
+        // إنشاء التهنئة النهائية
+        function generateFinalGreeting() {
+            const nameInput = document.getElementById('studentName');
+            const finalCard = document.getElementById('finalCard');
+            
+            studentName = nameInput.value.trim();
+            
+            if (studentName === "") {
+                alert("الرجاء إدخال اسمك أولاً");
+                nameInput.focus();
+                return;
+            }
+            
+            if (!selectedLantern) {
+                alert("الرجاء اختيار فانوس رمضاني");
+                return;
+            }
+            
+            let finalHTML = `
+                <h2 class="final-title">تهنئة رمضان خاصة لـ ${studentName}</h2>
+                <div class="final-lantern" style="color: ${selectedLantern.color}">
+                    <i class="${selectedLantern.icon}"></i>
+                </div>
+                <div class="final-message">
+                    <p>كل عام وأنت بخير يا ${studentName}،</p>
+                    <p>تهنئة رمضان كريم مرفقة بفانوسك المفضل <strong>${selectedLantern.name}</strong>.</p>
+            `;
+            
+            if (selectedCharacter) {
+                finalHTML += `<p>ونتمنى لك أن تكون مثل <strong>${selectedCharacter.name}</strong> في هذا الشهر الكريم.</p>`;
+            }
+            
+            finalHTML += `
+                    <p>${ramadanGreetings[Math.floor(Math.random() * ramadanGreetings.length)]}</p>
+                    <p>تقبل الله منا ومنك الصيام والقيام وصالح الأعمال.</p>
+                </div>
+                <div class="share-buttons">
+                    <button class="share-btn" id="shareWhatsApp">
+                        <i class="fab fa-whatsapp"></i> مشاركة عبر واتساب
+                    </button>
+                    <button class="share-btn" id="shareImage">
+                        <i class="fas fa-image"></i> حفظ كصورة
+                    </button>
+                </div>
+            `;
+            
+            finalCard.innerHTML = finalHTML;
+            finalCard.classList.add('show');
+            
+            // التمرير إلى بطاقة التهنئة النهائية
+            finalCard.scrollIntoView({ behavior: 'smooth' });
+            
+            // إضافة أحداث لأزرار المشاركة
+            document.getElementById('shareWhatsApp')?.addEventListener('click', shareOnWhatsApp);
+            document.getElementById('shareImage')?.addEventListener('click', saveAsImage);
+        }
+        
+        // مشاركة عبر واتساب
+        function shareOnWhatsApp() {
+            const greeting = `تهنئة رمضان كريم لـ ${studentName} مع فانوس ${selectedLantern.name}. ${ramadanGreetings[0]}`;
+            const url = `https://wa.me/?text=${encodeURIComponent(greeting)}`;
+            window.open(url, '_blank');
+        }
+        
+        // حفظ كصورة (محاكاة)
+        function saveAsImage() {
+            alert("سيتم حفظ التهنئة كصورة. (هذه ميزة تجريبية، في التطبيق الحقيقي ستستخدم مكتبة مثل html2canvas)");
+        }
+        
+        // إعادة تعيين كل شيء
+        function resetAll() {
+            document.getElementById('studentName').value = '';
+            document.getElementById('personalizedGreeting').classList.remove('show');
+            document.getElementById('finalCard').classList.remove('show');
+            
+            selectedLantern = null;
+            selectedCharacter = null;
+            
+            document.querySelectorAll('.lantern-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.character-card').forEach(card => {
+                card.style.borderColor = 'transparent';
+            });
+        }
+        
+        // تهيئة الموقع
+        function init() {
+            createStars();
+            renderLanterns();
+            renderCharacters();
+            
+            // أحداث الإدخال
+            document.getElementById('studentName').addEventListener('input', updatePersonalizedGreeting);
+            
+            // أحداث الأزرار
+            document.getElementById('generateGreetingBtn').addEventListener('click', generateFinalGreeting);
+            document.getElementById('resetBtn').addEventListener('click', resetAll);
+            
+            // اختيار فانوس وعرض شخصيات بشكل عشوائي عند التحميل
+            setTimeout(() => {
+                // اختيار فانوس عشوائي
+                const randomLanternIndex = Math.floor(Math.random() * lanterns.length);
+                const randomLanternCard = document.querySelector(`.lantern-card[data-id="${lanterns[randomLanternIndex].id}"]`);
+                if (randomLanternCard) {
+                    randomLanternCard.click();
+                }
+                
+                // اختيار شخصية عشوائية
+                const randomCharacterIndex = Math.floor(Math.random() * fanousCharacters.length);
+                const randomCharacterCard = document.querySelector(`.character-card[data-id="${fanousCharacters[randomCharacterIndex].id}"]`);
+                if (randomCharacterCard) {
+                    randomCharacterCard.click();
+                }
+            }, 1000);
+        }
+        
+        // تشغيل التطبيق عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
