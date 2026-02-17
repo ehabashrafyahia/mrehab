@@ -3,221 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة شرف أبطال الدراسات الاجتماعية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>لوحة أبطال الجغرافيا - أ. إيهاب أشرف</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-gold: #ffd700;
-            --secondary-gold: #b8860b;
-            --bg-dark: #0f0c29;
-            --glass-bg: rgba(255, 255, 255, 0.05);
+            --map-blue: #1a2a6c;
+            --gold-leaf: #f1c40f;
+            --parchment: rgba(255, 255, 255, 0.1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
 
         body {
             min-height: 100vh;
-            background: radial-gradient(circle at center, #24243e, #1b1b2f, #0f0c29);
+            /* خلفية توحي بالخريطة والمحيطات */
+            background: 
+                linear-gradient(rgba(26, 42, 108, 0.9), rgba(26, 42, 108, 0.8)),
+                url('https://www.transparenttextures.com/patterns/world-map.png'),
+                linear-gradient(to right, #b21f1f, #1a2a6c, #fdbb2d);
+            background-attachment: fixed;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
-            color: white;
+            padding: 50px 20px;
         }
 
-        .header-section {
+        .header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
+            border-bottom: 3px double var(--gold-leaf);
+            padding-bottom: 20px;
         }
 
         h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 900;
-            background: linear-gradient(to bottom, #fff, var(--primary-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 3.5rem;
+            color: var(--gold-leaf);
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.5), 0 0 20px rgba(241, 196, 15, 0.4);
             margin-bottom: 10px;
         }
 
-        .subtitle {
-            color: var(--primary-gold);
-            letter-spacing: 2px;
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        /* صندوق الإدخال */
-        .input-container {
-            background: var(--glass-bg);
-            padding: 20px;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
+        /* منطقة الإدخال */
+        .search-area {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid var(--gold-leaf);
             display: flex;
             gap: 15px;
             margin-bottom: 50px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 800px;
         }
 
         input {
-            padding: 12px 25px;
-            border-radius: 30px;
-            border: none;
-            width: 300px;
-            font-size: 16px;
+            flex: 1;
+            padding: 15px 25px;
+            border-radius: 8px;
+            border: 2px solid #333;
+            font-size: 1.2rem;
+            font-weight: bold;
             outline: none;
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            transition: 0.3s;
+            background: #fff;
         }
 
         button {
-            padding: 12px 30px;
+            padding: 15px 35px;
+            background: var(--gold-leaf);
+            color: #1a2a6c;
             border: none;
-            border-radius: 30px;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 1.1rem;
             cursor: pointer;
-            font-weight: bold;
-            background: linear-gradient(45deg, var(--primary-gold), #ffae00);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            transition: 0.4s;
+            transition: 0.3s;
         }
 
         button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+            transform: scale(1.05);
+            background: #fff;
+            box-shadow: 0 0 20px var(--gold-leaf);
         }
 
-        /* شبكة الطلاب */
+        /* لوحة العرض (شبكة أفقية) */
         .board {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 30px;
+            /* تجعل العناصر بجانب بعضها وتتوزع تلقائياً */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 25px;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1300px;
         }
 
-        .card {
-            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
-            border-radius: 20px;
-            padding: 40px 20px;
+        .hero-card {
+            background: var(--parchment);
+            backdrop-filter: blur(8px);
+            border: 2px solid var(--gold-leaf);
+            border-radius: 15px;
+            padding: 30px 20px;
             text-align: center;
-            border: 1px solid rgba(255, 215, 0, 0.3);
             position: relative;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            animation: fadeIn 0.5s ease-out forwards;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            animation: zoomIn 0.5s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes zoomIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        .card:hover {
-            transform: scale(1.05) translateY(-10px);
-            border-color: var(--primary-gold);
-            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+        .hero-card:hover {
+            background: rgba(241, 196, 15, 0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
-        .card .crown {
-            font-size: 40px;
-            display: block;
+        /* أيقونة البوصلة */
+        .compass-icon {
+            font-size: 45px;
             margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px var(--primary-gold));
-        }
-
-        .card .name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .card .badge {
             display: inline-block;
-            margin-top: 10px;
-            font-size: 0.8rem;
-            background: rgba(255, 215, 0, 0.2);
-            padding: 2px 12px;
-            border-radius: 10px;
-            color: var(--primary-gold);
+            transition: 1s ease;
+        }
+
+        .hero-card:hover .compass-icon {
+            transform: rotate(360deg);
+        }
+
+        .hero-name {
+            font-size: 2rem; /* اسم كبير جداً */
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+            display: block;
+            margin: 10px 0;
+        }
+
+        .title-tag {
+            color: var(--gold-leaf);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-top: 1px solid rgba(255,215,0,0.3);
+            padding-top: 10px;
+            display: block;
         }
 
         footer {
-            margin-top: auto;
-            padding-top: 50px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
+            margin-top: 80px;
+            color: var(--gold-leaf);
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.3);
+            padding: 10px 30px;
+            border-radius: 20px;
         }
 
-        /* للتجاوب مع الموبايل */
-        @media (max-width: 600px) {
-            .input-container {
-                flex-direction: column;
-                border-radius: 20px;
-                width: 100%;
-            }
-            input { width: 100%; }
+        /* تصميم الموبايل */
+        @media (max-width: 768px) {
+            .search-area { flex-direction: column; }
+            h1 { font-size: 2.2rem; }
+            .board { grid-template-columns: 1fr 1fr; } /* يظهر كرتين بجانب بعض في الموبايل */
         }
     </style>
 </head>
 <body>
 
-    <div class="header-section">
-        <h1>أبطال الدراسات الاجتماعية</h1>
-        <p class="subtitle">لوحة الشرف للمتميزين</p>
+    <div class="header">
+        <h1>مُستكشفو العالم</h1>
+        <p style="color: white; font-size: 1.2rem;">لوحة شرف مادة الدراسات الاجتماعية</p>
     </div>
 
-    <div class="input-container">
-        <input type="text" id="studentName" placeholder="اكتب اسم البطل هنا..." onkeypress="handleKeyPress(event)">
-        <button onclick="addStudent()">إضافة للوحة الشرف</button>
+    <div class="search-area">
+        <input type="text" id="nameInput" placeholder="أدخل اسم البطل..." onkeypress="checkEnter(event)">
+        <button onclick="addNewHero()">تتويج البطل 🧭</button>
     </div>
 
-    <div class="board" id="board">
+    <div class="board" id="honorBoard">
         </div>
 
     <footer>
-        تصميم لوحة الشرف - إعداد الأستاذ إيهاب أشرف &copy; 2024
+        بإشراف الأستاذ: إيهاب أشرف | خبير المادة
     </footer>
 
     <script>
-        function addStudent() {
-            const nameInput = document.getElementById("studentName");
-            const name = nameInput.value.trim();
-            
-            if (name === "") {
-                alert("يرجى إدخال اسم الطالب أولاً");
-                return;
-            }
+        function addNewHero() {
+            const input = document.getElementById('nameInput');
+            const name = input.value.trim();
+            const board = document.getElementById('honorBoard');
 
-            const board = document.getElementById("board");
-            const card = document.createElement("div");
-            card.className = "card";
-            
-            // إضافة ميزة الحذف عند النقر المزدوج
-            card.title = "انقر مرتين للإزالة";
-            card.ondblclick = function() {
-                this.style.opacity = "0";
-                setTimeout(() => this.remove(), 300);
-            };
+            if (name === "") return;
 
+            const card = document.createElement('div');
+            card.className = 'hero-card';
+            
             card.innerHTML = `
-                <div class="crown">🏆</div>
-                <div class="name">${name}</div>
-                <div class="badge">بطل متميز</div>
+                <div class="compass-icon">🧭</div>
+                <span class="hero-name">${name}</span>
+                <span class="title-tag">بطل الدراسات الاجتماعية</span>
             `;
 
-            board.prepend(card); // إضافة الطالب الجديد في البداية
-            nameInput.value = "";
-            nameInput.focus();
+            // إضافة في بداية الشبكة
+            board.prepend(card);
+            
+            // مسح الخانة
+            input.value = "";
+            input.focus();
         }
 
-        function handleKeyPress(event) {
-            if (event.key === "Enter") {
-                addStudent();
-            }
+        function checkEnter(e) {
+            if (e.key === "Enter") addNewHero();
         }
     </script>
 </body>
