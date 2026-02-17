@@ -3,191 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تهنئة رمضان كريم - معرض الفوانيس الرمضاني</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <title>لوحة شرف أبطال الدراسات الاجتماعية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #0c3b2e;
-            --secondary: #6d8c54;
-            --accent: #ff9a00;
-            --gold: #d4af37;
-            --light: #f8f5e6;
-            --dark: #1a472a;
-            --lantern-red: #c62828;
-            --lantern-blue: #1565c0;
-            --lantern-green: #2e7d32;
-            --lantern-purple: #6a1b9a;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            --transition: all 0.3s ease;
+            --primary-gold: #ffd700;
+            --secondary-gold: #b8860b;
+            --bg-dark: #0f0c29;
+            --glass-bg: rgba(255, 255, 255, 0.05);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #0c3b2e 0%, #1a472a 50%, #0c3b2e 100%);
-            color: var(--light);
             min-height: 100vh;
-            overflow-x: hidden;
-            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* ترويسة الموقع */
-        header {
-            padding: 1.5rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .logo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 1rem;
-        }
-
-        .logo i {
-            font-size: 2.5rem;
-            color: var(--accent);
-            animation: glow 2s infinite alternate;
-        }
-
-        .logo h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--gold);
-            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.5);
-            letter-spacing: 1px;
-        }
-
-        .moon {
-            position: absolute;
-            top: 20px;
-            left: 50px;
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle at 30% 30%, #f8f5e6, #d4af37);
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.7);
-            animation: float 6s ease-in-out infinite;
-            z-index: 1;
-        }
-
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px var(--accent); }
-            100% { text-shadow: 0 0 20px var(--accent), 0 0 30px var(--accent); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(5deg); }
-        }
-
-        /* قسم التهنئة الرئيسي */
-        .greeting-section {
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        .greeting-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .greeting-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
-        }
-
-        .ramadan-kareem {
-            font-family: 'Amiri', serif;
-            font-size: 3.5rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
-            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.5);
-            line-height: 1.3;
-        }
-
-        .student-name-input {
-            margin: 2rem 0;
-        }
-
-        .input-group {
+            background: radial-gradient(circle at center, #24243e, #1b1b2f, #0f0c29);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            padding: 40px 20px;
+            color: white;
         }
 
-        .input-group label {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--accent);
-        }
-
-        .input-group input {
-            width: 100%;
-            max-width: 400px;
-            padding: 1rem 1.5rem;
-            font-size: 1.2rem;
-            font-family: 'Cairo', sans-serif;
-            border: none;
-            border-radius: 50px;
-            background-color: rgba(255, 255, 255, 0.9);
-            color: var(--primary);
+        .header-section {
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
+            margin-bottom: 50px;
         }
 
-        .input-group input:focus {
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(to bottom, #fff, var(--primary-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* صندوق الإدخال */
+        .input-container {
+            background: var(--glass-bg);
+            padding: 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            display: flex;
+            gap: 15px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        input {
+            padding: 12px 25px;
+            border-radius: 30px;
+            border: none;
+            width: 300px;
+            font-size: 16px;
             outline: none;
-            box-shadow: 0 0 0 3px var(--accent);
-            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            transition: 0.3s;
         }
 
-        .personalized-greeting {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background-color: rgba(109, 140, 84, 0.2);
-            border-radius: 15px;
-            border-right: 5px solid var(--accent);
-            display: none;
-            animation: fadeIn 1s ease;
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary-gold), #ffae00);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: 0.4s;
         }
 
-        .personalized-greeting.show {
-            display: block;
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        /* شبكة الطلاب */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            animation: fadeIn 0.5s ease-out forwards;
         }
 
         @keyframes fadeIn {
@@ -195,848 +115,110 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .personalized-greeting h3 {
-            font-size: 1.8rem;
-            color: var(--gold);
-            margin-bottom: 0.5rem;
+        .card:hover {
+            transform: scale(1.05) translateY(-10px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
         }
 
-        .personalized-greeting p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-        }
-
-        /* معرض الفوانيس */
-        .lanterns-section {
-            padding: 2rem 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            color: var(--accent);
-            position: relative;
-            display: inline-block;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-        }
-
-        .lanterns-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .lantern-card {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: var(--transition);
-            cursor: pointer;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .lantern-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 25px rgba(255, 154, 0, 0.3);
-        }
-
-        .lantern-card.selected {
-            border-color: var(--gold);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-        }
-
-        .lantern-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: var(--accent);
-            animation: swing 3s infinite alternate;
-        }
-
-        @keyframes swing {
-            0% { transform: rotate(-5deg); }
-            100% { transform: rotate(5deg); }
-        }
-
-        .lantern-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--light);
-        }
-
-        .lantern-desc {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.5;
-        }
-
-        /* شخصيات الفانوس */
-        .fanous-characters {
-            padding: 2rem 0;
-        }
-
-        .characters-slider {
-            display: flex;
-            overflow-x: auto;
-            gap: 1.5rem;
-            padding: 1rem 0;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) rgba(255, 255, 255, 0.1);
-        }
-
-        .characters-slider::-webkit-scrollbar {
-            height: 8px;
-        }
-
-        .characters-slider::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        .characters-slider::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 10px;
-        }
-
-        .character-card {
-            flex: 0 0 auto;
-            width: 200px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 1.5rem 1rem;
-            text-align: center;
-            transition: var(--transition);
-            border: 2px solid transparent;
-        }
-
-        .character-card:hover {
-            transform: scale(1.05);
-            border-color: var(--accent);
-        }
-
-        .character-image {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1rem;
-            background-color: var(--secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: var(--light);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .character-name {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--gold);
-        }
-
-        .character-desc {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        /* بطاقة التهنئة النهائية */
-        .final-greeting {
-            padding: 2rem 0;
-            text-align: center;
-        }
-
-        .final-card {
-            background: linear-gradient(145deg, rgba(255, 154, 0, 0.1), rgba(212, 175, 55, 0.1));
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin: 2rem auto;
-            max-width: 800px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            border: 2px solid var(--gold);
-            position: relative;
-            overflow: hidden;
-            display: none;
-        }
-
-        .final-card.show {
+        .card .crown {
+            font-size: 40px;
             display: block;
-            animation: fadeInUp 1s ease;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px var(--primary-gold));
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .final-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 154, 0, 0.1) 0%, transparent 70%);
-            z-index: -1;
-        }
-
-        .final-title {
-            font-size: 2.2rem;
-            color: var(--gold);
-            margin-bottom: 1rem;
-            font-family: 'Amiri', serif;
-        }
-
-        .final-message {
+        .card .name {
             font-size: 1.3rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
-        .final-lantern {
-            font-size: 4rem;
-            color: var(--accent);
-            margin: 1rem 0;
+        .card .badge {
             display: inline-block;
-            animation: swing 3s infinite alternate;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 2px 12px;
+            border-radius: 10px;
+            color: var(--primary-gold);
         }
 
-        .share-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .share-btn {
-            padding: 0.8rem 1.5rem;
-            background-color: var(--accent);
-            color: var(--primary);
-            border: none;
-            border-radius: 50px;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .share-btn:hover {
-            background-color: var(--gold);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 154, 0, 0.4);
-        }
-
-        /* أزرار التحكم */
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(90deg, var(--accent), var(--gold));
-            color: var(--primary);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(255, 154, 0, 0.4);
-        }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--light);
-            border: 2px solid var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 154, 0, 0.1);
-            transform: translateY(-5px);
-        }
-
-        /* النجوم في الخلفية */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .star {
-            position: absolute;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        /* التذييل */
         footer {
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+            padding-top: 50px;
+            color: rgba(255, 255, 255, 0.5);
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
         }
 
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-icons a {
-            color: var(--light);
-            font-size: 1.5rem;
-            transition: var(--transition);
-        }
-
-        .social-icons a:hover {
-            color: var(--accent);
-            transform: translateY(-3px);
-        }
-
-        /* تصميم متجاوب */
-        @media (max-width: 768px) {
-            .logo h1 {
-                font-size: 1.8rem;
-            }
-            
-            .ramadan-kareem {
-                font-size: 2.5rem;
-            }
-            
-            .lanterns-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-            
-            .controls {
+        /* للتجاوب مع الموبايل */
+        @media (max-width: 600px) {
+            .input-container {
                 flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
+                border-radius: 20px;
                 width: 100%;
-                max-width: 300px;
-                justify-content: center;
             }
+            input { width: 100%; }
         }
     </style>
 </head>
 <body>
-    <!-- النجوم في الخلفية -->
-    <div class="stars" id="starsContainer"></div>
-    
-    <!-- القمر -->
-    <div class="moon"></div>
-    
-    <!-- ترويسة الموقع -->
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-moon"></i>
-                    <h1>تهنئة رمضان كريم</h1>
-                </div>
-                <p style="font-size: 1.2rem;">موقع التهنئة الرمضاني الخاص بالطلاب</p>
-            </div>
+
+    <div class="header-section">
+        <h1>أبطال الدراسات الاجتماعية</h1>
+        <p class="subtitle">لوحة الشرف للمتميزين</p>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="studentName" placeholder="اكتب اسم البطل هنا..." onkeypress="handleKeyPress(event)">
+        <button onclick="addStudent()">إضافة للوحة الشرف</button>
+    </div>
+
+    <div class="board" id="board">
         </div>
-    </header>
-    
-    <!-- قسم التهنئة الرئيسي -->
-    <section class="greeting-section">
-        <div class="container">
-            <div class="greeting-card">
-                <h2 class="ramadan-kareem">رمضان كريم</h2>
-                <p style="font-size: 1.3rem; margin-bottom: 1.5rem;">كل عام وأنتم بخير، تقبل الله منا ومنكم صالح الأعمال</p>
-                
-                <div class="student-name-input">
-                    <div class="input-group">
-                        <label for="studentName"><i class="fas fa-user-graduate"></i> أدخل اسم الطالب</label>
-                        <input type="text" id="studentName" placeholder="اكتب اسمك هنا..." maxlength="30">
-                    </div>
-                </div>
-                
-                <div class="personalized-greeting" id="personalizedGreeting">
-                    <!-- سيتم عرض التهنئة الشخصية هنا -->
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- معرض الفوانيس -->
-    <section class="lanterns-section">
-        <div class="container">
-            <h2 class="section-title">اختر فانوسك المفضل</h2>
-            <div class="lanterns-grid" id="lanternsGrid">
-                <!-- سيتم إضافة الفوانيس هنا عبر JavaScript -->
-            </div>
-        </div>
-    </section>
-    
-    <!-- شخصيات الفانوس -->
-    <section class="fanous-characters">
-        <div class="container">
-            <h2 class="section-title">شخصيات الفانوس الرمضانية</h2>
-            <div class="characters-slider" id="charactersSlider">
-                <!-- سيتم إضافة شخصيات الفانوس هنا عبر JavaScript -->
-            </div>
-        </div>
-    </section>
-    
-    <!-- أزرار التحكم -->
-    <section class="controls-section">
-        <div class="container">
-            <div class="controls">
-                <button class="btn btn-primary" id="generateGreetingBtn">
-                    <i class="fas fa-gift"></i> أنشئ تهنئتي الخاصة
-                </button>
-                <button class="btn btn-secondary" id="resetBtn">
-                    <i class="fas fa-redo"></i> إعادة تعيين
-                </button>
-            </div>
-        </div>
-    </section>
-    
-    <!-- بطاقة التهنئة النهائية -->
-    <section class="final-greeting">
-        <div class="container">
-            <div class="final-card" id="finalCard">
-                <!-- سيتم عرض التهنئة النهائية هنا -->
-            </div>
-        </div>
-    </section>
-    
-    <!-- التذييل -->
+
     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <p>© 2023 موقع تهنئة رمضان كريم - معرض الفوانيس الرمضاني</p>
-                <p>كل عام وأنتم بخير، رمضان مبارك</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-whatsapp"></i></a>
-                </div>
-            </div>
-        </div>
+        تصميم لوحة الشرف - إعداد الأستاذ إيهاب أشرف &copy; 2024
     </footer>
 
     <script>
-        // بيانات الفوانيس
-        const lanterns = [
-            {
-                id: 1,
-                name: "الفانوس الأحمر",
-                icon: "fas fa-mosque",
-                color: "#c62828",
-                desc: "فانوس تقليدي أحمر يرمز إلى البهجة والفرح في ليالي رمضان"
-            },
-            {
-                id: 2,
-                name: "الفانوس الذهبي",
-                icon: "fas fa-star-and-crescent",
-                color: "#d4af37",
-                desc: "فانوس ذهبي فاخر يرمز إلى النور والبركة في الشهر الكريم"
-            },
-            {
-                id: 3,
-                name: "الفانوس الأزرق",
-                icon: "fas fa-place-of-worship",
-                color: "#1565c0",
-                desc: "فانوس أزرق ملكي يرمز إلى السكينة والروحانية في رمضان"
-            },
-            {
-                id: 4,
-                name: "فانوس الزخرفة",
-                icon: "fas fa-dharmachakra",
-                color: "#ff9a00",
-                desc: "فانوس مزخرف بأنماط إسلامية تقليدية"
-            },
-            {
-                id: 5,
-                name: "فانوس المسجد",
-                icon: "fas fa-kaaba",
-                color: "#2e7d32",
-                desc: "فانوس على شكل مسجد يرمز إلى العبادة والتقوى"
-            },
-            {
-                id: 6,
-                name: "فانوس الهلال",
-                icon: "fas fa-moon",
-                color: "#6a1b9a",
-                desc: "فانوس هلالي يرمز إلى بداية شهر رمضان المبارك"
-            }
-        ];
-        
-        // بيانات شخصيات الفانوس
-        const fanousCharacters = [
-            {
-                id: 1,
-                name: "حامل الفانوس",
-                icon: "fas fa-user",
-                desc: "الشخصية التقليدية التي تحمل الفانوس وتنير الطريق"
-            },
-            {
-                id: 2,
-                name: "المسحراتي",
-                icon: "fas fa-drum",
-                desc: "يوقظ الناس للسحور بأغانيه الرمضانية الشهيرة"
-            },
-            {
-                id: 3,
-                name: "الجد الرمضاني",
-                icon: "fas fa-user-tie",
-                desc: "يروي قصص رمضان للأحفاد ويجمع العائلة على مائدة الإفطار"
-            },
-            {
-                id: 4,
-                name: "طباخة رمضان",
-                icon: "fas fa-utensils",
-                desc: "تعد أشهى المأكولات الرمضانية التقليدية"
-            },
-            {
-                id: 5,
-                name: "طفل الفانوس",
-                icon: "fas fa-child",
-                desc: "يحمل فانوسه ويمشي في الأزقة مرددًا الأغاني الرمضانية"
-            },
-            {
-                id: 6,
-                name: "قارئ القرآن",
-                icon: "fas fa-book-quran",
-                desc: "يتلو القرآن الكريم في ليالي رمضان المباركة"
-            },
-            {
-                id: 7,
-                name: "بائع الفوانيس",
-                icon: "fas fa-store",
-                desc: "يبيع أجمل الفوانيس في سوق رمضان"
-            },
-            {
-                id: 8,
-                name: "المصلي",
-                icon: "fas fa-person-praying",
-                desc: "يؤدي الصلوات في ليالي رمضان بخشوع ووقار"
-            }
-        ];
-        
-        // تهاني رمضانية
-        const ramadanGreetings = [
-            "كل عام وأنت بألف خير، تقبل الله منا ومنك صالح الأعمال",
-            "رمضان كريم، أسأل الله أن يبلغك رمضان وأنت في أحسن حال",
-            "أعاده الله عليك باليمن والبركات ووفقك فيه لصالح الأعمال",
-            "كل عام وأنت إلى الله أقرب، وإلى الخير أدوم، وإلى الجنة أسرع",
-            "تقبل الله منا ومنك الصيام والقيام وصالح الأعمال",
-            "أسأل الله أن يجعله شهر خير وبركة عليك وعلى جميع المسلمين"
-        ];
-        
-        // المتغيرات
-        let selectedLantern = null;
-        let selectedCharacter = null;
-        let studentName = "";
-        
-        // إنشاء النجوم في الخلفية
-        function createStars() {
-            const starsContainer = document.getElementById('starsContainer');
-            const starCount = 150;
+        function addStudent() {
+            const nameInput = document.getElementById("studentName");
+            const name = nameInput.value.trim();
             
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // حجم عشوائي للنجوم
-                const size = Math.random() * 3 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                
-                // موقع عشوائي
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                
-                // تأخير عشوائي للوميض
-                star.style.animationDelay = `${Math.random() * 3}s`;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-        
-        // عرض الفوانيس
-        function renderLanterns() {
-            const lanternsGrid = document.getElementById('lanternsGrid');
-            lanternsGrid.innerHTML = '';
-            
-            lanterns.forEach(lantern => {
-                const lanternCard = document.createElement('div');
-                lanternCard.className = 'lantern-card';
-                lanternCard.dataset.id = lantern.id;
-                
-                lanternCard.innerHTML = `
-                    <div class="lantern-icon" style="color: ${lantern.color}">
-                        <i class="${lantern.icon}"></i>
-                    </div>
-                    <h3 class="lantern-name">${lantern.name}</h3>
-                    <p class="lantern-desc">${lantern.desc}</p>
-                `;
-                
-                lanternCard.addEventListener('click', () => {
-                    // إلغاء تحديد الفانوس السابق
-                    document.querySelectorAll('.lantern-card').forEach(card => {
-                        card.classList.remove('selected');
-                    });
-                    
-                    // تحديد الفانوس الجديد
-                    lanternCard.classList.add('selected');
-                    selectedLantern = lantern;
-                    
-                    // عرض التهنئة الشخصية إذا كان الاسم مكتوبًا
-                    updatePersonalizedGreeting();
-                });
-                
-                lanternsGrid.appendChild(lanternCard);
-            });
-        }
-        
-        // عرض شخصيات الفانوس
-        function renderCharacters() {
-            const charactersSlider = document.getElementById('charactersSlider');
-            charactersSlider.innerHTML = '';
-            
-            fanousCharacters.forEach(character => {
-                const characterCard = document.createElement('div');
-                characterCard.className = 'character-card';
-                characterCard.dataset.id = character.id;
-                
-                characterCard.innerHTML = `
-                    <div class="character-image">
-                        <i class="${character.icon}"></i>
-                    </div>
-                    <h3 class="character-name">${character.name}</h3>
-                    <p class="character-desc">${character.desc}</p>
-                `;
-                
-                characterCard.addEventListener('click', () => {
-                    // إلغاء تحديد الشخصية السابقة
-                    document.querySelectorAll('.character-card').forEach(card => {
-                        card.style.borderColor = 'transparent';
-                    });
-                    
-                    // تحديد الشخصية الجديدة
-                    characterCard.style.borderColor = 'var(--accent)';
-                    selectedCharacter = character;
-                    
-                    // عرض التهنئة الشخصية إذا كان الاسم مكتوبًا
-                    updatePersonalizedGreeting();
-                });
-                
-                charactersSlider.appendChild(characterCard);
-            });
-        }
-        
-        // تحديث التهنئة الشخصية
-        function updatePersonalizedGreeting() {
-            const nameInput = document.getElementById('studentName');
-            const personalizedGreeting = document.getElementById('personalizedGreeting');
-            
-            studentName = nameInput.value.trim();
-            
-            if (studentName === "") {
-                personalizedGreeting.classList.remove('show');
+            if (name === "") {
+                alert("يرجى إدخال اسم الطالب أولاً");
                 return;
             }
+
+            const board = document.getElementById("board");
+            const card = document.createElement("div");
+            card.className = "card";
             
-            let greetingText = `<h3>مرحبًا ${studentName}!</h3>`;
-            
-            if (selectedLantern) {
-                greetingText += `<p>لقد اخترت <strong>${selectedLantern.name}</strong> الذي يضيف بهجة خاصة لرمضانك.</p>`;
-            }
-            
-            if (selectedCharacter) {
-                greetingText += `<p>وشخصيتك الرمضانية المفضلة هي <strong>${selectedCharacter.name}</strong>.</p>`;
-            }
-            
-            if (!selectedLantern && !selectedCharacter) {
-                greetingText += `<p>${ramadanGreetings[Math.floor(Math.random() * ramadanGreetings.length)]}</p>`;
-            } else {
-                greetingText += `<p>${ramadanGreetings[Math.floor(Math.random() * ramadanGreetings.length)]}</p>`;
-            }
-            
-            personalizedGreeting.innerHTML = greetingText;
-            personalizedGreeting.classList.add('show');
-        }
-        
-        // إنشاء التهنئة النهائية
-        function generateFinalGreeting() {
-            const nameInput = document.getElementById('studentName');
-            const finalCard = document.getElementById('finalCard');
-            
-            studentName = nameInput.value.trim();
-            
-            if (studentName === "") {
-                alert("الرجاء إدخال اسمك أولاً");
-                nameInput.focus();
-                return;
-            }
-            
-            if (!selectedLantern) {
-                alert("الرجاء اختيار فانوس رمضاني");
-                return;
-            }
-            
-            let finalHTML = `
-                <h2 class="final-title">تهنئة رمضان خاصة لـ ${studentName}</h2>
-                <div class="final-lantern" style="color: ${selectedLantern.color}">
-                    <i class="${selectedLantern.icon}"></i>
-                </div>
-                <div class="final-message">
-                    <p>كل عام وأنت بخير يا ${studentName}،</p>
-                    <p>تهنئة رمضان كريم مرفقة بفانوسك المفضل <strong>${selectedLantern.name}</strong>.</p>
+            // إضافة ميزة الحذف عند النقر المزدوج
+            card.title = "انقر مرتين للإزالة";
+            card.ondblclick = function() {
+                this.style.opacity = "0";
+                setTimeout(() => this.remove(), 300);
+            };
+
+            card.innerHTML = `
+                <div class="crown">🏆</div>
+                <div class="name">${name}</div>
+                <div class="badge">بطل متميز</div>
             `;
-            
-            if (selectedCharacter) {
-                finalHTML += `<p>ونتمنى لك أن تكون مثل <strong>${selectedCharacter.name}</strong> في هذا الشهر الكريم.</p>`;
+
+            board.prepend(card); // إضافة الطالب الجديد في البداية
+            nameInput.value = "";
+            nameInput.focus();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                addStudent();
             }
-            
-            finalHTML += `
-                    <p>${ramadanGreetings[Math.floor(Math.random() * ramadanGreetings.length)]}</p>
-                    <p>تقبل الله منا ومنك الصيام والقيام وصالح الأعمال.</p>
-                </div>
-                <div class="share-buttons">
-                    <button class="share-btn" id="shareWhatsApp">
-                        <i class="fab fa-whatsapp"></i> مشاركة عبر واتساب
-                    </button>
-                    <button class="share-btn" id="shareImage">
-                        <i class="fas fa-image"></i> حفظ كصورة
-                    </button>
-                </div>
-            `;
-            
-            finalCard.innerHTML = finalHTML;
-            finalCard.classList.add('show');
-            
-            // التمرير إلى بطاقة التهنئة النهائية
-            finalCard.scrollIntoView({ behavior: 'smooth' });
-            
-            // إضافة أحداث لأزرار المشاركة
-            document.getElementById('shareWhatsApp')?.addEventListener('click', shareOnWhatsApp);
-            document.getElementById('shareImage')?.addEventListener('click', saveAsImage);
         }
-        
-        // مشاركة عبر واتساب
-        function shareOnWhatsApp() {
-            const greeting = `تهنئة رمضان كريم لـ ${studentName} مع فانوس ${selectedLantern.name}. ${ramadanGreetings[0]}`;
-            const url = `https://wa.me/?text=${encodeURIComponent(greeting)}`;
-            window.open(url, '_blank');
-        }
-        
-        // حفظ كصورة (محاكاة)
-        function saveAsImage() {
-            alert("سيتم حفظ التهنئة كصورة. (هذه ميزة تجريبية، في التطبيق الحقيقي ستستخدم مكتبة مثل html2canvas)");
-        }
-        
-        // إعادة تعيين كل شيء
-        function resetAll() {
-            document.getElementById('studentName').value = '';
-            document.getElementById('personalizedGreeting').classList.remove('show');
-            document.getElementById('finalCard').classList.remove('show');
-            
-            selectedLantern = null;
-            selectedCharacter = null;
-            
-            document.querySelectorAll('.lantern-card').forEach(card => {
-                card.classList.remove('selected');
-            });
-            
-            document.querySelectorAll('.character-card').forEach(card => {
-                card.style.borderColor = 'transparent';
-            });
-        }
-        
-        // تهيئة الموقع
-        function init() {
-            createStars();
-            renderLanterns();
-            renderCharacters();
-            
-            // أحداث الإدخال
-            document.getElementById('studentName').addEventListener('input', updatePersonalizedGreeting);
-            
-            // أحداث الأزرار
-            document.getElementById('generateGreetingBtn').addEventListener('click', generateFinalGreeting);
-            document.getElementById('resetBtn').addEventListener('click', resetAll);
-            
-            // اختيار فانوس وعرض شخصيات بشكل عشوائي عند التحميل
-            setTimeout(() => {
-                // اختيار فانوس عشوائي
-                const randomLanternIndex = Math.floor(Math.random() * lanterns.length);
-                const randomLanternCard = document.querySelector(`.lantern-card[data-id="${lanterns[randomLanternIndex].id}"]`);
-                if (randomLanternCard) {
-                    randomLanternCard.click();
-                }
-                
-                // اختيار شخصية عشوائية
-                const randomCharacterIndex = Math.floor(Math.random() * fanousCharacters.length);
-                const randomCharacterCard = document.querySelector(`.character-card[data-id="${fanousCharacters[randomCharacterIndex].id}"]`);
-                if (randomCharacterCard) {
-                    randomCharacterCard.click();
-                }
-            }, 1000);
-        }
-        
-        // تشغيل التطبيق عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
