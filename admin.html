@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - المعلم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #f0f2f5; padding: 40px; text-align: center; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { color: #1a2a6c; margin-bottom: 20px; }
+        
+        input {
+            width: 70%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 18px; outline: none;
+        }
+        
+        button.add-btn {
+            padding: 15px 25px; background: #28a745; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold;
+        }
+        
+        button.open-board {
+            display: block; width: 100%; margin-top: 20px; padding: 20px; background: #1a2a6c; color: white; font-size: 20px; border: none; border-radius: 15px; cursor: pointer; transition: 0.3s;
+        }
+        button.open-board:hover { background: #2c3e50; transform: scale(1.02); }
+
+        button.clear-btn {
+            background: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer;
+        }
+
+        .list { margin-top: 30px; text-align: right; }
+        .item { background: #f8f9fa; padding: 10px; margin-bottom: 8px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-right: 4px solid #1a2a6c; }
+        .delete-icon { color: red; cursor: pointer; font-weight: bold; padding: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>👨‍🏫 لوحة تحكم المعلم</h2>
+        <div>
+            <input type="text" id="nameInput" placeholder="اكتب اسم الطالب..." onkeypress="handleEnter(event)">
+            <button class="add-btn" onclick="addStudent()">إضافة</button>
+        </div>
+
+        <div class="list" id="studentList">
+            </div>
+
+        <button class="clear-btn" onclick="clearAll()">حذف الكل 🗑️</button>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+        <button class="open-board" onclick="window.open('board.html', '_blank')">🚀 فتح شاشة العرض للطلاب</button>
+    </div>
+
+    <script>
+        // تحميل الأسماء المحفوظة
+        let students = JSON.parse(localStorage.getItem('students_geo_db')) || [];
+        renderList();
+
+        function addStudent() {
+            const input = document.getElementById('nameInput');
+            const name = input.value.trim();
+            if (!name) return;
+
+            students.push({ name: name, date: new Date().getTime() }); // نضيف الوقت لضمان التحديث
+            saveAndRender();
+            input.value = '';
+            input.focus();
+        }
+
+        function deleteStudent(index) {
+            students.splice(index, 1);
+            saveAndRender();
+        }
+
+        function clearAll() {
+            if(confirm("هل أنت متأكد من حذف جميع الأسماء؟")) {
+                students = [];
+                saveAndRender();
+            }
+        }
+
+        function saveAndRender() {
+            localStorage.setItem('students_geo_db', JSON.stringify(students));
+            renderList();
+        }
+
+        function renderList() {
+            const list = document.getElementById('studentList');
+            list.innerHTML = '';
+            students.forEach((s, index) => {
+                list.innerHTML += `
+                    <div class="item">
+                        <span>👤 ${s.name}</span>
+                        <span class="delete-icon" onclick="deleteStudent(${index})">X</span>
+                    </div>
+                `;
+            });
+        }
+
+        function handleEnter(e) {
+            if(e.key === 'Enter') addStudent();
+        }
+    </script>
+</body>
+</html>
