@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أساطير الجغرافيا - العرض</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        /* نفس ستايل التصميم السابق مع تحسينات للعرض */
+        :root { --neon-gold: #FFD700; --deep-space: #050510; --card-bg: linear-gradient(135deg, #1a1a2e, #16213e); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        
+        body {
+            background-color: var(--deep-space);
+            background-image: radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.2) 0%, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            color: white;
+        }
+
+        header { text-align: center; padding: 40px 0; animation: slideDown 1s ease; }
+        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        h1 {
+            font-size: 4.5rem;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(191, 149, 63, 0.6);
+            margin: 0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 40px;
+            width: 95%;
+            max-width: 1600px;
+            padding: 40px;
+            perspective: 1000px;
+        }
+
+        .player-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            height: 380px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+            position: relative;
+            overflow: hidden;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        
+        /* تأثيرات البطاقة */
+        .map-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM22.485 0l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM0 22.485l.828.83-1.415 1.415-.828-.828-.828.828L-2.243 23.3l.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM0 54.627l.828.83-1.415 1.415-.828-.828-.828.828L-2.243 55.44l.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM54.627 60l.83-.828-1.415-1.415-.828.828-.828-.828-1.415 1.415.828.828-.828.828 1.415 1.415.828-.828.828.828 1.415-1.415-.828-.828zM22.485 60l.83-.828-1.415-1.415-.828.828-.828-.828-1.415 1.415.828.828-.828.828 1.415 1.415.828-.828.828.828 1.415-1.415-.828-.828zM32 32h-1v-4h-4v-1h4v-4h1v4h4v1h-4z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .student-name { font-size: 2.8rem; font-weight: 900; color: #fff; z-index: 2; margin-top: 10px; text-shadow: 2px 2px 0 #000; }
+        .rank-icon { font-size: 4rem; z-index: 2; filter: drop-shadow(0 0 10px gold); }
+        .tag { margin-top: 15px; background: rgba(255,215,0,0.2); padding: 5px 20px; border-radius: 20px; color: gold; z-index: 2; font-weight: bold; border: 1px solid gold; }
+
+        /* رسالة انتظار */
+        .waiting-msg { font-size: 2rem; color: rgba(255,255,255,0.3); margin-top: 100px; display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>أساطير الجغرافيا</h1>
+        <p style="color: #ccc; letter-spacing: 5px;">HONOR BOARD SYSTEM v2.0</p>
+    </header>
+
+    <div id="waiting" class="waiting-msg">في انتظار بيانات الأبطال...</div>
+    <div class="grid-container" id="grid"></div>
+
+    <script>
+        // الاستماع لأي تغيير يحدث في لوحة التحكم وتحديث الشاشة فوراً
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'students_geo_db') {
+                loadStudents();
+            }
+        });
+
+        // تشغيل عند فتح الصفحة
+        loadStudents();
+
+        function loadStudents() {
+            const students = JSON.parse(localStorage.getItem('students_geo_db')) || [];
+            const grid = document.getElementById('grid');
+            const waiting = document.getElementById('waiting');
+
+            // مقارنة العدد الحالي بالعدد الجديد لمعرفة هل هناك إضافة جديدة لإطلاق الاحتفال
+            const oldLength = grid.children.length;
+            
+            grid.innerHTML = ''; // تنظيف الشاشة لإعادة الرسم
+
+            if (students.length === 0) {
+                waiting.style.display = 'block';
+                return;
+            } else {
+                waiting.style.display = 'none';
+            }
+
+            // عكس المصفوفة ليظهر الأحدث أولاً
+            [...students].reverse().forEach(student => {
+                const card = createCard(student.name);
+                grid.appendChild(card);
+            });
+
+            // إذا زاد عدد الطلاب، أطلق الاحتفال
+            if (students.length > oldLength) {
+                fireConfetti();
+            }
+        }
+
+        function createCard(name) {
+            const div = document.createElement('div');
+            div.className = 'player-card';
+            
+            // حركة 3D
+            div.onmousemove = function(e) {
+                const rect = div.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                div.style.transform = `perspective(1000px) rotateX(${(y - rect.height/2) / 10}deg) rotateY(${-(x - rect.width/2) / 10}deg) scale(1.05)`;
+            };
+            div.onmouseleave = function() { div.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)'; };
+
+            // أيقونات عشوائية
+            const icons = ['🌍', '🌋', '🧭', '🗺️', '🏰'];
+            const icon = icons[Math.floor(Math.random() * icons.length)];
+
+            div.innerHTML = `
+                <div class="map-bg"></div>
+                <div class="rank-icon">${icon}</div>
+                <div class="student-name">${name}</div>
+                <div class="tag">TOP STUDENT</div>
+            `;
+            return div;
+        }
+
+        function fireConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) { return clearInterval(interval); }
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
