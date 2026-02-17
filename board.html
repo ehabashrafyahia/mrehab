@@ -3,168 +3,442 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أساطير الجغرافيا - العرض</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@800;900&display=swap" rel="stylesheet">
+    <title>أساطير الجغرافيا · لوحة الشرف الملحمية</title>
+    <!-- خط عربي قوي واحترافي -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- مكتبة confetti للاحتفال الملحمي -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        /* نفس ستايل التصميم السابق مع تحسينات للعرض */
-        :root { --neon-gold: #FFD700; --deep-space: #050510; --card-bg: linear-gradient(135deg, #1a1a2e, #16213e); }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* خلفية كونية - عميقة وجغرافية */
         body {
-            background-color: var(--deep-space);
-            background-image: radial-gradient(circle at 50% 50%, rgba(76, 29, 149, 0.2) 0%, transparent 50%);
+            background: #0b0d1e;  /* ليل دامس */
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255, 215, 0, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(0, 191, 255, 0.06) 0%, transparent 30%),
+                repeating-linear-gradient(45deg, rgba(255,255,240,0.02) 0px, rgba(255,255,240,0.02) 2px, transparent 2px, transparent 8px);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-start;
+            position: relative;
             overflow-x: hidden;
-            color: white;
         }
 
-        header { text-align: center; padding: 40px 0; animation: slideDown 1s ease; }
-        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* طبقة شبكة جغرافية (خطوط طول وعرض) متحركة خفيفة */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(180, 180, 200, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(180, 180, 200, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: rotate(5deg);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-        h1 {
-            font-size: 4.5rem;
+        /* رأس ملحمي — مزيج ذهبي وحديث */
+        .epic-header {
+            text-align: center;
+            padding: 30px 20px 10px 20px;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+        }
+
+        .epic-header h1 {
+            font-size: 5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
             text-transform: uppercase;
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            background: linear-gradient(145deg, #e4c580 0%, #f9e7b3 35%, #c9a34b 70%, #f6e7b0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(191, 149, 63, 0.6);
-            margin: 0;
+            text-shadow: 0 0 20px #ffd700, 0 0 40px #aa8c3f, 0 0 80px #7a5f2a;
+            margin-bottom: 5px;
+            line-height: 1.2;
+            filter: drop-shadow(0 4px 6px black);
         }
 
+        .sub-title {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.4rem;
+            letter-spacing: 6px;
+            word-spacing: 10px;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), transparent);
+            padding: 8px 0;
+            font-weight: 700;
+            border-top: 1px solid rgba(255,215,0,0.4);
+            border-bottom: 1px solid rgba(255,215,0,0.4);
+            display: inline-block;
+            padding: 0 40px;
+            backdrop-filter: blur(2px);
+        }
+
+        /* شبكة البطاقات - جرافيك عالي الكثافة */
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 40px;
+            gap: 40px 25px;
             width: 95%;
-            max-width: 1600px;
-            padding: 40px;
-            perspective: 1000px;
+            max-width: 1500px;
+            padding: 50px 30px;
+            position: relative;
+            z-index: 5;
+            perspective: 1200px;
         }
 
-        .player-card {
-            background: var(--card-bg);
-            border-radius: 20px;
-            height: 380px;
+        /* البطاقة الملحمية: جغرافية + عصرية + أسطورية */
+        .legend-card {
+            background: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 35px 15px 35px 15px;  /* لمسة غير تقليدية */
+            padding: 25px 15px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transition: transform 0.1s;
+            text-align: center;
+            box-shadow: 0 30px 40px -15px black, 0 0 0 2px rgba(255, 215, 0, 0.2) inset, 0 0 20px #ffd70033;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2);
             position: relative;
             overflow: hidden;
-            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            min-height: 380px;
+            transform-style: preserve-3d;
         }
 
-        @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-        
-        /* تأثيرات البطاقة */
-        .map-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.05;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM22.485 0l.83.828-1.415 1.415-.828-.828-.828.828-1.415-1.415.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM0 22.485l.828.83-1.415 1.415-.828-.828-.828.828L-2.243 23.3l.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM0 54.627l.828.83-1.415 1.415-.828-.828-.828.828L-2.243 55.44l.828-.828-.828-.828 1.415-1.415.828.828.828-.828 1.415 1.415-.828.828zM54.627 60l.83-.828-1.415-1.415-.828.828-.828-.828-1.415 1.415.828.828-.828.828 1.415 1.415.828-.828.828.828 1.415-1.415-.828-.828zM22.485 60l.83-.828-1.415-1.415-.828.828-.828-.828-1.415 1.415.828.828-.828.828 1.415 1.415.828-.828.828.828 1.415-1.415-.828-.828zM32 32h-1v-4h-4v-1h4v-4h1v4h4v1h-4z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        /* خلفية الخريطة داخل البطاقة (غرافيكي قوي) */
+        .legend-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" opacity="0.1"><path fill="%23ffd966" d="M70 30l30-20 30 20-10 35-50 10-10-45zM30 110l25-20 35 10-5 35-45 5-10-30zM140 90l25-15 20 25-25 20-20-5v-25zM90 150l30-15 20 20-15 25-35 5v-35z"/><circle cx="120" cy="70" r="8" fill="%23bf9000"/><circle cx="60" cy="140" r="8" fill="%23bf9000"/><text x="20" y="180" font-size="18" fill="%23ffffff" font-weight="bold" font-family="Arial">🌍</text></svg>');
+            background-size: cover;
+            mix-blend-mode: overlay;
+            opacity: 0.15;
+            pointer-events: none;
         }
 
-        .student-name { font-size: 2.8rem; font-weight: 900; color: #fff; z-index: 2; margin-top: 10px; text-shadow: 2px 2px 0 #000; }
-        .rank-icon { font-size: 4rem; z-index: 2; filter: drop-shadow(0 0 10px gold); }
-        .tag { margin-top: 15px; background: rgba(255,215,0,0.2); padding: 5px 20px; border-radius: 20px; color: gold; z-index: 2; font-weight: bold; border: 1px solid gold; }
+        /* خريطة طبوغرافية دقيقة بالخطوط */
+        .legend-card::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,215,0,0.03) 3px, rgba(255,215,0,0.03) 6px),
+                        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,215,0,0.03) 3px, rgba(255,215,0,0.03) 6px);
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
 
-        /* رسالة انتظار */
-        .waiting-msg { font-size: 2rem; color: rgba(255,255,255,0.3); margin-top: 100px; display: none; }
+        .legend-card:hover {
+            transform: translateY(-10px) scale(1.02) rotateX(2deg) rotateY(1deg);
+            border-color: #ffd966;
+            box-shadow: 0 40px 60px -10px black, 0 0 30px #f0c45a, 0 0 0 3px rgba(255,215,0,0.5) inset;
+        }
+
+        /* أيقونة البطاقة — رموز أسطورية */
+        .card-icon {
+            font-size: 5.5rem;
+            line-height: 1;
+            filter: drop-shadow(0 0 15px gold) drop-shadow(0 0 30px #b8860b);
+            margin-bottom: 10px;
+            z-index: 2;
+            transition: transform 0.3s;
+        }
+
+        .legend-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* اسم الطالب — صخري / مهيب */
+        .student-name {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            text-shadow: 3px 3px 0 #3a2c0f, 5px 5px 0 #00000080, 0 0 15px #ffd700;
+            background: linear-gradient(135deg, #fff8e7, #ffe4b5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            margin: 10px 0 5px;
+            z-index: 2;
+            letter-spacing: 1px;
+            word-break: break-word;
+        }
+
+        /* وسام الشرف */
+        .honor-tag {
+            background: linear-gradient(145deg, #3f3319, #0f0c06);
+            border: 1px solid #d4a74d;
+            color: #f5d742;
+            font-weight: 900;
+            padding: 5px 25px;
+            border-radius: 40px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            box-shadow: 0 0 15px #ffd70055, inset 0 1px 3px #fff9cf;
+            margin-top: 10px;
+            z-index: 2;
+            backdrop-filter: blur(4px);
+            text-transform: uppercase;
+        }
+
+        /* وسام إضافي للعمق */
+        .geo-badge {
+            position: absolute;
+            bottom: 12px;
+            left: 15px;
+            font-size: 1rem;
+            background: rgba(0,0,0,0.5);
+            color: #c9ae6b;
+            padding: 3px 12px;
+            border-radius: 30px;
+            border: 1px dashed #ffd966;
+            backdrop-filter: blur(2px);
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        /* علامة انتظار — أنيقة */
+        .waiting-message {
+            font-size: 2.8rem;
+            color: rgba(255,215,0,0.4);
+            text-align: center;
+            padding: 100px 20px;
+            text-shadow: 0 0 10px black;
+            background: rgba(0,0,0,0.3);
+            border-radius: 60px;
+            border: 2px dashed #ffd96655;
+            width: 80%;
+            margin: 80px auto;
+            backdrop-filter: blur(5px);
+            font-weight: 700;
+            letter-spacing: 4px;
+        }
+
+        /* عداد احترافي (عدد الأساطير) */
+        .stats {
+            margin-top: 10px;
+            color: #b9a26a;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: rgba(0,0,0,0.3);
+            padding: 5px 20px;
+            border-radius: 40px;
+            border: 1px solid #776633;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+        }
+
+        footer {
+            margin: 20px 0 30px;
+            color: #574f33;
+            font-size: 1rem;
+            border-top: 1px solid #665522;
+            padding-top: 20px;
+            width: 60%;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        /* تصميم متجاوب */
+        @media (max-width: 600px) {
+            .epic-header h1 { font-size: 3rem; }
+            .student-name { font-size: 2rem; }
+        }
     </style>
 </head>
 <body>
 
-    <header>
+    <div class="epic-header">
         <h1>أساطير الجغرافيا</h1>
-        <p style="color: #ccc; letter-spacing: 5px;">HONOR BOARD SYSTEM v2.0</p>
-    </header>
+        <div class="sub-title">الملحمة · العصرية · الإقليمية</div>
+        <div class="stats" id="statsDisplay">عدد الأساطير : 0</div>
+    </div>
 
-    <div id="waiting" class="waiting-msg">في انتظار بيانات الأبطال...</div>
-    <div class="grid-container" id="grid"></div>
+    <div id="waitingContainer" class="waiting-message">⏳ في انتظار انطلاق الأساطير ⏳</div>
+
+    <div class="grid-container" id="gridContainer"></div>
+
+    <footer>⚡ لوحة الشرف الجغرافية · تحديث فوري · كل من يسطر اسمه يخلد ⚡</footer>
 
     <script>
-        // الاستماع لأي تغيير يحدث في لوحة التحكم وتحديث الشاشة فوراً
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'students_geo_db') {
-                loadStudents();
-            }
-        });
-
-        // تشغيل عند فتح الصفحة
-        loadStudents();
-
-        function loadStudents() {
-            const students = JSON.parse(localStorage.getItem('students_geo_db')) || [];
-            const grid = document.getElementById('grid');
-            const waiting = document.getElementById('waiting');
-
-            // مقارنة العدد الحالي بالعدد الجديد لمعرفة هل هناك إضافة جديدة لإطلاق الاحتفال
-            const oldLength = grid.children.length;
+        (function() {
+            // مفاتيح التخزين
+            const STORAGE_KEY = 'students_geo_db';
             
-            grid.innerHTML = ''; // تنظيف الشاشة لإعادة الرسم
+            // العناصر
+            const grid = document.getElementById('gridContainer');
+            const waitingDiv = document.getElementById('waitingContainer');
+            const statsSpan = document.getElementById('statsDisplay');
 
-            if (students.length === 0) {
-                waiting.style.display = 'block';
-                return;
-            } else {
-                waiting.style.display = 'none';
+            // مصفوفة الرموز الملحمية / الجغرافية / العصرية
+            const epicIcons = ['🌍', '🌏', '🌎', '🗺️', '🧭', '🏔️', '⛰️', '🌋', '🏜️', '🏝️', '🌊', '🧊', '🌲', '🗿', '🛕', '🏛️', '⚔️', '🏆', '🌟', '💫'];
+
+            // دالة لجلب أيقونة عشوائية
+            function randomEpicIcon() {
+                return epicIcons[Math.floor(Math.random() * epicIcons.length)];
             }
 
-            // عكس المصفوفة ليظهر الأحدث أولاً
-            [...students].reverse().forEach(student => {
-                const card = createCard(student.name);
-                grid.appendChild(card);
+            // تحميل وعرض الطلاب
+            function renderStudents() {
+                const rawData = localStorage.getItem(STORAGE_KEY);
+                const students = rawData ? JSON.parse(rawData) : [];
+                
+                // تحديث العداد
+                statsSpan.innerText = `عدد الأساطير : ${students.length}`;
+
+                // رسالة الانتظار
+                if (students.length === 0) {
+                    waitingDiv.style.display = 'block';
+                    grid.innerHTML = '';   // إخفاء الشبكة
+                } else {
+                    waitingDiv.style.display = 'none';
+                    
+                    // حساب العدد السابق للعناصر (لمقارنة الإضافات)
+                    const previousCount = grid.children.length;
+
+                    // إعادة بناء الشبكة
+                    grid.innerHTML = ''; 
+
+                    // عرض الطلاب بترتيب عكسي (الأحدث أولاً) 
+                    // لعمل انطباع درامي عند الإضافة
+                    const reversed = [...students].reverse();
+
+                    reversed.forEach(student => {
+                        const card = document.createElement('div');
+                        card.className = 'legend-card';
+
+                        // أيقونة عشوائية تناسب الجغرافيا
+                        const icon = randomEpicIcon();
+
+                        // الاسم (معالجة الأسماء الطويلة / القصيرة)
+                        const studentName = student.name || 'اسم بطل';
+
+                        // محتوى البطاقة
+                        card.innerHTML = `
+                            <div class="card-icon">${icon}</div>
+                            <div class="student-name">${studentName}</div>
+                            <div class="honor-tag">حارس الخرائط</div>
+                            <div class="geo-badge">${Math.floor(Math.random()*180+1)}° عرض • ${Math.floor(Math.random()*360)}° طول</div>
+                        `;
+
+                        // إضافة تأثير الإمالة ثلاثي الأبعاد (احترافي)
+                        card.addEventListener('mousemove', function(e) {
+                            const rect = card.getBoundingClientRect();
+                            const x = e.clientX - rect.left; // موضع الفأرة داخل البطاقة
+                            const y = e.clientY - rect.top;
+                            const centerX = rect.width / 2;
+                            const centerY = rect.height / 2;
+                            const rotateX = (y - centerY) / 20;  // درجة الميلان
+                            const rotateY = (centerX - x) / 20;  // معكوسة للحصول على حركة طبيعية
+                            card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+                        });
+
+                        card.addEventListener('mouseleave', function() {
+                            card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)';
+                        });
+
+                        grid.appendChild(card);
+                    });
+
+                    // إذا زاد العدد عن السابق (تم إضافة طالب جديد) → احتفال كونفيتي
+                    if (students.length > previousCount && previousCount !== 0) {
+                        fireConfettiFlood();
+                    }
+                }
+            }
+
+            // دالة إطلاق الكونفيتي الملحمي
+            function fireConfettiFlood() {
+                const duration = 2.5 * 1000; // 2.5 ثانية
+                const end = Date.now() + duration;
+
+                (function frame() {
+                    confetti({
+                        particleCount: 7,
+                        angle: 60,
+                        spread: 70,
+                        origin: { x: 0, y: 0.6 },
+                        colors: ['#ffd700', '#ecd670', '#b8860b', '#f5e56b', '#ffffff']
+                    });
+                    confetti({
+                        particleCount: 7,
+                        angle: 120,
+                        spread: 70,
+                        origin: { x: 1, y: 0.6 },
+                        colors: ['#ffd700', '#ecd670', '#b8860b', '#f5e56b', '#ffffff']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                })();
+
+                // دفعة كبيرة إضافية بعد نصف ثانية
+                setTimeout(() => {
+                    for (let i=0; i<3; i++) {
+                        setTimeout(() => {
+                            confetti({ particleCount: 30, spread: 100, origin: { y: 0.5, x: 0.3 }, colors: ['#d4af37', '#f0e68c'] });
+                            confetti({ particleCount: 30, spread: 100, origin: { y: 0.5, x: 0.7 }, colors: ['#d4af37', '#f0e68c'] });
+                        }, i*200);
+                    }
+                }, 300);
+            }
+
+            // استمع إلى التغييرات في localStorage (إذا تم التحديث من نافذة أخرى أو لوحة التحكم)
+            window.addEventListener('storage', (e) => {
+                if (e.key === STORAGE_KEY) {
+                    renderStudents();
+                }
             });
 
-            // إذا زاد عدد الطلاب، أطلق الاحتفال
-            if (students.length > oldLength) {
-                fireConfetti();
-            }
-        }
+            // استدعاء أولي
+            renderStudents();
 
-        function createCard(name) {
-            const div = document.createElement('div');
-            div.className = 'player-card';
-            
-            // حركة 3D
-            div.onmousemove = function(e) {
-                const rect = div.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                div.style.transform = `perspective(1000px) rotateX(${(y - rect.height/2) / 10}deg) rotateY(${-(x - rect.width/2) / 10}deg) scale(1.05)`;
+            // تحديث دوري كل 3 ثوان (للتوافق مع بعض المتصفحات التي لا تطلق storage محلياً)
+            // هذه خدعة بسيطة لضمان التحديث إذا تم التعديل من نفس النافذة
+            setInterval(() => {
+                // فقط إذا تغير الطول (مثلاً تمت الإضافة في نفس الصفحة)
+                const current = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]').length;
+                const displayed = grid.children.length;
+                if (current !== displayed) {
+                    renderStudents();
+                }
+            }, 2000);
+
+            // إتاحة الوصول العالمي لاختبار سريع (console)
+            window.addTestLegend = function(name = 'مؤسس الخرائط') {
+                const data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                data.push({ name: name, timestamp: Date.now() });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                renderStudents(); // تحديث فوري
             };
-            div.onmouseleave = function() { div.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)'; };
 
-            // أيقونات عشوائية
-            const icons = ['🌍', '🌋', '🧭', '🗺️', '🏰'];
-            const icon = icons[Math.floor(Math.random() * icons.length)];
-
-            div.innerHTML = `
-                <div class="map-bg"></div>
-                <div class="rank-icon">${icon}</div>
-                <div class="student-name">${name}</div>
-                <div class="tag">TOP STUDENT</div>
-            `;
-            return div;
-        }
-
-        function fireConfetti() {
-            var duration = 3 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) { return clearInterval(interval); }
-                var particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: Math.random(), y: Math.random() - 0.2 } }));
-            }, 250);
-        }
+            // تفعيل immediate rendering إذا تمت إضافة من نفس الصفحة (مثلاً عن طريق debug)
+            // نعم renderStudents سيتعامل معها.
+        })();
     </script>
+
+    <!-- نموذج اختبار تفاعلي (صغير) يمكنك استخدامه في الـ console
+         اكتب في F12: addTestLegend("بطليموس") أو addTestLegend("ابن بطوطة") -->
 </body>
 </html>
