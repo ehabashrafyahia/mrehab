@@ -3,218 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة أبطال الجغرافيا - أ. إيهاب أشرف</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <title>📄 ورقة الامتحان - الدراسات الاجتماعية</title>
     <style>
-        :root {
-            --map-blue: #1a2a6c;
-            --gold-leaf: #f1c40f;
-            --parchment: rgba(255, 255, 255, 0.1);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
 
         body {
-            min-height: 100vh;
-            /* خلفية توحي بالخريطة والمحيطات */
-            background: 
-                linear-gradient(rgba(26, 42, 108, 0.9), rgba(26, 42, 108, 0.8)),
-                url('https://www.transparenttextures.com/patterns/world-map.png'),
-                linear-gradient(to right, #b21f1f, #1a2a6c, #fdbb2d);
-            background-attachment: fixed;
+            font-family: 'Segoe UI', 'Amiri', 'Times New Roman', serif;
+            background: linear-gradient(145deg, #f0f4f8 0%, #d9e2ec 100%);
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            padding: 50px 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 3px double var(--gold-leaf);
-            padding-bottom: 20px;
-        }
-
-        h1 {
-            font-family: 'Reem Kufi', sans-serif;
-            font-size: 3.5rem;
-            color: var(--gold-leaf);
-            text-shadow: 3px 3px 0px rgba(0,0,0,0.5), 0 0 20px rgba(241, 196, 15, 0.4);
-            margin-bottom: 10px;
-        }
-
-        /* منطقة الإدخال */
-        .search-area {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid var(--gold-leaf);
-            display: flex;
-            gap: 15px;
-            margin-bottom: 50px;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        input {
-            flex: 1;
-            padding: 15px 25px;
-            border-radius: 8px;
-            border: 2px solid #333;
-            font-size: 1.2rem;
-            font-weight: bold;
-            outline: none;
-            background: #fff;
-        }
-
-        button {
-            padding: 15px 35px;
-            background: var(--gold-leaf);
-            color: #1a2a6c;
-            border: none;
-            border-radius: 8px;
-            font-weight: 900;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            transform: scale(1.05);
-            background: #fff;
-            box-shadow: 0 0 20px var(--gold-leaf);
-        }
-
-        /* لوحة العرض (شبكة أفقية) */
-        .board {
-            display: grid;
-            /* تجعل العناصر بجانب بعضها وتتوزع تلقائياً */
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 25px;
-            width: 100%;
-            max-width: 1300px;
-        }
-
-        .hero-card {
-            background: var(--parchment);
-            backdrop-filter: blur(8px);
-            border: 2px solid var(--gold-leaf);
-            border-radius: 15px;
+            min-height: 100vh;
             padding: 30px 20px;
+            direction: rtl;
+        }
+
+        .exam-wrapper {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.25);
+            padding: 35px 40px;
+            border: 1px solid #e9eef3;
+        }
+
+        /* رأس الامتحان */
+        .exam-header {
+            margin-bottom: 30px;
+        }
+
+        .title-badge {
             text-align: center;
-            position: relative;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0b2b4f;
+            margin-bottom: 20px;
+            background: linear-gradient(to left, #0b2b4f, #2c5282);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* الجدول العلوي (صفين) */
+        .info-table {
+            display: flex;
+            flex-wrap: wrap;
+            border: 2px solid #2c3e50;
+            border-radius: 18px;
             overflow: hidden;
-            animation: zoomIn 0.5s ease;
-        }
-
-        @keyframes zoomIn {
-            from { transform: scale(0.5); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .hero-card:hover {
-            background: rgba(241, 196, 15, 0.15);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
-
-        /* أيقونة البوصلة */
-        .compass-icon {
-            font-size: 45px;
             margin-bottom: 15px;
-            display: inline-block;
-            transition: 1s ease;
+            background-color: #f9fcff;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.08);
         }
 
-        .hero-card:hover .compass-icon {
-            transform: rotate(360deg);
+        .info-item {
+            flex: 1 1 200px;
+            padding: 12px 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1a2b3c;
+            border-left: 2px solid #2c3e50;
+            background: white;
         }
 
-        .hero-name {
-            font-size: 2rem; /* اسم كبير جداً */
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 2px 2px 4px #000;
-            display: block;
-            margin: 10px 0;
+        .info-item:last-child {
+            border-left: none;
         }
 
-        .title-tag {
-            color: var(--gold-leaf);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-top: 1px solid rgba(255,215,0,0.3);
-            padding-top: 10px;
-            display: block;
+        .info-item strong {
+            color: #144272;
+            font-weight: 700;
+            margin-left: 5px;
         }
 
-        footer {
-            margin-top: 80px;
-            color: var(--gold-leaf);
-            font-weight: bold;
-            letter-spacing: 1px;
-            background: rgba(0,0,0,0.3);
-            padding: 10px 30px;
+        /* الصف الثاني من الجدول */
+        .info-row-second {
+            display: flex;
+            flex-wrap: wrap;
+            border: 2px solid #2c3e50;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            background-color: #f9fcff;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.08);
+        }
+
+        .info-item-half {
+            flex: 1 1 200px;
+            padding: 12px 10px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1a2b3c;
+            border-left: 2px solid #2c3e50;
+            background: white;
+        }
+
+        .info-item-half:last-child {
+            border-left: none;
+        }
+
+        /* التقييمات */
+        .evaluation-section {
+            margin-top: 25px;
+        }
+
+        .eval-card {
+            background: white;
             border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            border: 1px solid #bdd3e8;
+            box-shadow: 0 8px 20px rgba(0, 30, 60, 0.06);
+            page-break-inside: avoid;
         }
 
-        /* تصميم الموبايل */
-        @media (max-width: 768px) {
-            .search-area { flex-direction: column; }
-            h1 { font-size: 2.2rem; }
-            .board { grid-template-columns: 1fr 1fr; } /* يظهر كرتين بجانب بعض في الموبايل */
+        .eval-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0a2f44;
+            border-bottom: 4px solid #2c5282;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .question-block {
+            margin-bottom: 25px;
+        }
+
+        .question-type {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1d4e89;
+            margin-bottom: 10px;
+            background: #eef5fc;
+            padding: 8px 15px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .question-content {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            color: #1e2f3f;
+            padding-right: 15px;
+            margin-bottom: 15px;
+        }
+
+        .dotted-space {
+            border-bottom: 2px dotted #34495e;
+            min-width: 150px;
+            display: inline-block;
+            margin: 0 5px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        hr {
+            border: none;
+            border-top: 2px dashed #a3c0db;
+            margin: 15px 0;
+        }
+
+        /* تذييل الصفحة */
+        .footer {
+            margin-top: 30px;
+            text-align: left;
+            color: #5d6d7e;
+            font-size: 0.9rem;
+            font-style: italic;
+            border-top: 2px dashed #a3c0db;
+            padding-top: 15px;
+        }
+
+        /* طباعة */
+        @media print {
+            body {
+                background: white;
+                padding: 0.5cm;
+            }
+            .exam-wrapper {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                padding: 1cm;
+                max-width: 100%;
+            }
+            .info-table, .info-row-second {
+                border: 1.5px solid black;
+            }
+            .eval-card {
+                box-shadow: none;
+                border: 1px solid #999;
+                page-break-inside: avoid;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="exam-wrapper">
+        <!-- العنوان الرئيسي -->
+        <div class="title-badge">🟩 التقييم الأسبوعي - الدراسات الاجتماعية</div>
 
-    <div class="header">
-        <h1>مُستكشفو العالم</h1>
-        <p style="color: white; font-size: 1.2rem;">لوحة شرف مادة الدراسات الاجتماعية</p>
-    </div>
-
-    <div class="search-area">
-        <input type="text" id="nameInput" placeholder="أدخل اسم البطل..." onkeypress="checkEnter(event)">
-        <button onclick="addNewHero()">تتويج البطل 🧭</button>
-    </div>
-
-    <div class="board" id="honorBoard">
+        <!-- الجدول العلوي (صفين) - الفصل الدراسي فاضي -->
+        <div class="info-table">
+            <div class="info-item"><strong>التاريخ:</strong> ....../....../........</div>
+            <div class="info-item"><strong>الفترة:</strong> ..............</div>
+            <div class="info-item"><strong>الفصل الدراسي:</strong> ................</div>
+        </div>
+        <div class="info-row-second">
+            <div class="info-item-half"><strong>المادة:</strong> الدراسات الاجتماعية</div>
+            <div class="info-item-half"><strong>الصف:</strong> الثاني الإعدادي</div>
         </div>
 
-    <footer>
-        بإشراف الأستاذ: إيهاب أشرف | خبير المادة
-    </footer>
+        <!-- محتوى الامتحان (الأسئلة) - كلها في ورقة واحدة -->
+        <div class="evaluation-section">
+            <!-- التقييم (أ) -->
+            <div class="eval-card">
+                <div class="eval-title">🔹 التقييم (أ)</div>
 
-    <script>
-        function addNewHero() {
-            const input = document.getElementById('nameInput');
-            const name = input.value.trim();
-            const board = document.getElementById('honorBoard');
+                <div class="question-block">
+                    <div class="question-type">أولاً: بم تفسر؟</div>
+                    <div class="question-content">
+                        1- ارتفاع الكثافة السكانية بغرب قارة أوروبا.<br>
+                        2- انخفاض الكثافة السكانية في جزيرة إسكندنافيا بقارة أوروبا.
+                    </div>
+                </div>
 
-            if (name === "") return;
+                <div class="question-block">
+                    <div class="question-type">ثانياً: أكمل العبارة التالية:</div>
+                    <div class="question-content">
+                        أحد المناطق منخفضة الكثافة السكانية في قارة آسيا: <span class="dotted-space">.....................</span><br>
+                        وفي قارة أوروبا: <span class="dotted-space">.....................</span>
+                    </div>
+                </div>
 
-            const card = document.createElement('div');
-            card.className = 'hero-card';
-            
-            card.innerHTML = `
-                <div class="compass-icon">🧭</div>
-                <span class="hero-name">${name}</span>
-                <span class="title-tag">بطل الدراسات الاجتماعية</span>
-            `;
+                <div class="question-block">
+                    <div class="question-type">ثالثاً: ما النتائج المترتبة على:</div>
+                    <div class="question-content">
+                        زيادة الطلب على الغذاء والمسكن ببعض دول قارة آسيا؟
+                    </div>
+                </div>
 
-            // إضافة في بداية الشبكة
-            board.prepend(card);
-            
-            // مسح الخانة
-            input.value = "";
-            input.focus();
-        }
+                <div class="question-block">
+                    <div class="question-type">رابعاً: حدد اثنين</div>
+                    <div class="question-content">
+                        من جهود الدول التي تعاني من النمو السكاني المرتفع بقارة آسيا.
+                    </div>
+                </div>
+            </div>
 
-        function checkEnter(e) {
-            if (e.key === "Enter") addNewHero();
-        }
-    </script>
+            <!-- التقييم (ب) -->
+            <div class="eval-card">
+                <div class="eval-title">🔹 التقييم (ب)</div>
+
+                <div class="question-block">
+                    <div class="question-type">أولاً: بم تفسر؟</div>
+                    <div class="question-content">
+                        1- ارتفاع الكثافة السكانية بمناطق السهول الفيضية بقارتي آسيا وأوروبا.<br>
+                        2- انخفاض الكثافة السكانية بسهول سيبيريا.
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-type">ثانياً: أكمل العبارة التالية:</div>
+                    <div class="question-content">
+                        تتمثل المناطق مرتفعة الكثافة السكانية بقارة أوروبا في:<br>
+                        <span class="dotted-space">.......................</span> و <span class="dotted-space">.......................</span>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-type">ثالثاً: ما النتائج المترتبة على:</div>
+                    <div class="question-content">
+                        زيادة تيارات الهجرة الداخلية؟
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-type">رابعاً: حدد اثنين</div>
+                    <div class="question-content">
+                        من جهود الدول الآسيوية والأوروبية التي تواجه تحديات زيادة عدد كبار السن وانخفاض معدلات المواليد.
+                    </div>
+                </div>
+            </div>
+
+            <!-- التقييم (ج) -->
+            <div class="eval-card">
+                <div class="eval-title">🔹 التقييم (ج)</div>
+
+                <div class="question-block">
+                    <div class="question-type">أولاً: بم تفسر؟</div>
+                    <div class="question-content">
+                        1- انخفاض الكثافة السكانية بشبه الجزيرة العربية بقارة آسيا.<br>
+                        2- ارتفاع الكثافة السكانية بالسهل الأوروبي وجنوب شرق آسيا.
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-type">ثانياً: أكمل العبارة التالية:</div>
+                    <div class="question-content">
+                        تتمثل المناطق مرتفعة الكثافة السكانية بقارة آسيا في:<br>
+                        <span class="dotted-space">.......................</span> و <span class="dotted-space">.......................</span>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-type">ثالثاً: ما النتائج المترتبة على:</div>
+                    <div class="question-content">
+                        زيادة الطلب على المياه العذبة بالهند؟
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="question-type">رابعاً: اقترح اثنين</div>
+                    <div class="question-content">
+                        من الحلول للدول التي تعاني من النمو السكاني المرتفع لحل المشكلة السكانية.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- تذييل الصفحة -->
+        <div class="footer">
+            انتهت الأسئلة │ مع أطيب التمنيات بالتوفيق
+        </div>
+    </div>
+
+    <!-- رسالة توضيحية للطباعة -->
+    <div style="position: fixed; bottom: 15px; left: 15px; background: #1e3c72; color: white; padding: 8px 18px; border-radius: 40px; font-size: 0.9rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 100;">
+        🖨️ لتحميل PDF: اضغط (Ctrl+P) ثم اختر حفظ كـ PDF
+    </div>
 </body>
 </html>
