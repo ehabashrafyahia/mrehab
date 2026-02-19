@@ -3,215 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📄 ورقة الامتحان - الدراسات الاجتماعية</title>
+    <title>مولد أوراق الامتحانات الذكي</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* ستايلاتك الأصلية مع تحسينات طفيفة */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', 'Amiri', 'Times New Roman', serif;
-            background: linear-gradient(145deg, #f0f4f8 0%, #d9e2ec 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 30px 20px;
-            direction: rtl;
+            background: #d9e2ec;
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; padding: 30px 20px; direction: rtl;
         }
-
         .exam-wrapper {
-            max-width: 1000px;
-            width: 100%;
-            background: white;
-            border-radius: 25px;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.25);
-            padding: 35px 40px;
-            border: 1px solid #e9eef3;
+            max-width: 1000px; width: 100%; background: white;
+            border-radius: 25px; box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
+            padding: 35px 40px; border: 1px solid #e9eef3;
         }
-
-        /* رأس الامتحان */
-        .exam-header {
-            margin-bottom: 30px;
-        }
-
         .title-badge {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #0b2b4f;
-            margin-bottom: 20px;
+            text-align: center; font-size: 2rem; font-weight: 700;
+            color: #0b2b4f; margin-bottom: 20px;
             background: linear-gradient(to left, #0b2b4f, #2c5282);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        /* الجدول العلوي (صفين) */
-        .info-table {
-            display: flex;
-            flex-wrap: wrap;
-            border: 2px solid #2c3e50;
-            border-radius: 18px;
-            overflow: hidden;
-            margin-bottom: 15px;
+        .info-table, .info-row-second {
+            display: flex; flex-wrap: wrap; border: 2px solid #2c3e50;
+            border-radius: 18px; overflow: hidden; margin-bottom: 15px;
             background-color: #f9fcff;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.08);
         }
-
-        .info-item {
-            flex: 1 1 200px;
-            padding: 12px 10px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #1a2b3c;
-            border-left: 2px solid #2c3e50;
-            background: white;
+        .info-item, .info-item-half {
+            flex: 1 1 200px; padding: 12px 10px; text-align: center;
+            font-size: 1.1rem; border-left: 2px solid #2c3e50;
         }
-
-        .info-item:last-child {
-            border-left: none;
-        }
-
-        .info-item strong {
-            color: #144272;
-            font-weight: 700;
-            margin-left: 5px;
-        }
-
-        /* الصف الثاني من الجدول */
-        .info-row-second {
-            display: flex;
-            flex-wrap: wrap;
-            border: 2px solid #2c3e50;
-            border-radius: 18px;
-            overflow: hidden;
-            margin-bottom: 30px;
-            background-color: #f9fcff;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.08);
-        }
-
-        .info-item-half {
-            flex: 1 1 200px;
-            padding: 12px 10px;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: #1a2b3c;
-            border-left: 2px solid #2c3e50;
-            background: white;
-        }
-
-        .info-item-half:last-child {
-            border-left: none;
-        }
-
-        /* التقييمات */
-        .evaluation-section {
-            margin-top: 25px;
-        }
-
+        .info-item:last-child, .info-item-half:last-child { border-left: none; }
         .eval-card {
-            background: white;
-            border-radius: 20px;
-            padding: 20px 25px;
-            margin-bottom: 25px;
-            border: 1px solid #bdd3e8;
+            background: white; border-radius: 20px; padding: 20px 25px;
+            margin-bottom: 25px; border: 1px solid #bdd3e8;
             box-shadow: 0 8px 20px rgba(0, 30, 60, 0.06);
-            page-break-inside: avoid;
         }
-
         .eval-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #0a2f44;
-            border-bottom: 4px solid #2c5282;
-            padding-bottom: 8px;
-            margin-bottom: 20px;
+            font-size: 1.8rem; font-weight: 800; color: #0a2f44;
+            border-bottom: 4px solid #2c5282; padding-bottom: 8px; margin-bottom: 20px;
             display: inline-block;
         }
-
-        .question-block {
-            margin-bottom: 25px;
-        }
-
         .question-type {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1d4e89;
-            margin-bottom: 10px;
-            background: #eef5fc;
-            padding: 8px 15px;
-            border-radius: 50px;
-            display: inline-block;
+            font-size: 1.3rem; font-weight: 700; color: #1d4e89;
+            margin-bottom: 10px; background: #eef5fc;
+            padding: 8px 15px; border-radius: 50px; display: inline-block;
         }
-
-        .question-content {
-            font-size: 1.15rem;
-            line-height: 1.9;
-            color: #1e2f3f;
-            padding-right: 15px;
-            margin-bottom: 15px;
-        }
-
-        .dotted-space {
-            border-bottom: 2px dotted #34495e;
-            min-width: 150px;
-            display: inline-block;
-            margin: 0 5px;
-            color: #2c3e50;
-            font-weight: 500;
-        }
-
-        hr {
-            border: none;
-            border-top: 2px dashed #a3c0db;
-            margin: 15px 0;
-        }
-
-        /* تذييل الصفحة */
-        .footer {
-            margin-top: 30px;
-            text-align: left;
-            color: #5d6d7e;
-            font-size: 0.9rem;
-            font-style: italic;
-            border-top: 2px dashed #a3c0db;
-            padding-top: 15px;
-        }
-
-        /* طباعة */
+        .question-content { font-size: 1.15rem; line-height: 1.9; margin-bottom: 15px; white-space: pre-line; }
+        .footer { margin-top: 30px; text-align: left; color: #5d6d7e; border-top: 2px dashed #a3c0db; padding-top: 15px; }
+        
+        /* إخفاء واجهة الإدخال عند الطباعة */
         @media print {
-            body {
-                background: white;
-                padding: 0.5cm;
-            }
-            .exam-wrapper {
-                box-shadow: none;
-                border: 1px solid #ccc;
-                padding: 1cm;
-                max-width: 100%;
-            }
-            .info-table, .info-row-second {
-                border: 1.5px solid black;
-            }
-            .eval-card {
-                box-shadow: none;
-                border: 1px solid #999;
-                page-break-inside: avoid;
-            }
+            .input-area { display: none; }
+            body { background: white; padding: 0; }
+            .exam-wrapper { box-shadow: none; border: 1px solid #eee; }
+        }
+
+        /* واجهة الإدخال */
+        .input-area {
+            background: #fff; padding: 20px; border-radius: 15px;
+            margin-bottom: 30px; width: 100%; max-width: 1000px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        textarea {
+            width: 100%; height: 200px; padding: 15px; border-radius: 10px;
+            border: 1px solid #ccc; font-family: inherit; font-size: 1rem;
+        }
+        button {
+            background: #2c5282; color: white; border: none; padding: 10px 25px;
+            border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="exam-wrapper">
-        <!-- العنوان الرئيسي -->
-        <div class="title-badge">🟩 التقييم الأسبوعي - الدراسات الاجتماعية</div>
 
-        <!-- الجدول العلوي (صفين) - الفصل الدراسي فاضي -->
+    <div class="input-area">
+        <h3>قم بلصق محتوى التقييمات هنا:</h3>
+        <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">
+            استخدم كلمة "التقييم" لبدء كارت جديد، واستخدم "أولاً، ثانياً..." لبدء سؤال جديد.
+        </p>
+        <textarea id="examData" placeholder="التقييم (أ)
+أولاً: بم تفسر؟
+نص السؤال هنا...
+
+ثانياً: أكمل..
+نص السؤال هنا..."></textarea>
+        <button onclick="generateExam()">تحديث ورقة الامتحان ✨</button>
+    </div>
+
+    <div class="exam-wrapper" id="printArea">
+        <div class="title-badge" id="mainTitle">🟩 التقييم الأسبوعي - الدراسات الاجتماعية</div>
+
         <div class="info-table">
             <div class="info-item"><strong>التاريخ:</strong> ....../....../........</div>
             <div class="info-item"><strong>الفترة:</strong> ..............</div>
@@ -222,123 +104,57 @@
             <div class="info-item-half"><strong>الصف:</strong> الثاني الإعدادي</div>
         </div>
 
-        <!-- محتوى الامتحان (الأسئلة) - كلها في ورقة واحدة -->
-        <div class="evaluation-section">
-            <!-- التقييم (أ) -->
-            <div class="eval-card">
-                <div class="eval-title">🔹 التقييم (أ)</div>
-
-                <div class="question-block">
-                    <div class="question-type">أولاً: بم تفسر؟</div>
-                    <div class="question-content">
-                        1- ارتفاع الكثافة السكانية بغرب قارة أوروبا.<br>
-                        2- انخفاض الكثافة السكانية في جزيرة إسكندنافيا بقارة أوروبا.
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">ثانياً: أكمل العبارة التالية:</div>
-                    <div class="question-content">
-                        أحد المناطق منخفضة الكثافة السكانية في قارة آسيا: <span class="dotted-space">.....................</span><br>
-                        وفي قارة أوروبا: <span class="dotted-space">.....................</span>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">ثالثاً: ما النتائج المترتبة على:</div>
-                    <div class="question-content">
-                        زيادة الطلب على الغذاء والمسكن ببعض دول قارة آسيا؟
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">رابعاً: حدد اثنين</div>
-                    <div class="question-content">
-                        من جهود الدول التي تعاني من النمو السكاني المرتفع بقارة آسيا.
-                    </div>
-                </div>
+        <div id="questionsContainer">
             </div>
 
-            <!-- التقييم (ب) -->
-            <div class="eval-card">
-                <div class="eval-title">🔹 التقييم (ب)</div>
-
-                <div class="question-block">
-                    <div class="question-type">أولاً: بم تفسر؟</div>
-                    <div class="question-content">
-                        1- ارتفاع الكثافة السكانية بمناطق السهول الفيضية بقارتي آسيا وأوروبا.<br>
-                        2- انخفاض الكثافة السكانية بسهول سيبيريا.
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">ثانياً: أكمل العبارة التالية:</div>
-                    <div class="question-content">
-                        تتمثل المناطق مرتفعة الكثافة السكانية بقارة أوروبا في:<br>
-                        <span class="dotted-space">.......................</span> و <span class="dotted-space">.......................</span>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">ثالثاً: ما النتائج المترتبة على:</div>
-                    <div class="question-content">
-                        زيادة تيارات الهجرة الداخلية؟
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">رابعاً: حدد اثنين</div>
-                    <div class="question-content">
-                        من جهود الدول الآسيوية والأوروبية التي تواجه تحديات زيادة عدد كبار السن وانخفاض معدلات المواليد.
-                    </div>
-                </div>
-            </div>
-
-            <!-- التقييم (ج) -->
-            <div class="eval-card">
-                <div class="eval-title">🔹 التقييم (ج)</div>
-
-                <div class="question-block">
-                    <div class="question-type">أولاً: بم تفسر؟</div>
-                    <div class="question-content">
-                        1- انخفاض الكثافة السكانية بشبه الجزيرة العربية بقارة آسيا.<br>
-                        2- ارتفاع الكثافة السكانية بالسهل الأوروبي وجنوب شرق آسيا.
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">ثانياً: أكمل العبارة التالية:</div>
-                    <div class="question-content">
-                        تتمثل المناطق مرتفعة الكثافة السكانية بقارة آسيا في:<br>
-                        <span class="dotted-space">.......................</span> و <span class="dotted-space">.......................</span>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">ثالثاً: ما النتائج المترتبة على:</div>
-                    <div class="question-content">
-                        زيادة الطلب على المياه العذبة بالهند؟
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="question-type">رابعاً: اقترح اثنين</div>
-                    <div class="question-content">
-                        من الحلول للدول التي تعاني من النمو السكاني المرتفع لحل المشكلة السكانية.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- تذييل الصفحة -->
-        <div class="footer">
-            انتهت الأسئلة │ مع أطيب التمنيات بالتوفيق
-        </div>
+        <div class="footer">انتهت الأسئلة │ مع أطيب التمنيات بالتوفيق</div>
     </div>
 
-    <!-- رسالة توضيحية للطباعة -->
-    <div style="position: fixed; bottom: 15px; left: 15px; background: #1e3c72; color: white; padding: 8px 18px; border-radius: 40px; font-size: 0.9rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 100;">
-        🖨️ لتحميل PDF: اضغط (Ctrl+P) ثم اختر حفظ كـ PDF
+    <script>
+        function generateExam() {
+            const text = document.getElementById('examData').value;
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = ''; // مسح المحتوى القديم
+
+            // تقسيم النص بناءً على كلمة "التقييم"
+            const sections = text.split(/التقييم/).filter(s => s.trim() !== "");
+
+            sections.forEach(section => {
+                const card = document.createElement('div');
+                card.className = 'eval-card';
+
+                // معالجة العنوان (أو الحرف التابع للتقييم)
+                const lines = section.trim().split('\n');
+                const titleText = "التقييم " + lines[0];
+                
+                let html = `<div class="eval-title">🔹 ${titleText}</div>`;
+
+                // تقسيم الأسئلة بناءً على كلمات (أولاً، ثانياً، ثالثاً، رابعاً)
+                const questions = section.replace(lines[0], '').split(/(أولاً:|ثانياً:|ثالثاً:|رابعاً:)/).filter(q => q.trim() !== "");
+
+                for (let i = 0; i < questions.length; i += 2) {
+                    const qType = questions[i];
+                    const qContent = questions[i+1] || "";
+                    
+                    html += `
+                        <div class="question-block">
+                            <div class="question-type">${qType}</div>
+                            <div class="question-content">${qContent.trim()}</div>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+        
+        // تشغيل افتراضي عند الفتح
+        window.onload = generateExam;
+    </script>
+
+    <div class="input-area" style="text-align: center; background: none; box-shadow: none;">
+        <p>🖨️ بعد الانتهاء، اضغط <strong>Ctrl + P</strong> لحفظ الملف كـ PDF</p>
     </div>
 </body>
 </html>
