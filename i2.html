@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التميز | أ. إيهاب أشرف</title>
+    <title>منصة أ. إيهاب أشرف | WhatsApp Ready</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         :root {
             --gold: #f9c74f;
-            --teal: #2b9c76;
-            --dark: #13262f;
             --accent: #ff7f6e;
+            --dark: #0d1a21;
         }
 
         body {
@@ -24,144 +23,125 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
         }
 
-        .container { width: 100%; max-width: 650px; }
+        .container { width: 100%; max-width: 450px; } /* تصغير عرض الحاوية ليناسب الموبايل */
 
-        /* شاشة الإدخال */
         .input-card {
             background: rgba(255,255,255,0.05);
-            padding: 30px;
-            border-radius: 20px;
-            border: 2px dashed var(--gold);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px dashed var(--gold);
             text-align: center;
         }
 
         textarea {
             width: 100%;
-            height: 300px;
+            height: 200px;
             background: #1a3a4a;
             color: #fff;
-            border: 1px solid #333;
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 8px;
+            padding: 10px;
             font-family: 'Cairo';
-            font-size: 15px;
-            margin: 15px 0;
+            margin: 10px 0;
             resize: none;
             outline: none;
+            border: 1px solid #333;
         }
 
-        /* مربع السؤال المصمم للتصوير */
+        /* مربع التصوير المخصص للواتساب */
         #captureArea {
             background: linear-gradient(145deg, #16313f, #0d1a21);
-            padding: 45px 35px;
-            border: 4px solid var(--gold);
-            border-radius: 30px;
+            padding: 25px 20px;
+            border: 3px solid var(--gold);
+            border-radius: 20px;
             position: relative;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
             overflow: hidden;
         }
 
-        /* ديكور خلفية المربع */
-        #captureArea::after {
-            content: "🌍";
-            position: absolute;
-            bottom: -20px;
-            left: -20px;
-            font-size: 120px;
-            opacity: 0.05;
-            transform: rotate(-20deg);
-        }
-
         .question-text {
-            font-size: 28px;
+            font-size: 20px; /* تصغير الخط قليلاً */
             font-weight: 800;
-            margin-bottom: 35px;
-            line-height: 1.7;
+            margin-bottom: 20px;
+            line-height: 1.5;
             color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
+            border-right: 4px solid var(--accent);
+            padding-right: 12px;
         }
 
         .options-list {
             display: grid;
-            gap: 15px;
-            position: relative;
-            z-index: 1;
+            gap: 10px;
         }
 
         .option-item {
-            background: rgba(255,255,255,0.08);
-            padding: 18px 25px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.15);
-            font-size: 20px;
+            background: rgba(255,255,255,0.06);
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 16px;
             display: flex;
             align-items: center;
-            transition: 0.3s;
         }
 
         .option-label {
             background: var(--gold);
             color: #000;
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            margin-left: 15px;
+            margin-left: 10px;
             font-weight: 900;
-            font-size: 16px;
+            font-size: 13px;
             flex-shrink: 0;
         }
 
         .watermark {
-            margin-top: 45px;
+            margin-top: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px solid rgba(249,199,79,0.3);
-            padding-top: 20px;
-            font-size: 15px;
-            font-weight: 700;
+            border-top: 1px solid rgba(249,199,79,0.2);
+            padding-top: 12px;
+            font-size: 12px;
+            font-weight: 600;
             color: var(--gold);
+            opacity: 0.9;
         }
 
-        /* التحكم */
-        .controls { display: flex; gap: 12px; margin-top: 25px; }
+        .controls { display: flex; gap: 8px; margin-top: 15px; }
         
         .btn {
-            padding: 14px 20px;
-            border-radius: 12px;
+            padding: 10px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
             font-family: 'Cairo';
-            font-weight: 800;
-            font-size: 16px;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
         }
 
         .btn-main { background: var(--gold); color: #000; width: 100%; }
         .btn-nav { background: #2c4e5e; color: #fff; flex: 1; }
-        .btn-snap { background: var(--accent); color: #fff; flex: 2; box-shadow: 0 10px 20px rgba(255,127,110,0.3); }
-        .btn:active { transform: scale(0.95); }
+        .btn-snap { background: var(--accent); color: #fff; flex: 2; }
 
         .hidden { display: none; }
-        #counter { text-align: center; margin-top: 15px; color: var(--gold); font-weight: bold; }
+        #counter { text-align: center; margin-top: 10px; color: var(--gold); font-size: 13px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="setup" class="input-card">
-        <h2 style="color: var(--gold); margin-top: 0;">مُجهز خرائط الأسئلة 🗺️</h2>
-        <p style="opacity: 0.8;">الصق الأسئلة المرقمة مباشرة وسيتكفل الكود بالباقي</p>
-        <textarea id="inputText" placeholder="مثال:&#10;1) وُلد محمد علي باشا في:&#10;A) إستانبول&#10;..."></textarea>
-        <button onclick="processData()" class="btn btn-main">تجهيز الأسئلة الآن ✨</button>
+        <h3 style="color: var(--gold); margin: 0;">مُجهز واتساب أ. إيهاب أشرف 📱</h3>
+        <textarea id="inputText" placeholder="الصق الأسئلة هنا..."></textarea>
+        <button onclick="processData()" class="btn btn-main">بدء التجهيز ⚡</button>
     </div>
 
     <div id="display" class="hidden">
@@ -169,18 +149,18 @@
             <div id="qBody" class="question-text"></div>
             <div id="optsBody" class="options-list"></div>
             <div class="watermark">
-                <span>🌍 مادة الدراسات الاجتماعية</span>
-                <span>الأستاذ/ إيهاب أشرف ⚓</span>
+                <span>🌍 جغرافيا</span>
+                <span>أ. إيهاب أشرف ⚓</span>
             </div>
         </div>
 
         <div class="controls">
             <button onclick="prev()" class="btn btn-nav">السابق</button>
-            <button onclick="snap()" class="btn btn-snap">📸 حفظ كصورة (HD)</button>
+            <button onclick="snap()" class="btn btn-snap">📸 حفظ للواتساب</button>
             <button onclick="next()" class="btn btn-nav">التالي</button>
         </div>
         <p id="counter"></p>
-        <button onclick="location.reload()" style="background:none; border:none; color:#999; cursor:pointer; width:100%; margin-top:10px; font-family:'Cairo'; text-decoration:underline;">إدخال أسئلة جديدة</button>
+        <button onclick="location.reload()" style="background:none; border:none; color:#999; cursor:pointer; width:100%; margin-top:5px; font-family:'Cairo'; font-size:12px; text-decoration:underline;">تغيير الأسئلة</button>
     </div>
 </div>
 
@@ -192,22 +172,17 @@
 
     function processData() {
         const raw = document.getElementById('inputText').value;
-        if(!raw.trim()) return Swal.fire('عذراً','المربع فارغ!','warning');
+        if(!raw.trim()) return;
 
-        // تقسيم ذكي جداً يبحث عن الرقم متبوعاً بقوس في أي مكان
+        // تقسيم بناءً على الرقم والقوس 1)
         const parts = raw.split(/\n?\d+[\)\-\.]\s+/);
-        const blocks = parts.filter(p => p.trim().length > 10);
+        const blocks = parts.filter(p => p.trim().length > 5);
         
         questions = blocks.map(block => {
             const lines = block.split('\n').map(l => l.trim()).filter(l => l !== "");
-            
-            // أول سطر هو السؤال
             const q = lines[0];
-            
-            // الخيارات هي أي سطر يبدأ بـ A,B,C,D (مع حذف الإجابة)
-            const opts = lines.filter(l => /^[A-D][\)\-\.]/i.test(l))
-                              .map(l => l.replace(/^[A-D][\)\-\.]\s*/i, '').trim());
-            
+            const opts = lines.filter(l => /^[A-Dأ-د][\)\-\.]/i.test(l))
+                              .map(l => l.replace(/^[A-Dأ-د][\)\-\.]\s*/i, '').trim());
             return { q, opts };
         }).filter(item => item.opts.length > 0);
 
@@ -215,8 +190,6 @@
             document.getElementById('setup').classList.add('hidden');
             document.getElementById('display').classList.remove('hidden');
             render();
-        } else {
-            Swal.fire('خطأ في التنسيق','تأكد أن الأسئلة تبدأ بـ 1) والخيارات بـ A)','error');
         }
     }
 
@@ -225,7 +198,6 @@
         document.getElementById('qBody').innerText = item.q;
         const container = document.getElementById('optsBody');
         container.innerHTML = '';
-
         const labels = ['أ', 'ب', 'ج', 'د'];
         item.opts.forEach((text, i) => {
             const div = document.createElement('div');
@@ -233,8 +205,7 @@
             div.innerHTML = `<div class="option-label">${labels[i]}</div> <div>${text}</div>`;
             container.appendChild(div);
         });
-
-        document.getElementById('counter').innerText = `السؤال رقم (${current + 1}) من إجمالي (${questions.length})`;
+        document.getElementById('counter').innerText = `سؤال ${current + 1} من ${questions.length}`;
     }
 
     function next() { if(current < questions.length - 1) { current++; render(); } }
@@ -242,16 +213,10 @@
 
     async function snap() {
         const area = document.getElementById('captureArea');
-        // جودة فائقة التصوير
-        const canvas = await html2canvas(area, { 
-            scale: 3, 
-            backgroundColor: '#0d1a21',
-            borderRadius: 30
-        });
-        
+        const canvas = await html2canvas(area, { scale: 2, backgroundColor: '#0d1a21' });
         const link = document.createElement('a');
-        link.download = `Geo_Lesson_Q${current+1}.png`;
-        link.href = canvas.toDataURL("image/png");
+        link.download = `WhatsApp_Q${current+1}.png`;
+        link.href = canvas.toDataURL();
         link.click();
     }
 </script>
