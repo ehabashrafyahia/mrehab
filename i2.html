@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة أ. إيهاب أشرف | WhatsApp Ready</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         :root {
@@ -26,7 +25,7 @@
             padding: 10px;
         }
 
-        .container { width: 100%; max-width: 450px; } /* تصغير عرض الحاوية ليناسب الموبايل */
+        .container { width: 100%; max-width: 450px; }
 
         .input-card {
             background: rgba(255,255,255,0.05);
@@ -50,7 +49,6 @@
             border: 1px solid #333;
         }
 
-        /* مربع التصوير المخصص للواتساب */
         #captureArea {
             background: linear-gradient(145deg, #16313f, #0d1a21);
             padding: 25px 20px;
@@ -58,16 +56,27 @@
             border-radius: 20px;
             position: relative;
             box-shadow: 0 15px 30px rgba(0,0,0,0.4);
-            overflow: hidden;
+        }
+
+        /* تنسيق رقم السؤال العلوي */
+        .q-number-badge {
+            background: var(--accent);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 10px;
         }
 
         .question-text {
-            font-size: 20px; /* تصغير الخط قليلاً */
+            font-size: 20px;
             font-weight: 800;
             margin-bottom: 20px;
             line-height: 1.5;
             color: #fff;
-            border-right: 4px solid var(--accent);
+            border-right: 4px solid var(--gold);
             padding-right: 12px;
         }
 
@@ -111,7 +120,6 @@
             font-size: 12px;
             font-weight: 600;
             color: var(--gold);
-            opacity: 0.9;
         }
 
         .controls { display: flex; gap: 8px; margin-top: 15px; }
@@ -124,7 +132,6 @@
             font-family: 'Cairo';
             font-weight: 700;
             font-size: 14px;
-            transition: 0.2s;
         }
 
         .btn-main { background: var(--gold); color: #000; width: 100%; }
@@ -140,12 +147,14 @@
 <div class="container">
     <div id="setup" class="input-card">
         <h3 style="color: var(--gold); margin: 0;">مُجهز واتساب أ. إيهاب أشرف 📱</h3>
-        <textarea id="inputText" placeholder="الصق الأسئلة هنا..."></textarea>
+        <p style="font-size: 12px; color: #ccc;">ضع الأسئلة مرقمة (1- سؤال .. أ- اختيار)</p>
+        <textarea id="inputText" placeholder="1) ما هي عاصمة مصر؟&#10;أ) القاهرة&#10;ب) الإسكندرية"></textarea>
         <button onclick="processData()" class="btn btn-main">بدء التجهيز ⚡</button>
     </div>
 
     <div id="display" class="hidden">
         <div id="captureArea">
+            <div id="qNumber" class="q-number-badge"></div>
             <div id="qBody" class="question-text"></div>
             <div id="optsBody" class="options-list"></div>
             <div class="watermark">
@@ -156,11 +165,11 @@
 
         <div class="controls">
             <button onclick="prev()" class="btn btn-nav">السابق</button>
-            <button onclick="snap()" class="btn btn-snap">📸 حفظ للواتساب</button>
+            <button onclick="snap()" class="btn btn-snap">📸 حفظ الصورة</button>
             <button onclick="next()" class="btn btn-nav">التالي</button>
         </div>
         <p id="counter"></p>
-        <button onclick="location.reload()" style="background:none; border:none; color:#999; cursor:pointer; width:100%; margin-top:5px; font-family:'Cairo'; font-size:12px; text-decoration:underline;">تغيير الأسئلة</button>
+        <button onclick="location.reload()" style="background:none; border:none; color:#999; cursor:pointer; width:100%; margin-top:5px; font-family:'Cairo'; font-size:12px; text-decoration:underline;">إدخال أسئلة جديدة</button>
     </div>
 </div>
 
@@ -174,8 +183,9 @@
         const raw = document.getElementById('inputText').value;
         if(!raw.trim()) return;
 
-        // تقسيم بناءً على الرقم والقوس 1)
-        const parts = raw.split(/\n?\d+[\)\-\.]\s+/);
+        // تقسيم ذكي بناءً على الأرقام
+        const regex = /\d+[\)\-\.]\s+/;
+        const parts = raw.split(regex);
         const blocks = parts.filter(p => p.trim().length > 5);
         
         questions = blocks.map(block => {
@@ -195,17 +205,27 @@
 
     function render() {
         const item = questions[current];
+        
+        // تحديث رقم السؤال داخل التصميم
+        document.getElementById('qNumber').innerText = `سؤال رقم (${current + 1})`;
+        
+        // نص السؤال
         document.getElementById('qBody').innerText = item.q;
+        
+        // الخيارات
         const container = document.getElementById('optsBody');
         container.innerHTML = '';
         const labels = ['أ', 'ب', 'ج', 'د'];
         item.opts.forEach((text, i) => {
-            const div = document.createElement('div');
-            div.className = 'option-item';
-            div.innerHTML = `<div class="option-label">${labels[i]}</div> <div>${text}</div>`;
-            container.appendChild(div);
+            if(i < 4) { // لضمان عدم تجاوز 4 خيارات
+                const div = document.createElement('div');
+                div.className = 'option-item';
+                div.innerHTML = `<div class="option-label">${labels[i]}</div> <div>${text}</div>`;
+                container.appendChild(div);
+            }
         });
-        document.getElementById('counter').innerText = `سؤال ${current + 1} من ${questions.length}`;
+        
+        document.getElementById('counter').innerText = `استعراض ${current + 1} من ${questions.length}`;
     }
 
     function next() { if(current < questions.length - 1) { current++; render(); } }
@@ -213,10 +233,15 @@
 
     async function snap() {
         const area = document.getElementById('captureArea');
-        const canvas = await html2canvas(area, { scale: 2, backgroundColor: '#0d1a21' });
+        // زيادة الجودة للحصول على نص واضح في واتساب
+        const canvas = await html2canvas(area, { 
+            scale: 3, 
+            backgroundColor: '#0d1a21',
+            useCORS: true 
+        });
         const link = document.createElement('a');
-        link.download = `WhatsApp_Q${current+1}.png`;
-        link.href = canvas.toDataURL();
+        link.download = `Ehab_Ashraf_Q${current+1}.png`;
+        link.href = canvas.toDataURL("image/png");
         link.click();
     }
 </script>
