@@ -144,7 +144,7 @@
             box-shadow: 0 0 10px rgba(255, 174, 0, 0.5);
         }
 
-        /* التوقيع السفلي */
+        /* التوقيع السفلي - تم تعديله لاستخدام صور ثابتة */
         .watermark {
             margin-top: 30px;
             display: flex;
@@ -152,11 +152,14 @@
             align-items: center;
             border-top: 1px dashed rgba(255, 174, 0, 0.3);
             padding-top: 15px;
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--heat-core);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        }
+
+        .watermark-icon {
+            height: 16px; /* تحكم بحجم التوقيع هنا */
+            width: auto;
+            max-width: 48%; /* لضمان عدم تداخل التوقيعين */
+            opacity: 1; /* تأكد من ظهورها كاملة */
+            object-fit: contain;
         }
 
         /* الأزرار */
@@ -219,8 +222,8 @@
             <div id="qBody" class="question-text"></div>
             <div id="optsBody" class="options-list"></div>
             <div class="watermark">
-                <span>🌍 دراسات إجتماعية</span>
-                <span>أ. إيهاب أشرف ⚓</span>
+                <img src="subject-watermark.png" class="watermark-icon" alt="🌍 دراسات إجتماعية">
+                <img src="name-watermark.png" class="watermark-icon" alt="أ. إيهاب أشرف ⚓">
             </div>
         </div>
 
