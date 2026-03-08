@@ -3,237 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة أ. إيهاب أشرف | Lava Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <title>منصة أ. إيهاب أشرف | WhatsApp Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* ألوان الحرارة والتوهج */
-            --heat-core: #ffae00; /* أصفر ذهبي متوهج */
-            --heat-mid: #ff5200;  /* برتقالي ناري */
-            --heat-edge: #940000; /* أحمر داكن */
-            --dark-bg: #0a0302;   /* أسود محمر */
-            --card-bg: #140805;
+            --heat-gold: #ffae00;
+            --heat-orange: #ff5200;
+            --dark-bg: #0d0402;
         }
 
         body {
             margin: 0;
-            background: radial-gradient(circle at center, #240b06 0%, var(--dark-bg) 100%);
+            background: #1a1a1a;
             font-family: 'Cairo', sans-serif;
-            color: #fff;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
-            padding: 10px;
+            padding: 20px 10px;
         }
 
-        .container { width: 100%; max-width: 480px; }
+        /* حاوية العرض بمقاس الموبايل */
+        .container { width: 100%; max-width: 400px; }
 
-        /* كارت الإدخال */
         .input-card {
-            background: rgba(20, 8, 5, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 82, 0, 0.3);
-            box-shadow: 0 0 30px rgba(255, 82, 0, 0.1);
+            background: #222;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid var(--heat-orange);
             text-align: center;
+            margin-bottom: 20px;
         }
 
         textarea {
-            width: 100%;
-            height: 220px;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            border-radius: 12px;
-            padding: 15px;
-            font-family: 'Cairo';
-            margin: 15px 0;
-            resize: none;
-            outline: none;
-            border: 1px solid var(--heat-mid);
-            box-shadow: inset 0 0 10px rgba(255, 82, 0, 0.1);
-            font-size: 15px;
-            box-sizing: border-box;
+            width: 100%; height: 150px;
+            background: #000; color: #fff;
+            border: 1px solid #444; border-radius: 8px;
+            padding: 10px; font-family: 'Cairo';
+            margin-bottom: 15px; resize: none; box-sizing: border-box;
         }
 
-        textarea:focus {
-            box-shadow: inset 0 0 15px rgba(255, 174, 0, 0.2), 0 0 15px rgba(255, 82, 0, 0.3);
-            border-color: var(--heat-core);
-        }
-
-        /* منطقة التصوير (التصميم الحراري) */
+        /* منطقة التصوير - مقاس طولي مناسب للواتساب */
         #captureArea {
-            background: linear-gradient(135deg, #1f0804 0%, #0a0302 100%);
-            padding: 30px 25px;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-            border-radius: 24px;
+            width: 100%;
+            aspect-ratio: 4 / 5; /* مقاس احترافي للواتساب */
+            background: linear-gradient(180deg, #1f0804 0%, #0d0402 100%);
+            padding: 30px 20px;
+            border-radius: 20px;
             position: relative;
-            /* تأثير التوهج الحراري */
-            box-shadow: 
-                0 20px 40px rgba(0,0,0,0.8),
-                0 0 20px rgba(255, 82, 0, 0.2),
-                inset 0 0 60px rgba(255, 82, 0, 0.05);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid var(--heat-orange);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             overflow: hidden;
         }
 
-        /* خط حراري علوي */
-        #captureArea::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 4px;
-            background: linear-gradient(90deg, var(--heat-edge), var(--heat-core), var(--heat-mid), var(--heat-edge));
-        }
-
-        /* رقم السؤال */
-        .q-number-badge {
-            background: linear-gradient(90deg, var(--heat-mid), var(--heat-core));
+        .q-number {
+            background: linear-gradient(90deg, var(--heat-orange), var(--heat-gold));
             color: #000;
-            padding: 4px 18px;
+            padding: 3px 15px;
             border-radius: 50px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 900;
-            display: inline-block;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(255, 174, 0, 0.4);
+            align-self: flex-start;
+            margin-bottom: 20px;
         }
 
         .question-text {
-            font-size: 22px;
-            font-weight: 900;
-            margin-bottom: 25px;
-            line-height: 1.6;
-            color: #ffffff;
-            border-right: 5px solid var(--heat-core);
-            padding-right: 15px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.5;
+            margin-bottom: auto; /* يدفع الخيارات للأسفل */
+            border-right: 4px solid var(--heat-gold);
+            padding-right: 12px;
         }
 
-        /* الخيارات */
         .options-list {
             display: grid;
-            gap: 12px;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .option-item {
-            background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255, 82, 0, 0.05));
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 174, 0, 0.1);
-            font-size: 17px;
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 174, 0, 0.2);
+            font-size: 16px;
             font-weight: 600;
+            color: #fff;
             display: flex;
             align-items: center;
         }
 
         .option-label {
-            background: linear-gradient(135deg, var(--heat-core), var(--heat-mid));
+            background: var(--heat-gold);
             color: #000;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin-left: 12px;
-            font-weight: 900;
-            font-size: 14px;
-            flex-shrink: 0;
-            box-shadow: 0 0 10px rgba(255, 174, 0, 0.5);
+            width: 26px; height: 26px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; margin-left: 10px;
+            font-weight: 900; flex-shrink: 0;
         }
 
-        /* التوقيع السفلي - تم تعديله لاستخدام صور ثابتة */
+        /* تذييل الصورة - تم استخدام SVG لضمان عدم اللخبطة */
         .watermark {
-            margin-top: 30px;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 82, 0, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-top: 1px dashed rgba(255, 174, 0, 0.3);
-            padding-top: 15px;
         }
 
-        .watermark-icon {
-            height: 16px; /* تحكم بحجم التوقيع هنا */
-            width: auto;
-            max-width: 48%; /* لضمان عدم تداخل التوقيعين */
-            opacity: 1; /* تأكد من ظهورها كاملة */
-            object-fit: contain;
-        }
+        .footer-svg { height: 22px; width: auto; }
 
-        /* الأزرار */
-        .controls { display: flex; gap: 10px; margin-top: 20px; }
-        
+        .controls { display: flex; gap: 8px; width: 100%; margin-top: 15px; }
         .btn {
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Cairo';
-            font-weight: 800;
-            font-size: 15px;
-            transition: all 0.3s ease;
+            padding: 12px; border-radius: 10px; border: none;
+            font-family: 'Cairo'; font-weight: 700; cursor: pointer;
         }
-
-        .btn-main { 
-            background: linear-gradient(90deg, var(--heat-mid), var(--heat-core)); 
-            color: #000; 
-            width: 100%;
-            box-shadow: 0 5px 20px rgba(255, 82, 0, 0.4);
-        }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255, 174, 0, 0.6); }
-
-        .btn-nav { background: #2a110d; color: var(--heat-core); flex: 1; border: 1px solid var(--heat-mid); }
-        .btn-snap { 
-            background: linear-gradient(90deg, var(--heat-edge), var(--heat-mid)); 
-            color: #fff; 
-            flex: 2; 
-            box-shadow: 0 4px 15px rgba(255, 82, 0, 0.3);
-        }
+        .btn-main { background: var(--heat-gold); color: #000; width: 100%; }
+        .btn-nav { background: #333; color: #fff; flex: 1; }
+        .btn-snap { background: var(--heat-orange); color: #fff; flex: 2; }
 
         .hidden { display: none; }
-        #counter { text-align: center; margin-top: 12px; color: rgba(255,255,255,0.5); font-size: 14px; font-weight: 600;}
-        
-        /* تأثير النبض البسيط لكلمة واتساب */
-        .pulse-text {
-            background: linear-gradient(to right, var(--heat-core), #fff, var(--heat-core));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 3s infinite linear;
-            background-size: 200% auto;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="setup" class="input-card">
-        <h2 style="margin: 0 0 5px 0;" class="pulse-text">مولد الأسئلة الذكي 🔥</h2>
-        <p style="font-size: 14px; color: #aaa; margin-bottom: 15px;">أ. إيهاب أشرف | دراسات إجتماعية</p>
-        <textarea id="inputText" placeholder="ضع أسئلتك هنا...&#10;1) ما هي عاصمة مصر؟&#10;أ) القاهرة&#10;ب) الإسكندرية&#10;ج) الأقصر&#10;د) أسوان"></textarea>
-        <button onclick="processData()" class="btn btn-main">توليد الصور المتوهجة ⚡</button>
+        <h3 style="color: var(--heat-gold);">مُولد أسئلة مستر إيهاب 🔥</h3>
+        <textarea id="inputText" placeholder="1) سؤالك هنا...&#10;أ) اختيار 1&#10;ب) اختيار 2"></textarea>
+        <button onclick="processData()" class="btn btn-main">تجهيز الأسئلة ⚡</button>
     </div>
 
     <div id="display" class="hidden">
         <div id="captureArea">
-            <div id="qNumber" class="q-number-badge"></div>
+            <div id="qNumber" class="q-number"></div>
             <div id="qBody" class="question-text"></div>
             <div id="optsBody" class="options-list"></div>
+            
             <div class="watermark">
-                <img src="subject-watermark.png" class="watermark-icon" alt="🌍 دراسات إجتماعية">
-                <img src="name-watermark.png" class="watermark-icon" alt="أ. إيهاب أشرف ⚓">
+                <svg class="footer-svg" viewBox="0 0 150 30">
+                    <text x="150" y="20" fill="#ffae00" font-family="Cairo" font-weight="900" font-size="14" text-anchor="end">🌍 دراسات إجتماعية</text>
+                </svg>
+                <svg class="footer-svg" viewBox="0 0 150 30">
+                    <text x="0" y="20" fill="#ffae00" font-family="Cairo" font-weight="900" font-size="14" text-anchor="start">أ. إيهاب أشرف ⚓</text>
+                </svg>
             </div>
         </div>
 
         <div class="controls">
             <button onclick="prev()" class="btn btn-nav">السابق</button>
-            <button onclick="snap()" class="btn btn-snap">📸 حفظ الصورة</button>
+            <button onclick="snap()" class="btn btn-snap">📸 حفظ للواتساب</button>
             <button onclick="next()" class="btn btn-nav">التالي</button>
         </div>
-        <p id="counter"></p>
-        <button onclick="location.reload()" style="background:none; border:none; color:var(--heat-mid); cursor:pointer; width:100%; margin-top:5px; font-family:'Cairo'; font-size:14px; font-weight:700; text-decoration:underline;">إدخال أسئلة جديدة</button>
+        <button onclick="location.reload()" style="background:none; border:none; color:#888; cursor:pointer; width:100%; margin-top:10px; font-family:'Cairo'; text-decoration:underline;">تعديل الأسئلة</button>
     </div>
 </div>
 
@@ -246,10 +175,9 @@
     function processData() {
         const raw = document.getElementById('inputText').value;
         if(!raw.trim()) return;
-
         const regex = /\d+[\)\-\.]\s+/;
         const parts = raw.split(regex);
-        const blocks = parts.filter(p => p.trim().length > 5);
+        const blocks = parts.filter(p => p.trim().length > 2);
         
         questions = blocks.map(block => {
             const lines = block.split('\n').map(l => l.trim()).filter(l => l !== "");
@@ -268,23 +196,17 @@
 
     function render() {
         const item = questions[current];
-        
-        document.getElementById('qNumber').innerText = `سؤال رقم (${current + 1})`;
+        document.getElementById('qNumber').innerText = `سؤال رقم ${current + 1}`;
         document.getElementById('qBody').innerText = item.q;
-        
         const container = document.getElementById('optsBody');
         container.innerHTML = '';
         const labels = ['أ', 'ب', 'ج', 'د'];
-        item.opts.forEach((text, i) => {
-            if(i < 4) {
-                const div = document.createElement('div');
-                div.className = 'option-item';
-                div.innerHTML = `<div class="option-label">${labels[i]}</div> <div>${text}</div>`;
-                container.appendChild(div);
-            }
+        item.opts.slice(0, 4).forEach((text, i) => {
+            const div = document.createElement('div');
+            div.className = 'option-item';
+            div.innerHTML = `<div class="option-label">${labels[i]}</div> <div>${text}</div>`;
+            container.appendChild(div);
         });
-        
-        document.getElementById('counter').innerText = `استعراض ${current + 1} من ${questions.length}`;
     }
 
     function next() { if(current < questions.length - 1) { current++; render(); } }
@@ -294,11 +216,12 @@
         const area = document.getElementById('captureArea');
         const canvas = await html2canvas(area, { 
             scale: 3, 
-            backgroundColor: '#0a0302', // لون الخلفية مطابق للتصميم الداكن
-            useCORS: true 
+            backgroundColor: '#0d0402',
+            logging: false,
+            useCORS: true
         });
         const link = document.createElement('a');
-        link.download = `Ehab_Ashraf_Fire_Q${current+1}.png`;
+        link.download = `Ehab_Q${current+1}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
     }
