@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة أ. إيهاب أشرف | WhatsApp Pro</title>
+    <title>منصة أ. إيهاب أشرف | Smart Scale</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
@@ -24,72 +24,80 @@
             padding: 20px 10px;
         }
 
-        /* حاوية العرض بمقاس الموبايل */
-        .container { width: 100%; max-width: 400px; }
+        .container { width: 100%; max-width: 420px; }
 
         .input-card {
             background: #222;
             padding: 20px;
             border-radius: 15px;
             border: 1px solid var(--heat-orange);
-            text-align: center;
             margin-bottom: 20px;
         }
 
         textarea {
-            width: 100%; height: 150px;
+            width: 100%; height: 120px;
             background: #000; color: #fff;
             border: 1px solid #444; border-radius: 8px;
             padding: 10px; font-family: 'Cairo';
             margin-bottom: 15px; resize: none; box-sizing: border-box;
         }
 
-        /* منطقة التصوير - مقاس طولي مناسب للواتساب */
+        /* حاوية الصورة الثابتة - لن يتغير حجمها أبداً */
         #captureArea {
             width: 100%;
-            aspect-ratio: 4 / 5; /* مقاس احترافي للواتساب */
+            height: 500px; /* طول ثابت مثالي للواتساب */
             background: linear-gradient(180deg, #1f0804 0%, #0d0402 100%);
-            padding: 30px 20px;
+            padding: 25px;
             border-radius: 20px;
             position: relative;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            border: 2px solid var(--heat-orange);
+            border: 3px solid var(--heat-orange);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            overflow: hidden;
+            overflow: hidden; /* يمنع خروج أي نص */
         }
 
         .q-number {
             background: linear-gradient(90deg, var(--heat-orange), var(--heat-gold));
             color: #000;
-            padding: 3px 15px;
+            padding: 4px 15px;
             border-radius: 50px;
             font-size: 14px;
             font-weight: 900;
-            align-self: flex-start;
-            margin-bottom: 20px;
+            width: fit-content;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+        }
+
+        /* حاوية السؤال والخيارات المرنة */
+        .content-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* يتوسط المحتوى إذا كان قصيراً */
+            overflow: hidden;
         }
 
         .question-text {
-            font-size: 20px;
-            font-weight: 800;
             color: #fff;
-            line-height: 1.5;
-            margin-bottom: auto; /* يدفع الخيارات للأسفل */
+            font-weight: 800;
+            line-height: 1.4;
             border-right: 4px solid var(--heat-gold);
             padding-right: 12px;
+            margin-bottom: 15px;
+            /* حجم خط ديناميكي يبدأ من 22px */
+            font-size: 22px; 
         }
 
         .options-list {
             display: grid;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
         }
 
         .option-item {
-            background: rgba(255,255,255,0.05);
-            padding: 12px;
+            background: rgba(255,255,255,0.06);
+            padding: 10px 12px;
             border-radius: 10px;
             border: 1px solid rgba(255, 174, 0, 0.2);
             font-size: 16px;
@@ -102,23 +110,27 @@
         .option-label {
             background: var(--heat-gold);
             color: #000;
-            width: 26px; height: 26px;
+            width: 24px; height: 24px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 50%; margin-left: 10px;
-            font-weight: 900; flex-shrink: 0;
+            font-weight: 900; flex-shrink: 0; font-size: 13px;
         }
 
-        /* تذييل الصورة - تم استخدام SVG لضمان عدم اللخبطة */
         .watermark {
-            margin-top: 25px;
-            padding-top: 15px;
+            margin-top: 15px;
+            padding-top: 12px;
             border-top: 1px solid rgba(255, 82, 0, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
-        .footer-svg { height: 22px; width: auto; }
+        .footer-text {
+            color: var(--heat-gold);
+            font-weight: 900;
+            font-size: 13px;
+        }
 
         .controls { display: flex; gap: 8px; width: 100%; margin-top: 15px; }
         .btn {
@@ -136,30 +148,29 @@
 
 <div class="container">
     <div id="setup" class="input-card">
-        <h3 style="color: var(--heat-gold);">مُولد أسئلة مستر إيهاب 🔥</h3>
-        <textarea id="inputText" placeholder="1) سؤالك هنا...&#10;أ) اختيار 1&#10;ب) اختيار 2"></textarea>
-        <button onclick="processData()" class="btn btn-main">تجهيز الأسئلة ⚡</button>
+        <h3 style="color: var(--heat-gold); text-align: center; margin-top: 0;">مُولد مستر إيهاب (النسخة الذكية) 💡</h3>
+        <textarea id="inputText" placeholder="1) اكتب السؤال هنا...&#10;أ) خيار&#10;ب) خيار"></textarea>
+        <button onclick="processData()" class="btn btn-main">بدء التجهيز ⚡</button>
     </div>
 
     <div id="display" class="hidden">
         <div id="captureArea">
             <div id="qNumber" class="q-number"></div>
-            <div id="qBody" class="question-text"></div>
-            <div id="optsBody" class="options-list"></div>
+            
+            <div class="content-wrapper">
+                <div id="qBody" class="question-text"></div>
+                <div id="optsBody" class="options-list"></div>
+            </div>
             
             <div class="watermark">
-                <svg class="footer-svg" viewBox="0 0 150 30">
-                    <text x="150" y="20" fill="#ffae00" font-family="Cairo" font-weight="900" font-size="14" text-anchor="end">🌍 دراسات إجتماعية</text>
-                </svg>
-                <svg class="footer-svg" viewBox="0 0 150 30">
-                    <text x="0" y="20" fill="#ffae00" font-family="Cairo" font-weight="900" font-size="14" text-anchor="start">أ. إيهاب أشرف ⚓</text>
-                </svg>
+                <span class="footer-text">🌍 دراسات إجتماعية</span>
+                <span class="footer-text">أ. إيهاب أشرف ⚓</span>
             </div>
         </div>
 
         <div class="controls">
             <button onclick="prev()" class="btn btn-nav">السابق</button>
-            <button onclick="snap()" class="btn btn-snap">📸 حفظ للواتساب</button>
+            <button onclick="snap()" class="btn btn-snap">📸 حفظ الصورة</button>
             <button onclick="next()" class="btn btn-nav">التالي</button>
         </div>
         <button onclick="location.reload()" style="background:none; border:none; color:#888; cursor:pointer; width:100%; margin-top:10px; font-family:'Cairo'; text-decoration:underline;">تعديل الأسئلة</button>
@@ -194,10 +205,24 @@
         }
     }
 
+    function autoShrinkText() {
+        const qBody = document.getElementById('qBody');
+        const wrapper = document.querySelector('.content-wrapper');
+        let fontSize = 22;
+        qBody.style.fontSize = fontSize + 'px';
+
+        // تقليل حجم الخط إذا تجاوز المحتوى المساحة المتاحة
+        while (wrapper.scrollHeight > wrapper.offsetHeight && fontSize > 12) {
+            fontSize -= 1;
+            qBody.style.fontSize = fontSize + 'px';
+        }
+    }
+
     function render() {
         const item = questions[current];
         document.getElementById('qNumber').innerText = `سؤال رقم ${current + 1}`;
         document.getElementById('qBody').innerText = item.q;
+        
         const container = document.getElementById('optsBody');
         container.innerHTML = '';
         const labels = ['أ', 'ب', 'ج', 'د'];
@@ -207,6 +232,9 @@
             div.innerHTML = `<div class="option-label">${labels[i]}</div> <div>${text}</div>`;
             container.appendChild(div);
         });
+
+        // تشغيل ميزة التصغير التلقائي بعد الرندر
+        setTimeout(autoShrinkText, 10);
     }
 
     function next() { if(current < questions.length - 1) { current++; render(); } }
@@ -215,10 +243,8 @@
     async function snap() {
         const area = document.getElementById('captureArea');
         const canvas = await html2canvas(area, { 
-            scale: 3, 
+            scale: 2, 
             backgroundColor: '#0d0402',
-            logging: false,
-            useCORS: true
         });
         const link = document.createElement('a');
         link.download = `Ehab_Q${current+1}.png`;
