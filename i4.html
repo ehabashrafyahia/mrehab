@@ -40,7 +40,7 @@
         .title-header {
             color: var(--edu-blue);
             text-align: center;
-            margin-top: 0;
+            margin: 0 0 15px 0;
             font-weight: 900;
             font-size: 22px;
         }
@@ -54,37 +54,18 @@
             font-size: 15px;
         }
 
-        textarea:focus {
-            outline: none;
-            border-color: var(--edu-blue);
-        }
-
-        /* حاوية الصورة الثابتة */
         #captureArea {
             width: 100%;
-            height: 520px; /* طول مناسب جداً لحالات الواتساب والفيسبوك */
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            padding: 25px;
+            height: 520px;
+            background: radial-gradient(circle at top left, #1e293b, #0f172a);
+            padding: 30px 25px;
             border-radius: 20px;
             position: relative;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            border: 2px solid #334155;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            border: 3px solid #334155;
             overflow: hidden;
-        }
-
-        /* تأثيرات زخرفية في الخلفية */
-        #captureArea::before {
-            content: '';
-            position: absolute;
-            top: -50px; left: -50px;
-            width: 150px; height: 150px;
-            background: var(--edu-blue);
-            filter: blur(80px);
-            opacity: 0.15;
-            z-index: 0;
         }
 
         .q-number {
@@ -97,42 +78,37 @@
             width: fit-content;
             margin-bottom: 20px;
             flex-shrink: 0;
-            z-index: 1;
-            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
         }
 
-        /* حاوية السؤال والخيارات */
         .content-wrapper {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             overflow: hidden;
-            z-index: 1;
         }
 
         .question-text {
             color: var(--text-light);
             font-weight: 800;
-            line-height: 1.5;
-            border-right: 4px solid var(--edu-blue);
+            line-height: 1.6;
+            border-right: 5px solid var(--edu-blue);
             padding-right: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-size: 24px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .options-list {
             display: grid;
-            gap: 10px;
+            gap: 12px;
         }
 
         .option-item {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
             padding: 12px 15px;
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: #e2e8f0;
             display: flex;
@@ -140,24 +116,21 @@
         }
 
         .option-label {
-            background: rgba(0, 210, 255, 0.15);
-            color: var(--edu-blue);
-            border: 1px solid var(--edu-blue);
-            width: 28px; height: 28px;
+            background: var(--edu-blue);
+            color: #0f172a;
+            width: 30px; height: 30px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 8px; margin-left: 12px;
-            font-weight: 900; flex-shrink: 0; font-size: 14px;
+            font-weight: 900; flex-shrink: 0; font-size: 15px;
         }
 
         .watermark {
             margin-top: auto;
             padding-top: 15px;
-            border-top: 1px dashed #334155;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-shrink: 0;
-            z-index: 1;
         }
 
         .footer-text {
@@ -166,61 +139,73 @@
             font-size: 14px;
         }
 
-        .footer-text span {
-            color: var(--edu-blue);
-        }
+        .footer-text span { color: var(--edu-blue); }
 
-        .controls { display: flex; gap: 10px; width: 100%; margin-top: 20px; }
+        .controls { display: flex; flex-direction: column; gap: 8px; width: 100%; margin-top: 15px; }
+        .row { display: flex; gap: 8px; width: 100%; }
         
-        .btn {
-            padding: 14px; border-radius: 12px; border: none;
-            font-family: 'Cairo'; font-weight: 800; cursor: pointer;
-            transition: all 0.2s; font-size: 15px;
-        }
+        .btn { padding: 12px; border-radius: 12px; border: none; font-family: 'Cairo'; font-weight: 800; cursor: pointer; font-size: 14px; transition: 0.2s;}
+        .btn:active { transform: scale(0.98); }
         
-        .btn:active { transform: scale(0.97); }
-        
-        .btn-main { background: linear-gradient(90deg, var(--edu-dark-blue), var(--edu-blue)); color: #fff; width: 100%; font-size: 18px;}
+        .btn-main { background: var(--edu-blue); color: #0f172a; width: 100%; font-size: 18px; margin-bottom: 10px;}
         .btn-nav { background: #334155; color: #fff; flex: 1; }
-        .btn-snap { background: #10b981; color: #fff; flex: 2; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);}
-
+        .btn-snap { background: #10b981; color: #fff; flex: 2; }
+        .btn-all { background: #f59e0b; color: #fff; width: 100%; margin-top: 5px; }
+        
         .hidden { display: none; }
+        
+        /* Loading Overlay */
+        #loader {
+            display: none;
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.8); z-index: 1000;
+            flex-direction: column; align-items: center; justify-content: center;
+            color: white; font-weight: 900;
+        }
     </style>
 </head>
 <body>
 
+<div id="loader">
+    <div style="font-size: 20px; margin-bottom: 10px;">⏳ جاري تجهيز جميع الصور...</div>
+    <div id="progressText">0%</div>
+</div>
+
 <div class="container">
     <div id="setup" class="input-card">
-        <h3 class="title-header">مُولد أسئلة الصف الأول الثانوي 🎓</h3>
-        <textarea id="inputText" placeholder="1) اكتب السؤال هنا...&#10;أ) الاختيار الأول&#10;ب) الاختيار الثاني&#10;ج) الاختيار الثالث&#10;د) الاختيار الرابع"></textarea>
+        <h3 class="title-header">مُولد أسئلة مستر إيهاب 🎓</h3>
+        <textarea id="inputText" placeholder="1) اكتب السؤال هنا...&#10;أ) خيار 1&#10;ب) خيار 2"></textarea>
         <button onclick="processData()" class="btn btn-main">تجهيز الأسئلة 🚀</button>
     </div>
 
     <div id="display" class="hidden">
         <div id="captureArea">
             <div id="qNumber" class="q-number"></div>
-            
             <div class="content-wrapper">
                 <div id="qBody" class="question-text"></div>
                 <div id="optsBody" class="options-list"></div>
             </div>
-            
             <div class="watermark">
                 <span class="footer-text">📚 الصف <span>الأول الثانوي</span></span>
                 <span class="footer-text">أ. إيهاب أشرف 🌟</span>
             </div>
         </div>
-
+        
         <div class="controls">
-            <button onclick="prev()" class="btn btn-nav">السابق</button>
-            <button onclick="snap()" class="btn btn-snap">📸 حفظ كصورة</button>
-            <button onclick="next()" class="btn btn-nav">التالي</button>
+            <div class="row">
+                <button onclick="prev()" class="btn btn-nav">السابق</button>
+                <button onclick="snap()" class="btn btn-snap">📸 حفظ هذه الصورة</button>
+                <button onclick="next()" class="btn btn-nav">التالي</button>
+            </div>
+            <button onclick="snapAll()" class="btn btn-all">📦 حفظ الكل في ملف واحد (ZIP)</button>
         </div>
-        <button onclick="location.reload()" style="background:none; border:none; color:#94a3b8; cursor:pointer; width:100%; margin-top:15px; font-family:'Cairo'; font-weight: 700; text-decoration:underline;">رجوع لتعديل الأسئلة ↩️</button>
+        
+        <button onclick="location.reload()" style="background:none; border:none; color:#94a3b8; cursor:pointer; width:100%; margin-top:15px; font-family:'Cairo'; text-decoration:underline;">تعديل الأسئلة</button>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <script>
     let questions = [];
@@ -230,8 +215,7 @@
         const raw = document.getElementById('inputText').value;
         if(!raw.trim()) return;
         const regex = /\d+[\)\-\.]\s+/;
-        const parts = raw.split(regex);
-        const blocks = parts.filter(p => p.trim().length > 2);
+        const blocks = raw.split(regex).filter(p => p.trim().length > 2);
         
         questions = blocks.map(block => {
             const lines = block.split('\n').map(l => l.trim()).filter(l => l !== "");
@@ -248,54 +232,81 @@
         }
     }
 
-    function autoShrinkText() {
-        const qBody = document.getElementById('qBody');
-        const wrapper = document.querySelector('.content-wrapper');
-        let fontSize = 24;
-        qBody.style.fontSize = fontSize + 'px';
-
-        while (wrapper.scrollHeight > wrapper.offsetHeight && fontSize > 14) {
-            fontSize -= 1;
-            qBody.style.fontSize = fontSize + 'px';
-        }
-    }
-
     function render() {
         const item = questions[current];
-        document.getElementById('qNumber').innerText = `السؤال رقم ( ${current + 1} )`;
+        document.getElementById('qNumber').innerText = `سؤال رقم ( ${current + 1} )`;
         document.getElementById('qBody').innerText = item.q;
-        
         const container = document.getElementById('optsBody');
         container.innerHTML = '';
         const labels = ['أ', 'ب', 'ج', 'د'];
         item.opts.slice(0, 4).forEach((text, i) => {
-            const div = document.createElement('div');
-            div.className = 'option-item';
-            div.innerHTML = `<div class="option-label">${labels[i]}</div> <div>${text}</div>`;
-            container.appendChild(div);
+            container.innerHTML += `<div class="option-item"><div class="option-label">${labels[i]}</div><div>${text}</div></div>`;
         });
+        setTimeout(autoShrink, 10);
+    }
 
-        setTimeout(autoShrinkText, 10);
+    function autoShrink() {
+        const qBody = document.getElementById('qBody');
+        const wrapper = document.querySelector('.content-wrapper');
+        let size = 24;
+        qBody.style.fontSize = size + 'px';
+        while (wrapper.scrollHeight > wrapper.offsetHeight && size > 14) {
+            size--;
+            qBody.style.fontSize = size + 'px';
+        }
     }
 
     function next() { if(current < questions.length - 1) { current++; render(); } }
     function prev() { if(current > 0) { current--; render(); } }
 
+    // حفظ صورة واحدة
     async function snap() {
         const area = document.getElementById('captureArea');
-        // إخفاء التأثيرات التي قد تسبب مشاكل في الرندر قبل التصوير
-        const canvas = await html2canvas(area, { 
-            scale: 2, 
-            backgroundColor: '#0f172a',
-            logging: false,
-            useCORS: true
-        });
+        const canvas = await html2canvas(area, { scale: 2, backgroundColor: '#0f172a' });
         const link = document.createElement('a');
-        link.download = `SEC1_Q${current+1}.png`;
+        link.download = `Ehab_Q${current+1}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
     }
-</script>
 
+    // حفظ الكل في ملف ZIP
+    async function snapAll() {
+        const zip = new JSZip();
+        const loader = document.getElementById('loader');
+        const progressText = document.getElementById('progressText');
+        const originalIndex = current;
+        
+        loader.style.display = 'flex';
+        
+        for(let i = 0; i < questions.length; i++) {
+            current = i;
+            render();
+            // ننتظر قليلاً للتأكد من رندر الخطوط
+            await new Promise(r => setTimeout(r, 100));
+            
+            const area = document.getElementById('captureArea');
+            const canvas = await html2canvas(area, { scale: 2, backgroundColor: '#0f172a' });
+            const imgData = canvas.toDataURL("image/png").replace(/^data:image\/(png|jpg);base64,/, "");
+            
+            // إضافة الصورة للملف المضغوط بالترتيب
+            zip.file(`Question_${i+1}.png`, imgData, {base64: true});
+            
+            // تحديث النسبة المئوية
+            progressText.innerText = Math.round(((i + 1) / questions.length) * 100) + "%";
+        }
+        
+        // توليد الملف وتحميله
+        const content = await zip.generateAsync({type:"blob"});
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(content);
+        link.download = "Ehab_Ashraf_Questions.zip";
+        link.click();
+        
+        // العودة للسؤال الأصلي وإخفاء اللودر
+        current = originalIndex;
+        render();
+        loader.style.display = 'none';
+    }
+</script>
 </body>
 </html>
