@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة أ. إيهاب أشرف | أولى ثانوي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --edu-blue: #00d2ff;
+            --edu-dark-blue: #3a7bd5;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f8fafc;
+        }
+
+        body {
+            margin: 0;
+            background: #0b0f19;
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+
+        .container { width: 100%; max-width: 450px; }
+
+        .input-card {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .title-header {
+            color: var(--edu-blue);
+            text-align: center;
+            margin-top: 0;
+            font-weight: 900;
+            font-size: 22px;
+        }
+
+        textarea {
+            width: 100%; height: 140px;
+            background: #0f172a; color: #fff;
+            border: 1px solid #475569; border-radius: 10px;
+            padding: 12px; font-family: 'Cairo';
+            margin-bottom: 15px; resize: none; box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--edu-blue);
+        }
+
+        /* حاوية الصورة الثابتة */
+        #captureArea {
+            width: 100%;
+            height: 520px; /* طول مناسب جداً لحالات الواتساب والفيسبوك */
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 25px;
+            border-radius: 20px;
+            position: relative;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #334155;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            overflow: hidden;
+        }
+
+        /* تأثيرات زخرفية في الخلفية */
+        #captureArea::before {
+            content: '';
+            position: absolute;
+            top: -50px; left: -50px;
+            width: 150px; height: 150px;
+            background: var(--edu-blue);
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: 0;
+        }
+
+        .q-number {
+            background: linear-gradient(90deg, var(--edu-dark-blue), var(--edu-blue));
+            color: #fff;
+            padding: 6px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 900;
+            width: fit-content;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
+        }
+
+        /* حاوية السؤال والخيارات */
+        .content-wrapper {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .question-text {
+            color: var(--text-light);
+            font-weight: 800;
+            line-height: 1.5;
+            border-right: 4px solid var(--edu-blue);
+            padding-right: 15px;
+            margin-bottom: 20px;
+            font-size: 24px; 
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .options-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .option-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 17px;
+            font-weight: 600;
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-label {
+            background: rgba(0, 210, 255, 0.15);
+            color: var(--edu-blue);
+            border: 1px solid var(--edu-blue);
+            width: 28px; height: 28px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 8px; margin-left: 12px;
+            font-weight: 900; flex-shrink: 0; font-size: 14px;
+        }
+
+        .watermark {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px dashed #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .footer-text {
+            color: #94a3b8;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .footer-text span {
+            color: var(--edu-blue);
+        }
+
+        .controls { display: flex; gap: 10px; width: 100%; margin-top: 20px; }
+        
+        .btn {
+            padding: 14px; border-radius: 12px; border: none;
+            font-family: 'Cairo'; font-weight: 800; cursor: pointer;
+            transition: all 0.2s; font-size: 15px;
+        }
+        
+        .btn:active { transform: scale(0.97); }
+        
+        .btn-main { background: linear-gradient(90deg, var(--edu-dark-blue), var(--edu-blue)); color: #fff; width: 100%; font-size: 18px;}
+        .btn-nav { background: #334155; color: #fff; flex: 1; }
+        .btn-snap { background: #10b981; color: #fff; flex: 2; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);}
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="setup" class="input-card">
+        <h3 class="title-header">مُولد أسئلة الصف الأول الثانوي 🎓</h3>
+        <textarea id="inputText" placeholder="1) اكتب السؤال هنا...&#10;أ) الاختيار الأول&#10;ب) الاختيار الثاني&#10;ج) الاختيار الثالث&#10;د) الاختيار الرابع"></textarea>
+        <button onclick="processData()" class="btn btn-main">تجهيز الأسئلة 🚀</button>
+    </div>
+
+    <div id="display" class="hidden">
+        <div id="captureArea">
+            <div id="qNumber" class="q-number"></div>
+            
+            <div class="content-wrapper">
+                <div id="qBody" class="question-text"></div>
+                <div id="optsBody" class="options-list"></div>
+            </div>
+            
+            <div class="watermark">
+                <span class="footer-text">📚 الصف <span>الأول الثانوي</span></span>
+                <span class="footer-text">أ. إيهاب أشرف 🌟</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="prev()" class="btn btn-nav">السابق</button>
+            <button onclick="snap()" class="btn btn-snap">📸 حفظ كصورة</button>
+            <button onclick="next()" class="btn btn-nav">التالي</button>
+        </div>
+        <button onclick="location.reload()" style="background:none; border:none; color:#94a3b8; cursor:pointer; width:100%; margin-top:15px; font-family:'Cairo'; font-weight: 700; text-decoration:underline;">رجوع لتعديل الأسئلة ↩️</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<script>
+    let questions = [];
+    let current = 0;
+
+    function processData() {
+        const raw = document.getElementById('inputText').value;
+        if(!raw.trim()) return;
+        const regex = /\d+[\)\-\.]\s+/;
+        const parts = raw.split(regex);
+        const blocks = parts.filter(p => p.trim().length > 2);
+        
+        questions = blocks.map(block => {
+            const lines = block.split('\n').map(l => l.trim()).filter(l => l !== "");
+            const q = lines[0];
+            const opts = lines.filter(l => /^[A-Dأ-د][\)\-\.]/i.test(l))
+                              .map(l => l.replace(/^[A-Dأ-د][\)\-\.]\s*/i, '').trim());
+            return { q, opts };
+        }).filter(item => item.opts.length > 0);
+
+        if(questions.length > 0) {
+            document.getElementById('setup').classList.add('hidden');
+            document.getElementById('display').classList.remove('hidden');
+            render();
+        }
+    }
+
+    function autoShrinkText() {
+        const qBody = document.getElementById('qBody');
+        const wrapper = document.querySelector('.content-wrapper');
+        let fontSize = 24;
+        qBody.style.fontSize = fontSize + 'px';
+
+        while (wrapper.scrollHeight > wrapper.offsetHeight && fontSize > 14) {
+            fontSize -= 1;
+            qBody.style.fontSize = fontSize + 'px';
+        }
+    }
+
+    function render() {
+        const item = questions[current];
+        document.getElementById('qNumber').innerText = `السؤال رقم ( ${current + 1} )`;
+        document.getElementById('qBody').innerText = item.q;
+        
+        const container = document.getElementById('optsBody');
+        container.innerHTML = '';
+        const labels = ['أ', 'ب', 'ج', 'د'];
+        item.opts.slice(0, 4).forEach((text, i) => {
+            const div = document.createElement('div');
+            div.className = 'option-item';
+            div.innerHTML = `<div class="option-label">${labels[i]}</div> <div>${text}</div>`;
+            container.appendChild(div);
+        });
+
+        setTimeout(autoShrinkText, 10);
+    }
+
+    function next() { if(current < questions.length - 1) { current++; render(); } }
+    function prev() { if(current > 0) { current--; render(); } }
+
+    async function snap() {
+        const area = document.getElementById('captureArea');
+        // إخفاء التأثيرات التي قد تسبب مشاكل في الرندر قبل التصوير
+        const canvas = await html2canvas(area, { 
+            scale: 2, 
+            backgroundColor: '#0f172a',
+            logging: false,
+            useCORS: true
+        });
+        const link = document.createElement('a');
+        link.download = `SEC1_Q${current+1}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    }
+</script>
+
+</body>
+</html>
