@@ -3,130 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>امتحانات الصف الرابع الابتدائي</title>
+    <title>منصة الامتحانات | الصف الرابع</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; }
-        
-        /* تأثيرات البطاقات */
-        .unit-card { transition: all 0.3s ease; }
-        .unit-card:hover:not(.locked) { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --accent: #22c55e;
+        }
 
-        /* نظام القفل الاحترافي */
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        /* تحسين الهيدر بتأثير زجاجي */
+        .glass-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* بطاقة الوحدة العصرية */
+        .unit-section {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* زر الامتحان الشامل المتدرج */
+        .btn-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+        .btn-gradient:hover {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        /* ستايل الدروس الفرعية */
+        .lesson-row {
+            transition: all 0.2s ease;
+            border-right: 3px solid transparent;
+        }
+        .lesson-row:hover:not(.locked) {
+            background: #f1f5f9;
+            border-right-color: var(--primary);
+            padding-right: 1.5rem;
+        }
+
+        /* نظام القفل المتقدم */
         .locked {
-            position: relative;
+            filter: grayscale(1);
+            opacity: 0.6;
             cursor: not-allowed !important;
-            filter: grayscale(0.8);
-            opacity: 0.7;
-            pointer-events: none; /* يمنع الضغط نهائياً */
-            user-select: none;
+            position: relative;
         }
-
-        .locked::before {
-            content: "\f023"; /* رمز القفل من FontAwesome */
-            font-family: "Font Awesome 6 Free";
-            font-weight: 900;
+        .locked-overlay {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(239, 68, 68, 0.9);
-            color: white;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-size: 14px;
-            z-index: 10;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.2);
+            z-index: 20;
+            cursor: not-allowed;
+        }
+        .lock-badge {
+            background: #fee2e2;
+            color: #ef4444;
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-weight: 700;
         }
 
-        /* تنسيق الدروس الفرعية المقفولة */
-        .lesson-item.locked {
-            background-color: #f1f5f9 !important;
-            border-color: #e2e8f0 !important;
+        /* أنيميشن بسيط عند التحميل */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        .animate-in { animation: fadeIn 0.6s ease forwards; }
     </style>
 </head>
-<body class="pb-20">
+<body class="p-4 md:p-8 text-slate-800">
 
-    <header class="bg-gradient-to-r from-blue-700 to-indigo-800 text-white py-12 shadow-lg mb-10">
-        <div class="container mx-auto text-center px-4">
-            <h1 class="text-3xl md:text-4xl font-bold">منصة امتحانات الصف الرابع</h1>
-            <p class="mt-3 text-blue-100">دروسك، امتحاناتك، وتفوقك في مكان واحد</p>
-            <a href="index.html" class="inline-flex items-center mt-6 bg-white/10 hover:bg-white/20 px-5 py-2 rounded-full transition text-sm border border-white/30">
-                <i class="fas fa-arrow-right ml-2"></i> العودة للرئيسية
-            </a>
+    <header class="glass-header sticky top-4 z-50 rounded-2xl p-4 mb-10 max-w-5xl mx-auto flex justify-between items-center shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1 class="font-extrabold text-xl tracking-tight">الصف الرابع الابتدائي</h1>
         </div>
+        <a href="index.html" class="text-slate-500 hover:text-indigo-600 font-bold transition flex items-center gap-2 text-sm">
+            <span>الرئيسية</span>
+            <i class="fas fa-home"></i>
+        </a>
     </header>
 
-    <div class="container mx-auto px-4 max-w-5xl">
-        
-        <section class="mb-16">
-            <div class="flex items-center mb-6 border-r-4 border-blue-600 pr-4">
-                <h2 class="text-2xl font-bold text-gray-800">الوحدة الأولى: الأنظمة الحية</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="unit-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm md:col-span-1 flex flex-col justify-between">
-                    <div>
-                        <span class="text-blue-600 text-xs font-bold uppercase tracking-wider">اختبار تراكمي</span>
-                        <h3 class="text-xl font-bold text-gray-800 mt-1">الامتحان الشامل</h3>
-                        <p class="text-gray-500 text-sm mt-2">يغطي جميع دروس الوحدة الأولى لتقييم مستواك النهائي.</p>
-                    </div>
-                    <a href="exam-u1-full.html" class="mt-6 block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">ابدأ الاختبار</a>
-                </div>
+    <main class="max-w-5xl mx-auto space-y-12">
 
-                <div class="md:col-span-2 space-y-3">
-                    <a href="exam-u1-d1.html" class="lesson-item flex justify-between items-center p-4 bg-white hover:bg-blue-50 border border-gray-100 rounded-xl transition group">
-                        <span class="font-medium text-gray-700 group-hover:text-blue-700"><i class="far fa-file-alt ml-3 text-blue-500"></i> الدرس الأول: التكيف والبقاء</span>
-                        <i class="fas fa-chevron-left text-gray-300 group-hover:text-blue-500 transition"></i>
-                    </a>
-                    <a href="#" class="lesson-item flex justify-between items-center p-4 bg-white hover:bg-blue-50 border border-gray-100 rounded-xl transition group">
-                        <span class="font-medium text-gray-700 group-hover:text-blue-700"><i class="far fa-file-alt ml-3 text-blue-500"></i> الدرس الثاني: أنواع التكيف</span>
-                        <i class="fas fa-chevron-left text-gray-300 group-hover:text-blue-500 transition"></i>
-                    </a>
-                    <a href="#" class="lesson-item locked flex justify-between items-center p-4 bg-white border border-gray-100 rounded-xl transition group">
-                        <span class="font-medium text-gray-400"><i class="fas fa-lock ml-3 text-gray-300"></i> الدرس الثالث: الجهاز الهضمي</span>
-                        <span class="text-xs text-red-400 font-bold">مغلق</span>
-                    </a>
+        <section class="unit-section animate-in">
+            <div class="bg-gradient-to-l from-indigo-50 to-transparent p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="text-indigo-600 font-bold text-sm tracking-widest uppercase">المرحلة الأولى</span>
+                    <h2 class="text-2xl font-extrabold text-slate-800">الوحدة الأولى: الأنظمة الحية</h2>
                 </div>
+                <a href="exam-u1-full.html" class="btn-gradient text-white px-8 py-3 rounded-2xl font-bold text-center">
+                    الامتحان الشامل للوحدة
+                </a>
             </div>
-        </section>
 
-        <section class="mb-16">
-            <div class="flex items-center mb-6 border-r-4 border-gray-400 pr-4">
-                <h2 class="text-2xl font-bold text-gray-400">الوحدة الثانية: المادة والطاقة</h2>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="unit-card locked bg-white rounded-2xl p-6 border border-gray-200 shadow-sm md:col-span-1">
-                    <h3 class="text-xl font-bold text-gray-400">الامتحان الشامل</h3>
-                    <p class="text-gray-400 text-sm mt-2">سيتم فتح هذا الاختبار بعد الانتهاء من شرح الوحدة الثانية.</p>
-                    <button class="mt-6 w-full bg-gray-200 text-gray-400 font-bold py-3 rounded-xl cursor-not-allowed">غير متاح</button>
-                </div>
+            <div class="p-2">
+                <div class="grid grid-cols-1 gap-1">
+                    <a href="#" class="lesson-row flex items-center justify-between p-5 rounded-xl group">
+                        <div class="flex items-center gap-4">
+                            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">01</span>
+                            <span class="font-semibold text-slate-700">التكيف والبقاء في البيئة الصحراوية</span>
+                        </div>
+                        <i class="fas fa-play-circle text-indigo-400 group-hover:text-indigo-600 text-xl transition"></i>
+                    </a>
 
-                <div class="md:col-span-2 space-y-3">
-                    <div class="lesson-item locked flex justify-between items-center p-4 bg-gray-50 border border-gray-200 rounded-xl">
-                        <span class="font-medium text-gray-400">الدرس الأول: الحركة والتوقف</span>
-                        <i class="fas fa-lock text-gray-300"></i>
-                    </div>
-                    <div class="lesson-item locked flex justify-between items-center p-4 bg-gray-50 border border-gray-200 rounded-xl">
-                        <span class="font-medium text-gray-400">الدرس الثاني: الطاقة والشغل</span>
-                        <i class="fas fa-lock text-gray-300"></i>
+                    <a href="#" class="lesson-row flex items-center justify-between p-5 rounded-xl group">
+                        <div class="flex items-center gap-4">
+                            <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors">02</span>
+                            <span class="font-semibold text-slate-700">أنواع التكيف (التركيبي والسلوكي)</span>
+                        </div>
+                        <i class="fas fa-play-circle text-indigo-400 group-hover:text-indigo-600 text-xl transition"></i>
+                    </a>
+
+                    <div class="lesson-row locked flex items-center justify-between p-5 rounded-xl">
+                        <div class="flex items-center gap-4">
+                            <span class="w-8 h-8 rounded-lg bg-slate-200 text-slate-400 flex items-center justify-center font-bold text-sm">03</span>
+                            <span class="font-semibold text-slate-400">الجهاز الهضمي في الإنسان والحيوان</span>
+                        </div>
+                        <span class="lock-badge"><i class="fas fa-lock ml-1"></i> متاح قريباً</span>
                     </div>
                 </div>
             </div>
         </section>
 
-    </div>
+        <section class="unit-section animate-in" style="animation-delay: 0.2s;">
+            <div class="bg-gradient-to-l from-slate-50 to-transparent p-6 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="text-slate-400 font-bold text-sm tracking-widest uppercase">المرحلة الثانية</span>
+                    <h2 class="text-2xl font-extrabold text-slate-400">الوحدة الثانية: الحركة والطاقة</h2>
+                </div>
+                <button class="bg-slate-200 text-slate-400 px-8 py-3 rounded-2xl font-bold cursor-not-allowed">
+                    مغلق حالياً
+                </button>
+            </div>
+            <div class="p-8 text-center bg-slate-50/50">
+                <i class="fas fa-clock-rotate-left text-4xl text-slate-300 mb-4"></i>
+                <p class="text-slate-500 font-semibold">انتظرونا! سيتم تفعيل دروس الوحدة الثانية الأسبوع القادم.</p>
+            </div>
+        </section>
 
-    <footer class="text-center py-8 border-t bg-white shadow-inner">
-        <p class="text-gray-500 font-medium">منصة امتحاناتي الذكية &copy; 2026</p>
-        <p class="text-gray-400 text-xs mt-1">جميع الحقوق محفوظة للمحتوى التعليمي</p>
+    </main>
+
+    <footer class="mt-20 text-center pb-10">
+        <div class="inline-block p-[2px] rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 mb-4">
+            <div class="bg-white px-6 py-2 rounded-full">
+                <p class="text-sm font-bold text-slate-600">منصة التعليم الذكي v2.0</p>
+            </div>
+        </div>
     </footer>
 
 </body>
