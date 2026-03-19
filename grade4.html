@@ -15,7 +15,6 @@
             scroll-behavior: smooth;
         }
 
-        /* هيدر زجاجي */
         .main-header {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(15px);
@@ -25,7 +24,7 @@
             z-index: 1000;
         }
 
-        /* أزرار الدروس المفتوحة (أخضر متدرج) */
+        /* زر الدرس المفتوح */
         .lesson-btn-active {
             background: linear-gradient(145deg, #10b981, #059669);
             box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
@@ -36,7 +35,7 @@
             box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.4);
         }
 
-        /* نظام القفل المطور */
+        /* نظام القفل */
         .is-locked {
             position: relative;
             filter: grayscale(1) blur(1.5px);
@@ -61,19 +60,12 @@
             border-radius: 50px;
             font-size: 0.8rem;
             font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        /* زر العودة */
         .back-btn {
             transition: all 0.3s ease;
             background: #ffffff;
             border: 1px solid #e2e8f0;
-        }
-        .back-btn:hover {
-            transform: translateX(5px);
-            border-color: #4f46e5;
-            color: #4f46e5;
         }
     </style>
 </head>
@@ -108,7 +100,15 @@
                 <a href="lesson1-exam.html" class="lesson-btn-active p-6 rounded-3xl text-white flex justify-between items-center group">
                     <div class="flex items-center gap-4">
                         <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold">1</div>
-                        <span class="font-bold text-lg">الدرس الأول: توزيع سكان بلدنا وخصائصهم</span>
+                        <span class="font-bold text-lg text-white">الدرس الأول: توزيع سكان بلدنا وخصائصهم</span>
+                    </div>
+                    <i class="fas fa-check-circle text-2xl"></i>
+                </a>
+
+                <a href="lesson2-exam.html" class="lesson-btn-active p-6 rounded-3xl text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold">2</div>
+                        <span class="font-bold text-lg text-white">الدرس الثاني: التراث الثقافي لبلدنا</span>
                     </div>
                     <i class="fas fa-play-circle text-2xl"></i>
                 </a>
@@ -116,16 +116,8 @@
                 <div class="is-locked relative p-6 rounded-3xl bg-slate-200 text-slate-500 flex justify-between items-center border border-slate-300">
                     <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
                     <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-slate-300 rounded-xl flex items-center justify-center font-bold">2</div>
-                        <span class="font-bold text-lg">الدرس الثاني: المهن في بلدنا</span>
-                    </div>
-                </div>
-
-                <div class="is-locked relative p-6 rounded-3xl bg-slate-200 text-slate-500 flex justify-between items-center border border-slate-300">
-                    <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
-                    <div class="flex items-center gap-4">
                         <div class="w-10 h-10 bg-slate-300 rounded-xl flex items-center justify-center font-bold">3</div>
-                        <span class="font-bold text-lg">الدرس الثالث: المشاركة في صنع القرار</span>
+                        <span class="font-bold text-lg">الدرس الثالث: نماذج من المشكلات الاجتماعية</span>
                     </div>
                 </div>
 
@@ -135,15 +127,6 @@
                     <h3 class="font-800 text-xl">امتحان الوحدة الأولى الشامل</h3>
                 </div>
             </div>
-        </section>
-
-        <section class="is-locked">
-            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
-                <h2 class="text-2xl font-800 text-slate-400">الوحدة الثانية: تراث بلدنا وهويتي</h2>
-            </div>
-            <div class="p-6 rounded-3xl bg-slate-200 text-slate-400 font-bold">دروس الوحدة الثانية...</div>
         </section>
 
     </main>
