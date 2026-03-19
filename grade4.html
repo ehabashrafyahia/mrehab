@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة التميز | الصف الرابع</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -15,6 +15,7 @@
             scroll-behavior: smooth;
         }
 
+        /* هيدر زجاجي */
         .main-header {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(15px);
@@ -24,11 +25,11 @@
             z-index: 1000;
         }
 
-        /* زر الدرس المفتوح */
+        /* أزرار الدروس المفتوحة */
         .lesson-btn-active {
             background: linear-gradient(145deg, #10b981, #059669);
             box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .lesson-btn-active:hover {
             transform: translateY(-4px);
@@ -78,8 +79,8 @@
                 <span>الرئيسية</span>
             </a>
             <div class="text-center">
-                <h2 class="text-xl md:text-2xl font-800 text-slate-800">دراسات رابعة ابتدائي</h2>
-                <p class="text-[10px] md:text-xs text-indigo-600 font-bold">الفصل الدراسي الثاني</p>
+                <h2 class="text-xl md:text-2xl font-900 text-slate-800">دراسات رابعة ابتدائي</h2>
+                <p class="text-[10px] md:text-xs text-indigo-600 font-extrabold">الفصل الدراسي الثاني</p>
             </div>
             <div class="w-10 h-10 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600 shadow-inner">
                 <i class="fas fa-graduation-cap"></i>
@@ -92,40 +93,64 @@
         <section>
             <div class="flex items-center gap-4 mb-8">
                 <div class="w-2 h-8 bg-emerald-500 rounded-full"></div>
-                <h2 class="text-2xl font-800 text-slate-800">الوحدة الأولى: سكان بلدنا</h2>
+                <h2 class="text-2xl font-900 text-slate-800">الوحدة الأولى: سكان بلدنا</h2>
             </div>
 
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-5">
                 
-                <a href="lesson1-exam.html" class="lesson-btn-active p-6 rounded-3xl text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold">1</div>
-                        <span class="font-bold text-lg text-white">الدرس الأول: توزيع سكان بلدنا وخصائصهم</span>
+                <a href="lesson1-exam.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">
+                            1
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
+                            <span class="font-900 text-lg leading-tight text-white">نمو السكان وتوزيعهم في بلدنا</span>
+                        </div>
                     </div>
-                    <i class="fas fa-check-circle text-2xl"></i>
+                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
                 </a>
 
-                <a href="lesson2-exam.html" class="lesson-btn-active p-6 rounded-3xl text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold">2</div>
-                        <span class="font-bold text-lg text-white">الدرس الثاني: المهن في بلدنا</span>
+                <a href="lesson2-exam.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">
+                            2
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الثاني</span>
+                            <span class="font-900 text-lg leading-tight text-white">المهن في بلدنا</span>
+                        </div>
                     </div>
-                    <i class="fas fa-play-circle text-2xl"></i>
+                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
                 </a>
 
-                <div class="is-locked relative p-6 rounded-3xl bg-slate-200 text-slate-500 flex justify-between items-center border border-slate-300">
+                <div class="is-locked relative min-h-[100px] p-6 rounded-[2rem] bg-slate-200 text-slate-500 flex justify-between items-center border border-slate-300">
                     <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-slate-300 rounded-xl flex items-center justify-center font-bold">3</div>
-                        <span class="font-bold text-lg">الدرس الثالث: نماذج من المشكلات الاجتماعية</span>
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-slate-300 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">
+                            3
+                        </div>
+                        <span class="font-900 text-lg leading-tight">نماذج من المشكلات الاجتماعية</span>
                     </div>
+                    <i class="fas fa-lock text-2xl opacity-20 flex-none mr-2"></i>
                 </div>
 
-                <div class="is-locked relative p-6 rounded-3xl bg-indigo-100 text-indigo-400 flex flex-col items-center justify-center border-2 border-dashed border-indigo-200">
+                <div class="is-locked relative min-h-[110px] p-6 rounded-[2rem] bg-indigo-50 text-indigo-400 flex flex-col items-center justify-center border-2 border-dashed border-indigo-200 mt-4">
                     <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>أكمل الدروس أولاً</div></div>
-                    <i class="fas fa-star text-2xl mb-1"></i>
-                    <h3 class="font-800 text-xl">امتحان الوحدة الأولى الشامل</h3>
+                    <i class="fas fa-star text-2xl mb-1 opacity-50"></i>
+                    <h3 class="font-900 text-xl">امتحان الوحدة الأولى الشامل</h3>
                 </div>
+            </div>
+        </section>
+
+        <section class="is-locked">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-400">الوحدة الثانية: تراث بلدنا</h2>
+            </div>
+            <div class="p-10 rounded-[2.5rem] bg-slate-200 border-2 border-dashed border-slate-300 text-center text-slate-400 font-bold">
+                محتوى الوحدة الثانية قيد التجهيز
             </div>
         </section>
 
