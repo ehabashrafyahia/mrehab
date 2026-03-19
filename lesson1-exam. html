@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الدرس الأول | منصة التميز</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: #f0f2f5; 
+            min-height: 100vh; 
+        }
+
+        /* التصميم المظلل للحاوية */
+        .quiz-card {
+            background: #f0f2f5;
+            box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+            border-radius: 30px;
+        }
+
+        /* أزرار الخيارات المظللة */
+        .option-btn {
+            background: #f0f2f5;
+            box-shadow: 6px 6px 12px #d1d9e6, -6px -6px 12px #ffffff;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-2px);
+            border-color: #10b981;
+        }
+
+        .option-btn.selected {
+            box-shadow: inset 4px 4px 8px #d1d9e6, inset -4px -4px 8px #ffffff;
+            background: #10b981;
+            color: white;
+            border-color: #059669;
+        }
+
+        /* شريط التقدم */
+        .progress-bar-fill {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(to left, #10b981, #3b82f6);
+        }
+
+        #result-screen { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div id="quiz-container" class="max-w-2xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <button onclick="window.history.back()" class="w-10 h-10 flex items-center justify-center bg-white rounded-xl shadow-sm hover:text-red-500 transition">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm font-800 text-emerald-600">
+                سؤال <span id="current-q-num">1</span> من 20
+            </div>
+        </div>
+
+        <div class="w-full h-3 bg-slate-200 rounded-full mb-10 overflow-hidden shadow-inner">
+            <div id="progress-fill" class="progress-bar-fill h-full" style="width: 5%;"></div>
+        </div>
+
+        <div class="quiz-card p-6 md:p-10 mb-8">
+            <h2 id="question-text" class="text-xl md:text-2xl font-800 text-slate-800 leading-relaxed mb-10 text-center">
+                جاري تحميل السؤال...
+            </h2>
+
+            <div id="options-list" class="grid grid-cols-1 gap-4">
+                </div>
+        </div>
+
+        <button id="next-btn" onclick="handleNext()" class="w-full py-5 rounded-2xl font-800 text-white bg-emerald-600 shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition transform active:scale-95">
+            تأكيد الإجابة والانتقال للتالي
+        </button>
+    </div>
+
+    <div id="result-screen" class="max-w-xl mx-auto text-center pt-10">
+        <div class="quiz-card p-12">
+            <div class="w-24 h-24 bg-yellow-100 text-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6 text-5xl shadow-inner">
+                <i class="fas fa-crown"></i>
+            </div>
+            <h1 class="text-3xl font-800 text-slate-800 mb-2">ممتاز يا بطل!</h1>
+            <p class="text-slate-500 mb-8 font-bold text-lg">لقد أتممت اختبار "صنع القرار"</p>
+            
+            <div class="bg-white inline-block px-10 py-6 rounded-3 shadow-inner mb-10">
+                <span class="block text-slate-400 text-sm font-bold mb-1">درجتك هي</span>
+                <span id="final-score" class="text-6xl font-900 text-emerald-600">0 / 20</span>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button onclick="location.reload()" class="py-4 bg-emerald-600 text-white rounded-2xl font-bold shadow-lg hover:bg-emerald-700 transition">إعادة المحاولة</button>
+                <button onclick="window.history.back()" class="py-4 bg-white text-slate-600 rounded-2xl font-bold shadow-sm hover:bg-slate-50 transition">الخروج للرئيسية</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            { q: "المقصود بصنع القرار هو:", a: ["تنفيذ القوانين فقط", "تحديد بدائل متعددة واختيار الأفضل", "إصدار الأوامر العسكرية", "فرض الرأي بالقوة"], c: 1 },
+            { q: "المقصود بالمشاركة في صنع القرار هو:", a: ["ترك القرار للحكومة", "إشراك المواطنين في اتخاذ القرارات", "تنفيذ القرارات دون مناقشة", "إلغاء رأي المجتمع"], c: 1 },
+            { q: "القرار الذي يتخذه فرد بمفرده يسمى:", a: ["قرار جماعي", "قرار فردي", "قرار حكومي", "قرار اقتصادي"], c: 1 },
+            { q: "القرار الذي يشارك في صنعه مجموعة من الأشخاص يسمى:", a: ["قرار فردي", "قرار جماعي", "قرار عشوائي", "قرار شخصي"], c: 1 },
+            { q: "من أمثلة المشاركة في صنع القرار في التاريخ المصري:", a: ["حرب أكتوبر 1973م", "ثورة 1919م", "بناء الأهرامات", "اكتشاف قناة السويس"], c: 0 },
+            { q: "شارك في اتخاذ قرار حرب أكتوبر 1973م:", a: ["الشعب فقط", "الجيش فقط", "قادة الجيش مع رئيس الجمهورية", "التجار فقط"], c: 2 },
+            { q: "أول خطوة من خطوات صنع القرار السليم هي:", a: ["جمع المعلومات", "تنفيذ القرار", "تحديد المشكلة أو الهدف", "اختيار البديل الأفضل"], c: 2 },
+            { q: "الخطوة التي يتم فيها معرفة الحقائق والبيانات هي:", a: ["جمع المعلومات", "تنفيذ القرار", "تحديد المشكلة", "اختيار البديل"], c: 0 },
+            { q: "وضع بدائل لحل المشكلة يحدث في خطوة:", a: ["تحديد المشكلة", "جمع المعلومات", "وضع بدائل للحل", "تنفيذ القرار"], c: 2 },
+            { q: "التفكير في إيجابيات وسلبيات كل بديل يساعد على:", a: ["تجاهل المشكلة", "اختيار القرار الأفضل", "إلغاء البدائل", "تأجيل القرار"], c: 1 },
+            { q: "اختيار البديل الأنسب بعد دراسة البدائل يسمى:", a: ["تنفيذ القرار", "اختيار أفضل البدائل", "جمع المعلومات", "تحديد المشكلة"], c: 1 },
+            { q: "تنفيذ القرار يعني:", a: ["التفكير في المشكلة", "تطبيق البديل المناسب على أرض الواقع", "جمع معلومات جديدة", "إلغاء القرار"], c: 1 },
+            { q: "إذا لم ينجح البديل الذي تم تنفيذه فإننا:", a: ["نتوقف عن التفكير", "نعود لاختيار بديل آخر", "نلغي المشكلة", "نتجاهل القرار"], c: 1 },
+            { q: "من أمثلة صنع القرار داخل الأسرة:", a: ["اختيار قائد الفصل", "تحديد مكان قضاء الإجازة", "انتخاب رئيس المدينة", "إنشاء مستشفى"], c: 1 },
+            { q: "من أمثلة صنع القرار داخل المدرسة:", a: ["اختيار مكان السفر", "اختيار قائد الفصل", "شراء أثاث المنزل", "بناء طريق جديد"], c: 1 },
+            { q: "من أمثلة صنع القرار داخل المجتمع:", a: ["اختيار قائد الفصل", "تحديد الإجازة المدرسية", "اختيار رئيس مجلس المدينة", "شراء ملابس جديدة"], c: 2 },
+            { q: "المشاركة في صنع القرار داخل الأسرة تساعدنا على تعلم:", a: ["الأنانية", "التعاون وتحمل المسؤولية", "الكسل", "تجاهل الآخرين"], c: 1 },
+            { q: "من أهمية صنع القرار أنه يساعد على:", a: ["زيادة المشكلات", "عيش حياة أفضل", "تقليل التعاون", "إلغاء الآراء المختلفة"], c: 1 },
+            { q: "احترام آراء الآخرين أثناء اتخاذ القرار يؤدي إلى:", a: ["الخلاف الدائم", "تعزيز روح الفريق والتعاون", "إلغاء المشاركة", "ضعف المجتمع"], c: 1 },
+            { q: "التدريب على مهارات اتخاذ القرار يساعد الإنسان على أن يصبح:", a: ["إنسانًا غير مسؤول", "إنسانًا مسؤولًا", "إنسانًا منعزلًا", "إنسانًا ضعيف الشخصية"], c: 1 }
+        ];
+
+        let currentIdx = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        function loadQuestion() {
+            selectedOption = null;
+            const q = quizData[currentIdx];
+            document.getElementById('question-text').innerText = q.q;
+            document.getElementById('current-q-num').innerText = currentIdx + 1;
+            
+            const list = document.getElementById('options-list');
+            list.innerHTML = '';
+            
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn p-5 rounded-2xl text-right font-bold text-slate-700 flex items-center gap-4';
+                btn.innerHTML = `<span class="w-8 h-8 rounded-lg bg-white shadow-inner flex items-center justify-center text-xs text-slate-400">${String.fromCharCode(65 + i)}</span> <span>${opt}</span>`;
+                btn.onclick = () => {
+                    const all = document.querySelectorAll('.option-btn');
+                    all.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedOption = i;
+                };
+                list.appendChild(btn);
+            });
+
+            const progress = ((currentIdx) / quizData.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+        }
+
+        function handleNext() {
+            if (selectedOption === null) {
+                alert("من فضلك اختر إجابة أولاً!");
+                return;
+            }
+
+            if (selectedOption === quizData[currentIdx].c) {
+                score++;
+            }
+
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                loadQuestion();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function showFinalResult() {
+            document.getElementById('quiz-container').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            document.getElementById('final-score').innerText = `${score} / ${quizData.length}`;
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
