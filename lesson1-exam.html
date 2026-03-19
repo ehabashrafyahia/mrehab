@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار تفاعلي | منصة التميز</title>
+    <title>اختبار الدراسات | منصة التميز</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,7 +13,7 @@
             font-family: 'Cairo', sans-serif; 
             background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
             min-height: 100vh;
-            user-select: none; /* منع النسخ أثناء الامتحان */
+            user-select: none;
         }
 
         .glass-card {
@@ -28,6 +28,8 @@
             background: white;
             border: 2px solid #e2e8f0;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: right;
+            cursor: pointer;
         }
 
         .option-box:hover {
@@ -45,14 +47,10 @@
 
         .opt-prefix {
             background: #f1f5f9;
-            width: 38px;
-            height: 38px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 10px;
-            font-weight: 900;
-            color: #64748b;
+            width: 38px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; font-weight: 900; color: #64748b;
+            flex-shrink: 0;
         }
 
         .option-box.selected .opt-prefix {
@@ -79,8 +77,6 @@
             100% { transform: scale(1); }
         }
         .animate-pop { animation: pop 0.3s ease-out; }
-
-        /* شاشة تأكيد الخروج */
         #exit-modal { display: none; }
     </style>
 </head>
@@ -104,10 +100,8 @@
                 <i class="fas fa-sign-out-alt rotate-180"></i>
                 <span class="font-bold text-sm">خروج</span>
             </button>
-            <div class="flex flex-col items-center">
-                <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-indigo-600">
-                    <span id="q-count">1</span> / 20
-                </div>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-indigo-600">
+                <span id="q-count">1</span> / 15
             </div>
             <div class="p-3 bg-indigo-50 rounded-2xl text-indigo-500">
                 <i class="fas fa-graduation-cap"></i>
@@ -115,7 +109,7 @@
         </div>
 
         <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
-            <div id="progress-bar" class="progress-glow" style="width: 5%;"></div>
+            <div id="progress-bar" class="progress-glow" style="width: 6.6%;"></div>
         </div>
 
         <div class="glass-card p-8 md:p-12 mb-10 relative">
@@ -134,7 +128,7 @@
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
         <div class="glass-card p-12 shadow-2xl">
             <div class="text-7xl mb-6">🏆</div>
-            <h1 class="text-4xl font-900 text-slate-800 mb-4">أداء ممتاز!</h1>
+            <h1 class="text-4xl font-900 text-slate-800 mb-4">أداء رائع!</h1>
             <p class="text-slate-500 font-bold mb-10">درجة التقييم النهائي:</p>
             
             <div class="relative inline-block mb-10">
@@ -146,7 +140,7 @@
             </div>
 
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-4 bg-emerald-500 text-white rounded-2xl font-bold shadow-lg">إعادة</button>
+                <button onclick="location.reload()" class="py-4 bg-emerald-500 text-white rounded-2xl font-bold shadow-lg">إعادة الاختبار</button>
                 <a href="grade4.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
             </div>
         </div>
@@ -154,26 +148,21 @@
 
     <script>
         const questions = [
-            { q: "المقصود بصنع القرار هو:", a: ["تنفيذ القوانين فقط", "تحديد بدائل متعددة واختيار الأفضل لحل مشكلة", "إصدار الأوامر العسكرية", "فرض الرأي بالقوة"], c: 1 },
-            { q: "المقصود بالمشاركة في صنع القرار هو:", a: ["ترك القرار للحكومة فقط", "إشراك المواطنين في اتخاذ القرارات التي تؤثر على حياتهم", "تنفيذ القرارات دون مناقشة", "إلغاء رأي المجتمع"], c: 1 },
-            { q: "القرار الذي يتخذه فرد بمفرده يسمى:", a: ["قرار جماعي", "قرار فردي", "قرار حكومي", "قرار اقتصادي"], c: 1 },
-            { q: "القرار الذي يشارك في صنعه مجموعة من الأشخاص يسمى:", a: ["قرار فردي", "قرار جماعي", "قرار عشوائي", "قرار شخصي"], c: 1 },
-            { q: "من أمثلة المشاركة في صنع القرار في التاريخ المصري:", a: ["حرب أكتوبر 1973م", "ثورة 1919م", "بناء الأهرامات", "اكتشاف قناة السويس"], c: 0 },
-            { q: "شارك في اتخاذ قرار حرب أكتوبر 1973م:", a: ["الشعب فقط", "الجيش فقط", "قادة الجيش مع رئيس الجمهورية", "التجار فقط"], c: 2 },
-            { q: "أول خطوة من خطوات صنع القرار السليم هي:", a: ["جمع المعلومات", "تنفيذ القرار", "تحديد المشكلة أو الهدف", "اختيار البديل الأفضل"], c: 2 },
-            { q: "الخطوة التي يتم فيها معرفة الحقائق والبيانات عن المشكلة هي:", a: ["جمع المعلومات", "تنفيذ القرار", "تحديد المشكلة", "اختيار البديل"], c: 0 },
-            { q: "وضع بدائل لحل المشكلة يحدث في خطوة:", a: ["تحديد المشكلة", "جمع المعلومات", "وضع بدائل للحل", "تنفيذ القرار"], c: 2 },
-            { q: "التفكير في إيجابيات وسلبيات كل بديل يساعد على:", a: ["تجاهل المشكلة", "اختيار القرار الأفضل", "إلغاء البدائل", "تأجيل القرار"], c: 1 },
-            { q: "اختيار البديل الأنسب بعد دراسة البدائل يسمى:", a: ["تنفيذ القرار", "اختيار أفضل البدائل", "جمع المعلومات", "تحديد المشكلة"], c: 1 },
-            { q: "تنفيذ القرار يعني:", a: ["التفكير في المشكلة", "تطبيق البديل المناسب على أرض الواقع", "جمع معلومات جديدة", "إلغاء القرار"], c: 1 },
-            { q: "إذا لم ينجح البديل الذي تم تنفيذه فإننا:", a: ["نتوقف عن التفكير", "نعود لاختيار بديل آخر", "نلغي المشكلة", "نتجاهل القرار"], c: 1 },
-            { q: "من أمثلة صنع القرار داخل الأسرة:", a: ["اختيار قائد الفصل", "تحديد مكان قضاء الإجازة", "انتخاب رئيس المدينة", "إنشاء مستشفى"], c: 1 },
-            { q: "من أمثلة صنع القرار داخل المدرسة:", a: ["اختيار مكان السفر", "اختيار قائد الفصل", "شراء أثاث المنزل", "بناء طريق جديد"], c: 1 },
-            { q: "من أمثلة صنع القرار داخل المجتمع:", a: ["اختيار قائد الفصل", "تحديد الإجازة المدرسية", "اختيار رئيس مجلس المدينة", "شراء ملابس جديدة"], c: 2 },
-            { q: "المشاركة في صنع القرار داخل الأسرة تساعدنا على تعلم:", a: ["الأنانية", "التعاون وتحمل المسؤولية", "الكسل", "تجاهل الآخرين"], c: 1 },
-            { q: "من أهمية صنع القرار أنه يساعد على:", a: ["زيادة المشكلات", "عيش حياة أفضل", "تقليل التعاون", "إلغاء الآراء المختلفة"], c: 1 },
-            { q: "احترام آراء الآخرين أثناء اتخاذ القرار يؤدي إلى:", a: ["الخلاف الدائم", "تعزيز روح الفريق والتعاون", "إلغاء المشاركة", "ضعف المجتمع"], c: 1 },
-            { q: "التدريب على مهارات اتخاذ القرار يساعد الإنسان على أن يصبح:", a: ["إنسانًا غير مسؤول", "إنسانًا مسؤولًا", "إنسانًا منعزلًا", "إنسانًا ضعيف الشخصية"], c: 1 }
+            { q: "أي من المحافظات التالية تُصنف كواحدة من 'أكثر المحافظات ازدحاماً' بالسكان في مصر؟", a: ["الوادي الجديد", "مطروح", "الجيزة", "شمال سيناء"], c: 2 },
+            { q: "يرجع تركز السكان في محافظة 'القاهرة' بشكل كبير إلى:", a: ["ممارستهم لحرفة الرعي والزراعة", "أنها العاصمة وتوافر الخدمات والوزارات بها", "وقوعها في منطقة صحراوية واسعة", "انخفاض نسبة المواليد بها"], c: 1 },
+            { q: "يقصد بـ 'التركيب النوعي' للسكان تصنيفهم حسب:", a: ["الفئات العمرية", "الحالة التعليمية", "النوع (ذكور وإناث)", "النشاط الاقتصادي"], c: 2 },
+            { q: "تعتبر فئة 'كبار السن' (أكبر من 65 سنة) في الهرم السكاني المصري فئة:", a: ["تمثل النسبة الأكبر من السكان", "تمثل الفئة العاملة والمنتجة", "تمثل الفئة الأقل وتحتاج لرعاية", "تمثل قاعدة الهرم السكاني"], c: 2 },
+            { q: "يختلف النشاط الاقتصادي (المهن) من محافظة لأخرى، فنجد سكان 'الوادي الجديد' يعملون بـ:", a: ["الصناعة والخدمات", "السياحة والتجارة", "الزراعة والرعي", "صيد الأسماك"], c: 2 },
+            { q: "يقل عدد السكان في محافظة 'الوادي الجديد' بسبب:", a: ["صغر مساحة المحافظة الشديد", "ندرة المياه العذبة والطبيعة الصحراوية", "كثرة المصانع والشركات", "ازدحام الشوارع وارتفاع المباني"], c: 1 },
+            { q: "تختلف نسبة الذكور عن الإناث من محافظة لأخرى في مصر ويرجع ذلك أساساً إلى:", a: ["اختلاف عدد المواليد", "الهجرة الداخلية (انتقال الشباب للعمل)", "اختلاف مساحة المحافظات", "العادات والتقاليد المختلفة"], c: 1 },
+            { q: "تعتبر فئة 'الشباب' (15-64 سنة) هي الفئة الأهم في الهرم السكاني لأنها:", a: ["تحتاج إلى رعاية صحية واجتماعية كبيرة", "تمثل قاعدة الهرم السكاني العريضة", "تمثل النسبة الأكبر وهي الفئة المنتجة", "الفئة التي لا تعمل وتعتمد على غيرها"], c: 2 },
+            { q: "يبلغ إجمالي عدد سكان مصر طبقاً لإحصائيات عام 2025م حوالي:", a: ["50 مليون نسمة", "108 مليون نسمة", "80 مليون نسمة", "120 مليون نسمة"], c: 1 },
+            { q: "تعتبر محافظة 'جنوب سيناء' من المحافظات:", a: ["المزدحمة جداً بالسكان", "متوسطة السكان", "قليلة السكان", "العاصمة الإدارية"], c: 2 },
+            { q: "يقصد بـ 'التركيب العمري' للسكان تصنيفهم حسب:", a: ["النوع (ذكور وإناث)", "الفئات العمرية (أعمارهم)", "المهن والوظائف", "الحالة التعليمية"], c: 1 },
+            { q: "تزداد نسبة الأطفال (أقل من 15 سنة) في بعض المحافظات بسبب:", a: ["كثرة فرص العمل", "كثرة الإنجاب (المواليد)", "الهجرة الداخلية", "اهتمام الأسر بالتعليم"], c: 1 },
+            { q: "يتركز سكان محافظة 'سوهاج' في:", a: ["المناطق الجبلية الوعرة", "المدن الساحلية فقط", "القرى على ضفاف النيل", "الصحراء الغربية"], c: 2 },
+            { q: "أي من الفئات التالية تمثل 'قاعدة' الهرم السكاني في مصر:", a: ["الشباب (15-64 سنة)", "كبار السن (أكثر من 65 سنة)", "الأطفال (أقل من 15 سنة)", "الموظفون في الحكومة"], c: 2 },
+            { q: "تتميز محافظة 'القاهرة' بارتفاع نسبة المتعلمين بها نتيجة:", a: ["عمل سكانها في الزراعة", "اهتمام الأسر بالتعليم وتوفر المدارس", "انخفاض عدد المواليد بها", "وقوعها في منطقة صحراوية"], c: 1 }
         ];
 
         let index = 0, score = 0, picked = null;
@@ -192,9 +181,9 @@
             grid.innerHTML = '';
             
             q.a.forEach((opt, i) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-box p-6 rounded-2xl text-right font-bold flex items-center gap-4 group';
-                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg">${opt}</span>`;
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 group';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
                 btn.onclick = () => {
                     document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected', 'animate-pop'));
                     btn.classList.add('selected', 'animate-pop');
@@ -206,7 +195,7 @@
         }
 
         function goToNext() {
-            if (picked === null) return alert("اختر إجابة أولاً!");
+            if (picked === null) return alert("من فضلك اختر إجابة أولاً!");
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
