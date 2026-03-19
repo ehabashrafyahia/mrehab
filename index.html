@@ -3,158 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مولد أوراق الامتحانات الذكي</title>
+    <title>منصة الامتحانات الذكية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* ستايلاتك الأصلية مع تحسينات طفيفة */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', 'Amiri', 'Times New Roman', serif;
-            background: #d9e2ec;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; padding: 30px 20px; direction: rtl;
-        }
-        .exam-wrapper {
-            max-width: 1000px; width: 100%; background: white;
-            border-radius: 25px; box-shadow: 0 30px 50px rgba(0, 0, 0, 0.2);
-            padding: 35px 40px; border: 1px solid #e9eef3;
-        }
-        .title-badge {
-            text-align: center; font-size: 2rem; font-weight: 700;
-            color: #0b2b4f; margin-bottom: 20px;
-            background: linear-gradient(to left, #0b2b4f, #2c5282);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .info-table, .info-row-second {
-            display: flex; flex-wrap: wrap; border: 2px solid #2c3e50;
-            border-radius: 18px; overflow: hidden; margin-bottom: 15px;
-            background-color: #f9fcff;
-        }
-        .info-item, .info-item-half {
-            flex: 1 1 200px; padding: 12px 10px; text-align: center;
-            font-size: 1.1rem; border-left: 2px solid #2c3e50;
-        }
-        .info-item:last-child, .info-item-half:last-child { border-left: none; }
-        .eval-card {
-            background: white; border-radius: 20px; padding: 20px 25px;
-            margin-bottom: 25px; border: 1px solid #bdd3e8;
-            box-shadow: 0 8px 20px rgba(0, 30, 60, 0.06);
-        }
-        .eval-title {
-            font-size: 1.8rem; font-weight: 800; color: #0a2f44;
-            border-bottom: 4px solid #2c5282; padding-bottom: 8px; margin-bottom: 20px;
-            display: inline-block;
-        }
-        .question-type {
-            font-size: 1.3rem; font-weight: 700; color: #1d4e89;
-            margin-bottom: 10px; background: #eef5fc;
-            padding: 8px 15px; border-radius: 50px; display: inline-block;
-        }
-        .question-content { font-size: 1.15rem; line-height: 1.9; margin-bottom: 15px; white-space: pre-line; }
-        .footer { margin-top: 30px; text-align: left; color: #5d6d7e; border-top: 2px dashed #a3c0db; padding-top: 15px; }
-        
-        /* إخفاء واجهة الإدخال عند الطباعة */
-        @media print {
-            .input-area { display: none; }
-            body { background: white; padding: 0; }
-            .exam-wrapper { box-shadow: none; border: 1px solid #eee; }
-        }
-
-        /* واجهة الإدخال */
-        .input-area {
-            background: #fff; padding: 20px; border-radius: 15px;
-            margin-bottom: 30px; width: 100%; max-width: 1000px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        textarea {
-            width: 100%; height: 200px; padding: 15px; border-radius: 10px;
-            border: 1px solid #ccc; font-family: inherit; font-size: 1rem;
-        }
-        button {
-            background: #2c5282; color: white; border: none; padding: 10px 25px;
-            border-radius: 8px; cursor: pointer; margin-top: 10px; font-weight: bold;
-        }
+        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; }
+        .grade-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
     </style>
 </head>
 <body>
 
-    <div class="input-area">
-        <h3>قم بلصق محتوى التقييمات هنا:</h3>
-        <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">
-            استخدم كلمة "التقييم" لبدء كارت جديد، واستخدم "أولاً، ثانياً..." لبدء سؤال جديد.
-        </p>
-        <textarea id="examData" placeholder="التقييم (أ)
-أولاً: بم تفسر؟
-نص السؤال هنا...
-
-ثانياً: أكمل..
-نص السؤال هنا..."></textarea>
-        <button onclick="generateExam()">تحديث ورقة الامتحان ✨</button>
-    </div>
-
-    <div class="exam-wrapper" id="printArea">
-        <div class="title-badge" id="mainTitle">🟩 التقييم الأسبوعي - الدراسات الاجتماعية</div>
-
-        <div class="info-table">
-            <div class="info-item"><strong>التاريخ:</strong> ....../....../........</div>
-            <div class="info-item"><strong>الفترة:</strong> ..............</div>
-            <div class="info-item"><strong>الفصل الدراسي:</strong> ................</div>
+    <header class="bg-blue-600 text-white py-8 shadow-lg">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-bold">منصة الامتحانات الإلكترونية</h1>
+            <p class="mt-2 text-blue-100">مستقبلك يبدأ باختبار.. اختر صفك الدراسي وابدأ الآن</p>
         </div>
-        <div class="info-row-second">
-            <div class="info-item-half"><strong>المادة:</strong> الدراسات الاجتماعية</div>
-            <div class="info-item-half"><strong>الصف:</strong> الثاني الإعدادي</div>
-        </div>
+    </header>
 
-        <div id="questionsContainer">
+    <main class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <div class="grade-card bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">4</div>
+                    <h2 class="text-xl font-bold text-gray-800">الصف الرابع الابتدائي</h2>
+                    <p class="text-gray-500 mt-2">اختبارات شاملة للمنهج الجديد</p>
+                    <a href="grade4.html" class="mt-6 inline-block w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">دخول الامتحانات</a>
+                </div>
             </div>
 
-        <div class="footer">انتهت الأسئلة │ مع أطيب التمنيات بالتوفيق</div>
-    </div>
+            <div class="grade-card bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">5</div>
+                    <h2 class="text-xl font-bold text-gray-800">الصف الخامس الابتدائي</h2>
+                    <p class="text-gray-500 mt-2">بنك أسئلة متجدد يومياً</p>
+                    <a href="grade5.html" class="mt-6 inline-block w-full bg-green-500 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition">دخول الامتحانات</a>
+                </div>
+            </div>
 
-    <script>
-        function generateExam() {
-            const text = document.getElementById('examData').value;
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = ''; // مسح المحتوى القديم
+            <div class="grade-card bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">6</div>
+                    <h2 class="text-xl font-bold text-gray-800">الصف السادس الابتدائي</h2>
+                    <p class="text-gray-500 mt-2">استعد للشهادة الابتدائية</p>
+                    <a href="grade6.html" class="mt-6 inline-block w-full bg-purple-500 hover:bg-purple-700 text-white font-bold py-3 rounded-xl transition">دخول الامتحانات</a>
+                </div>
+            </div>
 
-            // تقسيم النص بناءً على كلمة "التقييم"
-            const sections = text.split(/التقييم/).filter(s => s.trim() !== "");
+            <div class="grade-card bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">1ع</div>
+                    <h2 class="text-xl font-bold text-gray-800">الصف الأول الإعدادي</h2>
+                    <p class="text-gray-500 mt-2">اختبارات تفاعلية للمواد العلمية والأدبية</p>
+                    <a href="prep1.html" class="mt-6 inline-block w-full bg-orange-500 hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition">دخول الامتحانات</a>
+                </div>
+            </div>
 
-            sections.forEach(section => {
-                const card = document.createElement('div');
-                card.className = 'eval-card';
+            <div class="grade-card bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">2ع</div>
+                    <h2 class="text-xl font-bold text-gray-800">الصف الثاني الإعدادي</h2>
+                    <p class="text-gray-500 mt-2">نماذج امتحانات الوزارة الاسترشادية</p>
+                    <a href="prep2.html" class="mt-6 inline-block w-full bg-red-500 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition">دخول الامتحانات</a>
+                </div>
+            </div>
 
-                // معالجة العنوان (أو الحرف التابع للتقييم)
-                const lines = section.trim().split('\n');
-                const titleText = "التقييم " + lines[0];
-                
-                let html = `<div class="eval-title">🔹 ${titleText}</div>`;
+            <div class="grade-card bg-white rounded-2xl shadow-md overflow-hidden border border-gray-100">
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">3ع</div>
+                    <h2 class="text-xl font-bold text-gray-800">الصف الثالث الإعدادي</h2>
+                    <p class="text-gray-500 mt-2">مراجعات نهائية للشهادة الإعدادية</p>
+                    <a href="prep3.html" class="mt-6 inline-block w-full bg-teal-500 hover:bg-teal-700 text-white font-bold py-3 rounded-xl transition">دخول الامتحانات</a>
+                </div>
+            </div>
 
-                // تقسيم الأسئلة بناءً على كلمات (أولاً، ثانياً، ثالثاً، رابعاً)
-                const questions = section.replace(lines[0], '').split(/(أولاً:|ثانياً:|ثالثاً:|رابعاً:)/).filter(q => q.trim() !== "");
+            <div class="grade-card bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-gray-700 lg:col-span-3">
+                <div class="p-8 text-center">
+                    <div class="w-20 h-20 bg-yellow-400 text-gray-900 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold">1ث</div>
+                    <h2 class="text-2xl font-bold text-white">الصف الأول الثانوي</h2>
+                    <p class="text-gray-400 mt-2 text-lg">نظام التابلت الجديد - أسئلة اختيار من متعدد ومقالي</p>
+                    <a href="sec1.html" class="mt-6 inline-block px-12 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-4 rounded-xl transition text-xl shadow-xl">ابدأ ماراثون الامتحانات</a>
+                </div>
+            </div>
 
-                for (let i = 0; i < questions.length; i += 2) {
-                    const qType = questions[i];
-                    const qContent = questions[i+1] || "";
-                    
-                    html += `
-                        <div class="question-block">
-                            <div class="question-type">${qType}</div>
-                            <div class="question-content">${qContent.trim()}</div>
-                        </div>
-                    `;
-                }
+        </div>
+    </main>
 
-                card.innerHTML = html;
-                container.appendChild(card);
-            });
-        }
-        
-        // تشغيل افتراضي عند الفتح
-        window.onload = generateExam;
-    </script>
+    <footer class="bg-white border-t border-gray-200 py-6 mt-12">
+        <div class="text-center text-gray-500 text-sm">
+            &copy; 2026 جميع الحقوق محفوظة لمنصة امتحاناتي التعليمية
+        </div>
+    </footer>
 
-    <div class="input-area" style="text-align: center; background: none; box-shadow: none;">
-        <p>🖨️ بعد الانتهاء، اضغط <strong>Ctrl + P</strong> لحفظ الملف كـ PDF</p>
-    </div>
 </body>
 </html>
