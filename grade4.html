@@ -3,125 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التميز | الصف الرابع</title>
+    <title>منصة التميز | الصف الرابع الابتدائي</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body { 
             font-family: 'Cairo', sans-serif; 
-            background: radial-gradient(circle at top right, #eef2ff, #f8fafc);
+            background: #f4f7f6; 
             min-height: 100vh;
         }
 
-        /* تأثير الزجاج الاحترافي */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
-        }
-
-        /* نظام القفل الذكي */
-        .is-locked {
-            position: relative;
-            pointer-events: none; /* يمنع الضغط نهائياً */
-            user-select: none;
-        }
-
-        .is-locked .lock-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(241, 245, 249, 0.8);
-            backdrop-filter: blur(4px); /* تضبيب المحتوى المقفل */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 50;
-            border-radius: inherit;
-        }
-
-        .lock-icon-circle {
-            background: white;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            color: #64748b;
-        }
-
-        /* تحريك الأزرار */
-        .btn-hover {
+        /* زر الدرس الأخضر المتدرج المظلل */
+        .lesson-btn {
+            background: linear-gradient(145deg, #10b981, #059669);
+            box-shadow: 0 8px 15px rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .btn-hover:hover {
-            transform: scale(1.02) translateY(-2px);
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+        .lesson-btn:hover:not(.is-locked) {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 20px rgba(16, 185, 129, 0.3);
         }
+
+        /* زر امتحان الوحدة الشامل (الأزرق) */
+        .unit-exam-btn {
+            background: linear-gradient(145deg, #4f46e5, #4338ca);
+            box-shadow: 0 8px 15px rgba(79, 70, 229, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .unit-exam-btn:hover:not(.is-locked) {
+            transform: scale(1.02);
+            box-shadow: 0 12px 25px rgba(79, 70, 229, 0.4);
+        }
+
+        /* نظام القفل */
+        .is-locked {
+            filter: grayscale(0.8) blur(1px);
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+        .lock-badge {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 6px 18px;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .fade-in { animation: fadeIn 0.7s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="p-6">
+<body class="p-4 md:p-12 text-right">
 
-    <div class="max-w-5xl mx-auto mb-12 text-center">
-        <h1 class="text-4xl font-800 text-slate-800 mb-2">مقرر العلوم - الترم الأول</h1>
-        <div class="h-1.5 w-24 bg-indigo-600 mx-auto rounded-full"></div>
+    <div class="max-w-3xl mx-auto mb-16 text-center fade-in">
+        <h1 class="text-4xl font-800 text-slate-800 mb-3 tracking-tight">دراسات اجتماعية - الصف الرابع</h1>
+        <p class="text-slate-500 font-semibold italic">الفصل الدراسي الثاني - منصة التميز</p>
     </div>
 
-    <main class="max-w-5xl mx-auto space-y-10">
+    <main class="max-w-3xl mx-auto space-y-16">
 
-        <section class="glass-card rounded-3xl overflow-hidden animate-in">
-            <div class="p-8 border-b border-white/50 bg-gradient-to-l from-indigo-50/50 to-transparent flex justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-800 text-indigo-900">الوحدة الأولى: الأنظمة الحية</h2>
-                    <p class="text-slate-500">استكشف كيف تتكيف الكائنات الحية للبقاء</p>
-                </div>
-                <a href="exam-u1.html" class="btn-hover bg-indigo-600 text-white px-7 py-3 rounded-2xl font-bold flex items-center gap-2">
-                    <i class="fas fa-star text-yellow-300"></i> الامتحان الشامل
-                </a>
+        <section class="fade-in">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2.5 h-10 bg-emerald-500 rounded-full shadow-lg"></div>
+                <h2 class="text-2xl font-800 text-slate-800">الوحدة الأولى: سكان بلدنا</h2>
             </div>
 
-            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <a href="#" class="btn-hover p-4 bg-white/50 rounded-2xl border border-white flex items-center gap-4">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold">01</div>
-                    <span class="font-semibold">الدرس الأول: التكيف والبقاء</span>
+            <div class="flex flex-col gap-4">
+                <a href="u1-l1.html" class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center group">
+                    <span class="text-lg font-bold">الدرس الأول: توزيع سكان بلدنا وخصائصهم</span>
+                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
+                </a>
+                <a href="u1-l2.html" class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center group">
+                    <span class="text-lg font-bold">الدرس الثاني: المهن في بلدنا</span>
+                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
+                </a>
+                <a href="u1-l3.html" class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center group">
+                    <span class="text-lg font-bold">الدرس الثالث: المشاركة في صنع القرار في بلدنا</span>
+                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
                 </a>
 
-                <a href="#" class="btn-hover p-4 bg-white/50 rounded-2xl border border-white flex items-center gap-4">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 font-bold">02</div>
-                    <span class="font-semibold">الدرس الثاني: كيف تعمل الحواس؟</span>
+                <a href="exam-unit1.html" class="unit-exam-btn mt-4 p-6 rounded-3xl text-white flex flex-col items-center justify-center text-center group">
+                    <i class="fas fa-star text-yellow-300 text-2xl mb-2"></i>
+                    <h3 class="text-xl font-extrabold uppercase tracking-wide">امتحان الوحدة الأولى الشامل</h3>
+                    <p class="text-indigo-100 text-sm opacity-80 mt-1">اختبر نفسك في كامل محتوى الوحدة الأولى</p>
                 </a>
             </div>
         </section>
 
-        <section class="glass-card rounded-3xl overflow-hidden is-locked">
-            
-            <div class="lock-overlay">
-                <div class="text-center">
-                    <div class="lock-icon-circle mx-auto mb-3">
-                        <i class="fas fa-lock text-xl"></i>
-                    </div>
-                    <p class="font-bold text-slate-600">سيتم الفتح قريباً</p>
-                </div>
+        <section class="is-locked">
+            <div class="lock-badge"><i class="fas fa-lock ml-2"></i>سيتم الفتح قريباً</div>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2.5 h-10 bg-orange-500 rounded-full shadow-lg"></div>
+                <h2 class="text-2xl font-800 text-slate-800">الوحدة الثانية: تراث بلدنا وهويتي</h2>
             </div>
 
-            <div class="p-8 border-b border-white/50 flex justify-between items-center">
-                <h2 class="text-2xl font-800 text-slate-400">الوحدة الثانية: المادة والطاقة</h2>
-                <button class="bg-slate-200 text-slate-400 px-7 py-3 rounded-2xl font-bold">مغلق</button>
+            <div class="flex flex-col gap-4">
+                <div class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center"><span class="font-bold">الدرس الأول: الحرف التراثية في بلدنا</span></div>
+                <div class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center"><span class="font-bold">الدرس الثاني: الأماكن التراثية في بلدنا</span></div>
+                <div class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center"><span class="font-bold">الدرس الثالث: أنواع السياحة في بلدنا</span></div>
+                <div class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center"><span class="font-bold">الدرس الرابع: حرب أكتوبر (معركة الكرامة)</span></div>
+                
+                <div class="unit-exam-btn p-5 rounded-3xl text-white text-center font-bold mt-2">امتحان الوحدة الثانية الشامل</div>
             </div>
-            
-            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="p-4 bg-slate-100 rounded-2xl border border-slate-200 flex items-center gap-4">
-                    <div class="w-12 h-12 bg-slate-200 rounded-xl"></div>
-                    <span class="font-semibold text-slate-400">الدرس الأول: الحركة والتوقف</span>
-                </div>
+        </section>
+
+        <section class="is-locked">
+            <div class="lock-badge"><i class="fas fa-lock ml-2"></i>سيتم الفتح قريباً</div>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2.5 h-10 bg-blue-500 rounded-full shadow-lg"></div>
+                <h2 class="text-2xl font-800 text-slate-800">الوحدة الثالثة: رحلتنا عبر الزمن</h2>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <div class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center"><span class="font-bold">الدرس الأول: تطور وسائل النقل في بلدنا</span></div>
+                <div class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center"><span class="font-bold">الدرس الثاني: التعليم في مصر عبر التاريخ</span></div>
+                <div class="lesson-btn p-5 rounded-3xl text-white flex justify-between items-center"><span class="font-bold">الدرس الثالث: العملات النقدية حول العالم وفى بلدنا</span></div>
+                
+                <div class="unit-exam-btn p-5 rounded-3xl text-white text-center font-bold mt-2">امتحان الوحدة الثالثة الشامل</div>
             </div>
         </section>
 
     </main>
+
+    <footer class="mt-24 text-center text-slate-400 font-bold pb-10 text-xs">
+        &copy; 2026 جميع الحقوق محفوظة لمنصة التميز التعليمية
+    </footer>
 
 </body>
 </html>
