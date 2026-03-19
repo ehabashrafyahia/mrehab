@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التميز | بوابة الامتحانات الذكية</title>
+    <title>منصة التميز | Next-Gen Learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,107 +11,178 @@
     <style>
         body { 
             font-family: 'Cairo', sans-serif; 
-            background: #fdfeff; 
-            color: #1e293b;
+            background: #0f172a; /* خلفية داكنة فخمة */
+            color: #f8fafc;
+            overflow-x: hidden;
         }
 
-        /* هيدر عصري بتدرج انسيابي */
-        .hero-section {
-            background: radial-gradient(circle at top right, #4f46e5, #3730a3, #1e1b4b);
-            position: relative;
-            overflow: hidden;
+        /* خلفية سحرية متدرجة */
+        .mesh-gradient {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(249, 115, 22, 0.1) 0px, transparent 50%);
         }
 
-        /* تأثير الفقاعات في الخلفية */
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -10%;
-            left: -5%;
-            width: 300px;
-            height: 300px;
+        /* بطاقة زجاجية احترافية */
+        .glass-card {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 50%;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* بطاقات الصفوف المطورة */
-        .grade-card {
-            background: white;
-            border: 1px solid rgba(226, 232, 240, 0.8);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* أيقونات متوهجة */
+        .glow-icon {
+            width: 60px; height: 60px;
+            display: flex; items-center; justify-center;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .primary-glow { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5); }
+        .prep-glow { background: linear-gradient(135deg, #10b981, #047857); box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.5); }
+        .sec-glow { background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.5); }
+
+        /* زر الدخول المضيء */
+        .btn-modern {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem;
+            border-radius: 18px;
+            font-weight: 700;
+            transition: 0.3s;
+            overflow: hidden;
             position: relative;
         }
 
-        .grade-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-            border-color: transparent;
+        .glass-card:hover .btn-modern {
+            background: #ffffff;
+            color: #0f172a;
         }
 
-        /* الدائرة الرقمية لكل صف */
-        .number-badge {
-            transition: all 0.4s ease;
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #94a3b8;
+            border-right: 3px solid #6366f1;
+            padding-right: 12px;
+            margin-bottom: 2rem;
         }
-        .grade-card:hover .number-badge {
-            transform: scale(1.1) rotate(10deg);
-        }
-
-        /* أزرار الدخول بتدرجات احترافية */
-        .btn-grad {
-            transition: 0.5s;
-            background-size: 200% auto;
-        }
-        .btn-grad:hover {
-            background-position: right center;
-        }
-
-        /* ألوان مخصصة لكل مرحلة */
-        .btn-blue { background-image: linear-gradient(to right, #2563eb 0%, #3b82f6 51%, #2563eb 100%); }
-        .btn-green { background-image: linear-gradient(to right, #059669 0%, #10b981 51%, #059669 100%); }
-        .btn-purple { background-image: linear-gradient(to right, #7c3aed 0%, #8b5cf6 51%, #7c3aed 100%); }
-        .btn-orange { background-image: linear-gradient(to right, #ea580c 0%, #f97316 51%, #ea580c 100%); }
-        .btn-red { background-image: linear-gradient(to right, #dc2626 0%, #ef4444 51%, #dc2626 100%); }
-        .btn-teal { background-image: linear-gradient(to right, #0d9488 0%, #14b8a6 51%, #0d9488 100%); }
-
-        .animate-float { animation: float 6s ease-in-out infinite; }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     </style>
 </head>
-<body class="bg-slate-50">
+<body class="p-4 md:p-10">
 
-    <header class="hero-section text-white pt-20 pb-32 rounded-b-[3rem] shadow-2xl overflow-hidden">
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <div class="inline-block p-3 bg-white/10 backdrop-blur-md rounded-2xl mb-6 animate-float">
-                <i class="fas fa-rocket text-yellow-400 text-2xl"></i>
-            </div>
-            <h1 class="text-4xl md:text-6xl font-900 tracking-tight mb-4">منصة التميز الذكية</h1>
-            <p class="text-indigo-100 text-lg md:text-xl font-medium max-w-2xl mx-auto opacity-90 leading-relaxed">
-                مستقبلك يبدأ باختبار.. رحلة التفوّق تبدأ من هنا، اختر صفك الدراسي وانطلق في ماراثون المعرفة.
-            </p>
+    <div class="mesh-gradient"></div>
+
+    <header class="max-w-6xl mx-auto text-center mb-20 mt-10">
+        <div class="inline-block px-4 py-1 rounded-full border border-white/10 bg-white/5 text-xs font-bold text-indigo-400 mb-6">
+            ✨ منصة المستقبل للتعلم الذكي
         </div>
-        <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-50 to-transparent"></div>
+        <h1 class="text-5xl md:text-7xl font-900 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-indigo-200 to-slate-400">
+            منصة التميز
+        </h1>
+        <p class="text-slate-400 text-lg md:text-xl font-medium max-w-xl mx-auto leading-relaxed">
+            رحلة تعلم ذكية تبدأ من الصف الرابع وحتى الاحتراف.
+        </p>
     </header>
 
-    <main class="container mx-auto px-6 -mt-16 relative z-20">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            
-            <div class="grade-card rounded-[2.5rem] p-8 text-center shadow-sm">
-                <div class="number-badge w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl font-black shadow-inner">4</div>
-                <h2 class="text-2xl font-800 text-slate-800 mb-2">الصف الرابع</h2>
-                <p class="text-slate-500 font-bold text-sm mb-8 leading-relaxed">استكشف المنهج الجديد مع اختبارات تفاعلية ممتعة.</p>
-                <a href="grade4.html" class="btn-grad btn-blue block w-full text-white font-900 py-4 rounded-2xl shadow-lg shadow-blue-200 uppercase tracking-wide">دخول البوابة</a>
-            </div>
+    <main class="max-w-6xl mx-auto space-y-24">
 
-            <div class="grade-card rounded-[2.5rem] p-8 text-center shadow-sm">
-                <div class="number-badge w-20 h-20 bg-green-50 text-green-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl font-black shadow-inner">5</div>
-                <h2 class="text-2xl font-800 text-slate-800 mb-2">الصف الخامس</h2>
-                <p class="text-slate-500 font-bold text-sm mb-8 leading-relaxed">تحديات يومية وبنك أسئلة يغطي جميع جوانب المنهج.</p>
-                <a href="grade5.html" class="btn-grad btn-green block w-full text-white font-900 py-4 rounded-2xl shadow-lg shadow-green-200 uppercase tracking-wide">دخول البوابة</a>
+        <section>
+            <h2 class="section-title">المرحلة الابتدائية</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8">
+                    <div class="glow-icon primary-glow">4</div>
+                    <h3 class="text-xl font-800 mb-2">الرابع الابتدائي</h3>
+                    <p class="text-slate-500 text-sm mb-6 leading-relaxed">ابدأ أولى خطواتك في المنهج الجديد بذكاء.</p>
+                    <a href="grade4.html" class="btn-modern block text-center">استكشف الآن</a>
+                </div>
+                <div class="glass-card p-8">
+                    <div class="glow-icon primary-glow">5</div>
+                    <h3 class="text-xl font-800 mb-2">الخامس الابتدائي</h3>
+                    <p class="text-slate-500 text-sm mb-6 leading-relaxed">تحديات يومية واختبارات تفاعلية شاملة.</p>
+                    <a href="grade5.html" class="btn-modern block text-center">استكشف الآن</a>
+                </div>
+                <div class="glass-card p-8">
+                    <div class="glow-icon primary-glow">6</div>
+                    <h3 class="text-xl font-800 mb-2">السادس الابتدائي</h3>
+                    <p class="text-slate-500 text-sm mb-6 leading-relaxed">استعد للشهادة الابتدائية بأسلوب عصري.</p>
+                    <a href="grade6.html" class="btn-modern block text-center">استكشف الآن</a>
+                </div>
             </div>
+        </section>
 
-            <div class="grade-card rounded-[2.5rem] p-8 text-center shadow-sm">
-                <div class="number-badge w-20 h-20 bg-purple-50 text-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-3xl font-black shadow-inner">6</div>
-                <h2 class="text-2xl font-800 text-slate-800 mb-2">الصف السادس</h2>
-                <p class="text-slate-500 font-bold text-sm mb-8 leading-relaxed">استعد للشهادة الابتدائية بامتياز مع مراجعاتنا النهائية.</p>
-                <a href="grade6.html" class="btn-grad btn-purple block w-full text-white font-900 py-4 rounded-2xl shadow-lg shadow-purple-200 uppercase tracking-wide">دخول البوابة</a>
+        <section>
+            <h2 class="section-title">المرحلة الإعدادية</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8">
+                    <div class="glow-icon prep-glow">1ع</div>
+                    <h3 class="text-xl font-800 mb-2">الأول الإعدادي</h3>
+                    <p class="text-slate-500 text-sm mb-6">منهج متكامل باختبارات رقمية متطورة.</p>
+                    <a href="prep1.html" class="btn-modern block text-center">دخول</a>
+                </div>
+                <div class="glass-card p-8">
+                    <div class="glow-icon prep-glow">2ع</div>
+                    <h3 class="text-xl font-800 mb-2">الثاني الإعدادي</h3>
+                    <p class="text-slate-500 text-sm mb-6">نماذج محاكاة لأحدث امتحانات الوزارة.</p>
+                    <a href="prep2.html" class="btn-modern block text-center">دخول</a>
+                </div>
+                <div class="glass-card p-8">
+                    <div class="glow-icon prep-glow">3ع</div>
+                    <h3 class="text-xl font-800 mb-2">الثالث الإعدادي</h3>
+                    <p class="text-slate-500 text-sm mb-6">طريقك للقمة يبدأ من المراجعات الشاملة.</p>
+                    <a href="prep3.html" class="btn-modern block text-center">دخول</a>
+                </div>
             </div>
+        </section>
+
+        <section>
+            <h2 class="section-title">المرحلة الثانوية</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass-card p-8 border-t-2 border-orange-500/20">
+                    <div class="glow-icon sec-glow">1ث</div>
+                    <h3 class="text-xl font-800 mb-2 text-orange-400">الأول الثانوي</h3>
+                    <p class="text-slate-500 text-sm mb-6">نظام التابلت بأسلوب الاختيار من متعدد.</p>
+                    <a href="sec1.html" class="btn-modern block text-center">ابدأ الماراثون</a>
+                </div>
+                <div class="glass-card p-8 border-t-2 border-orange-500/20">
+                    <div class="glow-icon sec-glow">2ث</div>
+                    <h3 class="text-xl font-800 mb-2 text-orange-400">الثاني الثانوي</h3>
+                    <p class="text-slate-500 text-sm mb-6">تعلم بذكاء مع بنك أسئلة الوزارة المحدث.</p>
+                    <a href="sec2.html" class="btn-modern block text-center">ابدأ الماراثون</a>
+                </div>
+                <div class="glass-card p-8 border-t-2 border-orange-500/20">
+                    <div class="glow-icon sec-glow">3ث</div>
+                    <h3 class="text-xl font-800 mb-2 text-orange-400">الثالث الثانوي</h3>
+                    <p class="text-slate-500 text-sm mb-6">استعد للجامعة بامتياز في الشهادة الثانوية.</p>
+                    <a href="sec3.html" class="btn-modern block text-center">ابدأ الماراثون</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-40 mb-10 text-center">
+        <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent mb-10"></div>
+        <p class="text-slate-500 font-bold text-xs uppercase tracking-widest">
+            &copy; 2026 Al-Tamayuz Platform • Crafted with Love
+        </p>
+    </footer>
+
+</body>
+</html>
