@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التميز | الصف الأول الثانوي - تاريخ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: #fdfdfd; 
+            scroll-behavior: smooth;
+        }
+
+        .main-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .lesson-btn-active {
+            background: linear-gradient(145deg, #f59e0b, #d97706);
+            box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .lesson-btn-active:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 25px -5px rgba(245, 158, 11, 0.4);
+        }
+
+        .is-locked {
+            position: relative;
+            filter: grayscale(1) blur(1px);
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .lock-badge {
+            background: rgba(30, 41, 59, 0.9);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            transition: all 0.3s ease;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+        }
+        .back-btn:hover {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body class="pb-20 text-right">
+
+    <header class="main-header shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+            <a href="index.html" class="back-btn px-4 py-2 rounded-2xl flex items-center gap-2 text-slate-600 font-bold text-sm no-underline">
+                <i class="fas fa-chevron-right text-xs"></i>
+                <span>الرئيسية</span>
+            </a>
+            <div class="text-center">
+                <h2 class="text-xl md:text-2xl font-900 text-slate-800">تاريخ أولى ثانوي</h2>
+                <p class="text-[10px] md:text-xs text-orange-600 font-extrabold">الفصل الدراسي الثاني</p>
+            </div>
+            <div class="w-10 h-10 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-500 shadow-inner border border-orange-100">
+                <i class="fas fa-landmark"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 mt-10 space-y-12">
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2 h-8 bg-orange-500 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-800 tracking-tight">الوحدة الثالثة: حضارات الشرق</h2>
+            </div>
+
+            <div class="flex flex-col gap-5">
+                
+                <a href="lesson1-history.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group no-underline">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">
+                            1
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
+                            <span class="font-900 text-lg leading-tight text-white">حضارة بلاد العراق القديم</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
+                </a>
+
+                <a href="lesson2-history.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group no-underline">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">
+                            2
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الثاني</span>
+                            <span class="font-900 text-lg leading-tight text-white">حضارة فينيقيا</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
+                </a>
+
+                <div class="is-locked relative min-h-[110px] p-6 rounded-[2rem] bg-orange-50 text-orange-400 flex flex-col items-center justify-center border-2 border-dashed border-orange-200 mt-4">
+                    <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>أكمل الوحدة أولاً</div></div>
+                    <i class="fas fa-star text-2xl mb-1 opacity-50"></i>
+                    <h3 class="font-900 text-xl tracking-tight">امتحان الوحدة الثالثة</h3>
+                </div>
+            </div>
+        </section>
+
+        <section class="is-locked">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-400">الوحدة الرابعة: حضارة اليونان والرومان</h2>
+            </div>
+            <div class="p-10 rounded-[2.5rem] bg-slate-200/50 border-2 border-dashed border-slate-300 text-center text-slate-400 font-bold">
+                قريباً: حضارة اليونان، مصر تحت حكم البطالمة، ومصر تحت حكم الرومان.
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 text-center text-slate-400 font-bold text-xs pb-10">
+        منصة التميز التعليمية &copy; 2026
+    </footer>
+
+</body>
+</html>
