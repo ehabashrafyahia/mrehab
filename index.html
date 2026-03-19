@@ -23,7 +23,6 @@
             padding-bottom: 40px;
         }
 
-        /* تقليل Padding هنا لضغط المساحة */
         .main-header { 
             text-align: center; 
             padding: 30px 20px 10px; 
@@ -44,7 +43,15 @@
             text-decoration: none;
         }
 
-        .list-card:hover {
+        /* نظام القفل */
+        .is-locked {
+            filter: grayscale(1);
+            opacity: 0.6;
+            pointer-events: none;
+            background: #f1f5f9;
+        }
+
+        .list-card:not(.is-locked):hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.05);
             border-color: inherit;
@@ -69,9 +76,8 @@
             color: #94a3b8; font-size: 0.75rem; transition: 0.3s;
         }
 
-        .list-card:hover .go-btn { background: currentColor; color: white; }
+        .list-card:not(.is-locked):hover .go-btn { background: currentColor; color: white; }
 
-        /* تقليل Margin هنا لتقريب الصفوف من العنوان */
         .section-label {
             max-width: 550px; margin: 20px auto 10px;
             font-weight: 900; font-size: 0.9rem;
@@ -87,7 +93,7 @@
             <i class="fas fa-graduation-cap text-2xl text-emerald-500"></i>
         </div>
         <h1 class="text-xl font-900 text-slate-800">منصة التميز التعليمية</h1>
-        <p class="text-slate-500 font-bold text-xs mt-1">طريقك نحو النجاح يبدأ من هنا</p>
+        <p class="text-slate-500 font-bold text-xs mt-1">المحتوى التعليمي المتاح</p>
     </header>
 
     <main class="px-4">
@@ -141,14 +147,14 @@
             <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
         </a>
 
-        <a href="grade9.html" class="list-card" style="color: #a855f7;">
+        <div class="list-card is-locked" style="color: #a855f7;">
             <div class="number-box">3</div>
             <div class="card-content">
                 <h3>الصف الثالث الإعدادي</h3>
-                <p>متاح الآن</p>
+                <p>قريباً جداً...</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
-        </a>
+            <div class="go-btn"><i class="fas fa-lock"></i></div>
+        </div>
 
         <div class="section-label"><div class="dot bg-orange-500"></div> المرحلة الثانوية</div>
 
@@ -161,23 +167,23 @@
             <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
         </a>
 
-        <a href="grade11.html" class="list-card" style="color: #f59e0b;">
+        <div class="list-card is-locked" style="color: #f59e0b;">
             <div class="number-box">2</div>
             <div class="card-content">
                 <h3>الصف الثاني الثانوي</h3>
-                <p>متاح الآن</p>
+                <p>قريباً جداً...</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
-        </a>
+            <div class="go-btn"><i class="fas fa-lock"></i></div>
+        </div>
 
-        <a href="grade12.html" class="list-card" style="color: #f59e0b;">
+        <div class="list-card is-locked" style="color: #f59e0b;">
             <div class="number-box">3</div>
             <div class="card-content">
                 <h3>الصف الثالث الثانوي</h3>
-                <p>متاح الآن</p>
+                <p>قريباً جداً...</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
-        </a>
+            <div class="go-btn"><i class="fas fa-lock"></i></div>
+        </div>
 
     </main>
 
