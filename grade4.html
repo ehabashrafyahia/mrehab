@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مواد الصف الرابع الابتدائي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #f0f4f8; }
+        .subject-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .subject-card:hover { transform: scale(1.02); shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .exam-list { display: none; } /* إخفاء قائمة الامتحانات افتراضياً */
+    </style>
+</head>
+<body class="pb-12">
+
+    <nav class="bg-white shadow-sm py-4 mb-8">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="index.html" class="text-blue-600 font-bold flex items-center gap-2">
+                <span>&rarr;</span> العودة للرئيسية
+            </a>
+            <h1 class="text-xl font-bold text-gray-700">الصف الرابع الابتدائي</h1>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-10">اختر المادة الدراسية</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <div class="subject-card bg-white rounded-2xl p-6 border-r-8 border-blue-500 shadow-sm" onclick="toggleExams('arabic')">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">اللغة العربية</h3>
+                    <span class="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-semibold">5 امتحانات</span>
+                </div>
+                
+                <div id="arabic" class="exam-list mt-6 space-y-3 border-t pt-4">
+                    <a href="exam-ar-1.html" class="block p-3 bg-gray-50 hover:bg-blue-50 rounded-lg text-gray-700 border border-transparent hover:border-blue-200 transition">📝 اختبار شهر أكتوبر</a>
+                    <a href="#" class="block p-3 bg-gray-50 hover:bg-blue-50 rounded-lg text-gray-700 border border-transparent hover:border-blue-200 transition">📝 اختبار شهر نوفمبر</a>
+                    <a href="#" class="block p-3 bg-gray-50 hover:bg-blue-50 rounded-lg text-gray-700 border border-transparent hover:border-blue-200 transition">🎓 امتحان نصف العام</a>
+                </div>
+            </div>
+
+            <div class="subject-card bg-white rounded-2xl p-6 border-r-8 border-red-500 shadow-sm" onclick="toggleExams('math')">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">الرياضيات</h3>
+                    <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold">3 امتحانات</span>
+                </div>
+                <div id="math" class="exam-list mt-6 space-y-3 border-t pt-4">
+                    <a href="#" class="block p-3 bg-gray-50 hover:bg-red-50 rounded-lg text-gray-700 border border-transparent hover:border-red-200">📐 تدريب على الوحدة الأولى</a>
+                    <a href="#" class="block p-3 bg-gray-50 hover:bg-red-50 rounded-lg text-gray-700 border border-transparent hover:border-red-200">📐 امتحان الميد تيرم</a>
+                </div>
+            </div>
+
+            <div class="subject-card bg-white rounded-2xl p-6 border-r-8 border-green-500 shadow-sm" onclick="toggleExams('science')">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800">العلوم</h3>
+                    <span class="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-semibold">4 امتحانات</span>
+                </div>
+                <div id="science" class="exam-list mt-6 space-y-3 border-t pt-4">
+                    <a href="#" class="block p-3 bg-gray-50 hover:bg-green-50 rounded-lg text-gray-700 border border-transparent hover:border-green-200">🔬 اختبار الكائنات الحية</a>
+                    <a href="#" class="block p-3 bg-gray-50 hover:bg-green-50 rounded-lg text-gray-700 border border-transparent hover:border-green-200">🔬 مراجعة الوحدة الثانية</a>
+                </div>
+            </div>
+
+            </div>
+    </div>
+
+    <script>
+        // دالة بسيطة لإظهار وإخفاء الامتحانات عند الضغط على المادة
+        function toggleExams(id) {
+            const list = document.getElementById(id);
+            const allLists = document.querySelectorAll('.exam-list');
+            
+            // إغلاق أي قائمة أخرى مفتوحة لجعل الواجهة منظمة
+            allLists.forEach(item => {
+                if(item.id !== id) item.style.display = 'none';
+            });
+
+            // تبديل الحالة الحالية
+            if (list.style.display === "block") {
+                list.style.display = "none";
+            } else {
+                list.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
