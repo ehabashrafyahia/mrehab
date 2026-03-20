@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار حضارة فينيقيا | منصة التميز</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #fffcf5 0%, #fff7ed 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(249, 115, 22, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.08);
+            border-radius: 2.5rem;
+        }
+        .option-box {
+            background: white;
+            border: 2px solid #f1f5f9;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: right;
+            cursor: pointer;
+        }
+        .option-box:hover { border-color: #f97316; transform: translateY(-2px); }
+        .option-box.selected {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.4);
+        }
+        .opt-prefix {
+            background: #fff7ed;
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-weight: 900; color: #ea580c;
+            flex-shrink: 0;
+        }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow {
+            height: 100%;
+            background: linear-gradient(90deg, #f97316, #fbbf24);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
+            border-radius: 100px;
+            transition: width 0.4s ease;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            box-shadow: 0 15px 30px -10px rgba(30, 41, 59, 0.3);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="hidden fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] p-8 max-w-sm w-full text-center shadow-2xl">
+            <div class="w-16 h-16 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fas fa-anchor"></i>
+            </div>
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد مغادرة السفينة؟</h3>
+            <p class="text-slate-500 mb-6 font-bold">سيتم فقدان تقدمك في اختبار فينيقيا</p>
+            <div class="flex gap-3">
+                <a href="grade10.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <button onclick="toggleExitModal(true)" class="p-4 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-orange-100 font-900 text-orange-600">
+                سؤال <span id="q-count">1</span> / 20
+            </div>
+            <div class="p-4 bg-orange-600 rounded-2xl text-white shadow-lg shadow-orange-200">
+                <i class="fas fa-ship"></i>
+            </div>
+        </div>
+
+        <div class="h-3 bg-white rounded-full mb-10 overflow-hidden shadow-sm border border-orange-50">
+            <div id="progress-bar" class="progress-glow" style="width: 5%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-8 min-h-[420px] flex flex-col justify-center">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-10"></h2>
+            <div id="options-grid" class="grid grid-cols-1 gap-4"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-[2rem] text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-6">
+        <div class="glass-card p-12">
+            <div id="trophy-icon" class="text-7xl mb-6">🚢</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجتك في فينيقيا</h1>
+            <p id="result-msg" class="text-slate-500 font-bold mb-8">لقد أبحرت جيداً في تاريخ فينيقيا</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-48 h-48 transform -rotate-90">
+                    <circle cx="96" cy="96" r="85" stroke="#f1f5f9" stroke-width="15" fill="transparent" />
+                    <circle id="score-circle" cx="96" cy="96" r="85" stroke="#f97316" stroke-width="15" fill="transparent" stroke-dasharray="534" stroke-dashoffset="534" class="transition-all duration-[1500ms] ease-out" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-5xl text-slate-800" id="score-text">0%</span>
+                    <span class="text-slate-400 font-bold text-sm" id="raw-score">0 / 20</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="py-5 bg-orange-600 text-white rounded-[1.5rem] font-900 shadow-xl shadow-orange-200">إعادة الاختبار</button>
+                <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-900 shadow-xl shadow-slate-200 flex items-center justify-center">الدروس</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "كانت فينيقيا بمثابة حلقة الوصل بين حضارات الشرق والغرب، ويرجع الفضل في ذلك إلى:", a: ["وفرة المحاصيل الزراعية", "التوسع العسكري في آسيا", "الموقع الجغرافي والنشاط البحري", "القوة العسكرية البرية"], c: 2 },
+            { q: "أي من المدن الفنيقية كانت الأقرب في نظامها السياسي لنموذج 'الدويلات المستقلة' في سومر؟", a: ["قرطاج", "بعلبك", "جبيل", "صور وصيدا"], c: 3 },
+            { q: "يُعد 'الصبغ الأرجواني' دليلاً على استغلال الفنيقيين الأمثل لـ:", a: ["الثروات الغابية", "الثروات البحرية (القواقع)", "المناجم والمعادن", "التجارة مع الصين"], c: 1 },
+            { q: "تميزت مدينة 'جبيل' بصبغة حضارية مصرية قوية، ويستدل على ذلك من خلال:", a: ["بناء المعابد الضخمة", "العثور على تماثيل مصرية وأحجار مكتوبة بأسماء ملوك مصريين", "السيطرة العسكرية المصرية", "اشتغال سكانها بالزراعة"], c: 1 },
+            { q: "كان الدافع الرئيسي وراء اختراع الفنيقيين لأول أبجدية في التاريخ هو دافع:", a: ["ديني", "عسكري", "اقتصادي (تسجيل المعاملات التجارية)", "سياسي"], c: 2 },
+            { q: "قرطاج التي أسسها الفنيقيون في تونس تفوقت على المدن الأم من حيث:", a: ["القدم الزمني", "الازدهار التجاري والسيادة البحرية", "الالتزام بالديانة", "البعد عن الصراعات"], c: 1 },
+            { q: "تشابهت حضارة فينيقيا مع حضارة بلاد العراق القديم في:", a: ["نظام ملكية الأرض", "تكوين إمبراطورية برية", "عبادة الإلهة عشتار كإلهة للحب والخصب", "اختراع الكتابة المسمارية"], c: 2 },
+            { q: "بعثة الملك نخاو الثاني للدوران حول أفريقيا تدل على ثقة المصريين في مهارة الفنيقيين في:", a: ["الفلك والعمارة", "بناء الحصون", "ركوب البحر وخبرة الملاحة", "الصناعات النسيجية"], c: 2 },
+            { q: "يرجع السبب الرئيسي لعدم قيام 'دولة فنيقية موحدة' إلى:", a: ["التدخل الأجنبي", "التنافس التجاري والنزعة الفردية بين المدن", "وعورة التضاريس", "قلة الموارد"], c: 1 },
+            { q: "كان 'مجلس الشيوخ' في المدن الفنيقية يمثل السلطة:", a: ["التنفيذية", "التشريعية", "القضائية", "العسكرية"], c: 1 },
+            { q: "أي المدن الفنيقية كانت الأكثر تحصيناً ضد الغزو البري بسبب سورها العظيم؟", a: ["أوغاريت", "صور", "جبيل", "بعلبك"], c: 1 },
+            { q: "يعد الإله 'إيل' عند الفنيقيين هو:", a: ["إله الشمس", "القوة المتجددة", "رب الأرباب والكلمة الأولى في شؤون البشر", "إله البحر"], c: 2 },
+            { q: "تشابهت قصور مدينة 'أوغاريت' مع القصور في العراق القديم من حيث:", a: ["استخدام الحجر الجيري", "الأعمدة الرخامية", "الفخامة والنقوش الملونة وتزيينها بالأعمدة", "البناء داخل المعبد"], c: 2 },
+            { q: "اختلفت فينيقيا عن مصر والعراق في نشاطها الاقتصادي، حيث كان النشاط الأول لها هو:", a: ["الزراعة", "التجارة البحرية", "تربية الحيوان", "التعدين"], c: 1 },
+            { q: "المادة الخام التي حرص ملوك مصر (مثل سنفرو) على جلبها من فينيقيا هي:", a: ["الكتان", "خشب الأرز", "القصدير", "الذهب"], c: 1 },
+            { q: "انتقال الأبجدية الفنيقية إلى أوروبا يعني أن فينيقيا صاحبة فضل في:", a: ["الاستقرار السياسي", "نشر التنوير الثقافي والتدوين", "توحيد اللغات", "تطوير الأسلحة"], c: 1 },
+            { q: "يظهر التواصل الاجتماعي والديني بين مصر وفنيقيا من خلال فكرة:", a: ["التوحيد", "الاعتقاد في البعث والخلود ووضع الطعام مع الميت", "بناء الأهرامات", "تحنيط الحيوانات"], c: 1 },
+            { q: "سقوط فينيقيا تحت حكم الإسكندر الأكبر يعني انتقال السيادة لجهة:", a: ["الشرق", "الغرب (اليونان)", "الجنوب", "الشمال"], c: 1 },
+            { q: "أي من المدن الفنيقية التالية تخصصت في التجارة البرية؟", a: ["صيدا", "صور", "بعلبك", "قرطاج"], c: 2 },
+            { q: "يمثل 'الملك' في نظام الحكم الفنيقي سلطة مقيدة بسبب:", a: ["وجود مجالس تعاون وتشرف على الحكم", "قلة صلاحياته العسكرية", "خضوعه لفرعون مصر", "عدم قدرته على قيادة الجيش"], c: 0 }
+        ];
+
+        let index = 0, score = 0, picked = null;
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; }
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-5 md:p-6 rounded-2xl flex items-center gap-4';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return;
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) render(); else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('raw-score').innerText = `${score} من ${questions.length}`;
+            
+            const circle = document.getElementById('score-circle');
+            const offset = 534 - (534 * pct) / 100;
+            setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
+        }
+
+        render();
+    </script>
+</body>
+</html>
+
