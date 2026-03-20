@@ -1,194 +1,220 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <link rel="manifest" href="manifest.json">
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
-      }
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التميز | الصفحة الرئيسية</title>
+    <title>منصة أطلس التعليمية | التميز في التعليم</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         body { 
             font-family: 'Cairo', sans-serif; 
-            background-color: #f8fafc; 
+            background-color: #fcfdfe; 
             color: #1e293b;
             padding-bottom: 40px;
         }
 
-        .main-header { 
-            text-align: center; 
-            padding: 30px 20px 10px; 
+        .logo-container {
+            position: relative;
+            width: 130px;
+            height: 100px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        .logo-shape {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: morph 6s linear infinite;
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
+        }
+
+        .logo-text {
+            position: relative;
+            z-index: 10;
+            color: white;
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        @keyframes morph {
+            0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+            75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+            100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        }
+
+        .main-header { text-align: center; padding: 40px 20px 20px; }
 
         .list-card {
             background: #ffffff; 
-            border-radius: 16px;
-            padding: 12px 20px;
-            margin: 0 auto 10px;
+            border-radius: 20px;
+            padding: 14px 22px;
+            margin: 0 auto 12px;
             display: flex;
             align-items: center;
-            border: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
-            max-width: 550px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            max-width: 500px; 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
             text-decoration: none;
         }
 
-        /* نظام القفل */
-        .is-locked {
-            filter: grayscale(1);
-            opacity: 0.6;
-            pointer-events: none;
-            background: #f1f5f9;
-        }
-
         .list-card:not(.is-locked):hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transform: scale(1.03);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
             border-color: inherit;
         }
 
         .number-box {
-            width: 46px; height: 46px; border-radius: 12px;
-            background: #f1f5f9;
+            width: 50px; height: 50px; border-radius: 15px;
+            background: #f8fafc;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.1rem; font-weight: 900;
-            margin-left: 16px; border: 1px solid #e2e8f0; flex-shrink: 0;
+            font-size: 1.2rem; font-weight: 900;
+            margin-left: 18px; border: 1px solid #f1f5f9; flex-shrink: 0;
         }
 
         .card-content { flex-grow: 1; text-align: right; }
-        .card-content h3 { font-size: 1.05rem; font-weight: 800; color: #1e293b; line-height: 1.2; }
-        .card-content p { font-size: 0.75rem; color: #64748b; margin-top: 1px; }
+        .card-content h3 { font-size: 1.1rem; font-weight: 800; color: #1e293b; }
+        .card-content p { font-size: 0.8rem; color: #64748b; font-weight: 600; }
 
-        .go-btn {
-            width: 32px; height: 32px; border-radius: 9px;
-            background: #f1f5f9;
-            display: flex; align-items: center; justify-content: center;
-            color: #94a3b8; font-size: 0.75rem; transition: 0.3s;
+        /* ستايل القفل المعدل */
+        .is-locked { 
+            filter: grayscale(1); 
+            opacity: 0.7; 
+            pointer-events: none; 
+            background: #f8fafc;
+            border-style: dashed;
         }
-
-        .list-card:not(.is-locked):hover .go-btn { background: currentColor; color: white; }
 
         .section-label {
-            max-width: 550px; margin: 20px auto 10px;
-            font-weight: 900; font-size: 0.9rem;
-            display: flex; align-items: center; gap: 8px; color: #475569;
+            max-width: 500px; margin: 30px auto 12px;
+            font-weight: 900; font-size: 0.95rem;
+            display: flex; align-items: center; gap: 10px; color: #334155;
         }
-        .dot { width: 7px; height: 7px; border-radius: 50%; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
     </style>
 </head>
 <body>
 
     <header class="main-header">
-        <div class="inline-block p-3 bg-emerald-50 rounded-2xl mb-3 border border-emerald-100 shadow-sm">
-            <i class="fas fa-graduation-cap text-2xl text-emerald-500"></i>
+        <div class="logo-container">
+            <div class="logo-shape"></div>
+            <div class="logo-text">اطلس</div>
         </div>
-        <h1 class="text-xl font-900 text-slate-800">منصة التميز التعليمية</h1>
-        <p class="text-slate-500 font-bold text-xs mt-1">المحتوى التعليمي المتاح</p>
+        <div class="flex items-center justify-center gap-2 mt-2">
+            <span class="h-[1px] w-8 bg-slate-200"></span>
+            <p class="text-emerald-600 font-bold text-xs uppercase tracking-widest">Education Platform</p>
+            <span class="h-[1px] w-8 bg-slate-200"></span>
+        </div>
     </header>
 
-    <main class="px-4">
+    <main class="px-4 mt-6">
 
-        <div class="section-label"><div class="dot bg-blue-500"></div> المرحلة الابتدائية</div>
+        <div class="section-label"><div class="dot bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.5)]"></div> المرحلة الابتدائية</div>
         
         <a href="grade4.html" class="list-card" style="color: #3b82f6;">
-            <div class="number-box">4</div>
+            <div class="number-box shadow-sm">٤</div>
             <div class="card-content">
                 <h3>الصف الرابع الابتدائي</h3>
                 <p>متاح الآن</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
+            <div class="text-slate-300"><i class="fas fa-chevron-left"></i></div>
         </a>
 
         <a href="grade5.html" class="list-card" style="color: #3b82f6;">
-            <div class="number-box">5</div>
+            <div class="number-box shadow-sm">٥</div>
             <div class="card-content">
                 <h3>الصف الخامس الابتدائي</h3>
                 <p>متاح الآن</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
+            <div class="text-slate-300"><i class="fas fa-chevron-left"></i></div>
         </a>
 
         <a href="grade6.html" class="list-card" style="color: #3b82f6;">
-            <div class="number-box">6</div>
+            <div class="number-box shadow-sm">٦</div>
             <div class="card-content">
                 <h3>الصف السادس الابتدائي</h3>
                 <p>متاح الآن</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
+            <div class="text-slate-300"><i class="fas fa-chevron-left"></i></div>
         </a>
 
-        <div class="section-label"><div class="dot bg-purple-500"></div> المرحلة الإعدادية</div>
+        <div class="section-label"><div class="dot bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div> المرحلة الإعدادية</div>
 
         <a href="grade7.html" class="list-card" style="color: #a855f7;">
-            <div class="number-box">1</div>
+            <div class="number-box shadow-sm">١</div>
             <div class="card-content">
                 <h3>الصف الأول الإعدادي</h3>
                 <p>متاح الآن</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
+            <div class="text-slate-300"><i class="fas fa-chevron-left"></i></div>
         </a>
 
         <a href="grade8.html" class="list-card" style="color: #a855f7;">
-            <div class="number-box">2</div>
+            <div class="number-box shadow-sm">٢</div>
             <div class="card-content">
                 <h3>الصف الثاني الإعدادي</h3>
                 <p>متاح الآن</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
+            <div class="text-slate-300"><i class="fas fa-chevron-left"></i></div>
         </a>
 
-        <div class="list-card is-locked" style="color: #a855f7;">
-            <div class="number-box">3</div>
+        <div class="list-card is-locked" style="color: #94a3b8;">
+            <div class="number-box shadow-sm"><i class="fas fa-lock text-sm"></i></div>
             <div class="card-content">
                 <h3>الصف الثالث الإعدادي</h3>
                 <p>قريباً جداً...</p>
             </div>
-            <div class="go-btn"><i class="fas fa-lock"></i></div>
+            <div class="text-slate-200"><i class="fas fa-chevron-left"></i></div>
         </div>
 
-        <div class="section-label"><div class="dot bg-orange-500"></div> المرحلة الثانوية</div>
+        <div class="section-label"><div class="dot bg-orange-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]"></div> المرحلة الثانوية</div>
 
         <a href="grade10.html" class="list-card" style="color: #f59e0b;">
-            <div class="number-box">1</div>
+            <div class="number-box shadow-sm">١</div>
             <div class="card-content">
                 <h3>الصف الأول الثانوي</h3>
                 <p>متاح الآن</p>
             </div>
-            <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
+            <div class="text-slate-300"><i class="fas fa-chevron-left"></i></div>
         </a>
 
-        <div class="list-card is-locked" style="color: #f59e0b;">
-            <div class="number-box">2</div>
+        <div class="list-card is-locked" style="color: #94a3b8;">
+            <div class="number-box shadow-sm"><i class="fas fa-lock text-sm"></i></div>
             <div class="card-content">
                 <h3>الصف الثاني الثانوي</h3>
                 <p>قريباً جداً...</p>
             </div>
-            <div class="go-btn"><i class="fas fa-lock"></i></div>
+            <div class="text-slate-200"><i class="fas fa-lock"></i></div>
         </div>
 
-        <div class="list-card is-locked" style="color: #f59e0b;">
-            <div class="number-box">3</div>
+        <div class="list-card is-locked" style="color: #94a3b8;">
+            <div class="number-box shadow-sm"><i class="fas fa-lock text-sm"></i></div>
             <div class="card-content">
                 <h3>الصف الثالث الثانوي</h3>
                 <p>قريباً جداً...</p>
             </div>
-            <div class="go-btn"><i class="fas fa-lock"></i></div>
+            <div class="text-slate-200"><i class="fas fa-lock"></i></div>
         </div>
 
     </main>
 
-    <footer class="mt-8 text-center text-slate-400 font-bold text-[10px] pb-6">
-        جميع الحقوق محفوظة لمنصة التميز &copy; 2026
+    <footer class="mt-16 text-center">
+        <p class="text-slate-400 font-bold text-[11px]">صنعت بحب لطلابنا في مصر</p>
+        <p class="text-slate-300 font-medium text-[10px] mt-1">جميع الحقوق محفوظة لمنصة أطلس التعليمية &copy; ٢٠٢٦</p>
     </footer>
 
 </body>
