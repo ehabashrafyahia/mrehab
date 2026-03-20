@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* --- تنسيقات شاشة الـ Splash --- */
+        /* --- شاشة الـ Splash --- */
         #splash-screen {
             position: fixed;
             top: 0; left: 0;
@@ -26,8 +26,6 @@
             visibility: hidden;
         }
 
-        .splash-content { text-align: center; }
-        
         .loader-bar {
             width: 140px; height: 3px;
             background: #f1f5f9;
@@ -49,7 +47,7 @@
             100% { left: 100%; }
         }
 
-        /* --- تنسيقات الصفحة الرئيسية --- */
+        /* --- الصفحة الرئيسية --- */
         body { 
             font-family: 'Cairo', sans-serif; 
             background-color: #f8fafc; 
@@ -75,7 +73,6 @@
         .logo-text {
             position: relative; z-index: 10; color: white;
             font-family: 'Reem Kufi', sans-serif; font-size: 2.2rem; font-weight: 700;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
         @keyframes morph {
@@ -83,9 +80,6 @@
             50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
         }
 
-        .main-header { text-align: center; padding: 40px 20px 20px; }
-
-        /* ستايل الأزرار مع اللمعة */
         .list-card {
             position: relative; overflow: hidden;
             border-radius: 24px;
@@ -117,7 +111,8 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
-        .grad-primary { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+        /* تعديل اللون للأخضر للمرحلة الابتدائية */
+        .grad-primary { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
         .grad-prep { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); }
         .grad-secondary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
         .grad-locked { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); opacity: 0.6; }
@@ -166,7 +161,7 @@
         </div>
     </div>
 
-    <header class="main-header pt-10">
+    <header class="main-header pt-10 text-center">
         <div class="logo-container">
             <div class="logo-shape"></div>
             <div class="logo-text">اطلس</div>
@@ -179,7 +174,7 @@
     </header>
 
     <main class="px-4 mt-6">
-        <div class="section-label"><div class="dot bg-blue-500 shadow-lg"></div> المرحلة الابتدائية</div>
+        <div class="section-label"><div class="dot bg-emerald-500 shadow-lg"></div> المرحلة الابتدائية</div>
         
         <a href="grade4.html" class="list-card grad-primary">
             <div class="number-box">٤</div>
@@ -213,12 +208,6 @@
             <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
         </a>
 
-        <div class="list-card grad-locked is-locked">
-            <div class="number-box"><i class="fas fa-lock text-sm"></i></div>
-            <div class="card-content"><h3>الصف الثالث الإعدادي</h3><p>قريباً جداً</p></div>
-            <div class="go-btn"><i class="fas fa-lock"></i></div>
-        </div>
-
         <div class="section-label"><div class="dot bg-orange-500 shadow-lg"></div> المرحلة الثانوية</div>
 
         <a href="grade10.html" class="list-card grad-secondary">
@@ -226,12 +215,6 @@
             <div class="card-content"><h3>الصف الأول الثانوي</h3><p>أفضل شروحات التاريخ</p></div>
             <div class="go-btn"><i class="fas fa-chevron-left"></i></div>
         </a>
-
-        <div class="list-card grad-locked is-locked">
-            <div class="number-box"><i class="fas fa-lock text-sm"></i></div>
-            <div class="card-content"><h3>الصف الثاني الثانوي</h3><p>قريباً جداً</p></div>
-            <div class="go-btn"><i class="fas fa-lock"></i></div>
-        </div>
     </main>
 
     <footer class="mt-16 text-center text-slate-400 font-bold text-[10px] pb-10">
@@ -239,13 +222,12 @@
     </footer>
 
     <script>
-        // إخفاء الـ Splash Screen بعد ثانيتين ونصف
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const splash = document.getElementById('splash-screen');
                 splash.classList.add('hidden-splash');
                 setTimeout(() => { splash.style.display = 'none'; }, 800);
-            }, 2500);
+            }, 2000); // تقليل وقت الانتظار قليلاً لسرعة التصفح
         });
     </script>
 </body>
