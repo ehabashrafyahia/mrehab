@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار المهن في بلدنا | منصة التميز</title>
+    <title>اختبار تاريخ العراق | منصة التميز</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,133 +11,147 @@
     <style>
         body { 
             font-family: 'Cairo', sans-serif; 
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #fffcf5 0%, #fef3c7 100%);
             min-height: 100vh;
             user-select: none;
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
-            border-radius: 2rem;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.1);
+            border-radius: 2.5rem;
         }
         .option-box {
             background: white;
-            border: 2px solid #e2e8f0;
+            border: 2px solid #f1f5f9;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: right;
             cursor: pointer;
         }
-        .option-box:hover { border-color: #10b981; transform: scale(1.02); }
+        .option-box:hover { border-color: #f59e0b; transform: translateY(-2px); }
         .option-box.selected {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             border-color: transparent;
             color: white;
+            box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
         }
         .opt-prefix {
-            background: #f1f5f9;
-            width: 38px; height: 38px;
+            background: #fef3c7;
+            width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 10px; font-weight: 900; color: #64748b;
+            border-radius: 12px; font-weight: 900; color: #d97706;
             flex-shrink: 0;
         }
         .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
         .progress-glow {
             height: 100%;
-            background: linear-gradient(90deg, #10b981, #3b82f6);
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
             border-radius: 100px;
-            transition: width 0.6s ease;
+            transition: width 0.4s ease;
         }
         .btn-confirm {
-            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
-            box-shadow: 0 15px 30px -10px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            box-shadow: 0 15px 30px -10px rgba(30, 41, 59, 0.3);
         }
-        #exit-modal { display: none; }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
-    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
-            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
-            <p class="text-slate-500 mb-6 font-bold">سيتم فقدان تقدمك في الاختبار</p>
+    <div id="exit-modal" class="hidden fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] p-8 max-w-sm w-full text-center shadow-2xl">
+            <div class="w-16 h-16 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد التوقف؟</h3>
+            <p class="text-slate-500 mb-6 font-bold">لن يتم حفظ درجتك الحالية</p>
             <div class="flex gap-3">
-                <a href="grade4.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold">خروج</a>
+                <a href="grade10.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold">خروج</a>
                 <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
             </div>
         </div>
     </div>
 
     <div id="quiz-wrapper" class="max-w-3xl mx-auto">
-        <div class="flex justify-between items-center mb-10">
-            <button onclick="toggleExitModal(true)" class="p-3 bg-white rounded-2xl shadow-sm text-slate-500 hover:text-red-500 border border-slate-100">
-                <i class="fas fa-sign-out-alt rotate-180"></i>
+        <div class="flex justify-between items-center mb-8">
+            <button onclick="toggleExitModal(true)" class="p-4 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-colors">
+                <i class="fas fa-times text-xl"></i>
             </button>
-            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-indigo-600">
-                <span id="q-count">1</span> / 15
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-orange-100 font-900 text-orange-600">
+                سؤال <span id="q-count">1</span> / 20
             </div>
-            <div class="p-3 bg-indigo-50 rounded-2xl text-indigo-500">
-                <i class="fas fa-briefcase"></i>
+            <div class="p-4 bg-orange-500 rounded-2xl text-white shadow-lg shadow-orange-200">
+                <i class="fas fa-landmark"></i>
             </div>
         </div>
 
-        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
-            <div id="progress-bar" class="progress-glow" style="width: 6.6%;"></div>
+        <div class="h-3 bg-white rounded-full mb-10 overflow-hidden shadow-sm border border-orange-50">
+            <div id="progress-bar" class="progress-glow" style="width: 5%;"></div>
         </div>
 
-        <div class="glass-card p-8 md:p-12 mb-10 relative">
-            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12"></h2>
-            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        <div class="glass-card p-8 md:p-12 mb-8 min-h-[400px] flex flex-col justify-center">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-10"></h2>
+            <div id="options-grid" class="grid grid-cols-1 gap-4"></div>
         </div>
 
-        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-[2rem] text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
             <span>تأكيد الإجابة</span>
-            <i class="fas fa-chevron-left"></i>
+            <i class="fas fa-arrow-left"></i>
         </button>
     </div>
 
-    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
-        <div class="glass-card p-12 shadow-2xl">
-            <div class="text-7xl mb-6">🎯</div>
-            <h1 class="text-4xl font-900 text-slate-800 mb-4">نتيجة الاختبار</h1>
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-6">
+        <div class="glass-card p-12">
+            <div id="trophy-icon" class="text-7xl mb-6">🏆</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">انتهى الاختبار!</h1>
+            <p id="result-msg" class="text-slate-500 font-bold mb-8">مجهود رائع في تاريخ العراق القديم</p>
+            
             <div class="relative inline-block mb-10">
-                <svg class="w-40 h-40 transform -rotate-90">
-                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
-                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                <svg class="w-48 h-48 transform -rotate-90">
+                    <circle cx="96" cy="96" r="85" stroke="#f1f5f9" stroke-width="15" fill="transparent" />
+                    <circle id="score-circle" cx="96" cy="96" r="85" stroke="#f59e0b" stroke-width="15" fill="transparent" stroke-dasharray="534" stroke-dashoffset="534" class="transition-all duration-[1500ms] ease-out" />
                 </svg>
-                <div class="absolute inset-0 flex items-center justify-center font-900 text-4xl text-slate-800" id="score-text">0%</div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-5xl text-slate-800" id="score-text">0%</span>
+                    <span class="text-slate-400 font-bold text-sm" id="raw-score">0 / 20</span>
+                </div>
             </div>
+
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-4 bg-emerald-500 text-white rounded-2xl font-bold shadow-lg">إعادة</button>
-                <a href="grade4.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
+                <button onclick="location.reload()" class="py-5 bg-orange-500 text-white rounded-[1.5rem] font-900 shadow-xl shadow-orange-200">إعادة الاختبار</button>
+                <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-900 shadow-xl shadow-slate-200 flex items-center justify-center">الدروس</a>
             </div>
         </div>
     </div>
 
     <script>
         const questions = [
-            { q: "تعتبر الزراعة من الركائز الأساسية لبلدنا لأنها توفر لنا:", a: ["الملابس", "الغذاء", "الأجهزة الإلكترونية", "الألعاب"], c: 1 },
-            { q: "يعمل الصيادون في صيد الأسماك من البحرين الأحمر والمتوسط ونهر النيل و....", a: ["الصحراء", "الترع والمزارع السمكية", "المصانع", "الغابات"], c: 1 },
-            { q: "من المهن المرتبطة بالصناعة والتجارة الذين يحولون المواد الخام لمنتجات:", a: ["المعلمون", "الأطباء", "المهندسون والعمال", "الفلاحون"], c: 2 },
-            { q: "يقوم 'التجار' بعرض المنتجات في الأسواق والمحلات لكي نتمكن من:", a: ["زراعتها", "شرائها بسهولة", "تصنيعها", "إهمالها"], c: 1 },
-            { q: "أي من الشخصيات التالية يعتبر من أصحاب 'المهن الخدمية'؟", a: ["الفلاح", "عامل النظافة", "الصياد", "الحداد"], c: 1 },
-            { q: "الشخص الذي يدافع عن الوطن ويحميه هو:", a: ["الطبيب", "المعلم", "ضابط الجيش", "السباك"], c: 2 },
-            { q: "يقوم 'عامل التوصيل' بمهنة هامة وهي:", a: ["بناء المنازل", "توصيل السلع للمواطنين", "علاج المرضى", "تنظيف الشوارع"], c: 1 },
-            { q: "ظهرت مهن جديدة لم تكن موجودة من قبل بسبب:", a: ["قلة السكان", "التقدم العلمي والتكنولوجي", "إلغاء المدارس", "نقص المياه"], c: 1 },
-            { q: "من أمثلة مهن المستقبل التي ظهرت مؤخراً:", a: ["الفلاح", "خبير الذكاء الاصطناعي", "النجار", "السباك"], c: 1 },
-            { q: "الشخص الذي يبتكر ألعاباً إلكترونية جديدة يسمى:", a: ["مبرمج حاسوب", "مصمم ألعاب", "صانع محتوى", "مطور تطبيقات"], c: 1 },
-            { q: "يعمل 'مهندس الطاقة المتجددة' على إنتاج طاقة نظيفة لحماية:", a: ["المصانع من التوقف", "البيئة من التلوث", "السفن من الغرق", "الأسماك من الصيد"], c: 1 },
-            { q: "من المهارات التي تحتاجها مهن المستقبل:", a: ["الكسل", "التفكير الإبداعي والعمل الجماعي", "الانعزال", "إهمال التكنولوجيا"], c: 1 },
-            { q: "وضع العلماء المسلمون أسساً علمية يستفيد منها العالم حتى اليوم مثل:", a: ["ابن الهيثم والخوارزمي", "نيوتن", "أديسون", "أينشتاين"], c: 0 },
-            { q: "يساعد مبرمج الحاسوب في تصميم:", a: ["المباني", "البرامج الإلكترونية", "الملابس", "السيارات"], c: 1 },
-            { q: "يجب علينا تجاه أصحاب كل المهن:", a: ["تجاهلهم", "السخرية منهم", "احترامهم وتقدير جهودهم", "عدم التعامل معهم"], c: 2 }
+            { q: "تشابهت الزقورات في العراق مع الهرم المدرج بمصر في الشكل، ولكنها اختلفت عنه في:", a: ["مادة البناء المستخدمة", "الوظيفة الأساسية (دينية مقابل جنائزية)", "الطبقة المسؤولة عن البناء", "الارتباط بالحياة الفنية"], c: 1 },
+            { q: "أي من ملوك العراق خالف عبارة 'الحكمة في الحكم تساعد في بسط النفوذ'؟", a: ["سرجون الأول", "حمورابي", "سنحاريب", "نبوخذ نصر الثاني"], c: 2 },
+            { q: "تحول الجيش لخدمة دائمة في العهد الآشوري يدل على:", a: ["زيادة عدد السكان", "تراجع أهمية الزراعة", "الرغبة في التوسع وتكوين إمبراطورية", "خوف الملوك من الثورات"], c: 2 },
+            { q: "القاسم المشترك بين سقوط الدولة الأكادية والدولة البابلية الحديثة هو:", a: ["التعرض للغزو من الغرب", "ضعف الملوك الذين خلفوا ملكاً قوياً", "ندرة الموارد الاقتصادية", "قيام ثورات شعبية"], c: 1 },
+            { q: "تفوقت مصر على العراق في ملكية الأرض، حيث كانت الأرض في العراق ملكاً لـ:", a: ["الفرعون", "الكهنة", "الأفراد (ملكية خاصة)", "الدولة"], c: 2 },
+            { q: "أي دولة عراقية هي الأقرب لخصائص 'الدولة الحديثة' بمصر عسكرياً وتوسعياً؟", a: ["السومرية", "الأكادية", "الآشورية", "البابلية القديمة"], c: 2 },
+            { q: "صورة حمورابي وهو يتسلم القوانين من إله الشمس تهدف إلى:", a: ["إظهار المهارة الفنية", "تأكيد القدسية الإلهية للقوانين لضمان طاعتها", "تخليد الانتصارات", "توضيح العلاقة مع الشعب"], c: 1 },
+            { q: "الاختلاف الجوهري بين السومريين والأكاديين يكمن في:", a: ["العقيدة الدينية", "النشاط الاقتصادي", "النضج السياسي (مدن مستقلة مقابل دولة موحدة)", "لغة الكتابة"], c: 2 },
+            { q: "تأثر الفن العراقي بفن الرسم والنقش المصري وظهر ذلك في:", a: ["بناء الزقورات", "استخدام الختم الإسطواني", "رسم الحيوانات المجنحة", "الحدائق المعلقة"], c: 2 },
+            { q: "يتشابه 'أدب الطوفان' بالعراق مع 'إيزيس وأوزيريس' بمصر في:", a: ["التأريخ السياسي", "غلبة الطابع الديني والأخلاقي", "تسجيل الانتصارات", "وصف الطبيعة"], c: 1 },
+            { q: "أول اختراق أجنبي 'شرقي' أدى لسقوط دولة كاملة بالعراق كان على يد:", a: ["المقدونيين", "الفرس", "الرومان", "الفينيقيين"], c: 1 },
+            { q: "ارتبطت مهنة 'الكتابة المسمارية' في العراق القديم بشكل وثيق بـ:", a: ["الطبقة الدنيا", "المعابد (الزقورات) لتدوين السجلات", "الجيش", "الرعي"], c: 1 },
+            { q: "العامل الرئيسي لقيام الزراعة في العراق هو وجود:", a: ["الخليج العربي", "الأنهار (دجلة والفرات) والتربة الخصبة", "الأمطار الصيفية", "المياه الجوفية"], c: 1 },
+            { q: "يرجع السبب في انهيار الدولة الآشورية إلى:", a: ["إهمال الجانب الديني", "إغفال حقوق الشعوب الخاضعة لهم (المواطنة)", "صغر المساحة", "التحالف مع الفرس"], c: 1 },
+            { q: "ظهر التواصل الثقافي مع مصر في الأسرة 19 من خلال عبادة:", a: ["الإله أنو", "الإلهة عشتار", "الإله شمش", "الإله مردوخ"], c: 1 },
+            { q: "الأختام الإسطوانية بمنطقة 'جرزة' بمصر تدل على تواصل:", a: ["سياسي", "ديني", "اقتصادي وتجاري", "فني"], c: 2 },
+            { q: "نبوخذ نصر الثاني وحمورابي كلاهما اشتركا في:", a: ["الأصول السومرية", "السيطرة على الفرات والساحل المتوسطي", "إصدار قوانين مكتوبة", "غزو اليونان"], c: 1 },
+            { q: "أكثر الدول العراقية التي اتسمت بـ 'المركزية الشديدة' هي:", a: ["السومرية", "الدولة الأكادية", "الكلدانية", "البابلية الحديثة"], c: 1 },
+            { q: "تقسيم المجتمع العراقي لثلاث طبقات كان يعتمد أساساً على:", a: ["الدين", "الوضع الاقتصادي والوظيفة", "العرق", "مكان السكن"], c: 1 },
+            { q: "تمثل الوظيفة 'السياسية' للمعبد (الزقورة) في:", a: ["تعليم القراءة", "تتويج الملك وحفظ العقود", "مخزن للحبوب", "إيواء الفقراء"], c: 1 }
         ];
 
         let index = 0, score = 0, picked = null;
 
-        function toggleExitModal(show) { document.getElementById('exit-modal').style.display = show ? 'flex' : 'none'; }
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; }
 
         function render() {
             picked = null;
@@ -146,9 +160,10 @@
             document.getElementById('q-count').innerText = index + 1;
             const grid = document.getElementById('options-grid');
             grid.innerHTML = '';
+            
             q.a.forEach((opt, i) => {
                 const btn = document.createElement('div');
-                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 group';
+                btn.className = 'option-box p-5 md:p-6 rounded-2xl flex items-center gap-4';
                 btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
                 btn.onclick = () => {
                     document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
@@ -161,7 +176,7 @@
         }
 
         function goToNext() {
-            if (picked === null) return alert("اختر إجابة أولاً!");
+            if (picked === null) return;
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
@@ -172,8 +187,17 @@
             document.getElementById('result-view').classList.remove('hidden');
             const pct = Math.round((score / questions.length) * 100);
             document.getElementById('score-text').innerText = pct + '%';
-            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            document.getElementById('raw-score').innerText = `${score} من ${questions.length}`;
+            
+            // Animation for circle
+            const circle = document.getElementById('score-circle');
+            const offset = 534 - (534 * pct) / 100;
+            setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
+
+            if(pct < 50) document.getElementById('trophy-icon').innerText = '💪';
+            else if(pct < 85) document.getElementById('trophy-icon').innerText = '🌟';
         }
+
         render();
     </script>
 </body>
