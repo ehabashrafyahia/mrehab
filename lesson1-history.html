@@ -1,0 +1,156 @@
+Enter<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة التميز | اختبار تاريخ العراق القديم</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #fdfdfd; }
+        
+        .quiz-container { max-width: 700px; margin: 20px auto; padding: 15px; }
+        
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .option-label {
+            display: block;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+
+        .option-label:hover { background: #fff7ed; border-color: #fdba74; }
+
+        /* حالة الإجابة الصحيحة */
+        .correct { background: #dcfce7 !important; border-color: #22c55e !important; color: #166534; }
+        /* حالة الإجابة الخاطئة */
+        .wrong { background: #fee2e2 !important; border-color: #ef4444 !important; color: #991b1b; }
+        
+        .result-box {
+            display: none;
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            border: 2px solid #f59e0b;
+        }
+    </style>
+</head>
+<body class="pb-10">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-orange-100 shadow-sm">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="grade10.html" class="text-orange-600 font-bold text-sm"><i class="fas fa-times ml-2"></i>إنهاء</a>
+            <h1 class="font-900 text-slate-800">اختبار حضارة العراق</h1>
+            <div class="text-orange-500 font-bold" id="timer">الأسئلة: 20</div>
+        </div>
+    </header>
+
+    <div class="quiz-container">
+        <form id="quizForm">
+            <div id="questionsWrapper"></div>
+
+            <button type="button" onclick="calculateResult()" id="submitBtn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-900 py-4 rounded-2xl shadow-lg transition-all transform hover:scale-[1.02]">
+                عرض النتيجة النهائية
+            </button>
+        </form>
+
+        <div id="resultBox" class="result-box mt-10">
+            <div class="text-5xl mb-4">🎉</div>
+            <h2 class="text-2xl font-900 text-slate-800 mb-2">أحسنت يا بطل!</h2>
+            <p class="text-slate-500 font-bold mb-6">لقد حصلت على درجة:</p>
+            <div class="text-6xl font-900 text-orange-500 mb-8"><span id="score">0</span> / 20</div>
+            <button onclick="location.reload()" class="bg-slate-800 text-white px-8 py-3 rounded-xl font-bold">إعادة الاختبار</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "تشابهت الزقورات في بلاد الرافدين مع الهرم المدرج بمصر في الشكل المعماري، ولكنها اختلفت عنه في:", a: ["مادة البناء المستخدمة", "الوظيفة الأساسية (دينية مقابل جنائزية)", "الطبقة المسؤولة عن البناء", "الارتباط بالحياة الفنية"], c: 1 },
+            { q: "استخدام الحكمة في الإدارة والحكم يساعد بشكل كبير في بسط النفوذ؛ أي من ملوك العراق خالف مضمون هذه العبارة؟", a: ["سرجون الأول", "حمورابي", "سنحاريب", "نبوخذ نصر الثاني"], c: 2 },
+            { q: "كانت الخدمة العسكرية في العراق إلزامية أيام الحرب حتى جاء العهد الآشوري وأصبح الجيش دائماً؛ هذا التغير يدل على:", a: ["زيادة عدد سكان العراق بشكل ضخم", "تراجع أهمية الزراعة في ذلك الوقت", "الرغبة في التوسع وتكوين إمبراطورية كبرى", "خوف الملوك من الثورات الداخلية"], c: 2 },
+            { q: "القاسم المشترك بين سقوط الدولة الأكادية والدولة البابلية الحديثة (الكلدانية) هو:", a: ["التعرض للغزو من جهة الغرب", "ضعف الملوك الذين خلفوا ملكاً قوياً", "ندرة الموارد الاقتصادية والزراعية", "قيام ثورات شعبية ضدهم"], c: 1 },
+            { q: "تفوقت الحضارة المصرية على الحضارة العراقية في نظام ملكية الأرض الزراعية، حيث كانت الأرض في العراق ملكاً لـ:", a: ["الفرعون (الملك)", "الكهنة (المعبد)", "الأفراد (ملكية خاصة)", "الدولة بشكل عام"], c: 2 },
+            { q: "أي من الدول العراقية التالية تعد الأقرب في خصائصها إلى عصر الدولة الحديثة في مصر من حيث النشاط العسكري والتوسعي؟", a: ["الدويلات السومرية", "الدولة الأكادية", "الدولة الآشورية", "الدولة البابلية القديمة"], c: 2 },
+            { q: "صورة الملك حمورابي وهو يتسلم القوانين من إله الشمس؛ تهدف في المقام الأول إلى:", a: ["إظهار المهارة الفنية للنحات العراقي", "التأكيد على أن القوانين لها قدسية إلهية لضمان طاعتها", "تخليد ذكرى انتصارات الملك العسكرية", "توضيح العلاقة الطيبة بين الملك والشعب"], c: 1 },
+            { q: "الاختلاف الجوهري بين السومريين والأكاديين يكمن في:", a: ["العقيدة الدينية والآلهة", "النشاط الاقتصادي", "النضج السياسي (مدن مستقلة مقابل دولة موحدة)", "لغة الكتابة المستخدمة"], c: 2 },
+            { q: "تأثر الفن العراقي بفن الرسم والنقش المصري، وظهر ذلك بوضوح في:", a: ["بناء الزقورات", "استخدام الختم الإسطواني", "رسم الحيوانات المجنحة", "بناء الحدائق المعلقة"], c: 2 },
+            { q: "أدب الطوفان في العراق القديم يتشابه في هدفه مع قصة إيزيس وأوزيريس بمصر من حيث:", a: ["التأريخ للأحداث السياسية", "غلبة الطابع الديني والأخلاقي", "تسجيل الانتصارات العسكرية", "وصف الطبيعة الجغرافية"], c: 1 },
+            { q: "أول اختراق أجنبي شرقي لبلاد العراق القديم أدى لسقوط دولة كاملة كان على يد:", a: ["المقدونيين", "الفرس", "الرومان", "الفينيقيين"], c: 1 },
+            { q: "ارتبطت مهنة الكتابة المسمارية في العراق القديم بشكل وثيق بـ:", a: ["الطبقة الدنيا", "المعابد (الزقورات) لتدوين السجلات", "الجيش", "حرفة الرعي"], c: 1 },
+            { q: "العامل الرئيسي الذي ساعد على قيام الزراعة في العراق هو:", a: ["الموقع على الخليج", "الأنهار (دجلة والفرات) والتربة الخصبة", "الأمطار الصيفية", "جلب المياه"], c: 1 },
+            { q: "يرجع السبب في انهيار الدولة الآشورية رغم قوتها العسكرية إلى:", a: ["إهمالهم للجانب الديني", "إغفالهم لمبدأ المواطنة وحقوق الشعوب", "صغر المساحة", "تحالفهم مع المصريين"], c: 1 },
+            { q: "ظهر التواصل الثقافي بين مصر والعراق في الأسرة 19 من خلال:", a: ["عبادة أنو", "عبادة الإلهة عشتار", "اللغة المسمارية", "بناء الأهرامات"], c: 1 },
+            { q: "الأختام الإسطوانية التي عُثر عليها في جرزة بمصر تدل على تواصل:", a: ["سياسي", "ديني", "اقتصادي وتجاري", "فني"], c: 2 },
+            { q: "الملك نبوخذ نصر الثاني والملك حمورابي كلاهما اشتركا في:", a: ["أصول سومرية", "السيطرة على الفرات والساحل الشرقي للمتوسط", "إصدار قوانين مكتوبة", "بناء معابد بمصر"], c: 1 },
+            { q: "تُعد أكثر الدول العراقية التي اتسمت بـ المركزية الشديدة هي:", a: ["السومرية", "الدولة الأكادية", "الكلدانية", "البابلية القديمة"], c: 1 },
+            { q: "تقسيم المجتمع العراقي إلى ثلاث طبقات كان يعتمد في الأساس على:", a: ["الدين", "الوضع الاقتصادي والوظيفة", "اللون", "مكان السكن"], c: 1 },
+            { q: "كان للمعبد وظيفة سياسية بجانب وظيفته الدينية؛ ويتمثل ذلك في:", a: ["تعليم القراءة", "تتويج الملك وحفظ العقود", "مخزن أسلحة", "إيواء الفقراء"], c: 1 }
+        ];
+
+        function renderQuestions() {
+            const wrapper = document.getElementById('questionsWrapper');
+            questions.forEach((item, index) => {
+                let optionsHtml = '';
+                item.a.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <label class="option-label" id="q${index}opt${optIndex}">
+                            <input type="radio" name="q${index}" value="${optIndex}" class="hidden" onchange="checkAnswer(${index}, ${optIndex}, ${item.c})">
+                            <span class="ml-2">${String.fromCharCode(65 + optIndex)})</span> ${opt}
+                        </label>
+                    `;
+                });
+
+                wrapper.innerHTML += `
+                    <div class="question-card">
+                        <h3 class="font-800 text-lg text-slate-800 mb-4">${index + 1}) ${item.q}</h3>
+                        ${optionsHtml}
+                    </div>
+                `;
+            });
+        }
+
+        function checkAnswer(qIdx, optIdx, correctIdx) {
+            // تلوين الإجابة المختارة
+            const allOptions = document.querySelectorAll(`[name="q${qIdx}"]`);
+            allOptions.forEach((input, i) => {
+                const label = document.getElementById(`q${qIdx}opt${i}`);
+                label.classList.remove('correct', 'wrong');
+                input.disabled = true; // منع تغيير الإجابة بعد الاختيار
+                if (i === correctIdx) label.classList.add('correct');
+                else if (i === optIdx) label.classList.add('wrong');
+            });
+        }
+
+        function calculateResult() {
+            let score = 0;
+            questions.forEach((item, index) => {
+                const selected = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selected && parseInt(selected.value) === item.c) score++;
+            });
+
+            document.getElementById('score').innerText = score;
+            document.getElementById('quizForm').style.display = 'none';
+            document.getElementById('resultBox').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        renderQuestions();
+    </script>
+</body>
+</html>
