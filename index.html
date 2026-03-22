@@ -6,26 +6,41 @@
     <title>تسجيل دخول الطلاب | مستر إيهاب أشرف</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { font-family: 'Cairo', sans-serif; background: #f8fafc; }
         
-        /* اللوجو بالحجم الكبير والشكل الأصلي */
-        .logo-shape {
-            width: 150px; 
+        /* تصميم اللوجو المطابق لصفحة home */
+        .logo-container { 
+            position: relative; 
+            width: 150px; /* تكبير الحجم قليلاً للتناسب مع التسجيل */
             height: 120px; 
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; 
-            margin: 0 auto 25px;
+            margin: 0 auto 25px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            color: white; 
-            font-size: 2.8rem; 
-            font-weight: 900; 
-            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
+        }
+        
+        .logo-shape {
+            position: absolute; 
+            width: 100%; 
+            height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
             animation: morph 6s linear infinite;
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
+        }
+
+        /* تنسيق كلمة اطلس الجرافيكي */
+        .logo-text { 
+            position: relative; 
+            z-index: 10; 
+            color: white; 
+            font-family: 'Reem Kufi', sans-serif; 
+            font-size: 2.8rem; /* حجم الخط الجرافيكي */
+            font-weight: 700; 
         }
 
         @keyframes morph { 
@@ -46,8 +61,12 @@
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
 
-    <div class="bg-white w-full max-w-sm p-10 rounded-[40px] shadow-2xl text-center border border-slate-50">
-        <div class="logo-shape">أطلس</div>
+    <div class="bg-white w-full max-w-sm p-10 rounded-[45px] shadow-2xl text-center border border-slate-50">
+        
+        <div class="logo-container">
+            <div class="logo-shape"></div>
+            <div class="logo-text">اطلس</div>
+        </div>
         
         <h2 class="text-2xl font-black text-slate-800 mb-2">مرحباً بك يا بطل</h2>
         <p class="text-slate-400 text-xs font-bold mb-8">يرجى تسجيل الدخول للبدء</p>
