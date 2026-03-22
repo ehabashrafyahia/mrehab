@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار تاريخ العراق | منصة التميز</title>
+    <title>اختبار تاريخ العراق القديم | منصة التميز</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         body { 
@@ -23,32 +24,25 @@
             border-radius: 2.5rem;
         }
         .option-box {
-            background: white;
-            border: 2px solid #f1f5f9;
+            background: white; border: 2px solid #f1f5f9;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: right;
-            cursor: pointer;
+            text-align: right; cursor: pointer;
         }
         .option-box:hover { border-color: #f59e0b; transform: translateY(-2px); }
         .option-box.selected {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            border-color: transparent;
-            color: white;
+            border-color: transparent; color: white;
             box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
         }
         .opt-prefix {
-            background: #fef3c7;
-            width: 40px; height: 40px;
+            background: #fef3c7; width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 12px; font-weight: 900; color: #d97706;
-            flex-shrink: 0;
         }
         .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
         .progress-glow {
-            height: 100%;
-            background: linear-gradient(90deg, #f59e0b, #fbbf24);
-            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
-            border-radius: 100px;
+            height: 100%; background: linear-gradient(90deg, #f59e0b, #fbbf24);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); border-radius: 100px;
             transition: width 0.4s ease;
         }
         .btn-confirm {
@@ -67,15 +61,15 @@
             <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد التوقف؟</h3>
             <p class="text-slate-500 mb-6 font-bold">لن يتم حفظ درجتك الحالية</p>
             <div class="flex gap-3">
-                <a href="grade10.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold">خروج</a>
+                <a href="grade10.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
                 <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto hidden">
         <div class="flex justify-between items-center mb-8">
-            <button onclick="toggleExitModal(true)" class="p-4 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-colors">
+            <button onclick="toggleExitModal(true)" class="p-4 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-colors border border-orange-50">
                 <i class="fas fa-times text-xl"></i>
             </button>
             <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-orange-100 font-900 text-orange-600">
@@ -118,14 +112,22 @@
                 </div>
             </div>
 
+            <button onclick="sendToWhatsApp()" class="w-full py-5 bg-emerald-500 text-white rounded-[1.5rem] font-black shadow-lg mb-4 flex items-center justify-center gap-3 hover:bg-emerald-600 transition active:scale-95">
+                <i class="fab fa-whatsapp text-2xl"></i>
+                إرسال النتيجة للمستر
+            </button>
+
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-5 bg-orange-500 text-white rounded-[1.5rem] font-900 shadow-xl shadow-orange-200">إعادة الاختبار</button>
-                <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-900 shadow-xl shadow-slate-200 flex items-center justify-center">الدروس</a>
+                <button onclick="location.reload()" class="py-5 bg-orange-100 text-orange-700 rounded-[1.5rem] font-900">إعادة الاختبار</button>
+                <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-900 flex items-center justify-center">الدروس</a>
             </div>
         </div>
     </div>
 
     <script>
+        const MY_PHONE = "201559116736";
+        const LESSON_NAME = "تاريخ العراق القديم - أولى ثانوي";
+
         const questions = [
             { q: "تشابهت الزقورات في العراق مع الهرم المدرج بمصر في الشكل، ولكنها اختلفت عنه في:", a: ["مادة البناء المستخدمة", "الوظيفة الأساسية (دينية مقابل جنائزية)", "الطبقة المسؤولة عن البناء", "الارتباط بالحياة الفنية"], c: 1 },
             { q: "أي من ملوك العراق خالف عبارة 'الحكمة في الحكم تساعد في بسط النفوذ'؟", a: ["سرجون الأول", "حمورابي", "سنحاريب", "نبوخذ نصر الثاني"], c: 2 },
@@ -149,7 +151,23 @@
             { q: "تمثل الوظيفة 'السياسية' للمعبد (الزقورة) في:", a: ["تعليم القراءة", "تتويج الملك وحفظ العقود", "مخزن للحبوب", "إيواء الفقراء"], c: 1 }
         ];
 
-        let index = 0, score = 0, picked = null;
+        let index = 0, score = 0, picked = null, studentName = "";
+
+        // طلب الاسم عند بدء التشغيل
+        window.onload = async () => {
+            const { value: name } = await Swal.fire({
+                title: 'مرحباً بك في بلاد الرافدين',
+                text: 'ادخل اسمك الثلاثي لبدء التحدي',
+                input: 'text',
+                confirmButtonText: 'ابدأ الآن',
+                confirmButtonColor: '#f59e0b',
+                allowOutsideClick: false,
+                inputValidator: (v) => !v && 'يجب كتابة الاسم للمتابعة!'
+            });
+            studentName = name;
+            document.getElementById('quiz-wrapper').classList.remove('hidden');
+            render();
+        };
 
         function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; }
 
@@ -172,11 +190,11 @@
                 };
                 grid.appendChild(btn);
             });
-            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+            document.getElementById('progress-bar').style.width = (((index) / questions.length) * 100) + '%';
         }
 
         function goToNext() {
-            if (picked === null) return;
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#f59e0b'});
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
@@ -189,7 +207,6 @@
             document.getElementById('score-text').innerText = pct + '%';
             document.getElementById('raw-score').innerText = `${score} من ${questions.length}`;
             
-            // Animation for circle
             const circle = document.getElementById('score-circle');
             const offset = 534 - (534 * pct) / 100;
             setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
@@ -198,7 +215,13 @@
             else if(pct < 85) document.getElementById('trophy-icon').innerText = '🌟';
         }
 
-        render();
+        // إرسال عبر WhatsApp (wa.me)
+        function sendToWhatsApp() {
+            const pct = Math.round((score / questions.length) * 100);
+            const message = `مرحباً مستر إيهاب، أنا الطالب: ${studentName}\nأتممت اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nالإجابات الصحيحة: ${score} من ${questions.length}`;
+            window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(message)}`;
+        }
+
     </script>
 </body>
 </html>
