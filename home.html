@@ -3,114 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة أطلس | الصفوف الدراسية</title>
+    <title>منصة أطلس التعليمية | أ. إيهاب أشرف</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
-        // كود أمان: لو مش مسجل دخول يرجعه لصفحة index
+        // كود الأمان: التحقق من تسجيل الدخول قبل عرض أي شيء
         if(localStorage.getItem("atlas_auth") !== "true") {
             window.location.href = "index.html";
         }
     </script>
-    <style>
-        body { font-family: 'Cairo', sans-serif; background: #f8fafc; }
-        .logo-shape {
-            width: 100px; height: 80px; background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; margin: 0 auto;
-            display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; font-weight: 900;
-        }
-        /* شريط المتميزين */
-        .ticker { background: white; border-block: 1px solid #e2e8f0; padding: 10px 0; overflow: hidden; white-space: nowrap; margin: 20px 0; }
-        .ticker-move { display: inline-block; animation: move 20s linear infinite; }
-        @keyframes move { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        
-        .grade-card {
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 20px; padding: 20px; margin-bottom: 15px;
-            display: flex; align-items: center; color: white; text-decoration: none; transition: 0.3s;
-        }
-        .grade-card:hover { transform: scale(1.02); }
 
-        /* ستايل الكروت غير المفعلة (المخفية) */
-        .grade-card-locked {
-            background: #e2e8f0; border-radius: 20px; padding: 20px; margin-bottom: 15px;
-            display: flex; align-items: center; color: #94a3b8; cursor: not-allowed; opacity: 0.7;
+    <style>
+        /* --- شاشة الـ Splash الأصلية --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 10000; transition: opacity 0.8s ease, visibility 0.8s;
         }
+        #splash-screen.hidden-splash { opacity: 0; visibility: hidden; }
+        .splash-main-content { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .loader-bar {
+            width: 140px; height: 3px; background: #f1f5f9; border-radius: 10px;
+            margin: 20px auto; position: relative; overflow: hidden;
+        }
+        .loader-bar::after {
+            content: ""; position: absolute; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, #10b981, transparent);
+            animation: loadingProgress 1.5s infinite linear;
+        }
+        @keyframes loadingProgress { 0% { left: -100%; } 100% { left: 100%; } }
+        .splash-footer { padding-bottom: 40px; text-align: center; }
+        .splash-footer h4 { font-weight: 800; color: #334155; font-size: 1.1rem; }
+        .splash-footer p { font-weight: 700; color: #10b981; direction: ltr; }
+
+        /* --- شريط الطلاب المتميزين --- */
+        .news-ticker {
+            background: white; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0; overflow: hidden; display: flex; align-items: center; margin-top: 15px;
+        }
+        .ticker-label {
+            background: #10b981; color: white; padding: 5px 15px; font-weight: 800; font-size: 0.85rem;
+            z-index: 10; border-radius: 0 50px 50px 0; white-space: nowrap;
+        }
+        .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; }
+        .student-name { display: inline-block; padding: 0 25px; color: #334155; font-weight: 700; font-size: 0.95rem; }
+        .student-name i { color: #f59e0b; margin-left: 8px; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* --- تصميم اللوجو والبطاقات --- */
+        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .logo-container { position: relative; width: 130px; height: 100px; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; }
+        .logo-shape {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: morph 6s linear infinite;
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
+        }
+        .logo-text { position: relative; z-index: 10; color: white; font-family: 'Reem Kufi', sans-serif; font-size: 2.2rem; font-weight: 700; }
+        @keyframes morph { 0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } }
+
+        .list-card {
+            position: relative; overflow: hidden; border-radius: 24px; padding: 18px 24px; margin: 0 auto 15px;
+            display: flex; align-items: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 500px; text-decoration: none; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .list-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); }
+        .grad-primary { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .grad-prep { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); }
+        .grad-secondary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .grad-locked { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); opacity: 0.6; cursor: not-allowed; }
+
+        .number-box { width: 54px; height: 54px; border-radius: 18px; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; margin-left: 20px; }
+        .card-content { flex-grow: 1; text-align: right; }
+        .section-label { max-width: 500px; margin: 25px auto 15px; font-weight: 900; display: flex; align-items: center; gap: 12px; color: #475569; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid white; }
+        .main-footer { margin-top: 50px; text-align: center; border-top: 1px solid #e2e8f0; padding: 25px 0; }
+        .footer-phone { color:#10b981; text-decoration:none; font-weight: 700; display: inline-flex; align-items: center; direction: ltr; margin-top: 5px; }
     </style>
 </head>
-<body class="pb-10">
+<body>
 
-    <header class="pt-10 text-center px-4">
-        <div class="logo-shape">أطلس</div>
-        
-        <div class="mt-6">
-            <h1 class="text-2xl font-black text-slate-800">
-                أهلاً بك يا <span id="student-name" class="text-emerald-600">بطل</span> 👋
-            </h1>
-            <p class="text-[10px] font-bold text-slate-400 mt-1">مستر إيهاب أشرف يتمنى لك وقتاً ممتعاً</p>
+    <div id="splash-screen">
+        <div class="splash-main-content">
+            <div class="logo-container" style="transform: scale(1.2);">
+                <div class="logo-shape"></div>
+                <div class="logo-text">اطلس</div>
+            </div>
+            <div class="loader-bar"></div>
+            <p class="text-slate-400 font-bold text-[11px] uppercase tracking-widest text-center px-4">طريقك نحو القمة</p>
         </div>
-
-        <button onclick="localStorage.clear(); window.location.href='index.html';" class="text-[10px] font-bold text-red-400 mt-4 underline">تسجيل خروج</button>
-    </header>
-
-    <div class="ticker">
-        <div class="ticker-move">
-            <span class="px-8 font-bold text-emerald-600"><i class="fas fa-trophy text-amber-500"></i> الطالب المتميز: ياسين محمد</span>
-            <span class="px-8 font-bold text-emerald-600"><i class="fas fa-trophy text-amber-500"></i> الطالبة المتميزة: مريم خالد</span>
-            <span class="px-8 font-bold text-emerald-600"><i class="fas fa-trophy text-amber-500"></i> الطالب المتميز: أحمد إبراهيم</span>
+        <div class="splash-footer">
+            <h4>إعداد: أ. إيهاب أشرف</h4>
+            <p><i class="fab fa-whatsapp" style="color:#25D366"></i> 01559116736</p>
         </div>
     </div>
 
-    <main class="px-6 max-w-md mx-auto">
-        <h2 class="font-black text-slate-700 mb-6 text-lg mr-2">اختر صفك الدراسي:</h2>
-
-        <a href="grade4.html" class="grade-card">
-            <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-black ml-4 text-xl">٤</div>
-            <div class="flex-grow text-right"><h3>الرابع الابتدائي</h3><p class="text-[10px] opacity-80 text-white">مناهج الدراسات الاجتماعية</p></div>
-            <i class="fas fa-chevron-left text-xs opacity-50"></i>
-        </a>
-
-        <div class="grade-card-locked" onclick="showSoon()">
-            <div class="w-12 h-12 bg-slate-300 rounded-xl flex items-center justify-center font-black ml-4 text-xl text-slate-400">٥</div>
-            <div class="flex-grow text-right"><h3>الخامس الابتدائي</h3><p class="text-[10px] text-slate-400">قريباً مع مستر إيهاب</p></div>
-            <i class="fas fa-lock text-xs opacity-30"></i>
+    <header class="pt-8 text-center px-4">
+        <div class="logo-container"><div class="logo-shape"></div><div class="logo-text">اطلس</div></div>
+        
+        <div class="mt-4">
+            <h2 class="text-xl font-black text-slate-800">أهلاً بك يا <span id="student-display-name" class="text-emerald-600">بطل</span> 👋</h2>
+            <button onclick="logout()" class="text-[10px] font-bold text-red-400 mt-2 underline">تسجيل خروج</button>
         </div>
+    </header>
 
-        <div class="grade-card-locked" onclick="showSoon()">
-            <div class="w-12 h-12 bg-slate-300 rounded-xl flex items-center justify-center font-black ml-4 text-xl text-slate-400">٦</div>
-            <div class="flex-grow text-right"><h3>السادس الابتدائي</h3><p class="text-[10px] text-slate-400">انتظروا المفاجأة</p></div>
-            <i class="fas fa-lock text-xs opacity-30"></i>
-        </div>
+    <div class="news-ticker">
+        <div class="ticker-label">متميزو الأسبوع 🏆</div>
+        <div class="ticker-content" id="ticker-names"></div>
+    </div>
 
-        </main>
+    <main class="px-4 mt-6">
+        
+        <div class="section-label"><div class="dot bg-emerald-500 shadow-lg"></div> المرحلة الابتدائية</div>
+        <a href="grade4.html" class="list-card grad-primary"><div class="number-box">٤</div><div class="card-content"><h3>الصف الرابع الابتدائي</h3><p>مناهج تفاعلية حديثة</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
+        <a href="grade5.html" class="list-card grad-primary"><div class="number-box">٥</div><div class="card-content"><h3>الصف الخامس الابتدائي</h3><p>بوابتك نحو التميز</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
+        <a href="grade6.html" class="list-card grad-primary"><div class="number-box">٦</div><div class="card-content"><h3>الصف السادس الابتدائي</h3><p>محتوى تعليمي متكامل</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
 
-    <footer class="mt-10 text-center px-6">
-        <p class="text-[10px] text-slate-400 font-bold">جميع الحقوق محفوظة لمنصة أطلس &copy; ٢٠٢٦</p>
-        <p class="text-[9px] text-slate-300 font-bold mt-1">تصميم وإعداد: أ. إيهاب أشرف</p>
+        <div class="section-label"><div class="dot bg-purple-500 shadow-lg"></div> المرحلة الإعدادية</div>
+        <a href="grade7.html" class="list-card grad-prep"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الإعدادي</h3><p>تعلم بذكاء وأسلوب ممتع</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
+        <a href="grade8.html" class="list-card grad-prep"><div class="number-box">٢</div><div class="card-content"><h3>الصف الثاني الإعدادي</h3><p>طريقك المباشر للنجاح</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
+        
+        <div class="list-card grad-locked" onclick="showSoon()"><div class="number-box"><i class="fas fa-lock text-sm"></i></div><div class="card-content"><h3>الصف الثالث الإعدادي</h3><p>قريباً جداً</p></div></div>
+
+        <div class="section-label"><div class="dot bg-orange-500 shadow-lg"></div> المرحلة الثانوية</div>
+        <a href="grade10.html" class="list-card grad-secondary"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الثانوي</h3><p>أفضل شروحات التاريخ</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
+    
+    </main>
+
+    <footer class="main-footer">
+        <div class="font-bold text-slate-500">إعداد: أ. إيهاب أشرف</div>
+        <a href="https://wa.me/201559116736" class="footer-phone"><i class="fab fa-whatsapp mr-1"></i> 01559116736</a>
+        <div class="text-[10px] text-slate-400 mt-3 font-bold">جميع الحقوق محفوظة &copy; ٢٠٢٦</div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // دالة عرض الاسم المخزون من صفحة index
+        // تفعيل الترحيب بالاسم
         window.onload = function() {
-            const name = localStorage.getItem("student_identity");
-            if (name) {
-                document.getElementById('student-name').innerText = name;
-            }
+            const studentName = localStorage.getItem("student_identity") || "بطل";
+            document.getElementById('student-display-name').innerText = studentName;
         }
 
-        // تنبيه الصفوف غير المفعلة
+        // شريط المتميزين
+        const TOP_STUDENTS = ["ياسين محمد", "مريم خالد", "أحمد إبراهيم", "سلمى يوسف", "زياد حسن"];
+        const tickerContainer = document.getElementById('ticker-names');
+        const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
+        tickerContainer.innerHTML = namesHtml + namesHtml;
+
+        // إخفاء الـ Splash
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const splash = document.getElementById('splash-screen');
+                splash.classList.add('hidden-splash');
+                setTimeout(() => { splash.style.display = 'none'; }, 800);
+            }, 2500);
+        });
+
+        // دوال إضافية
+        function logout() {
+            localStorage.clear();
+            window.location.href = "index.html";
+        }
+
         function showSoon() {
             Swal.fire({
-                title: 'قريباً جداً!',
-                text: 'هذا الصف سيفتح قريباً مع مستر إيهاب أشرف.',
+                title: 'انتظرونا قريباً!',
+                text: 'مستر إيهاب بيجهز لكم محتوى عالمي لهذا الصف.',
                 icon: 'info',
                 confirmButtonColor: '#10b981',
-                confirmButtonText: 'حاضر يا مستر'
+                confirmButtonText: 'تمام يا مستر'
             });
         }
     </script>
-
 </body>
 </html>
