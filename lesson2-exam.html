@@ -1,13 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار المهن في بلدنا | منصة التميز</title>
+    <title>اختبار المهن في بلدنا | مستر إيهاب أشرف</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         body { 
@@ -24,31 +24,25 @@
             border-radius: 2rem;
         }
         .option-box {
-            background: white;
-            border: 2px solid #e2e8f0;
+            background: white; border: 2px solid #e2e8f0;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: right;
-            cursor: pointer;
+            text-align: right; cursor: pointer;
         }
         .option-box:hover { border-color: #10b981; transform: scale(1.02); }
         .option-box.selected {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            border-color: transparent;
-            color: white;
+            border-color: transparent; color: white;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
         }
         .opt-prefix {
-            background: #f1f5f9;
-            width: 38px; height: 38px;
+            background: #f1f5f9; width: 38px; height: 38px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 10px; font-weight: 900; color: #64748b;
-            flex-shrink: 0;
         }
         .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
         .progress-glow {
-            height: 100%;
-            background: linear-gradient(90deg, #10b981, #3b82f6);
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
-            border-radius: 100px;
+            height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); border-radius: 100px;
             transition: width 0.6s ease;
         }
         .btn-confirm {
@@ -64,14 +58,14 @@
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
             <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
             <p class="text-slate-500 mb-6 font-bold">سيتم فقدان تقدمك في الاختبار</p>
-            <div class="flex gap-3">
-                <a href="grade4.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold">خروج</a>
+            <div class="flex gap-3 mt-6">
+                <a href="grade4.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
                 <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto hidden">
         <div class="flex justify-between items-center mb-10">
             <button onclick="toggleExitModal(true)" class="p-3 bg-white rounded-2xl shadow-sm text-slate-500 hover:text-red-500 border border-slate-100">
                 <i class="fas fa-sign-out-alt rotate-180"></i>
@@ -110,14 +104,23 @@
                 </svg>
                 <div class="absolute inset-0 flex items-center justify-center font-900 text-4xl text-slate-800" id="score-text">0%</div>
             </div>
+
+            <button onclick="sendToWhatsApp()" class="w-full py-5 bg-emerald-500 text-white rounded-2xl font-black shadow-lg mb-4 flex items-center justify-center gap-3 hover:bg-emerald-600 transition">
+                <i class="fab fa-whatsapp text-2xl"></i>
+                إرسال النتيجة للمستر
+            </button>
+
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-4 bg-emerald-500 text-white rounded-2xl font-bold shadow-lg">إعادة</button>
+                <button onclick="location.reload()" class="py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-bold shadow-lg">إعادة</button>
                 <a href="grade4.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
             </div>
         </div>
     </div>
 
     <script>
+        const MY_PHONE = "201559116736"; 
+        const LESSON_NAME = "المهن في بلدنا - رابعة ابتدائي";
+
         const questions = [
             { q: "تعتبر الزراعة من الركائز الأساسية لبلدنا لأنها توفر لنا:", a: ["الملابس", "الغذاء", "الأجهزة الإلكترونية", "الألعاب"], c: 1 },
             { q: "يعمل الصيادون في صيد الأسماك من البحرين الأحمر والمتوسط ونهر النيل و....", a: ["الصحراء", "الترع والمزارع السمكية", "المصانع", "الغابات"], c: 1 },
@@ -136,7 +139,22 @@
             { q: "يجب علينا تجاه أصحاب كل المهن:", a: ["تجاهلهم", "السخرية منهم", "احترامهم وتقدير جهودهم", "عدم التعامل معهم"], c: 2 }
         ];
 
-        let index = 0, score = 0, picked = null;
+        let index = 0, score = 0, picked = null, studentName = "";
+
+        // طلب اسم الطالب عند التحميل
+        window.onload = async () => {
+            const { value: name } = await Swal.fire({
+                title: 'اكتب اسمك الثلاثي يا بطل',
+                input: 'text',
+                confirmButtonText: 'ابدأ الاختبار',
+                confirmButtonColor: '#10b981',
+                allowOutsideClick: false,
+                inputValidator: (v) => !v && 'الاسم مطلوب للبدء!'
+            });
+            studentName = name;
+            document.getElementById('quiz-wrapper').classList.remove('hidden');
+            render();
+        };
 
         function toggleExitModal(show) { document.getElementById('exit-modal').style.display = show ? 'flex' : 'none'; }
 
@@ -162,7 +180,7 @@
         }
 
         function goToNext() {
-            if (picked === null) return alert("اختر إجابة أولاً!");
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning'});
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
@@ -175,7 +193,15 @@
             document.getElementById('score-text').innerText = pct + '%';
             document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
         }
-        render();
+
+        // إرسال النتيجة عبر الواتساب (wa.me)
+        function sendToWhatsApp() {
+            const pct = Math.round((score / questions.length) * 100);
+            const message = `يا مستر إيهاب، أنا الطالب: ${studentName}\nخلصت اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nعدد الإجابات الصحيحة: ${score} من ${questions.length}`;
+            const waUrl = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(message)}`;
+            window.location.href = waUrl;
+        }
+
     </script>
 </body>
 </html>
