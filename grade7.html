@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة أطلس | الصف الأول الإعدادي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: #f4f7f6; 
+            scroll-behavior: smooth;
+        }
+
+        /* هيدر زجاجي بنفسجي */
+        .main-header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* أزرار الدروس المفتوحة - ألوان إعدادي */
+        .lesson-btn-active {
+            background: linear-gradient(145deg, #a855f7, #7e22ce);
+            box-shadow: 0 10px 20px -5px rgba(168, 85, 247, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .lesson-btn-active:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 25px -5px rgba(126, 34, 206, 0.4);
+        }
+
+        /* نظام القفل */
+        .is-locked {
+            position: relative;
+            filter: grayscale(1) blur(1.5px);
+            opacity: 0.6;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+        }
+
+        .lock-badge {
+            background: rgba(30, 41, 59, 0.9);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            transition: all 0.3s ease;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body class="pb-20 text-right">
+
+    <header class="main-header shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+            <a href="home.html" class="back-btn px-4 py-2 rounded-2xl flex items-center gap-2 text-slate-600 font-bold text-sm">
+                <i class="fas fa-chevron-right text-xs"></i>
+                <span>الرئيسية</span>
+            </a>
+            <div class="text-center">
+                <h2 class="text-xl md:text-2xl font-900 text-slate-800">دراسات أولى إعدادي</h2>
+                <p class="text-[10px] md:text-xs text-purple-600 font-extrabold text-uppercase">الفصل الدراسي الثاني</p>
+            </div>
+            <div class="w-10 h-10 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 shadow-inner">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 mt-12 space-y-12">
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2 h-8 bg-purple-500 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-800">الوحدة الأولى: سكان قارة إفريقيا</h2>
+            </div>
+
+            <div class="flex flex-col gap-5">
+                <a href="g7-u1-l1.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">1</div>
+                        <div class="flex flex-col">
+                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
+                            <span class="font-900 text-lg leading-tight text-white">نمو وتوزيع سكان قارة إفريقيا</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
+                </a>
+
+                <a href="g7-u1-l2.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">2</div>
+                        <div class="flex flex-col">
+                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الثاني</span>
+                            <span class="font-900 text-lg leading-tight text-white">خصائص سكان قارة إفريقيا</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2 h-8 bg-purple-500 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-800">الوحدة الثانية: علاقة مصر بإفريقيا</h2>
+            </div>
+
+            <div class="flex flex-col gap-5">
+                <a href="g7-u2-l1.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">1</div>
+                        <div class="flex flex-col">
+                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
+                            <span class="font-900 text-lg leading-tight text-white">الدور الحضاري في عهد محمد علي</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
+                </a>
+
+                <div class="is-locked relative min-h-[100px] p-6 rounded-[2rem] bg-slate-200 text-slate-500 flex justify-between items-center border border-slate-300">
+                    <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-slate-300 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">2</div>
+                        <span class="font-900 text-lg leading-tight">الدور الحضاري في عهد الخلفاء</span>
+                    </div>
+                    <i class="fas fa-lock text-2xl opacity-20 flex-none mr-2"></i>
+                </div>
+            </div>
+        </section>
+
+        <section class="is-locked">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
+            <div class="flex items-center gap-4 mb-6">
+                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-400">الوحدة الثالثة: الأنشطة الاقتصادية</h2>
+            </div>
+            <div class="p-10 rounded-[2.5rem] bg-slate-200 border-2 border-dashed border-slate-300 text-center text-slate-400 font-bold">
+                محتوى الوحدة الثالثة قيد التجهيز
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 text-center text-slate-400 font-bold text-xs pb-10">
+        إعداد وتصميم: أ. إيهاب أشرف &copy; 2026
+    </footer>
+
+</body>
+</html>
