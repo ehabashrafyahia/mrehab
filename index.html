@@ -3,54 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول | منصة أطلس</title>
+    <title>تسجيل دخول الطلاب | منصة أطلس</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { font-family: 'Cairo', sans-serif; background: #f8fafc; }
-        .login-card { border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
         .logo-shape {
-            width: 100px; height: 85px; background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; margin: 0 auto 20px;
-            display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8rem; font-weight: 900;
+            width: 110px; height: 90px; background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; margin: 0 auto 15px;
+            display: flex; align-items: center; justify-content: center; color: white; 
+            font-size: 2rem; font-weight: 900; box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
+            animation: morph 6s linear infinite;
         }
+        @keyframes morph { 0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } }
+        .login-input { width: 100%; padding: 16px; background: #f1f5f9; border: 2px solid transparent; border-radius: 18px; outline: none; transition: 0.3s; text-align: center; font-weight: 700; }
+        .login-input:focus { border-color: #10b981; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-6">
 
-    <div class="login-card bg-white w-full max-w-sm p-8 text-center">
+    <div class="bg-white w-full max-w-sm p-10 rounded-[35px] shadow-2xl text-center border border-slate-50">
         <div class="logo-shape">أطلس</div>
-        <h2 class="text-2xl font-black text-slate-800 mb-2">مرحباً بك</h2>
-        <p class="text-slate-400 text-sm mb-8 font-bold">سجل دخولك للمتابعة</p>
+        <h2 class="text-2xl font-black text-slate-800 mb-2">منصة أطلس التعليمية</h2>
+        <p class="text-slate-400 text-xs font-bold mb-8">يرجى تسجيل الدخول للبدء</p>
 
-        <div class="text-right mb-4">
-            <label class="block text-sm font-bold text-slate-600 mb-2 mr-2">اسم المستخدم</label>
-            <input type="text" id="user" class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-emerald-500 rounded-2xl outline-none transition-all text-center font-bold" placeholder="أدخل اسمك">
+        <div class="space-y-4">
+            <div class="relative">
+                <input type="text" id="user" class="login-input" placeholder="اسم المستخدم">
+                <i class="fas fa-user absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+            </div>
+            
+            <div class="relative">
+                <input type="password" id="pass" class="login-input" placeholder="كلمة المرور">
+                <i class="fas fa-lock absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+            </div>
+
+            <button onclick="handleLogin()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-100 transition-all transform active:scale-95">
+                دخول المنصة <i class="fas fa-sign-in-alt mr-2"></i>
+            </button>
         </div>
 
-        <div class="text-right mb-6">
-            <label class="block text-sm font-bold text-slate-600 mb-2 mr-2">كلمة المرور</label>
-            <input type="password" id="pass" class="w-full p-4 bg-slate-50 border-2 border-transparent focus:border-emerald-500 rounded-2xl outline-none transition-all text-center font-bold" placeholder="••••">
+        <div class="mt-10 pt-6 border-t border-slate-100">
+            <p class="text-[11px] text-slate-500 font-bold mb-1">إعداد وتصميم: أ. إيهاب أشرف</p>
+            <a href="https://wa.me/201559116736" class="text-[10px] text-emerald-500 font-black"><i class="fab fa-whatsapp"></i> 01559116736</a>
         </div>
-
-        <button onclick="checkLogin()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-200 transition-all">دخول المنصة</button>
-        
-        <p class="mt-8 text-[10px] text-slate-400 font-bold">إعداد: أ. إيهاب أشرف | 01559116736</p>
     </div>
 
     <script>
-        function checkLogin() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
+        /* --- قائمة الطلاب (اضف أو عدل من هنا) --- */
+        const USERS_DATABASE = {
+            "ehab": "1234",          // حساب المستر
+            "yassin": "1122",        // طالب 1
+            "mariam": "3344",        // طالب 2
+            "ahmed": "5566",         // طالب 3
+            "salma": "7788",         // طالب 4
+            "nour": "9900",          // طالب 5
+            "ziad": "1020",          // طالب 6
+            "omar": "3040",          // طالب 7
+            "lara": "5060",          // طالب 8
+            "hassan": "7080"         // طالب 9
+        };
 
-            // بيانات الدخول (يمكنك تغييرها)
-            if(u === "ehab" && p === "1234") {
-                localStorage.setItem("atlas_logged", "true"); // حفظ حالة الدخول
-                Swal.fire({ icon: 'success', title: 'أهلاً بك يا بطل!', showConfirmButton: false, timer: 1000 });
-                setTimeout(() => { window.location.href = "home.html"; }, 1000);
+        function handleLogin() {
+            const userInput = document.getElementById('user').value.toLowerCase().trim();
+            const passInput = document.getElementById('pass').value.trim();
+
+            if (USERS_DATABASE[userInput] && USERS_DATABASE[userInput] === passInput) {
+                // حفظ حالة الدخول واسم الطالب
+                localStorage.setItem("atlas_auth", "true");
+                localStorage.setItem("student_identity", userInput);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'تم تسجيل الدخول بنجاح',
+                    text: 'أهلاً بك في منصة أطلس',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+
+                setTimeout(() => {
+                    window.location.href = "home.html"; // اسم الملف اللي فيه الصفوف
+                }, 1500);
+
             } else {
-                Swal.fire({ icon: 'error', title: 'خطأ!', text: 'البيانات غير صحيحة، راجع المستر' });
+                Swal.fire({
+                    icon: 'error',
+                    title: 'بيانات خاطئة!',
+                    text: 'تأكد من اسم المستخدم وكلمة المرور أو تواصل مع المستر',
+                    confirmButtonColor: '#10b981',
+                    confirmButtonText: 'حاول مرة أخرى'
+                });
+            }
+        }
+
+        // لو الطالب مسجل دخول قبل كدة، دخله علطول
+        window.onload = function() {
+            if(localStorage.getItem("atlas_auth") === "true") {
+                window.location.href = "home.html";
             }
         }
     </script>
