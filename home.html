@@ -9,13 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <script>
-        // كود الأمان: التحقق من تسجيل الدخول قبل عرض أي شيء
-        if(localStorage.getItem("atlas_auth") !== "true") {
-            window.location.href = "index.html";
-        }
-    </script>
-
     <style>
         /* --- شاشة الـ Splash الأصلية --- */
         #splash-screen {
@@ -39,19 +32,25 @@
         .splash-footer h4 { font-weight: 800; color: #334155; font-size: 1.1rem; }
         .splash-footer p { font-weight: 700; color: #10b981; direction: ltr; }
 
-        /* --- شريط الطلاب المتميزين --- */
+        /* --- شريط المتميزين (حركة مستمرة بدون توقف) --- */
         .news-ticker {
             background: white; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
             padding: 10px 0; overflow: hidden; display: flex; align-items: center; margin-top: 15px;
+            position: relative;
         }
         .ticker-label {
             background: #10b981; color: white; padding: 5px 15px; font-weight: 800; font-size: 0.85rem;
             z-index: 10; border-radius: 0 50px 50px 0; white-space: nowrap;
         }
-        .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; }
-        .student-name { display: inline-block; padding: 0 25px; color: #334155; font-weight: 700; font-size: 0.95rem; }
+        .ticker-wrap { display: flex; width: 100%; overflow: hidden; }
+        .ticker-content { display: flex; white-space: nowrap; animation: ticker-move 30s linear infinite; }
+        .student-name { display: inline-flex; align-items: center; padding: 0 25px; color: #334155; font-weight: 700; font-size: 0.95rem; }
         .student-name i { color: #f59e0b; margin-left: 8px; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        
+        @keyframes ticker-move {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
+        }
 
         /* --- تصميم اللوجو والبطاقات --- */
         body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #1e293b; }
@@ -75,7 +74,7 @@
         .grad-primary { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
         .grad-prep { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); }
         .grad-secondary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-        .grad-locked { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); opacity: 0.6; cursor: not-allowed; }
+        .grad-locked { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); opacity: 0.6; pointer-events: none; }
 
         .number-box { width: 54px; height: 54px; border-radius: 18px; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; margin-left: 20px; }
         .card-content { flex-grow: 1; text-align: right; }
@@ -104,20 +103,19 @@
 
     <header class="pt-8 text-center px-4">
         <div class="logo-container"><div class="logo-shape"></div><div class="logo-text">اطلس</div></div>
-        
-        <div class="mt-4">
-            <h2 class="text-xl font-black text-slate-800">أهلاً بك يا <span id="student-display-name" class="text-emerald-600">بطل</span> 👋</h2>
-            <button onclick="logout()" class="text-[10px] font-bold text-red-400 mt-2 underline">تسجيل خروج</button>
-        </div>
+        <h2 class="font-black text-slate-800 mt-3 text-xl">أهلاً بك يا <span id="welcome-name" class="text-emerald-600">بطل</span> 👋</h2>
+        <button onclick="localStorage.clear(); window.location.href='index.html';" class="text-[10px] font-bold text-red-500 underline mt-2">تسجيل خروج</button>
     </header>
 
     <div class="news-ticker">
         <div class="ticker-label">متميزو الأسبوع 🏆</div>
-        <div class="ticker-content" id="ticker-names"></div>
+        <div class="ticker-wrap">
+            <div class="ticker-content" id="ticker-names">
+                </div>
+        </div>
     </div>
 
     <main class="px-4 mt-6">
-        
         <div class="section-label"><div class="dot bg-emerald-500 shadow-lg"></div> المرحلة الابتدائية</div>
         <a href="grade4.html" class="list-card grad-primary"><div class="number-box">٤</div><div class="card-content"><h3>الصف الرابع الابتدائي</h3><p>مناهج تفاعلية حديثة</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
         <a href="grade5.html" class="list-card grad-primary"><div class="number-box">٥</div><div class="card-content"><h3>الصف الخامس الابتدائي</h3><p>بوابتك نحو التميز</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
@@ -126,12 +124,10 @@
         <div class="section-label"><div class="dot bg-purple-500 shadow-lg"></div> المرحلة الإعدادية</div>
         <a href="grade7.html" class="list-card grad-prep"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الإعدادي</h3><p>تعلم بذكاء وأسلوب ممتع</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
         <a href="grade8.html" class="list-card grad-prep"><div class="number-box">٢</div><div class="card-content"><h3>الصف الثاني الإعدادي</h3><p>طريقك المباشر للنجاح</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
-        
-        <div class="list-card grad-locked" onclick="showSoon()"><div class="number-box"><i class="fas fa-lock text-sm"></i></div><div class="card-content"><h3>الصف الثالث الإعدادي</h3><p>قريباً جداً</p></div></div>
+        <div class="list-card grad-locked"><div class="number-box"><i class="fas fa-lock text-sm"></i></div><div class="card-content"><h3>الصف الثالث الإعدادي</h3><p>قريباً جداً</p></div></div>
 
         <div class="section-label"><div class="dot bg-orange-500 shadow-lg"></div> المرحلة الثانوية</div>
         <a href="grade10.html" class="list-card grad-secondary"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الثانوي</h3><p>أفضل شروحات التاريخ</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
-    
     </main>
 
     <footer class="main-footer">
@@ -140,21 +136,19 @@
         <div class="text-[10px] text-slate-400 mt-3 font-bold">جميع الحقوق محفوظة &copy; ٢٠٢٦</div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // تفعيل الترحيب بالاسم
-        window.onload = function() {
-            const studentName = localStorage.getItem("student_identity") || "بطل";
-            document.getElementById('student-display-name').innerText = studentName;
-        }
+        // 1. عرض اسم الطالب من الذاكرة
+        const studentName = localStorage.getItem("student_identity") || "بطل";
+        document.getElementById('welcome-name').innerText = studentName;
 
-        // شريط المتميزين
+        // 2. إعداد شريط المتميزين (تكرار مضاعف لضمان عدم التوقف)
         const TOP_STUDENTS = ["ياسين محمد", "مريم خالد", "أحمد إبراهيم", "سلمى يوسف", "زياد حسن"];
         const tickerContainer = document.getElementById('ticker-names');
         const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
-        tickerContainer.innerHTML = namesHtml + namesHtml;
+        // نكرر الأسماء 4 مرات لسد أي فراغات أثناء الحركة
+        tickerContainer.innerHTML = namesHtml + namesHtml + namesHtml + namesHtml;
 
-        // إخفاء الـ Splash
+        // 3. التحكم في شاشة Splash
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const splash = document.getElementById('splash-screen');
@@ -162,22 +156,6 @@
                 setTimeout(() => { splash.style.display = 'none'; }, 800);
             }, 2500);
         });
-
-        // دوال إضافية
-        function logout() {
-            localStorage.clear();
-            window.location.href = "index.html";
-        }
-
-        function showSoon() {
-            Swal.fire({
-                title: 'انتظرونا قريباً!',
-                text: 'مستر إيهاب بيجهز لكم محتوى عالمي لهذا الصف.',
-                icon: 'info',
-                confirmButtonColor: '#10b981',
-                confirmButtonText: 'تمام يا مستر'
-            });
-        }
     </script>
 </body>
 </html>
