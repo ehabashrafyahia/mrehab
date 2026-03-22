@@ -1,0 +1,16 @@
+{
+  "name": "Mr. Ehab Ashraf Yahia",
+  "short_name": "Mr. Ehab",
+  "start_url": "/mrehab/home.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2196f3",
+  "icons": [
+    {
+      "src": "https://ehabashrafyahia.github.io/mrehab/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
