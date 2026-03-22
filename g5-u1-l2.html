@@ -7,76 +7,46 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         body { 
             font-family: 'Cairo', sans-serif; 
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             min-height: 100vh;
             user-select: none;
         }
-
         .glass-card {
             background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(14, 165, 233, 0.1);
             border-radius: 2rem;
         }
-
         .option-box {
-            background: white;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: right;
-            cursor: pointer;
+            background: white; border: 2px solid #e2e8f0;
+            transition: all 0.3s ease; text-align: right; cursor: pointer;
         }
-
-        .option-box:hover {
-            border-color: #3b82f6;
-            transform: scale(1.02);
-            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.1);
-        }
-
+        .option-box:hover { border-color: #0ea5e9; transform: scale(1.02); }
         .option-box.selected {
-            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-            border-color: transparent;
-            color: white;
-            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 100%);
+            border-color: transparent; color: white;
         }
-
         .opt-prefix {
-            background: #f1f5f9;
-            width: 38px; height: 38px;
+            background: #f1f5f9; width: 38px; height: 38px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 10px; font-weight: 900; color: #64748b;
-            flex-shrink: 0;
         }
-
-        .option-box.selected .opt-prefix {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
         .progress-glow {
-            height: 100%;
-            background: linear-gradient(90deg, #3b82f6, #10b981);
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-            border-radius: 100px;
-            transition: width 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%; background: linear-gradient(90deg, #0ea5e9, #22c55e);
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.4); border-radius: 100px;
+            transition: width 0.6s ease;
         }
-
         .btn-confirm {
-            background: linear-gradient(135deg, #4f46e5 0%, #3730a3 100%);
-            box-shadow: 0 15px 30px -10px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #0284c7 0%, #075985 100%);
+            box-shadow: 0 15px 30px -10px rgba(2, 132, 199, 0.4);
         }
-
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.04); }
-            100% { transform: scale(1); }
-        }
-        .animate-pop { animation: pop 0.3s ease-out; }
         #exit-modal { display: none; }
     </style>
 </head>
@@ -84,69 +54,69 @@
 
     <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
-            <div class="text-4xl mb-4">🌍</div>
-            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد العودة؟</h3>
-            <p class="text-slate-500 mb-6 font-bold">سيتم فقدان تقدمك في اختبار الدرس الثاني</p>
-            <div class="flex gap-3">
-                <a href="home.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold hover:bg-red-100 transition text-center">خروج</a>
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade7.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
                 <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto hidden">
         <div class="flex justify-between items-center mb-10">
-            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 hover:text-red-500 transition-all border border-slate-100">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100">
                 <i class="fas fa-sign-out-alt rotate-180"></i>
-                <span class="font-bold text-sm">خروج</span>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
             </button>
-            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-blue-600">
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-sky-600">
                 <span id="q-count">1</span> / 15
             </div>
-            <div class="p-3 bg-blue-50 rounded-2xl text-blue-500">
-                <i class="fas fa-clock"></i>
-            </div>
+            <div class="p-3 bg-sky-50 rounded-2xl text-sky-500"><i class="fas fa-globe-americas"></i></div>
         </div>
 
         <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
-            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+            <div id="progress-bar" class="progress-glow" style="width: 5%;"></div>
         </div>
 
-        <div class="glass-card p-8 md:p-12 mb-10 relative">
-            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">
-                جاري التحميل...
-            </h2>
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">جاري التحميل...</h2>
             <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
         </div>
 
-        <button id="next-action" onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 transition-all active:scale-95">
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
             <span>تأكيد الإجابة</span>
-            <i class="fas fa-check-circle"></i>
+            <i class="fas fa-chevron-left"></i>
         </button>
     </div>
 
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
-        <div class="glass-card p-12 shadow-2xl border-t-8 border-blue-500">
+        <div class="glass-card p-12 shadow-2xl">
             <div class="text-7xl mb-6">🎯</div>
-            <h1 class="text-4xl font-900 text-slate-800 mb-4">عمل رائع يا بطل!</h1>
-            <p class="text-slate-500 font-bold mb-10">لقد أتممت اختبار تأثيرات خطوط الطول ودوائر العرض بنجاح</p>
-            
+            <h1 class="text-4xl font-900 text-slate-800 mb-4">أداء رائع!</h1>
             <div class="relative inline-block mb-10">
                 <svg class="w-40 h-40 transform -rotate-90">
                     <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
-                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#3b82f6" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#0ea5e9" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
                 </svg>
                 <div class="absolute inset-0 flex items-center justify-center font-900 text-4xl text-slate-800" id="score-text">0%</div>
             </div>
 
+            <button onclick="sendToWhatsApp()" class="w-full py-5 bg-emerald-500 text-white rounded-2xl font-black shadow-lg mb-4 flex items-center justify-center gap-3 hover:bg-emerald-600 transition">
+                <i class="fab fa-whatsapp text-2xl"></i>
+                إرسال النتيجة للمستر
+            </button>
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg">إعادة الاختبار</button>
-                <a href="home.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center text-center">الرئيسية</a>
+                <button onclick="location.reload()" class="py-4 bg-sky-100 text-sky-700 rounded-2xl font-bold">إعادة</button>
+                <a href="grade7.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold flex items-center justify-center">الرئيسية</a>
             </div>
         </div>
     </div>
 
     <script>
+        // --- الإعدادات الخاصة بك ---
+        const MY_PHONE = "201559116736"; 
+        const LESSON_NAME = "خطوط الطول ودوائر العرض - أولى إعدادي";
+        
         const questions = [
             { q: "يُقصد بـ 'الموقع الفلكي' موقع المكان بالنسبة لـ:", a: ["اليابس والماء", "القارات المجاورة", "خطوط الطول ودوائر العرض", "الجبال والهضاب"], c: 2 },
             { q: "أي من الدوائر التالية تقسم الأرض إلى منطقة حرارية 'حارة' حولها؟", a: ["مدار السرطان", "دائرة الاستواء", "الدائرة القطبية الشمالية", "مدار الجدي"], c: 1 },
@@ -165,28 +135,37 @@
             { q: "المرجع الأساسي لحساب فروق التوقيت بين مدن العالم هو:", a: ["دائرة الاستواء", "خط جرينتش", "مدار السرطان", "الدائرة القطبية"], c: 1 }
         ];
 
-        let index = 0, score = 0, picked = null;
+        let index = 0, score = 0, picked = null, studentName = "";
 
-        function toggleExitModal(show) {
-            document.getElementById('exit-modal').style.display = show ? 'flex' : 'none';
-        }
+        // طلب الاسم وبدء الاختبار
+        window.onload = async () => {
+            const { value: name } = await Swal.fire({
+                title: 'اكتب اسمك الثلاثي يا بطل',
+                input: 'text',
+                confirmButtonText: 'ابدأ الاختبار',
+                confirmButtonColor: '#0ea5e9',
+                allowOutsideClick: false,
+                inputValidator: (v) => !v && 'الاسم مطلوب للبدء!'
+            });
+            studentName = name;
+            document.getElementById('quiz-wrapper').classList.remove('hidden');
+            render();
+        };
 
         function render() {
             picked = null;
             const q = questions[index];
             document.getElementById('main-question').innerText = q.q;
             document.getElementById('q-count').innerText = index + 1;
-            
             const grid = document.getElementById('options-grid');
             grid.innerHTML = '';
-            
             q.a.forEach((opt, i) => {
                 const btn = document.createElement('div');
-                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 group';
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4';
                 btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
                 btn.onclick = () => {
-                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected', 'animate-pop'));
-                    btn.classList.add('selected', 'animate-pop');
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
                     picked = i;
                 };
                 grid.appendChild(btn);
@@ -195,7 +174,7 @@
         }
 
         function goToNext() {
-            if (picked === null) return alert("من فضلك اختر إجابة يا بطل!");
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً!', icon:'warning'});
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
@@ -209,7 +188,14 @@
             document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
         }
 
-        render();
+        function sendToWhatsApp() {
+            const pct = Math.round((score / questions.length) * 100);
+            const message = `يا مستر إيهاب، أنا الطالب: ${studentName}\nخلصت اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nعدد الإجابات الصحيحة: ${score} من 15`;
+            const waUrl = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(message)}`;
+            window.location.href = waUrl;
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
     </script>
 </body>
 </html>
