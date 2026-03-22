@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار حضارة فينيقيا | منصة التميز</title>
+    <title>اختبار حضارة فينيقيا | مستر إيهاب أشرف</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         body { 
@@ -23,57 +24,49 @@
             border-radius: 2.5rem;
         }
         .option-box {
-            background: white;
-            border: 2px solid #f1f5f9;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: right;
-            cursor: pointer;
+            background: white; border: 2px solid #f1f5f9;
+            transition: all 0.3s ease; text-align: right; cursor: pointer;
         }
         .option-box:hover { border-color: #f97316; transform: translateY(-2px); }
         .option-box.selected {
             background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-            border-color: transparent;
-            color: white;
+            border-color: transparent; color: white;
             box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.4);
         }
         .opt-prefix {
-            background: #fff7ed;
-            width: 40px; height: 40px;
+            background: #fff7ed; width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 12px; font-weight: 900; color: #ea580c;
-            flex-shrink: 0;
         }
         .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
         .progress-glow {
-            height: 100%;
-            background: linear-gradient(90deg, #f97316, #fbbf24);
-            box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
-            border-radius: 100px;
+            height: 100%; background: linear-gradient(90deg, #f97316, #fbbf24);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.3); border-radius: 100px;
             transition: width 0.4s ease;
         }
         .btn-confirm {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             box-shadow: 0 15px 30px -10px rgba(30, 41, 59, 0.3);
         }
+        #exit-modal { display: none; }
     </style>
 </head>
 <body class="p-4 md:p-10">
 
-    <div id="exit-modal" class="hidden fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-[2rem] p-8 max-w-sm w-full text-center shadow-2xl">
             <div class="w-16 h-16 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
                 <i class="fas fa-anchor"></i>
             </div>
             <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد مغادرة السفينة؟</h3>
-            <p class="text-slate-500 mb-6 font-bold">سيتم فقدان تقدمك في اختبار فينيقيا</p>
-            <div class="flex gap-3">
-                <a href="grade10.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold">خروج</a>
+            <div class="flex gap-3 mt-6">
+                <a href="grade10.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
                 <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto hidden">
         <div class="flex justify-between items-center mb-8">
             <button onclick="toggleExitModal(true)" class="p-4 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-colors">
                 <i class="fas fa-times text-xl"></i>
@@ -90,8 +83,8 @@
             <div id="progress-bar" class="progress-glow" style="width: 5%;"></div>
         </div>
 
-        <div class="glass-card p-8 md:p-12 mb-8 min-h-[420px] flex flex-col justify-center">
-            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-10"></h2>
+        <div class="glass-card p-8 md:p-12 mb-8 min-h-[420px] flex flex-col justify-center text-center">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug mb-10"></h2>
             <div id="options-grid" class="grid grid-cols-1 gap-4"></div>
         </div>
 
@@ -104,13 +97,11 @@
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-6">
         <div class="glass-card p-12">
             <div id="trophy-icon" class="text-7xl mb-6">🚢</div>
-            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجتك في فينيقيا</h1>
-            <p id="result-msg" class="text-slate-500 font-bold mb-8">لقد أبحرت جيداً في تاريخ فينيقيا</p>
-            
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">أبحرت بامتياز!</h1>
             <div class="relative inline-block mb-10">
                 <svg class="w-48 h-48 transform -rotate-90">
                     <circle cx="96" cy="96" r="85" stroke="#f1f5f9" stroke-width="15" fill="transparent" />
-                    <circle id="score-circle" cx="96" cy="96" r="85" stroke="#f97316" stroke-width="15" fill="transparent" stroke-dasharray="534" stroke-dashoffset="534" class="transition-all duration-[1500ms] ease-out" />
+                    <circle id="score-circle" cx="96" cy="96" r="85" stroke="#f97316" stroke-width="15" fill="transparent" stroke-dasharray="534" stroke-dashoffset="534" class="transition-all duration-[1500ms]" />
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                     <span class="font-900 text-5xl text-slate-800" id="score-text">0%</span>
@@ -118,14 +109,21 @@
                 </div>
             </div>
 
+            <button onclick="sendToWhatsApp()" class="w-full py-5 bg-emerald-500 text-white rounded-[1.5rem] font-black shadow-lg mb-4 flex items-center justify-center gap-3 hover:bg-emerald-600 transition">
+                <i class="fab fa-whatsapp text-2xl"></i>
+                إرسال النتيجة للمستر
+            </button>
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-5 bg-orange-600 text-white rounded-[1.5rem] font-900 shadow-xl shadow-orange-200">إعادة الاختبار</button>
-                <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-900 shadow-xl shadow-slate-200 flex items-center justify-center">الدروس</a>
+                <button onclick="location.reload()" class="py-5 bg-orange-600 text-white rounded-[1.5rem] font-bold">إعادة</button>
+                <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-bold flex items-center justify-center">الدروس</a>
             </div>
         </div>
     </div>
 
     <script>
+        const MY_PHONE = "201559116736"; 
+        const LESSON_NAME = "حضارة فينيقيا - أولى ثانوي";
+
         const questions = [
             { q: "كانت فينيقيا بمثابة حلقة الوصل بين حضارات الشرق والغرب، ويرجع الفضل في ذلك إلى:", a: ["وفرة المحاصيل الزراعية", "التوسع العسكري في آسيا", "الموقع الجغرافي والنشاط البحري", "القوة العسكرية البرية"], c: 2 },
             { q: "أي من المدن الفنيقية كانت الأقرب في نظامها السياسي لنموذج 'الدويلات المستقلة' في سومر؟", a: ["قرطاج", "بعلبك", "جبيل", "صور وصيدا"], c: 3 },
@@ -149,9 +147,21 @@
             { q: "يمثل 'الملك' في نظام الحكم الفنيقي سلطة مقيدة بسبب:", a: ["وجود مجالس تعاون وتشرف على الحكم", "قلة صلاحياته العسكرية", "خضوعه لفرعون مصر", "عدم قدرته على قيادة الجيش"], c: 0 }
         ];
 
-        let index = 0, score = 0, picked = null;
+        let index = 0, score = 0, picked = null, studentName = "";
 
-        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; }
+        window.onload = async () => {
+            const { value: name } = await Swal.fire({
+                title: 'اكتب اسمك الثلاثي يا بطل',
+                input: 'text',
+                confirmButtonText: 'ابدأ الإبحار',
+                confirmButtonColor: '#f97316',
+                allowOutsideClick: false,
+                inputValidator: (v) => !v && 'الاسم مطلوب للبدء!'
+            });
+            studentName = name;
+            document.getElementById('quiz-wrapper').classList.remove('hidden');
+            render();
+        };
 
         function render() {
             picked = null;
@@ -160,7 +170,6 @@
             document.getElementById('q-count').innerText = index + 1;
             const grid = document.getElementById('options-grid');
             grid.innerHTML = '';
-            
             q.a.forEach((opt, i) => {
                 const btn = document.createElement('div');
                 btn.className = 'option-box p-5 md:p-6 rounded-2xl flex items-center gap-4';
@@ -176,7 +185,7 @@
         }
 
         function goToNext() {
-            if (picked === null) return;
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً!', icon:'warning'});
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
@@ -194,8 +203,13 @@
             setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
         }
 
-        render();
+        function sendToWhatsApp() {
+            const pct = Math.round((score / questions.length) * 100);
+            const message = `يا مستر إيهاب، أنا الطالب: ${studentName}\nخلصت اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nعدد الإجابات الصحيحة: ${score} من ${questions.length}`;
+            window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(message)}`;
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
     </script>
 </body>
 </html>
-
