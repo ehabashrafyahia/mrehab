@@ -115,7 +115,6 @@
     </div>
 
     <script>
-        // --- الإعدادات الخاصة بك ---
         const MY_PHONE = "201559116736"; 
         const LESSON_NAME = "سكان إفريقيا - أولى إعدادي";
         
@@ -139,12 +138,11 @@
             { q: "تعاني أفريقيا من مشكلة سكانية بسبب عدم التوازن بين السكان و:", a: ["مساحة البحار والمحيطات", "معدلات النمو الاقتصادي", "عدد خطوط الطول", "شكل القارة المثلث"], c: 1 },
             { q: "من النتائج المترتبة على زيادة فئة صغار السن في أفريقيا:", a: ["زيادة الإنتاج الاقتصادي فوراً", "الضغط على الخدمات التعليمية والصحية", "تشجيع الهجرة الخارجية", "قلة استهلاك الموارد الطبيعية"], c: 1 },
             { q: "الأمن الغذائي يعني قدرة الدولة على:", a: ["زيادة عدد المواليد سنوياً", "توفير الغذاء الكافي والمستقر للسكان", "تصدير المحاصيل للخارج فقط", "بناء المصانع الحربية"], c: 1 },
-            { q: "لحل المشكلة السكانية، تقوم الدول أفريقية بإنشاء مدن جديدة بهدف:", a: ["زيادة التلوث البيئي", "إعادة توزيع السكان وتخفيف الضغط عن المناطق المزدحمة", "تشجيع الناس على الهجرة لأوروبا", "تقليل مساحة الأراضي الزراعية"], c: 1 }
+            { q: "لحل المشكلة السكانية، تقوم الدول الأفريقية بإنشاء مدن جديدة بهدف:", a: ["زيادة التلوث البيئي", "إعادة توزيع السكان وتخفيف الضغط عن المناطق المزدحمة", "تشجيع الناس على الهجرة لأوروبا", "تقليل مساحة الأراضي الزراعية"], c: 1 }
         ];
 
         let index = 0, score = 0, picked = null, studentName = "";
 
-        // طلب الاسم وبدء الاختبار
         window.onload = async () => {
             const { value: name } = await Swal.fire({
                 title: 'اكتب اسمك الثلاثي يا بطل',
@@ -198,8 +196,18 @@
         function sendToWhatsApp() {
             const pct = Math.round((score / questions.length) * 100);
             const message = `يا مستر إيهاب، أنا الطالب: ${studentName}\nخلصت اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nعدد الإجابات الصحيحة: ${score} من 20`;
-            const whatsappUrl = `https://api.whatsapp.com/send?phone=${MY_PHONE}&text=${encodeURIComponent(message)}`;
-            window.location.href = whatsappUrl;
+            const encodedMsg = encodeURIComponent(message);
+            
+            // رابط API الأساسي
+            const apiUrl = `https://api.whatsapp.com/send?phone=${MY_PHONE}&text=${encodedMsg}`;
+            // رابط wa.me الاحتياطي
+            const waUrl = `https://wa.me/${MY_PHONE}?text=${encodedMsg}`;
+
+            // المحاولة عبر فتح نافذة جديدة، وإذا فشلت يتم التحويل المباشر
+            const newWindow = window.open(apiUrl, '_blank');
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                window.location.href = waUrl;
+            }
         }
 
         function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
