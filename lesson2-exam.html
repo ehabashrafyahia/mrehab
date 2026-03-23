@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار المهن في بلدنا | مستر إيهاب أشرف</title>
+    <title>اختبار المهن في بلدنا | مراجعة ذاتية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         body { 
@@ -65,7 +66,7 @@
         </div>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto hidden">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
         <div class="flex justify-between items-center mb-10">
             <button onclick="toggleExitModal(true)" class="p-3 bg-white rounded-2xl shadow-sm text-slate-500 hover:text-red-500 border border-slate-100">
                 <i class="fas fa-sign-out-alt rotate-180"></i>
@@ -79,7 +80,7 @@
         </div>
 
         <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
-            <div id="progress-bar" class="progress-glow" style="width: 6.6%;"></div>
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
         </div>
 
         <div class="glass-card p-8 md:p-12 mb-10 relative">
@@ -94,20 +95,26 @@
     </div>
 
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
-        <div class="glass-card p-12 shadow-2xl">
+        <div id="capture-area" class="glass-card p-12 shadow-2xl bg-white mb-6">
             <div class="text-7xl mb-6">🎯</div>
-            <h1 class="text-4xl font-900 text-slate-800 mb-4">نتيجة الاختبار</h1>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p class="text-slate-500 font-bold mb-8">المهن في بلدنا - الصف الرابع</p>
             <div class="relative inline-block mb-10">
                 <svg class="w-40 h-40 transform -rotate-90">
                     <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
                     <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
                 </svg>
-                <div class="absolute inset-0 flex items-center justify-center font-900 text-4xl text-slate-800" id="score-text">0%</div>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
             </div>
+            <div id="result-msg" class="text-xl font-bold text-indigo-600"></div>
+        </div>
 
-            <button onclick="sendToWhatsApp()" class="w-full py-5 bg-emerald-500 text-white rounded-2xl font-black shadow-lg mb-4 flex items-center justify-center gap-3 hover:bg-emerald-600 transition">
-                <i class="fab fa-whatsapp text-2xl"></i>
-                إرسال النتيجة للمستر
+        <div class="flex flex-col gap-4">
+            <button onclick="saveAsImage()" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-black shadow-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition active:scale-95">
+                <i class="fas fa-camera text-2xl"></i>
+                حفظ النتيجة كصورة
             </button>
 
             <div class="grid grid-cols-2 gap-4">
@@ -118,9 +125,6 @@
     </div>
 
     <script>
-        const MY_PHONE = "201559116736"; 
-        const LESSON_NAME = "المهن في بلدنا - رابعة ابتدائي";
-
         const questions = [
             { q: "تعتبر الزراعة من الركائز الأساسية لبلدنا لأنها توفر لنا:", a: ["الملابس", "الغذاء", "الأجهزة الإلكترونية", "الألعاب"], c: 1 },
             { q: "يعمل الصيادون في صيد الأسماك من البحرين الأحمر والمتوسط ونهر النيل و....", a: ["الصحراء", "الترع والمزارع السمكية", "المصانع", "الغابات"], c: 1 },
@@ -139,20 +143,9 @@
             { q: "يجب علينا تجاه أصحاب كل المهن:", a: ["تجاهلهم", "السخرية منهم", "احترامهم وتقدير جهودهم", "عدم التعامل معهم"], c: 2 }
         ];
 
-        let index = 0, score = 0, picked = null, studentName = "";
+        let index = 0, score = 0, picked = null;
 
-        // طلب اسم الطالب عند التحميل
-        window.onload = async () => {
-            const { value: name } = await Swal.fire({
-                title: 'اكتب اسمك الثلاثي يا بطل',
-                input: 'text',
-                confirmButtonText: 'ابدأ الاختبار',
-                confirmButtonColor: '#10b981',
-                allowOutsideClick: false,
-                inputValidator: (v) => !v && 'الاسم مطلوب للبدء!'
-            });
-            studentName = name;
-            document.getElementById('quiz-wrapper').classList.remove('hidden');
+        window.onload = () => {
             render();
         };
 
@@ -180,7 +173,7 @@
         }
 
         function goToNext() {
-            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning'});
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#4f46e5'});
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
@@ -192,14 +185,20 @@
             const pct = Math.round((score / questions.length) * 100);
             document.getElementById('score-text').innerText = pct + '%';
             document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            
+            let msg = pct >= 50 ? "أحسنت يا بطل! استمر في التقدم" : "حاول مرة أخرى، أنت تستطيع!";
+            document.getElementById('result-msg').innerText = msg;
         }
 
-        // إرسال النتيجة عبر الواتساب (wa.me)
-        function sendToWhatsApp() {
-            const pct = Math.round((score / questions.length) * 100);
-            const message = `يا مستر إيهاب، أنا الطالب: ${studentName}\nخلصت اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nعدد الإجابات الصحيحة: ${score} من ${questions.length}`;
-            const waUrl = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(message)}`;
-            window.location.href = waUrl;
+        function saveAsImage() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, { backgroundColor: "#f8fafc", scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `نتيجة_اختبار_المهن.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                Swal.fire({ icon: 'success', title: 'تم الحفظ!', text: 'تجد الصورة في التنزيلات', timer: 1500, showConfirmButton: false });
+            });
         }
 
     </script>
