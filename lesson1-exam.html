@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>اختبار سكان مصر | مستر إيهاب أشرف</title>
+    <title>اختبار سكان مصر | مراجعة ذاتية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         body { 
@@ -65,7 +66,7 @@
         </div>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto hidden">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
         <div class="flex justify-between items-center mb-10">
             <button onclick="toggleExitModal(true)" class="p-3 bg-white rounded-2xl shadow-sm text-slate-500 hover:text-red-500 border border-slate-100">
                 <i class="fas fa-sign-out-alt rotate-180"></i>
@@ -74,12 +75,12 @@
                 <span id="q-count">1</span> / 15
             </div>
             <div class="p-3 bg-indigo-50 rounded-2xl text-indigo-500">
-                <i class="fas fa-users"></i>
+                <i class="fas fa-graduation-cap"></i>
             </div>
         </div>
 
         <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
-            <div id="progress-bar" class="progress-glow" style="width: 6.6%;"></div>
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
         </div>
 
         <div class="glass-card p-8 md:p-12 mb-10 relative">
@@ -94,33 +95,34 @@
     </div>
 
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
-        <div class="glass-card p-12 shadow-2xl">
+        <div id="capture-area" class="glass-card p-12 shadow-2xl mb-6 bg-white">
             <div class="text-7xl mb-6">🎯</div>
             <h1 class="text-4xl font-900 text-slate-800 mb-4">نتيجة الاختبار</h1>
-            <div class="relative inline-block mb-10">
+            <p class="text-slate-500 font-bold mb-4">اختبار سكان مصر - الصف الرابع</p>
+            <div class="relative inline-block mb-6">
                 <svg class="w-40 h-40 transform -rotate-90">
                     <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
                     <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
                 </svg>
                 <div class="absolute inset-0 flex items-center justify-center font-900 text-4xl text-slate-800" id="score-text">0%</div>
             </div>
+            <div id="result-message" class="text-xl font-bold text-indigo-600 mb-2"></div>
+        </div>
 
-            <button onclick="sendToWhatsApp()" class="w-full py-5 bg-emerald-500 text-white rounded-2xl font-black shadow-lg mb-4 flex items-center justify-center gap-3 hover:bg-emerald-600 transition">
-                <i class="fab fa-whatsapp text-2xl"></i>
-                إرسال النتيجة للمستر
+        <div class="flex flex-col gap-4">
+            <button onclick="saveAsImage()" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-black shadow-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition">
+                <i class="fas fa-download text-2xl"></i>
+                حفظ النتيجة كصورة
             </button>
 
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-bold">إعادة</button>
-                <a href="grade4.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold flex items-center justify-center">الرئيسية</a>
+                <button onclick="location.reload()" class="py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-bold hover:bg-emerald-200 transition">إعادة الاختبار</button>
+                <a href="grade4.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold flex items-center justify-center hover:bg-slate-900 transition">الرئيسية</a>
             </div>
         </div>
     </div>
 
     <script>
-        const MY_PHONE = "201559116736"; 
-        const LESSON_NAME = "سكان مصر - رابعة ابتدائي";
-
         const questions = [
             { q: "أي من المحافظات التالية تُصنف كواحدة من 'أكثر المحافظات ازدحاماً' بالسكان في مصر؟", a: ["الوادي الجديد", "مطروح", "الجيزة", "شمال سيناء"], c: 2 },
             { q: "يرجع تركز السكان في محافظة 'القاهرة' بشكل كبير إلى:", a: ["ممارستهم لحرفة الرعي والزراعة", "أنها العاصمة وتوافر الخدمات والوزارات بها", "وقوعها في منطقة صحراوية واسعة", "انخفاض نسبة المواليد بها"], c: 1 },
@@ -139,23 +141,13 @@
             { q: "تتميز محافظة 'القاهرة' بارتفاع نسبة المتعلمين بها نتيجة:", a: ["عمل سكانها في الزراعة", "اهتمام الأسر بالتعليم وتوفر المدارس", "انخفاض عدد المواليد بها", "وقوعها في منطقة صحراوية"], c: 1 }
         ];
 
-        let index = 0, score = 0, picked = null, studentName = "";
+        let index = 0, score = 0, picked = null;
 
-        window.onload = async () => {
-            const { value: name } = await Swal.fire({
-                title: 'اكتب اسمك الثلاثي يا بطل',
-                input: 'text',
-                confirmButtonText: 'ابدأ الاختبار',
-                confirmButtonColor: '#10b981',
-                allowOutsideClick: false,
-                inputValidator: (v) => !v && 'الاسم مطلوب للبدء!'
-            });
-            studentName = name;
-            document.getElementById('quiz-wrapper').classList.remove('hidden');
-            render();
-        };
+        window.onload = () => { render(); };
 
-        function toggleExitModal(show) { document.getElementById('exit-modal').style.display = show ? 'flex' : 'none'; }
+        function toggleExitModal(show) { 
+            document.getElementById('exit-modal').style.display = show ? 'flex' : 'none'; 
+        }
 
         function render() {
             picked = null;
@@ -164,6 +156,7 @@
             document.getElementById('q-count').innerText = index + 1;
             const grid = document.getElementById('options-grid');
             grid.innerHTML = '';
+            
             q.a.forEach((opt, i) => {
                 const btn = document.createElement('div');
                 btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 group';
@@ -179,24 +172,44 @@
         }
 
         function goToNext() {
-            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً!', icon:'warning'});
+            if (picked === null) {
+                Swal.fire({ icon: 'warning', title: 'عفواً!', text: 'يرجى اختيار إجابة أولاً', confirmButtonColor: '#4f46e5' });
+                return;
+            }
             if (picked === questions[index].c) score++;
             index++;
-            if (index < questions.length) render(); else finish();
+            if (index < questions.length) render();
+            else showFinalResult();
         }
 
-        function finish() {
+        function showFinalResult() {
             document.getElementById('quiz-wrapper').classList.add('hidden');
             document.getElementById('result-view').classList.remove('hidden');
-            const pct = Math.round((score / questions.length) * 100);
-            document.getElementById('score-text').innerText = pct + '%';
-            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            const percent = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = percent + '%';
+            
+            // تحديد رسالة التقدير
+            let msg = percent >= 50 ? "أحسنت يا بطل! استمر" : "حاول مرة أخرى، أنت تستطيع!";
+            if(percent >= 90) msg = "ممتاز! أنت عبقري!";
+            document.getElementById('result-message').innerText = msg;
+
+            const offset = 440 - (440 * percent / 100);
+            document.getElementById('score-circle').style.strokeDashoffset = offset;
         }
 
-        function sendToWhatsApp() {
-            const pct = Math.round((score / questions.length) * 100);
-            const message = `مرحباً مستر إيهاب، أنا الطالب: ${studentName}\nانتهيت من اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nالإجابات الصحيحة: ${score} من ${questions.length}`;
-            window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(message)}`;
+        // دالة حفظ النتيجة كصورة
+        function saveAsImage() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, {
+                backgroundColor: "#f8fafc",
+                scale: 2 // جودة عالية
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'نتيجة-اختبار-سكان-مصر.png';
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                Swal.fire({ icon: 'success', title: 'تم الحفظ!', text: 'تم حفظ صورتك في التنزيلات', timer: 2000, showConfirmButton: false });
+            });
         }
     </script>
 </body>
