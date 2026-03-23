@@ -181,14 +181,33 @@
         }
 
         function saveAsImage() {
-            const area = document.getElementById('capture-area');
-            html2canvas(area, { backgroundColor: "#f0f9ff", scale: 2 }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `نتيجة_الجغرافيا.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-            });
+    const area = document.getElementById('capture-area');
+    
+    // إظهار رسالة انتظار بسيطة
+    Swal.fire({
+        title: 'جاري الحفظ...',
+        timer: 800,
+        showConfirmButton: false,
+        didOpen: () => { Swal.showLoading(); }
+    });
+
+    html2canvas(area, { backgroundColor: "#f5f3ff", scale: 2 }).then(canvas => {
+        // تحويل الصورة إلى نص (Base64)
+        const imageData = canvas.toDataURL("image/png").replace("data:image/png;base64,", "");
+        
+        // إرسال النص إلى التطبيق (الأندرويد)
+        if (window.Android && window.Android.saveImage) {
+            window.Android.saveImage(imageData);
+        } else {
+            // حل احتياطي للمتصفحات العادية (كروم، سفاري)
+            const link = document.createElement('a');
+            link.download = `نتيجة_الاختبار.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
         }
+    });
+}
+
 
         function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
     </script>
