@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         body { 
@@ -66,7 +67,7 @@
         </div>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto hidden">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
         <div class="flex justify-between items-center mb-8">
             <button onclick="toggleExitModal(true)" class="p-4 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-colors">
                 <i class="fas fa-times text-xl"></i>
@@ -95,9 +96,11 @@
     </div>
 
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-6">
-        <div class="glass-card p-12">
+        <div id="capture-area" class="glass-card p-12 bg-white mb-6 border-2 border-orange-100">
             <div id="trophy-icon" class="text-7xl mb-6">🚢</div>
             <h1 class="text-4xl font-900 text-slate-800 mb-2">أبحرت بامتياز!</h1>
+            <p class="text-slate-500 font-bold mb-8">اختبار حضارة فينيقيا - التاريخ</p>
+            
             <div class="relative inline-block mb-10">
                 <svg class="w-48 h-48 transform -rotate-90">
                     <circle cx="96" cy="96" r="85" stroke="#f1f5f9" stroke-width="15" fill="transparent" />
@@ -108,22 +111,23 @@
                     <span class="text-slate-400 font-bold text-sm" id="raw-score">0 / 20</span>
                 </div>
             </div>
+            <div id="result-msg" class="text-xl font-black text-orange-600"></div>
+        </div>
 
-            <button onclick="sendToWhatsApp()" class="w-full py-5 bg-emerald-500 text-white rounded-[1.5rem] font-black shadow-lg mb-4 flex items-center justify-center gap-3 hover:bg-emerald-600 transition">
-                <i class="fab fa-whatsapp text-2xl"></i>
-                إرسال النتيجة للمستر
+        <div class="flex flex-col gap-4">
+            <button onclick="saveAsImage()" class="w-full py-5 bg-blue-600 text-white rounded-[1.5rem] font-black shadow-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition active:scale-95">
+                <i class="fas fa-camera text-2xl"></i>
+                حفظ النتيجة كصورة
             </button>
+
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-5 bg-orange-600 text-white rounded-[1.5rem] font-bold">إعادة</button>
-                <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-bold flex items-center justify-center">الدروس</a>
+                <button onclick="location.reload()" class="py-5 bg-orange-600 text-white rounded-[1.5rem] font-bold shadow-lg">إعادة الاختبار</button>
+                <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-bold flex items-center justify-center shadow-lg">الدروس</a>
             </div>
         </div>
     </div>
 
     <script>
-        const MY_PHONE = "201559116736"; 
-        const LESSON_NAME = "حضارة فينيقيا - أولى ثانوي";
-
         const questions = [
             { q: "كانت فينيقيا بمثابة حلقة الوصل بين حضارات الشرق والغرب، ويرجع الفضل في ذلك إلى:", a: ["وفرة المحاصيل الزراعية", "التوسع العسكري في آسيا", "الموقع الجغرافي والنشاط البحري", "القوة العسكرية البرية"], c: 2 },
             { q: "أي من المدن الفنيقية كانت الأقرب في نظامها السياسي لنموذج 'الدويلات المستقلة' في سومر؟", a: ["قرطاج", "بعلبك", "جبيل", "صور وصيدا"], c: 3 },
@@ -147,21 +151,9 @@
             { q: "يمثل 'الملك' في نظام الحكم الفنيقي سلطة مقيدة بسبب:", a: ["وجود مجالس تعاون وتشرف على الحكم", "قلة صلاحياته العسكرية", "خضوعه لفرعون مصر", "عدم قدرته على قيادة الجيش"], c: 0 }
         ];
 
-        let index = 0, score = 0, picked = null, studentName = "";
+        let index = 0, score = 0, picked = null;
 
-        window.onload = async () => {
-            const { value: name } = await Swal.fire({
-                title: 'اكتب اسمك الثلاثي يا بطل',
-                input: 'text',
-                confirmButtonText: 'ابدأ الإبحار',
-                confirmButtonColor: '#f97316',
-                allowOutsideClick: false,
-                inputValidator: (v) => !v && 'الاسم مطلوب للبدء!'
-            });
-            studentName = name;
-            document.getElementById('quiz-wrapper').classList.remove('hidden');
-            render();
-        };
+        window.onload = () => { render(); };
 
         function render() {
             picked = null;
@@ -185,7 +177,7 @@
         }
 
         function goToNext() {
-            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً!', icon:'warning'});
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#ea580c'});
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
@@ -201,12 +193,20 @@
             const circle = document.getElementById('score-circle');
             const offset = 534 - (534 * pct) / 100;
             setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
+
+            let msg = pct >= 50 ? "أحسنت يا بحار! مجهود رائع" : "تحتاج للمزيد من المذاكرة للإبحار!";
+            document.getElementById('result-msg').innerText = msg;
         }
 
-        function sendToWhatsApp() {
-            const pct = Math.round((score / questions.length) * 100);
-            const message = `يا مستر إيهاب، أنا الطالب: ${studentName}\nخلصت اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nعدد الإجابات الصحيحة: ${score} من ${questions.length}`;
-            window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(message)}`;
+        function saveAsImage() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, { backgroundColor: "#fffcf5", scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `نتيجة_حضارة_فينيقيا.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                Swal.fire({ icon: 'success', title: 'تم الحفظ!', timer: 1500, showConfirmButton: false });
+            });
         }
 
         function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
