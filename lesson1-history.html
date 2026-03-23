@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         body { 
@@ -59,7 +60,6 @@
                 <i class="fas fa-exclamation-triangle"></i>
             </div>
             <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد التوقف؟</h3>
-            <p class="text-slate-500 mb-6 font-bold">لن يتم حفظ درجتك الحالية</p>
             <div class="flex gap-3">
                 <a href="grade10.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
                 <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto hidden">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
         <div class="flex justify-between items-center mb-8">
             <button onclick="toggleExitModal(true)" class="p-4 bg-white rounded-2xl shadow-sm text-slate-400 hover:text-red-500 transition-colors border border-orange-50">
                 <i class="fas fa-times text-xl"></i>
@@ -96,10 +96,10 @@
     </div>
 
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-6">
-        <div class="glass-card p-12">
+        <div id="capture-area" class="glass-card p-12 mb-6 bg-white border-2 border-orange-200">
             <div id="trophy-icon" class="text-7xl mb-6">🏆</div>
-            <h1 class="text-4xl font-900 text-slate-800 mb-2">انتهى الاختبار!</h1>
-            <p id="result-msg" class="text-slate-500 font-bold mb-8">مجهود رائع في تاريخ العراق القديم</p>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p class="text-slate-500 font-bold mb-8">تاريخ العراق القديم - أولى ثانوي</p>
             
             <div class="relative inline-block mb-10">
                 <svg class="w-48 h-48 transform -rotate-90">
@@ -111,12 +111,14 @@
                     <span class="text-slate-400 font-bold text-sm" id="raw-score">0 / 20</span>
                 </div>
             </div>
+            <div id="result-msg" class="text-xl font-bold text-slate-700"></div>
+        </div>
 
-            <button onclick="sendToWhatsApp()" class="w-full py-5 bg-emerald-500 text-white rounded-[1.5rem] font-black shadow-lg mb-4 flex items-center justify-center gap-3 hover:bg-emerald-600 transition active:scale-95">
-                <i class="fab fa-whatsapp text-2xl"></i>
-                إرسال النتيجة للمستر
+        <div class="flex flex-col gap-4">
+            <button onclick="saveAsImage()" class="w-full py-5 bg-blue-600 text-white rounded-[1.5rem] font-black shadow-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition active:scale-95">
+                <i class="fas fa-camera text-2xl"></i>
+                حفظ النتيجة كصورة
             </button>
-
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="location.reload()" class="py-5 bg-orange-100 text-orange-700 rounded-[1.5rem] font-900">إعادة الاختبار</button>
                 <a href="grade10.html" class="py-5 bg-slate-800 text-white rounded-[1.5rem] font-900 flex items-center justify-center">الدروس</a>
@@ -125,9 +127,6 @@
     </div>
 
     <script>
-        const MY_PHONE = "201559116736";
-        const LESSON_NAME = "تاريخ العراق القديم - أولى ثانوي";
-
         const questions = [
             { q: "تشابهت الزقورات في العراق مع الهرم المدرج بمصر في الشكل، ولكنها اختلفت عنه في:", a: ["مادة البناء المستخدمة", "الوظيفة الأساسية (دينية مقابل جنائزية)", "الطبقة المسؤولة عن البناء", "الارتباط بالحياة الفنية"], c: 1 },
             { q: "أي من ملوك العراق خالف عبارة 'الحكمة في الحكم تساعد في بسط النفوذ'؟", a: ["سرجون الأول", "حمورابي", "سنحاريب", "نبوخذ نصر الثاني"], c: 2 },
@@ -151,23 +150,9 @@
             { q: "تمثل الوظيفة 'السياسية' للمعبد (الزقورة) في:", a: ["تعليم القراءة", "تتويج الملك وحفظ العقود", "مخزن للحبوب", "إيواء الفقراء"], c: 1 }
         ];
 
-        let index = 0, score = 0, picked = null, studentName = "";
+        let index = 0, score = 0, picked = null;
 
-        // طلب الاسم عند بدء التشغيل
-        window.onload = async () => {
-            const { value: name } = await Swal.fire({
-                title: 'مرحباً بك في بلاد الرافدين',
-                text: 'ادخل اسمك الثلاثي لبدء التحدي',
-                input: 'text',
-                confirmButtonText: 'ابدأ الآن',
-                confirmButtonColor: '#f59e0b',
-                allowOutsideClick: false,
-                inputValidator: (v) => !v && 'يجب كتابة الاسم للمتابعة!'
-            });
-            studentName = name;
-            document.getElementById('quiz-wrapper').classList.remove('hidden');
-            render();
-        };
+        window.onload = () => { render(); };
 
         function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; }
 
@@ -194,7 +179,7 @@
         }
 
         function goToNext() {
-            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#f59e0b'});
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً!', icon:'warning', confirmButtonColor: '#f59e0b'});
             if (picked === questions[index].c) score++;
             index++;
             if (index < questions.length) render(); else finish();
@@ -207,21 +192,25 @@
             document.getElementById('score-text').innerText = pct + '%';
             document.getElementById('raw-score').innerText = `${score} من ${questions.length}`;
             
+            let msg = pct >= 50 ? "مستوى رائع، استمر!" : "راجع الدرس وحاول مرة أخرى.";
+            document.getElementById('result-msg').innerText = msg;
+
             const circle = document.getElementById('score-circle');
             const offset = 534 - (534 * pct) / 100;
             setTimeout(() => { circle.style.strokeDashoffset = offset; }, 100);
-
             if(pct < 50) document.getElementById('trophy-icon').innerText = '💪';
-            else if(pct < 85) document.getElementById('trophy-icon').innerText = '🌟';
         }
 
-        // إرسال عبر WhatsApp (wa.me)
-        function sendToWhatsApp() {
-            const pct = Math.round((score / questions.length) * 100);
-            const message = `مرحباً مستر إيهاب، أنا الطالب: ${studentName}\nأتممت اختبار: ${LESSON_NAME}\nدرجتي هي: ${pct}%\nالإجابات الصحيحة: ${score} من ${questions.length}`;
-            window.location.href = `https://wa.me/${MY_PHONE}?text=${encodeURIComponent(message)}`;
+        function saveAsImage() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, { backgroundColor: "#fffcf5", scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `نتيجة_الاختبار.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                Swal.fire({ icon: 'success', title: 'تم الحفظ!', timer: 1500, showConfirmButton: false });
+            });
         }
-
     </script>
 </body>
 </html>
