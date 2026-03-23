@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         body { 
@@ -95,7 +94,7 @@
     </div>
 
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
-        <div id="capture-area" class="glass-card p-12 shadow-2xl mb-6 bg-white">
+        <div class="glass-card p-12 shadow-2xl mb-6 bg-white">
             <div class="text-7xl mb-6">🎯</div>
             <h1 class="text-4xl font-900 text-slate-800 mb-4">نتيجة الاختبار</h1>
             <p class="text-slate-500 font-bold mb-4">اختبار سكان مصر - الصف الرابع</p>
@@ -110,11 +109,6 @@
         </div>
 
         <div class="flex flex-col gap-4">
-            <button onclick="saveAsImage()" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-black shadow-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition">
-                <i class="fas fa-download text-2xl"></i>
-                حفظ النتيجة كصورة
-            </button>
-
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="location.reload()" class="py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-bold hover:bg-emerald-200 transition">إعادة الاختبار</button>
                 <a href="grade4.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold flex items-center justify-center hover:bg-slate-900 transition">الرئيسية</a>
@@ -188,7 +182,6 @@
             const percent = Math.round((score / questions.length) * 100);
             document.getElementById('score-text').innerText = percent + '%';
             
-            // تحديد رسالة التقدير
             let msg = percent >= 50 ? "أحسنت يا بطل! استمر" : "حاول مرة أخرى، أنت تستطيع!";
             if(percent >= 90) msg = "ممتاز! أنت عبقري!";
             document.getElementById('result-message').innerText = msg;
@@ -196,36 +189,6 @@
             const offset = 440 - (440 * percent / 100);
             document.getElementById('score-circle').style.strokeDashoffset = offset;
         }
-
-        // دالة حفظ النتيجة كصورة
-        function saveAsImage() {
-    const area = document.getElementById('capture-area');
-    
-    // إظهار رسالة انتظار بسيطة
-    Swal.fire({
-        title: 'جاري الحفظ...',
-        timer: 800,
-        showConfirmButton: false,
-        didOpen: () => { Swal.showLoading(); }
-    });
-
-    html2canvas(area, { backgroundColor: "#f5f3ff", scale: 2 }).then(canvas => {
-        // تحويل الصورة إلى نص (Base64)
-        const imageData = canvas.toDataURL("image/png").replace("data:image/png;base64,", "");
-        
-        // إرسال النص إلى التطبيق (الأندرويد)
-        if (window.Android && window.Android.saveImage) {
-            window.Android.saveImage(imageData);
-        } else {
-            // حل احتياطي للمتصفحات العادية (كروم، سفاري)
-            const link = document.createElement('a');
-            link.download = `نتيجة_الاختبار.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        }
-    });
-}
-
     </script>
 </body>
 </html>
