@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <style>
         body { 
@@ -91,7 +90,7 @@
     </div>
 
     <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
-        <div id="capture-area" class="glass-card p-12 shadow-2xl bg-white mb-6 border-2 border-emerald-100">
+        <div class="glass-card p-12 shadow-2xl bg-white mb-6 border-2 border-emerald-100">
             <div class="text-7xl mb-6">🌍</div>
             <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
             <p class="text-slate-500 font-bold mb-8">خصائص قارات العالم - الدراسات الاجتماعية</p>
@@ -109,14 +108,9 @@
         </div>
 
         <div class="flex flex-col gap-4">
-            <button onclick="saveAsImage()" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-black shadow-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition active:scale-95">
-                <i class="fas fa-camera text-2xl"></i>
-                حفظ النتيجة كصورة
-            </button>
-
             <div class="grid grid-cols-2 gap-4">
-                <button onclick="location.reload()" class="py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-bold shadow-lg">إعادة الاختبار</button>
-                <a href="grade7.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
+                <button onclick="location.reload()" class="py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-bold shadow-lg hover:bg-emerald-200 transition">إعادة الاختبار</button>
+                <a href="grade7.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center hover:bg-slate-700 transition">الرئيسية</a>
             </div>
         </div>
     </div>
@@ -184,34 +178,6 @@
             let msg = pct >= 50 ? "أداء ممتاز! أنت جغرافي بارع" : "حاول مرة أخرى لتتقن تضاريس العالم";
             document.getElementById('result-msg').innerText = msg;
         }
-
-        function saveAsImage() {
-    const area = document.getElementById('capture-area');
-    
-    // إظهار رسالة انتظار بسيطة
-    Swal.fire({
-        title: 'جاري الحفظ...',
-        timer: 800,
-        showConfirmButton: false,
-        didOpen: () => { Swal.showLoading(); }
-    });
-
-    html2canvas(area, { backgroundColor: "#f5f3ff", scale: 2 }).then(canvas => {
-        // تحويل الصورة إلى نص (Base64)
-        const imageData = canvas.toDataURL("image/png").replace("data:image/png;base64,", "");
-        
-        // إرسال النص إلى التطبيق (الأندرويد)
-        if (window.Android && window.Android.saveImage) {
-            window.Android.saveImage(imageData);
-        } else {
-            // حل احتياطي للمتصفحات العادية (كروم، سفاري)
-            const link = document.createElement('a');
-            link.download = `نتيجة_الاختبار.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        }
-    });
-}
 
         function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
     </script>
