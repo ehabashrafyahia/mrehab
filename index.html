@@ -50,33 +50,30 @@
     </div>
 
     <script>
-        // قاعدة بيانات نظيفة تماماً
+        // قاعدة البيانات بدون رموز (UnderScore)
         const db = {
-            "ehab_admin": "boss2026",
-            "amal_arafa": "am20x7",
-            "mariam_ahmed": "mr33k9",
-            "nada_fathi": "nd55v1",
-            "nouran_atef": "nr88z4",
-            "jana_mahmoud": "jn11m8",
-            "jana_mohamed": "jn44h2",
-            "hossam_hassan": "hs77s3",
-            "mostafa_reda": "ms99r6",
-            "noura_omar": "no22m5"
+            "mrehab": "ehab2026", // يوزر الأدمن الجديد
+            "amalarafa": "am20x7",
+            "mariamahmed": "mr33k9",
+            "nadafathi": "nd55v1",
+            "nouranatef": "nr88z4",
+            "janamahmoud": "jn11m8",
+            "janamohamed": "jn44h2",
+            "hossamhassan": "hs77s3",
+            "mostafareda": "ms99r6",
+            "nouraomar": "no22m5"
         };
 
         function handleLogin() {
-            // جلب القيم وتحويلها لسمول وحذف المسافات من الأطراف
             const u = document.getElementById('user').value.toLowerCase().trim();
             const p = document.getElementById('pass').value.toLowerCase().trim();
-
-            console.log("Login Attempt:", u, p); // للتأكد في المتصفح
 
             if (db[u] && db[u] === p) {
                 localStorage.setItem("atlas_auth", "true");
                 
-                if (u === "ehab_admin") {
+                if (u === "mrehab") {
                     localStorage.setItem("role", "admin");
-                    Swal.fire({ icon: 'success', title: 'مرحباً مستر إيهاب', text: 'جاري فتح لوحة التحكم...', timer: 1500, showConfirmButton: false });
+                    Swal.fire({ icon: 'success', title: 'أهلاً مستر إيهاب', text: 'جاري فتح لوحة التحكم...', timer: 1500, showConfirmButton: false });
                     setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
                 } else {
                     localStorage.setItem("role", "student");
@@ -85,7 +82,7 @@
                     setTimeout(() => { window.location.href = "home.html"; }, 1500);
                 }
             } else {
-                Swal.fire({ icon: 'error', title: 'عذراً!', text: 'اسم المستخدم أو الباسورد خطأ', confirmButtonColor: '#10b981' });
+                Swal.fire({ icon: 'error', title: 'عذراً!', text: 'تأكد من البيانات المكتوبة', confirmButtonColor: '#10b981' });
             }
         }
 
