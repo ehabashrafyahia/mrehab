@@ -11,61 +11,33 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body { font-family: 'Cairo', sans-serif; background: #f8fafc; overflow: hidden; }
-        
-        .logo-container { 
-            position: relative; width: 150px; height: 120px; 
-            margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; 
-        }
-        
-        .logo-shape {
-            position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: morph 6s linear infinite;
-            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
-        }
-
-        .logo-text { 
-            position: relative; z-index: 10; color: white; 
-            font-family: 'Reem Kufi', sans-serif; font-size: 2.8rem; font-weight: 700; 
-        }
-
-        @keyframes morph { 
-            0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 
-            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } 
-        }
-
-        .login-input { 
-            width: 100%; padding: 16px; background: #f1f5f9; 
-            border: 2px solid transparent; border-radius: 18px; 
-            outline: none; transition: 0.3s; text-align: center; font-weight: 700; 
-        }
+        .logo-container { position: relative; width: 150px; height: 120px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; }
+        .logo-shape { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; animation: morph 6s linear infinite; box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2); }
+        .logo-text { position: relative; z-index: 10; color: white; font-family: 'Reem Kufi', sans-serif; font-size: 2.8rem; font-weight: 700; }
+        @keyframes morph { 0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } }
+        .login-input { width: 100%; padding: 16px; background: #f1f5f9; border: 2px solid transparent; border-radius: 18px; outline: none; transition: 0.3s; text-align: center; font-weight: 700; }
         .login-input:focus { border-color: #10b981; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
 
     <div class="bg-white w-full max-w-sm p-10 rounded-[45px] shadow-2xl text-center border border-slate-50">
-        
         <div class="logo-container">
             <div class="logo-shape"></div>
             <div class="logo-text">اطلس</div>
         </div>
-        
         <h2 class="text-2xl font-black text-slate-800 mb-2">مرحباً بك يا بطل</h2>
         <p class="text-slate-400 text-xs font-bold mb-8">يرجى تسجيل الدخول للبدء</p>
 
         <div class="space-y-4">
             <div class="relative">
-                <input type="text" id="user" class="login-input" placeholder="اسم المستخدم">
+                <input type="text" id="user" class="login-input" placeholder="اسم المستخدم" autocomplete="off">
                 <i class="fas fa-user absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
             </div>
-            
             <div class="relative">
                 <input type="password" id="pass" class="login-input" placeholder="كلمة المرور">
                 <i class="fas fa-lock absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
             </div>
-
             <button onclick="handleLogin()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-100 transition-all transform active:scale-95">
                 دخول المنصة <i class="fas fa-sign-in-alt mr-2"></i>
             </button>
@@ -78,9 +50,9 @@
     </div>
 
     <script>
-        // قاعدة البيانات المحدثة (أدمن + طلاب)
-        const USERS_DATABASE = {
-            "ehab_admin": "boss2026", // حسابك كأدمن
+        // قاعدة بيانات نظيفة تماماً
+        const db = {
+            "ehab_admin": "boss2026",
             "amal_arafa": "am20x7",
             "mariam_ahmed": "mr33k9",
             "nada_fathi": "nd55v1",
@@ -93,53 +65,34 @@
         };
 
         function handleLogin() {
-            const userInput = document.getElementById('user').value.toLowerCase().trim();
-            const passInput = document.getElementById('pass').value.toLowerCase().trim();
+            // جلب القيم وتحويلها لسمول وحذف المسافات من الأطراف
+            const u = document.getElementById('user').value.toLowerCase().trim();
+            const p = document.getElementById('pass').value.toLowerCase().trim();
 
-            if (USERS_DATABASE[userInput] && USERS_DATABASE[userInput] === passInput) {
-                
-                // حفظ بيانات الجلسة
+            console.log("Login Attempt:", u, p); // للتأكد في المتصفح
+
+            if (db[u] && db[u] === p) {
                 localStorage.setItem("atlas_auth", "true");
                 
-                if (userInput === "ehab_admin") {
+                if (u === "ehab_admin") {
                     localStorage.setItem("role", "admin");
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'مرحباً سيادة المستر',
-                        text: 'جاري فتح لوحة التحكم الإدارية...',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
+                    Swal.fire({ icon: 'success', title: 'مرحباً مستر إيهاب', text: 'جاري فتح لوحة التحكم...', timer: 1500, showConfirmButton: false });
                     setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
                 } else {
                     localStorage.setItem("role", "student");
-                    localStorage.setItem("student_identity", userInput);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'تم تسجيل الدخول',
-                        text: 'أهلاً بك يا بطل في أطلس',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
+                    localStorage.setItem("student_identity", u);
+                    Swal.fire({ icon: 'success', title: 'تم الدخول', text: 'أهلاً بك يا بطل', timer: 1500, showConfirmButton: false });
                     setTimeout(() => { window.location.href = "home.html"; }, 1500);
                 }
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'بيانات خاطئة!',
-                    text: 'تأكد من اسم المستخدم وكلمة المرور',
-                    confirmButtonColor: '#10b981'
-                });
+                Swal.fire({ icon: 'error', title: 'عذراً!', text: 'اسم المستخدم أو الباسورد خطأ', confirmButtonColor: '#10b981' });
             }
         }
 
         window.onload = function() {
             if(localStorage.getItem("atlas_auth") === "true") {
-                if(localStorage.getItem("role") === "admin") {
-                    window.location.href = "dashboard.html";
-                } else {
-                    window.location.href = "home.html";
-                }
+                const role = localStorage.getItem("role");
+                window.location.href = (role === "admin") ? "dashboard.html" : "home.html";
             }
         }
     </script>
