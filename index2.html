@@ -6,37 +6,51 @@
     <title>تسجيل دخول المنصة | مستر إيهاب أشرف</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { font-family: 'Cairo', sans-serif; background: #f1f5f9; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .login-card { background: white; padding: 40px; border-radius: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); width: 100%; max-width: 380px; text-align: center; }
-        .input-field { width: 100%; padding: 15px; background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 15px; margin-bottom: 15px; text-align: center; font-weight: bold; outline: none; transition: 0.3s; }
-        .input-field:focus { border-color: #10b981; background: white; }
-        .btn-login { width: 100%; padding: 15px; background: #10b981; color: white; border-radius: 15px; font-weight: 900; font-size: 1.1rem; shadow: 0 10px 20px rgba(16, 185, 129, 0.2); transition: 0.3s; }
-        .btn-login:active { transform: scale(0.95); }
+        body { font-family: 'Cairo', sans-serif; background: #f8fafc; overflow: hidden; }
+        .logo-container { position: relative; width: 150px; height: 120px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; }
+        .logo-shape { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; animation: morph 6s linear infinite; box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2); }
+        .logo-text { position: relative; z-index: 10; color: white; font-family: 'Reem Kufi', sans-serif; font-size: 2.8rem; font-weight: 700; }
+        @keyframes morph { 0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } }
+        .login-input { width: 100%; padding: 16px; background: #f1f5f9; border: 2px solid transparent; border-radius: 18px; outline: none; transition: 0.3s; text-align: center; font-weight: 700; }
+        .login-input:focus { border-color: #10b981; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center p-6">
 
-    <div class="login-card">
-        <div class="mb-6">
-            <h1 class="text-3xl font-black text-slate-800">أطلس 🚀</h1>
-            <p class="text-slate-400 text-sm font-bold mt-2">منصة مستر إيهاب أشرف</p>
+    <div class="bg-white w-full max-w-sm p-10 rounded-[45px] shadow-2xl text-center border border-slate-50">
+        <div class="logo-container">
+            <div class="logo-shape"></div>
+            <div class="logo-text">اطلس</div>
+        </div>
+        <h2 class="text-2xl font-black text-slate-800 mb-2">مرحباً بك يا بطل</h2>
+        <p class="text-slate-400 text-xs font-bold mb-8">يرجى تسجيل الدخول للبدء</p>
+
+        <div class="space-y-4">
+            <div class="relative">
+                <input type="text" id="user" class="login-input" placeholder="اسم المستخدم" autocomplete="off">
+                <i class="fas fa-user absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+            </div>
+            <div class="relative">
+                <input type="password" id="pass" class="login-input" placeholder="كلمة المرور">
+                <i class="fas fa-lock absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+            </div>
+            <button onclick="handleLogin()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-100 transition-all transform active:scale-95">
+                دخول المنصة <i class="fas fa-sign-in-alt mr-2"></i>
+            </button>
         </div>
 
-        <div id="login-form">
-            <input type="text" id="user" class="input-field" placeholder="اسم المستخدم" autocomplete="off">
-            <input type="password" id="pass" class="input-field" placeholder="كلمة المرور">
-            <button onclick="handleLogin()" class="btn-login">دخول المنصة</button>
-        </div>
-
-        <div class="mt-8 pt-6 border-t border-slate-50">
-            <p class="text-[10px] text-slate-400 font-bold">إعداد وتصميم: أ. إيهاب أشرف</p>
+        <div class="mt-10 pt-6 border-t border-slate-100">
+            <p class="text-[11px] text-slate-500 font-bold mb-1">إعداد وتصميم: أ. إيهاب أشرف</p>
+            <a href="https://wa.me/201559116736" class="text-[10px] text-emerald-500 font-black"><i class="fab fa-whatsapp"></i> 01559116736</a>
         </div>
     </div>
 
     <script>
-        // رابط الشيت الخاص بك (CSV)
+        // رابط جوجل شيت الخاص بك (CSV)
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5wBVZeNv3Ijg80p-YkD57IPnAXnzWFT1kyoIVXIn46zY-U9fcykFNd3vgAzjMkJlOk0J2hqazdIoI/pub?gid=0&single=true&output=csv";
 
         async function handleLogin() {
@@ -48,27 +62,26 @@
                 return;
             }
 
-            // إظهار علامة التحميل
+            // إظهار تحميل
             Swal.fire({ title: 'جاري التحقق...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
 
             try {
                 const response = await fetch(SHEET_URL);
                 const csvData = await response.text();
                 
-                // تحويل الـ CSV إلى مصفوفة (Array)
+                // تحويل البيانات لصفوف
                 const rows = csvData.split("\n").map(row => row.split(","));
                 
                 let found = false;
                 let userRole = "student";
 
-                // البحث في الصفوف (تجاهل صف العنوان الأول)
+                // البحث في الشيت (بنتجاهل أول صف اللي هو العنوان)
                 for (let i = 1; i < rows.length; i++) {
                     const user = rows[i][0]?.trim().toLowerCase();
                     const pass = rows[i][1]?.trim().toLowerCase();
 
                     if (user === uInput && pass === pInput) {
                         found = true;
-                        // لو اليوزر هو mrehab خليه أدمن
                         if (user === "mrehab") userRole = "admin";
                         break;
                     }
@@ -76,28 +89,27 @@
 
                 if (found) {
                     localStorage.setItem("atlas_auth", "true");
-                    localStorage.setItem("user_role", userRole);
-                    localStorage.setItem("user_id", uInput);
+                    localStorage.setItem("role", userRole);
+                    localStorage.setItem("student_identity", uInput);
 
-                    Swal.fire({ icon: 'success', title: 'أهلاً بك يا بطل', showConfirmButton: false, timer: 1500 });
+                    Swal.fire({ icon: 'success', title: 'تم الدخول بنجاح', text: 'أهلاً بك في منصة أطلس', showConfirmButton: false, timer: 1500 });
                     
                     setTimeout(() => {
                         window.location.href = (userRole === "admin") ? "dashboard.html" : "home.html";
                     }, 1500);
                 } else {
-                    Swal.fire({ icon: 'error', title: 'فشل الدخول', text: 'اسم المستخدم أو كلمة المرور غير صحيحة' });
+                    Swal.fire({ icon: 'error', title: 'عذراً!', text: 'اسم المستخدم أو كلمة المرور خطأ' });
                 }
 
             } catch (error) {
                 console.error(error);
-                Swal.fire({ icon: 'error', title: 'خطأ في الاتصال', text: 'تأكد من اتصالك بالإنترنت' });
+                Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'فشلنا في الوصول لقاعدة البيانات' });
             }
         }
 
-        // لو مسجل دخول قبل كدة يحوله فوراً
         window.onload = function() {
             if(localStorage.getItem("atlas_auth") === "true") {
-                const role = localStorage.getItem("user_role");
+                const role = localStorage.getItem("role");
                 window.location.href = (role === "admin") ? "dashboard.html" : "home.html";
             }
         }
