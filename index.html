@@ -10,8 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { font-family: 'Cairo', sans-serif; background: #f8fafc; }
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: #f8fafc; 
+            overflow: hidden; /* لمنع السكرول في شاشة الدخول */
+        }
         
+        /* تصميم اللوجو الجرافيكي المطور */
         .logo-container { 
             position: relative; 
             width: 150px; 
@@ -39,6 +44,7 @@
             font-family: 'Reem Kufi', sans-serif; 
             font-size: 2.8rem; 
             font-weight: 700; 
+            text-shadow: 2px 4px 10px rgba(0,0,0,0.1);
         }
 
         @keyframes morph { 
@@ -47,12 +53,20 @@
         }
 
         .login-input { 
-            width: 100%; padding: 16px; background: #f1f5f9; 
-            border: 2px solid transparent; border-radius: 18px; 
-            outline: none; transition: 0.3s; text-align: center; font-weight: 700; 
+            width: 100%; 
+            padding: 16px; 
+            background: #f1f5f9; 
+            border: 2px solid transparent; 
+            border-radius: 18px; 
+            outline: none; 
+            transition: 0.3s; 
+            text-align: center; 
+            font-weight: 700; 
         }
+
         .login-input:focus { 
-            border-color: #10b981; background: white; 
+            border-color: #10b981; 
+            background: white; 
             box-shadow: 0 10px 20px rgba(0,0,0,0.03); 
         }
     </style>
@@ -92,24 +106,26 @@
     </div>
 
     <script>
-        // قاعدة البيانات الجديدة بالأسماء المطلوبة
+        // قاعدة البيانات الجديدة (الباسوردات كلها سمول للمقارنة)
         const USERS_DATABASE = {
-            "amal_arafa": "Am20x7",
-            "mariam_ahmed": "Mr33k9",
-            "nada_fathi": "Nd55v1",
-            "nouran_atef": "Nr88z4",
-            "jana_mahmoud": "Jn11m8",
-            "jana_mohamed": "Jn44h2",
-            "hossam_hassan": "Hs77s3",
-            "mostafa_reda": "Ms99r6",
-            "noura_omar": "No22m5"
+            "amal_arafa": "am20x7",
+            "mariam_ahmed": "mr33k9",
+            "nada_fathi": "nd55v1",
+            "nouran_atef": "nr88z4",
+            "jana_mahmoud": "jn11m8",
+            "jana_mohamed": "jn44h2",
+            "hossam_hassan": "hs77s3",
+            "mostafa_reda": "ms99r6",
+            "noura_omar": "no22m5"
         };
 
         function handleLogin() {
+            // سحب البيانات وتحويلها لسمول فوراً لعدم التفرقة بين كابيتال وسمول
             const userInput = document.getElementById('user').value.toLowerCase().trim();
-            const passInput = document.getElementById('pass').value.trim();
+            const passInput = document.getElementById('pass').value.toLowerCase().trim();
 
             if (USERS_DATABASE[userInput] && USERS_DATABASE[userInput] === passInput) {
+                // حفظ الجلسة
                 localStorage.setItem("atlas_auth", "true");
                 localStorage.setItem("student_identity", userInput);
 
@@ -121,6 +137,7 @@
                     showConfirmButton: false
                 });
 
+                // الانتقال للصفحة الرئيسية (تأكد أن الملف اسمه home.html)
                 setTimeout(() => { window.location.href = "home.html"; }, 1500);
             } else {
                 Swal.fire({
@@ -133,6 +150,7 @@
             }
         }
 
+        // كود التحقق من تسجيل الدخول المسبق
         window.onload = function() {
             if(localStorage.getItem("atlas_auth") === "true") {
                 window.location.href = "home.html";
