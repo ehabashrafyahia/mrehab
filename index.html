@@ -50,39 +50,60 @@
     </div>
 
     <script>
-        // قاعدة البيانات بدون رموز (UnderScore)
-        const db = {
-            "mrehab": "ehab2026", // يوزر الأدمن الجديد
-            "amalarafa": "am20x7",
-            "mariamahmed": "mr33k9",
-            "nadafathi": "nd55v1",
-            "nouranatef": "nr88z4",
-            "janamahmoud": "jn11m8",
-            "janamohamed": "jn44h2",
-            "hossamhassan": "hs77s3",
-            "mostafareda": "ms99r6",
-            "nouraomar": "no22m5"
-        };
+        // رابط جوجل شيت الخاص بك (CSV)
+        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5wBVZeNv3Ijg80p-YkD57IPnAXnzWFT1kyoIVXIn46zY-U9fcykFNd3vgAzjMkJlOk0J2hqazdIoI/pub?gid=0&single=true&output=csv";
 
-        function handleLogin() {
-            const u = document.getElementById('user').value.toLowerCase().trim();
-            const p = document.getElementById('pass').value.toLowerCase().trim();
+        async function handleLogin() {
+            const uInput = document.getElementById('user').value.toLowerCase().trim();
+            const pInput = document.getElementById('pass').value.toLowerCase().trim();
 
-            if (db[u] && db[u] === p) {
-                localStorage.setItem("atlas_auth", "true");
+            if (!uInput || !pInput) {
+                Swal.fire({ icon: 'warning', title: 'تنبيه', text: 'برجاء كتابة البيانات كاملة' });
+                return;
+            }
+
+            // إظهار تحميل
+            Swal.fire({ title: 'جاري التحقق...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+
+            try {
+                const response = await fetch(SHEET_URL);
+                const csvData = await response.text();
                 
-                if (u === "mrehab") {
-                    localStorage.setItem("role", "admin");
-                    Swal.fire({ icon: 'success', title: 'أهلاً مستر إيهاب', text: 'جاري فتح لوحة التحكم...', timer: 1500, showConfirmButton: false });
-                    setTimeout(() => { window.location.href = "dashboard.html"; }, 1500);
-                } else {
-                    localStorage.setItem("role", "student");
-                    localStorage.setItem("student_identity", u);
-                    Swal.fire({ icon: 'success', title: 'تم الدخول', text: 'أهلاً بك يا بطل', timer: 1500, showConfirmButton: false });
-                    setTimeout(() => { window.location.href = "home.html"; }, 1500);
+                // تحويل البيانات لصفوف
+                const rows = csvData.split("\n").map(row => row.split(","));
+                
+                let found = false;
+                let userRole = "student";
+
+                // البحث في الشيت (بنتجاهل أول صف اللي هو العنوان)
+                for (let i = 1; i < rows.length; i++) {
+                    const user = rows[i][0]?.trim().toLowerCase();
+                    const pass = rows[i][1]?.trim().toLowerCase();
+
+                    if (user === uInput && pass === pInput) {
+                        found = true;
+                        if (user === "mrehab") userRole = "admin";
+                        break;
+                    }
                 }
-            } else {
-                Swal.fire({ icon: 'error', title: 'عذراً!', text: 'تأكد من البيانات المكتوبة', confirmButtonColor: '#10b981' });
+
+                if (found) {
+                    localStorage.setItem("atlas_auth", "true");
+                    localStorage.setItem("role", userRole);
+                    localStorage.setItem("student_identity", uInput);
+
+                    Swal.fire({ icon: 'success', title: 'تم الدخول بنجاح', text: 'أهلاً بك في منصة أطلس', showConfirmButton: false, timer: 1500 });
+                    
+                    setTimeout(() => {
+                        window.location.href = (userRole === "admin") ? "dashboard.html" : "home.html";
+                    }, 1500);
+                } else {
+                    Swal.fire({ icon: 'error', title: 'عذراً!', text: 'اسم المستخدم أو كلمة المرور خطأ' });
+                }
+
+            } catch (error) {
+                console.error(error);
+                Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'فشلنا في الوصول لقاعدة البيانات' });
             }
         }
 
