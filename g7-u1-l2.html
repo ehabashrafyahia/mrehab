@@ -53,14 +53,14 @@
 
     <div id="quiz-wrapper" class="max-w-3xl mx-auto">
         <div class="flex justify-between items-center mb-10">
-            <a href="home.html" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
+            <a href="Grade7.html" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
                 <i class="fas fa-arrow-right"></i>
-                <span class="font-bold text-sm text-slate-800">رجوع</span>
+                <span class="font-bold text-sm text-slate-800">رجوع للدروس</span>
             </a>
             <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-purple-600">
                 <span id="q-count">1</span> / 20
             </div>
-            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-globe-africa"></i></div>
+            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-graduation-cap"></i></div>
         </div>
 
         <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
@@ -82,7 +82,7 @@
         <div class="glass-card p-12 bg-white mb-6 border-2 border-purple-100">
             <div class="text-7xl mb-6">🏆</div>
             <h1 class="text-4xl font-900 text-slate-800 mb-2">النتيجة النهائية</h1>
-            <p class="text-slate-500 font-bold mb-8">خصائص سكان أفريقيا - أطلس</p>
+            <p class="text-slate-500 font-bold mb-8">سكان إفريقيا - الدراسات الاجتماعية</p>
             
             <div class="relative inline-block mb-10">
                 <svg class="w-40 h-40 transform -rotate-90">
@@ -97,8 +97,8 @@
         </div>
 
         <div class="grid grid-cols-2 gap-4">
-            <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg">إعادة الاختبار</button>
-            <a href="home.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
+            <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg hover:bg-purple-200 transition">إعادة</button>
+            <a href="Grade7.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center hover:bg-slate-700 transition">دروس سنة أولى</a>
         </div>
     </div>
 
@@ -122,7 +122,7 @@
             { q: "تعد 'إريتريا والصومال' من أولى الدول عالمياً وأفريقياً في مشكلة:", a: ["زيادة عدد الأطباء", "عمالة الأطفال", "ارتفاع نسبة كبار السن", "التطور الصناعي"], c: 1 },
             { q: "ما هو العامل المشترك الذي أدى لاختلاف نسبة الإناث والذكور في بعض الدول الأفريقية؟", a: ["اختلاف اللغات", "الهجرة وارتفاع معدلات الوفيات بين الذكور نتيجة الحروب", "تطور الحرف التراثية", "اختلاف المناخ"], c: 1 },
             { q: "يقل معدل الأطباء في دول 'جنوب الصحراء الكبرى' عن المعدل العالمي ليصل إلى حوالي:", a: ["1.7 طبيب لكل 1000 نسمة", "1.4 طبيب لكل 1000 نسمة", "0.25 طبيب لكل 1000 نسمة", "2.4 طبيب لكل 1000 نسمة"], c: 2 },
-            { q: "الهدف الرابع من أهداف التنمية المستدامة الذي تسعى الدول الأفريقية لتحقيقه يتعلق بـ:", a: ["القضاء على الفقر", "ضمان التعليم الجيد المنصف والشامل", "حماية التراث الثقافي", "الرعاية الصحية"], c: 1 },
+            { q: "الهدف الرابع من أهداف التنمية المستدامة الذي تسعى الدول الأفريقية لتحقيقه يتعلق بـ:", a: ["القضاء على الفقر", "ضمان التعليم الجيد المنصف والشامل", "حماية التراث الثقافي", "الرعاية الصحية المتكاملة"], c: 1 },
             { q: "أي مما يلي يعد من الحرف التراثية التي تعبر عن الهوية الأفريقية؟", a: ["صناعة الفخار والخزف", "صناعة السيارات", "التكنولوجيا الحيوية", "الصناعات الكيماوية"], c: 0 }
         ];
 
@@ -139,8 +139,8 @@
             grid.innerHTML = '';
             q.a.forEach((opt, i) => {
                 const btn = document.createElement('div');
-                btn.className = 'option-box p-5 rounded-2xl flex items-center gap-4 transition-all';
-                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-md font-bold text-slate-700">${opt}</span>`;
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 transition-all';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
                 btn.onclick = () => {
                     document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
                     btn.classList.add('selected');
@@ -164,9 +164,8 @@
             const pct = Math.round((score / questions.length) * 100);
             document.getElementById('score-text').innerText = pct + '%';
             document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
-            document.getElementById('result-msg').innerText = pct >= 50 ? "أداء ممتاز! استمر في التفوق يا بطل" : "تحتاج لمراجعة الدرس مرة أخرى!";
+            document.getElementById('result-msg').innerText = pct >= 50 ? "أداء رائع! استمر في التفوق" : "راجع الدرس وحاول مرة أخرى!";
         }
     </script>
 </body>
 </html>
-
