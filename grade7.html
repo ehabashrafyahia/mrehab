@@ -36,6 +36,18 @@
             box-shadow: 0 15px 25px -5px rgba(126, 34, 206, 0.4);
         }
 
+        /* زرار امتحان الوحدة - ذهبي */
+        .unit-exam-btn {
+            background: linear-gradient(145deg, #fbbf24, #d97706);
+            box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.3);
+            animation: pulse-gold 2s infinite;
+        }
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        }
+
         /* نظام القفل */
         .is-locked {
             position: relative;
@@ -100,7 +112,7 @@
                 <a href="g7-u1-l1.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
                     <div class="flex items-center gap-5 w-full">
                         <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">1</div>
-                        <div class="flex flex-col">
+                        <div class="flex flex-col text-right">
                             <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
                             <span class="font-900 text-lg leading-tight text-white">نمو وتوزيع سكان قارة إفريقيا</span>
                         </div>
@@ -108,15 +120,28 @@
                     <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
                 </a>
 
-                <a href="g7-u1-l2.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                <a href="africa-pop.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
                     <div class="flex items-center gap-5 w-full">
                         <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">2</div>
-                        <div class="flex flex-col">
+                        <div class="flex flex-col text-right">
                             <span class="text-white/70 text-xs font-bold mb-1">الدرس الثاني</span>
                             <span class="font-900 text-lg leading-tight text-white">خصائص سكان قارة إفريقيا</span>
                         </div>
                     </div>
                     <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
+                </a>
+
+                <a href="unit1-exam.html" class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center group border-2 border-white/30">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square">
+                            <i class="fas fa-star text-yellow-200"></i>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-white/80 text-xs font-bold mb-1 italic text-right">اختبر مستواك</span>
+                            <span class="font-900 text-lg leading-tight text-white text-right">امتحان شامل: الوحدة الأولى</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-trophy text-2xl flex-none mr-2"></i>
                 </a>
             </div>
         </section>
@@ -131,7 +156,7 @@
                 <a href="g7-u2-l1.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
                     <div class="flex items-center gap-5 w-full">
                         <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">1</div>
-                        <div class="flex flex-col">
+                        <div class="flex flex-col text-right">
                             <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
                             <span class="font-900 text-lg leading-tight text-white">الدور الحضاري في عهد محمد علي</span>
                         </div>
@@ -146,6 +171,20 @@
                         <span class="font-900 text-lg leading-tight">الدور الحضاري في عهد الخلفاء</span>
                     </div>
                     <i class="fas fa-lock text-2xl opacity-20 flex-none mr-2"></i>
+                </div>
+
+                <div class="is-locked unit-exam-btn relative min-h-[80px] p-6 rounded-[2rem] flex justify-between items-center border-2 border-white/30">
+                    <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>بعد انتهاء الوحدة</div></div>
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square">
+                            <i class="fas fa-star text-yellow-200 opacity-50"></i>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-white/80 text-xs font-bold mb-1 italic text-right">اختبر مستواك</span>
+                            <span class="font-900 text-lg leading-tight text-white text-right">امتحان شامل: الوحدة الثانية</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-trophy text-2xl flex-none opacity-50 mr-2"></i>
                 </div>
             </div>
         </section>
