@@ -6,7 +6,6 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      // ضفنا ./ عشان يقرأ من نفس المجلد
       navigator.serviceWorker.register('./sw.js')
         .then(reg => console.log('تم تسجيل الـ SW بنجاح'))
         .catch(err => console.log('فشل التسجيل:', err));
@@ -45,7 +44,7 @@
         .splash-footer h4 { font-weight: 800; color: #334155; font-size: 1.1rem; }
         .splash-footer p { font-weight: 700; color: #10b981; direction: ltr; }
 
-        /* --- شريط المتميزين (حركة مستمرة بدون توقف) --- */
+        /* --- شريط المتميزين --- */
         .news-ticker {
             background: white; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
             padding: 10px 0; overflow: hidden; display: flex; align-items: center; margin-top: 15px;
@@ -150,15 +149,47 @@
     </footer>
 
     <script>
+        // --- [بداية كود شرطي المرور - الفحص اللحظي] ---
+        async function checkAuthStatus() {
+            const u = localStorage.getItem("username");
+            const p = localStorage.getItem("password");
+            const auth = localStorage.getItem("atlas_auth");
+
+            // لو مش مسجل دخول يرجعه فوراً لـ index
+            if (auth !== "true" || !u || !p) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            // رابط الـ Apps Script الخاص بك
+            const scriptURL = "https://script.google.com/macros/s/AKfycbwblRnifgkx3zLlRfW60GgdQRyaYHf9cRwO2LpN6p-6JlXGGRAFGW3JxrnOmDa-ZATr/exec";
+
+            try {
+                const res = await fetch(`${scriptURL}?action=validate&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`);
+                const status = await res.text();
+
+                // لو الباسورد اتغير (invalid) أو اليوزر اتحذف (notfound)
+                if (status.trim() === "invalid" || status.trim() === "notfound") {
+                    alert("⚠️ تم تحديث بيانات حسابك من قبل الإدارة، يرجى تسجيل الدخول مجدداً.");
+                    localStorage.clear();
+                    window.location.href = "index.html";
+                }
+            } catch (e) {
+                console.log("النت ضعيف.. جاري المحاولة في الخلفية");
+            }
+        }
+        // تشغيل الفحص فوراً
+        checkAuthStatus();
+        // --- [نهاية كود شرطي المرور] ---
+
         // 1. عرض اسم الطالب من الذاكرة
         const studentName = localStorage.getItem("student_identity") || "بطل";
         document.getElementById('welcome-name').innerText = studentName;
 
-        // 2. إعداد شريط المتميزين (تكرار مضاعف لضمان عدم التوقف)
+        // 2. إعداد شريط المتميزين
         const TOP_STUDENTS = ["ياسين محمد", "مريم خالد", "أحمد إبراهيم", "سلمى يوسف", "زياد حسن"];
         const tickerContainer = document.getElementById('ticker-names');
         const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
-        // نكرر الأسماء 4 مرات لسد أي فراغات أثناء الحركة
         tickerContainer.innerHTML = namesHtml + namesHtml + namesHtml + namesHtml;
 
         // 3. التحكم في شاشة Splash
