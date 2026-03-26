@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بنك الأسئلة المقالية | منصة أطلس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #f8fafc; scroll-behavior: smooth; }
+        .category-title { border-right: 5px solid #fbbf24; padding-right: 15px; }
+        .question-card { background: white; border-radius: 1.5rem; transition: all 0.3s ease; border: 1px solid #f1f5f9; }
+        .question-card:hover { transform: translateY(-5px); shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .answer-box { display: none; background: #fffbeb; border-radius: 1rem; border: 1px dashed #fbbf24; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-toggle { background: #fbbf24; color: #78350f; font-weight: 900; transition: all 0.3s; }
+        .btn-toggle.active { background: #1e293b; color: white; }
+    </style>
+</head>
+<body class="pb-20 text-right">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100 p-4 mb-10 shadow-sm">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            
+            <a href="grade7.html" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-2xl font-bold text-sm hover:bg-red-100 transition shadow-sm">
+                <i class="fas fa-times text-xs"></i>
+                <span>خروج</span>
+            </a>
+
+            <h1 class="text-lg md:text-xl font-900 text-slate-800 italic">🌍 بنك الأسئلة: الوحدة الأولى</h1>
+
+            <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 shadow-inner">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 space-y-16">
+
+        <section>
+            <h2 class="category-title text-2xl font-900 text-slate-800 mb-8">س1: بم تفسر؟ (اذكر السبب)</h2>
+            <div class="grid gap-5">
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">1. ارتفاع معدل الزيادة الطبيعية في أفريقيا مقارنة بالمعدل العالمي.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">بسبب الارتفاع الكبير في معدلات المواليد وانخفاض معدلات الوفيات نتيجة تحسن الرعاية الصحية.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">2. انخفاض معدل الوفيات في قارة أفريقيا في السنوات الأخيرة.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">بسبب الاهتمام بالرعاية الصحية وتوافر تطعيمات الأطفال وتحسن الأحوال المعيشية في القارة.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">3. تركز السكان بكثافة عالية في وادي النيل ودلتاه بمصر والسودان.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">بسبب توافر المياه العذبة والتربة الخصبة الصالحة للزراعة واستواء السطح وسهولة المواصلات.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">4. ندرة السكان في المناطق الصحراوية والمستنقعات بالقارة.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">بسبب قسوة المناخ (الجفاف والحرارة الشديدة)، وندرة الموارد المائية، وصعوبة الاستقرار البشري.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">5. اتسام الهرم السكاني لأفريقيا بالقاعدة العريضة حالياً.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">بسبب الارتفاع المستمر في معدلات المواليد، مما أدى لزيادة نسبة فئة صغار السن في المجتمع الأفريقي.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">6. لجوء الكثير من سكان أفريقيا إلى الهجرة غير الشرعية.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">بسبب سوء الأحوال الاقتصادية، والفقر، والبطالة، والبحث عن مستوى معيشة أفضل، والهروب من الحروب والنزاعات.</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="category-title text-2xl font-900 text-slate-800 mb-8">س2: ما النتائج المترتبة على؟</h2>
+            <div class="grid gap-5">
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">1. زيادة عدد السكان بشكل لا يتناسب مع معدلات النمو الاقتصادي.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">أدى ذلك لظهور المشكلات السكانية، نقص نصيب الفرد من الدخل، نقص الغذاء، وانخفاض مستوى المعيشة.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">2. ارتفاع نسبة فئة صغار السن (أقل من 15 عاماً) في أفريقيا.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">تحميل الدولة أعباء اقتصادية ضخمة لتوفير الخدمات الأساسية (غذاء، تعليم، صحة) لهذه الفئة غير المنتجة.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">3. زيادة الهجرة غير الشرعية من أفريقيا إلى قارة أوروبا.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">تعرض حياة المهاجرين للخطر، فقدان القارة لطاقات شبابية، والترحيل القسري للمخالفين.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">4. اهتمام الدول الأفريقية ببرامج تنظيم الأسرة ورعاية صحة المرأة.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">يساعد في خفض معدلات المواليد مستقبلاً وتحقيق التوازن بين الزيادة السكانية والموارد الاقتصادية.</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="category-title text-2xl font-900 text-slate-800 mb-8">س3: ما العلاقة بين...؟</h2>
+            <div class="grid gap-5">
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">1. الزيادة السكانية والأمن الغذائي والمائي في قارة أفريقيا.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">الزيادة السكانية الكبيرة تفوق الموارد المتاحة، مما يؤدي لنقص نصيب الفرد من الغذاء والمياه العذبة وتهديد الأمن القومي.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">2. الحروب والنزاعات والتركيب النوعي للسكان.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">تتسبب الحروب في ارتفاع معدل وفيات الذكور، مما يغير في التركيب النوعي ويؤدي لزيادة نسبة الإناث في المناطق المتضررة.</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="category-title text-2xl font-900 text-slate-800 mb-8">س4: أسئلة متنوعة (مقترحات وجهود)</h2>
+            <div class="grid gap-5">
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">1. ما مقترحاتك للحد من ظاهرة الهجرة غير الشرعية في أفريقيا؟</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">توفير فرص عمل للشباب، دعم المشروعات الصغيرة، تحسين التعليم الفني، وتوعية الشباب بمخاطر الهجرة غير القانونية.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">2. وضح جهود الدول الأفريقية لحل المشكلة السكانية (اذكر نقطتين).</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">1. التوسع في برامج تنظيم الأسرة. <br> 2. بناء مدن جديدة وتطوير الريف لإعادة توزيع السكان وتقليل الزحام.</div>
+                </div>
+
+                <div class="question-card p-6 shadow-sm">
+                    <p class="font-bold text-slate-700 mb-4 text-lg">3. تواجه "فئة سن العمل" في أفريقيا عدة تحديات، دلل على ذلك.</p>
+                    <button onclick="toggle(this)" class="btn-toggle px-6 py-2 rounded-xl text-sm">عرض الإجابة النموذجية</button>
+                    <div class="answer-box mt-4 p-5 text-slate-600 leading-relaxed text-sm">الدليل هو ارتفاع معدلات البطالة بين الشباب، وانخفاض الأجور، ونقص المهارات التقنية الحديثة التي يحتاجها سوق العمل.</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 text-center text-slate-400 font-bold text-xs pb-10 uppercase tracking-widest border-t border-slate-100 pt-10">
+        منصة أطلس التعليمية | إعداد: أ. إيهاب أشرف &copy; 2026
+    </footer>
+
+    <script>
+        function toggle(btn) {
+            const box = btn.nextElementSibling;
+            const isOpen = box.style.display === "block";
+            box.style.display = isOpen ? "none" : "block";
+            btn.innerText = isOpen ? "عرض الإجابة النموذجية" : "إخفاء الإجابة";
+            btn.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+
