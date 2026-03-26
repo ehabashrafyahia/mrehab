@@ -1,3 +1,4 @@
+كود index
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -5,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل دخول المنصة | مستر إيهاب أشرف</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
@@ -49,7 +51,7 @@
     </div>
 
     <script>
-        // رابط الـ CSV (يستخدم فقط في أول عملية تسجيل دخول)
+        // رابط جوجل شيت الخاص بك (CSV)
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5wBVZeNv3Ijg80p-YkD57IPnAXnzWFT1kyoIVXIn46zY-U9fcykFNd3vgAzjMkJlOk0J2hqazdIoI/pub?gid=0&single=true&output=csv";
 
         async function handleLogin() {
@@ -61,16 +63,20 @@
                 return;
             }
 
+            // إظهار تحميل
             Swal.fire({ title: 'جاري التحقق...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
 
             try {
                 const response = await fetch(SHEET_URL);
                 const csvData = await response.text();
+                
+                // تحويل البيانات لصفوف
                 const rows = csvData.split("\n").map(row => row.split(","));
                 
                 let found = false;
                 let userRole = "student";
 
+                // البحث في الشيت (بنتجاهل أول صف اللي هو العنوان)
                 for (let i = 1; i < rows.length; i++) {
                     const user = rows[i][0]?.trim().toLowerCase();
                     const pass = rows[i][1]?.trim().toLowerCase();
@@ -83,11 +89,8 @@
                 }
 
                 if (found) {
-                    // تخزين البيانات شاملة الباسورد لزوم نظام الحماية في صفحة Home
                     localStorage.setItem("atlas_auth", "true");
                     localStorage.setItem("role", userRole);
-                    localStorage.setItem("username", uInput);
-                    localStorage.setItem("password", pInput); // السطر ده هو السر في طرد الطالب لاحقاً
                     localStorage.setItem("student_identity", uInput);
 
                     Swal.fire({ icon: 'success', title: 'تم الدخول بنجاح', text: 'أهلاً بك في منصة أطلس', showConfirmButton: false, timer: 1500 });
@@ -100,11 +103,11 @@
                 }
 
             } catch (error) {
-                Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'تأكد من اتصالك بالإنترنت' });
+                console.error(error);
+                Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'فشلنا في الوصول لقاعدة البيانات' });
             }
         }
 
-        // توجيه تلقائي لو الطالب مسجل دخول فعلاً
         window.onload = function() {
             if(localStorage.getItem("atlas_auth") === "true") {
                 const role = localStorage.getItem("role");
