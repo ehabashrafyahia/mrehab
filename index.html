@@ -50,7 +50,7 @@
     </div>
 
     <script>
-        // رابط جوجل شيت الخاص بك (CSV)
+        // رابط الـ CSV القديم (سنتركه لعملية الدخول الأولية فقط)
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5wBVZeNv3Ijg80p-YkD57IPnAXnzWFT1kyoIVXIn46zY-U9fcykFNd3vgAzjMkJlOk0J2hqazdIoI/pub?gid=0&single=true&output=csv";
 
         async function handleLogin() {
@@ -62,20 +62,16 @@
                 return;
             }
 
-            // إظهار تحميل
             Swal.fire({ title: 'جاري التحقق...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
 
             try {
                 const response = await fetch(SHEET_URL);
                 const csvData = await response.text();
-                
-                // تحويل البيانات لصفوف
                 const rows = csvData.split("\n").map(row => row.split(","));
                 
                 let found = false;
                 let userRole = "student";
 
-                // البحث في الشيت (بنتجاهل أول صف اللي هو العنوان)
                 for (let i = 1; i < rows.length; i++) {
                     const user = rows[i][0]?.trim().toLowerCase();
                     const pass = rows[i][1]?.trim().toLowerCase();
@@ -88,8 +84,11 @@
                 }
 
                 if (found) {
+                    // أهم جزء: تخزين البيانات للتحقق اللاحق في صفحة الـ Home
                     localStorage.setItem("atlas_auth", "true");
                     localStorage.setItem("role", userRole);
+                    localStorage.setItem("username", uInput); // حفظ اليوزر
+                    localStorage.setItem("password", pInput); // حفظ الباسورد (مهم جداً للتحقق اللحظي)
                     localStorage.setItem("student_identity", uInput);
 
                     Swal.fire({ icon: 'success', title: 'تم الدخول بنجاح', text: 'أهلاً بك في منصة أطلس', showConfirmButton: false, timer: 1500 });
