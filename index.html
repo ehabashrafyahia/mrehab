@@ -50,8 +50,13 @@
     </div>
 
     <script>
-        // رابط جوجل شيت الخاص بك (CSV)
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5wBVZeNv3Ijg80p-YkD57IPnAXnzWFT1kyoIVXIn46zY-U9fcykFNd3vgAzjMkJlOk0J2hqazdIoI/pub?gid=0&single=true&output=csv";
+
+        // تنظيف أي جلسات قديمة عند فتح صفحة الدخول
+        window.onload = function() {
+            sessionStorage.clear();
+            localStorage.clear(); // مسح الذاكرة الدائمة لضمان عدم الدخول التلقائي
+        }
 
         async function handleLogin() {
             const uInput = document.getElementById('user').value.toLowerCase().trim();
@@ -62,20 +67,17 @@
                 return;
             }
 
-            // إظهار تحميل
             Swal.fire({ title: 'جاري التحقق...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
 
             try {
-                const response = await fetch(SHEET_URL);
+                // إضافة متغير عشوائي للرابط لمنع التخزين (Cache) وجلب بيانات فريش من الشيت
+                const response = await fetch(`${SHEET_URL}&t=${new Date().getTime()}`);
                 const csvData = await response.text();
-                
-                // تحويل البيانات لصفوف
                 const rows = csvData.split("\n").map(row => row.split(","));
                 
                 let found = false;
                 let userRole = "student";
 
-                // البحث في الشيت (بنتجاهل أول صف اللي هو العنوان)
                 for (let i = 1; i < rows.length; i++) {
                     const user = rows[i][0]?.trim().toLowerCase();
                     const pass = rows[i][1]?.trim().toLowerCase();
@@ -88,9 +90,10 @@
                 }
 
                 if (found) {
-                    localStorage.setItem("atlas_auth", "true");
-                    localStorage.setItem("role", userRole);
-                    localStorage.setItem("student_identity", uInput);
+                    // تخزين في الـ sessionStorage لضمان المسح عند قفل التطبيق
+                    sessionStorage.setItem("atlas_auth", "true");
+                    sessionStorage.setItem("role", userRole);
+                    sessionStorage.setItem("student_identity", uInput);
 
                     Swal.fire({ icon: 'success', title: 'تم الدخول بنجاح', text: 'أهلاً بك في منصة أطلس', showConfirmButton: false, timer: 1500 });
                     
@@ -104,13 +107,6 @@
             } catch (error) {
                 console.error(error);
                 Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'فشلنا في الوصول لقاعدة البيانات' });
-            }
-        }
-
-        window.onload = function() {
-            if(localStorage.getItem("atlas_auth") === "true") {
-                const role = localStorage.getItem("role");
-                window.location.href = (role === "admin") ? "dashboard.html" : "home.html";
             }
         }
     </script>
