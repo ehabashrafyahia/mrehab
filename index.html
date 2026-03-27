@@ -8,20 +8,75 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <style>
-        body { font-family: 'Cairo', sans-serif; background: #f8fafc; overflow: hidden; }
+        body { font-family: 'Cairo', sans-serif; background: #f8fafc; margin: 0; overflow: hidden; }
+
+        /* --- 1. شاشة المقدمة الفخمة (Splash) --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+        }
+
+        .splash-logo-container {
+            position: relative; width: 160px; height: 130px;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(0.5);
+        }
+
+        .splash-shape {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.25);
+        }
+
+        .splash-text {
+            position: relative; z-index: 10; color: white;
+            font-family: 'Reem Kufi', sans-serif; font-size: 3rem; font-weight: 700;
+            opacity: 0; transform: translateY(20px);
+        }
+
+        .loader-bar {
+            width: 180px; height: 3px; background: #f1f5f9; border-radius: 10px;
+            margin-top: 40px; overflow: hidden; position: relative; opacity: 0;
+        }
+        .loader-bar::after {
+            content: ""; position: absolute; left: -100%; width: 100%; height: 100%;
+            background: #10b981;
+        }
+
+        /* --- 2. ستايلات صفحة تسجيل الدخول (الأصلية الخاصة بك) --- */
+        #login-container { 
+            display: none; opacity: 0; transform: translateY(20px); 
+            transition: all 0.8s ease; 
+        }
+        
         .logo-container { position: relative; width: 150px; height: 120px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; }
         .logo-shape { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; animation: morph 6s linear infinite; box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2); }
         .logo-text { position: relative; z-index: 10; color: white; font-family: 'Reem Kufi', sans-serif; font-size: 2.8rem; font-weight: 700; }
+        
         @keyframes morph { 0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } }
+        
         .login-input { width: 100%; padding: 16px; background: #f1f5f9; border: 2px solid transparent; border-radius: 18px; outline: none; transition: 0.3s; text-align: center; font-weight: 700; }
         .login-input:focus { border-color: #10b981; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
 
-    <div class="bg-white w-full max-w-sm p-10 rounded-[45px] shadow-2xl text-center border border-slate-50">
+    <div id="splash-screen">
+        <div class="splash-logo-container" id="splash-logo">
+            <div class="splash-shape" id="splash-shape"></div>
+            <div class="splash-text" id="splash-text">اطلس</div>
+        </div>
+        <div class="loader-bar" id="splash-loader"></div>
+        <p class="text-slate-400 font-bold text-[10px] mt-6 tracking-[0.3em] uppercase opacity-0" id="splash-tagline">طريقك نحو القمة</p>
+    </div>
+
+    <div id="login-container" class="bg-white w-full max-w-sm p-10 rounded-[45px] shadow-2xl text-center border border-slate-50">
         <div class="logo-container">
             <div class="logo-shape"></div>
             <div class="logo-text">اطلس</div>
@@ -52,10 +107,83 @@
     <script>
         const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5wBVZeNv3Ijg80p-YkD57IPnAXnzWFT1kyoIVXIn46zY-U9fcykFNd3vgAzjMkJlOk0J2hqazdIoI/pub?gid=0&single=true&output=csv";
 
-        // تنظيف أي جلسات قديمة عند فتح صفحة الدخول
         window.onload = function() {
             sessionStorage.clear();
-            localStorage.clear(); // مسح الذاكرة الدائمة لضمان عدم الدخول التلقائي
+            localStorage.clear();
+
+            // 1. ظهور اللوجو
+            anime({
+                targets: '#splash-logo',
+                opacity: [0, 1],
+                scale: [0.5, 1],
+                rotate: '1turn',
+                easing: 'easeOutElastic(1, .5)',
+                duration: 2000,
+                delay: 200
+            });
+
+            // 2. ظهور النص "اطلس"
+            anime({
+                targets: '#splash-text',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                easing: 'easeOutExpo',
+                duration: 1200,
+                delay: 1000
+            });
+
+            // 3. تحريك التماوج (Morphing) في الشاشة الافتتاحية
+            anime({
+                targets: '#splash-shape',
+                borderRadius: [
+                    '30% 70% 70% 30% / 30% 30% 70% 70%',
+                    '50% 50% 33% 67% / 55% 27% 73% 45%',
+                    '30% 70% 70% 30% / 30% 30% 70% 70%'
+                ],
+                easing: 'linear',
+                duration: 6000,
+                loop: true,
+                direction: 'alternate'
+            });
+
+            // 4. إظهار شريط التحميل والتاج لاين
+            anime({
+                targets: ['#splash-loader', '#splash-tagline'],
+                opacity: [0, 1],
+                easing: 'easeInQuad',
+                duration: 1000,
+                delay: 1500
+            });
+
+            // 5. تحريك شريط التحميل الفعلي
+            anime({
+                targets: '#splash-loader::after',
+                left: ['-100%', '0%'],
+                easing: 'easeInOutQuad',
+                duration: 3000,
+                delay: 2000,
+                complete: function() {
+                    showLoginForm();
+                }
+            });
+        }
+
+        function showLoginForm() {
+            const splash = document.getElementById('splash-screen');
+            const login = document.getElementById('login-container');
+            
+            splash.style.transition = 'opacity 0.8s ease';
+            splash.style.opacity = '0';
+            
+            setTimeout(() => {
+                splash.style.display = 'none';
+                login.style.display = 'block';
+                setTimeout(() => {
+                    login.style.opacity = '1';
+                    login.style.transform = 'translateY(0)';
+                }, 50);
+                document.body.style.overflow = 'auto';
+            }, 800);
         }
 
         async function handleLogin() {
@@ -70,7 +198,6 @@
             Swal.fire({ title: 'جاري التحقق...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
 
             try {
-                // إضافة متغير عشوائي للرابط لمنع التخزين (Cache) وجلب بيانات فريش من الشيت
                 const response = await fetch(`${SHEET_URL}&t=${new Date().getTime()}`);
                 const csvData = await response.text();
                 const rows = csvData.split("\n").map(row => row.split(","));
@@ -81,7 +208,6 @@
                 for (let i = 1; i < rows.length; i++) {
                     const user = rows[i][0]?.trim().toLowerCase();
                     const pass = rows[i][1]?.trim().toLowerCase();
-
                     if (user === uInput && pass === pInput) {
                         found = true;
                         if (user === "mrehab") userRole = "admin";
@@ -90,22 +216,17 @@
                 }
 
                 if (found) {
-                    // تخزين في الـ sessionStorage لضمان المسح عند قفل التطبيق
                     sessionStorage.setItem("atlas_auth", "true");
                     sessionStorage.setItem("role", userRole);
                     sessionStorage.setItem("student_identity", uInput);
-
                     Swal.fire({ icon: 'success', title: 'تم الدخول بنجاح', text: 'أهلاً بك في منصة أطلس', showConfirmButton: false, timer: 1500 });
-                    
                     setTimeout(() => {
                         window.location.href = (userRole === "admin") ? "dashboard.html" : "home.html";
                     }, 1500);
                 } else {
                     Swal.fire({ icon: 'error', title: 'عذراً!', text: 'اسم المستخدم أو كلمة المرور خطأ' });
                 }
-
             } catch (error) {
-                console.error(error);
                 Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'فشلنا في الوصول لقاعدة البيانات' });
             }
         }
