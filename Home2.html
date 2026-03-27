@@ -1,19 +1,21 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="./manifest.json">
+    <script>
+        // فحص الجلسة قبل تحميل أي شيء في الصفحة
+        if (sessionStorage.getItem("atlas_auth") !== "true") {
+            window.location.href = "index.html";
+        }
 
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      // ضفنا ./ عشان يقرأ من نفس المجلد
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('تم تسجيل الـ SW بنجاح'))
-        .catch(err => console.log('فشل التسجيل:', err));
-    });
-  }
-</script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('تم تسجيل الـ SW بنجاح'))
+                    .catch(err => console.log('فشل التسجيل:', err));
+            });
+        }
+    </script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +26,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* --- شاشة الـ Splash الأصلية --- */
+        /* --- شاشة الـ Splash --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -46,7 +48,7 @@
         .splash-footer h4 { font-weight: 800; color: #334155; font-size: 1.1rem; }
         .splash-footer p { font-weight: 700; color: #10b981; direction: ltr; }
 
-        /* --- شريط المتميزين (حركة مستمرة بدون توقف) --- */
+        /* --- شريط المتميزين --- */
         .news-ticker {
             background: white; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
             padding: 10px 0; overflow: hidden; display: flex; align-items: center; margin-top: 15px;
@@ -57,7 +59,7 @@
             z-index: 10; border-radius: 0 50px 50px 0; white-space: nowrap;
         }
         .ticker-wrap { display: flex; width: 100%; overflow: hidden; }
-        .ticker-content { display: flex; white-space: nowrap; animation: ticker-move 30s linear infinite; }
+        .ticker-content { display: flex; white-space: nowrap; animation: ticker-move 20s linear infinite; }
         .student-name { display: inline-flex; align-items: center; padding: 0 25px; color: #334155; font-weight: 700; font-size: 0.95rem; }
         .student-name i { color: #f59e0b; margin-left: 8px; }
         
@@ -66,7 +68,7 @@
             100% { transform: translateX(100%); }
         }
 
-        /* --- تصميم اللوجو والبطاقات --- */
+        /* --- تصميم الهوية البصرية --- */
         body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #1e293b; }
         .logo-container { position: relative; width: 130px; height: 100px; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; }
         .logo-shape {
@@ -85,6 +87,7 @@
             max-width: 500px; text-decoration: none; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .list-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); }
+        
         .grad-primary { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
         .grad-prep { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); }
         .grad-secondary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
@@ -94,8 +97,6 @@
         .card-content { flex-grow: 1; text-align: right; }
         .section-label { max-width: 500px; margin: 25px auto 15px; font-weight: 900; display: flex; align-items: center; gap: 12px; color: #475569; }
         .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid white; }
-        .main-footer { margin-top: 50px; text-align: center; border-top: 1px solid #e2e8f0; padding: 25px 0; }
-        .footer-phone { color:#10b981; text-decoration:none; font-weight: 700; display: inline-flex; align-items: center; direction: ltr; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -118,7 +119,7 @@
     <header class="pt-8 text-center px-4">
         <div class="logo-container"><div class="logo-shape"></div><div class="logo-text">اطلس</div></div>
         <h2 class="font-black text-slate-800 mt-3 text-xl">أهلاً بك يا <span id="welcome-name" class="text-emerald-600">بطل</span> 👋</h2>
-        <button onclick="localStorage.clear(); window.location.href='index.html';" class="text-[10px] font-bold text-red-500 underline mt-2">تسجيل خروج</button>
+        <button onclick="sessionStorage.clear(); localStorage.clear(); window.location.href='index.html';" class="text-[10px] font-bold text-red-500 underline mt-2">تسجيل خروج</button>
     </header>
 
     <div class="news-ticker">
@@ -130,6 +131,7 @@
     </div>
 
     <main class="px-4 mt-6">
+        
         <div class="section-label"><div class="dot bg-emerald-500 shadow-lg"></div> المرحلة الابتدائية</div>
         <a href="grade4.html" class="list-card grad-primary"><div class="number-box">٤</div><div class="card-content"><h3>الصف الرابع الابتدائي</h3><p>مناهج تفاعلية حديثة</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
         <a href="grade5.html" class="list-card grad-primary"><div class="number-box">٥</div><div class="card-content"><h3>الصف الخامس الابتدائي</h3><p>بوابتك نحو التميز</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
@@ -144,31 +146,33 @@
         <a href="grade10.html" class="list-card grad-secondary"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الثانوي</h3><p>أفضل شروحات التاريخ</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
     </main>
 
-    <footer class="main-footer">
-        <div class="font-bold text-slate-500">إعداد: أ. إيهاب أشرف</div>
-        <a href="https://wa.me/201559116736" class="footer-phone"><i class="fab fa-whatsapp mr-1"></i> 01559116736</a>
-        <div class="text-[10px] text-slate-400 mt-3 font-bold">جميع الحقوق محفوظة &copy; ٢٠٢٦</div>
+    <footer class="mt-12 text-center border-t border-slate-200 py-8">
+        <div class="font-bold text-slate-500 italic">إعداد: أ. إيهاب أشرف</div>
+        <a href="https://wa.me/201559116736" class="text-emerald-500 font-bold flex justify-center items-center gap-2 mt-2 ltr">
+             01559116736 <i class="fab fa-whatsapp"></i>
+        </a>
+        <div class="text-[10px] text-slate-400 mt-4 font-bold">جميع الحقوق محفوظة &copy; ٢٠٢٦</div>
     </footer>
 
     <script>
-        // 1. عرض اسم الطالب من الذاكرة
-        const studentName = localStorage.getItem("student_identity") || "بطل";
+        // 1. عرض اسم الطالب
+        const studentName = sessionStorage.getItem("student_identity") || "بطل";
         document.getElementById('welcome-name').innerText = studentName;
 
-        // 2. إعداد شريط المتميزين (تكرار مضاعف لضمان عدم التوقف)
-        const TOP_STUDENTS = ["ياسين محمد", "مريم خالد", "أحمد إبراهيم", "سلمى يوسف", "زياد حسن"];
+        // 2. تحديث المتميزين بالأسماء المطلوبة
+        const TOP_STUDENTS = ["أمل عرفة", "نوران عاطف", "مريم احمد"];
         const tickerContainer = document.getElementById('ticker-names');
         const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
-        // نكرر الأسماء 4 مرات لسد أي فراغات أثناء الحركة
+        // نكرر المحتوى ليظهر بشكل مستمر في الانيميشن
         tickerContainer.innerHTML = namesHtml + namesHtml + namesHtml + namesHtml;
 
-        // 3. التحكم في شاشة Splash
+        // 3. إخفاء شاشة الـ Splash
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const splash = document.getElementById('splash-screen');
                 splash.classList.add('hidden-splash');
                 setTimeout(() => { splash.style.display = 'none'; }, 800);
-            }, 2500);
+            }, 2000);
         });
     </script>
 </body>
