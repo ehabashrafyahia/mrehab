@@ -1,13 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <link rel="manifest" href="./manifest.json">
 
 <script>
+  // فحص الجلسة قبل تحميل أي شيء في الصفحة
+  if (sessionStorage.getItem("atlas_auth") !== "true") {
+      window.location.href = "index.html";
+  }
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      // ضفنا ./ عشان يقرأ من نفس المجلد
       navigator.serviceWorker.register('./sw.js')
         .then(reg => console.log('تم تسجيل الـ SW بنجاح'))
         .catch(err => console.log('فشل التسجيل:', err));
@@ -46,7 +49,7 @@
         .splash-footer h4 { font-weight: 800; color: #334155; font-size: 1.1rem; }
         .splash-footer p { font-weight: 700; color: #10b981; direction: ltr; }
 
-        /* --- شريط المتميزين (حركة مستمرة بدون توقف) --- */
+        /* --- شريط المتميزين --- */
         .news-ticker {
             background: white; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
             padding: 10px 0; overflow: hidden; display: flex; align-items: center; margin-top: 15px;
@@ -118,7 +121,7 @@
     <header class="pt-8 text-center px-4">
         <div class="logo-container"><div class="logo-shape"></div><div class="logo-text">اطلس</div></div>
         <h2 class="font-black text-slate-800 mt-3 text-xl">أهلاً بك يا <span id="welcome-name" class="text-emerald-600">بطل</span> 👋</h2>
-        <button onclick="localStorage.clear(); window.location.href='index.html';" class="text-[10px] font-bold text-red-500 underline mt-2">تسجيل خروج</button>
+        <button onclick="sessionStorage.clear(); localStorage.clear(); window.location.href='index.html';" class="text-[10px] font-bold text-red-500 underline mt-2">تسجيل خروج</button>
     </header>
 
     <div class="news-ticker">
@@ -151,15 +154,14 @@
     </footer>
 
     <script>
-        // 1. عرض اسم الطالب من الذاكرة
-        const studentName = localStorage.getItem("student_identity") || "بطل";
+        // 1. عرض اسم الطالب من الجلسة (sessionStorage)
+        const studentName = sessionStorage.getItem("student_identity") || "بطل";
         document.getElementById('welcome-name').innerText = studentName;
 
-        // 2. إعداد شريط المتميزين (تكرار مضاعف لضمان عدم التوقف)
+        // 2. إعداد شريط المتميزين
         const TOP_STUDENTS = ["ياسين محمد", "مريم خالد", "أحمد إبراهيم", "سلمى يوسف", "زياد حسن"];
         const tickerContainer = document.getElementById('ticker-names');
         const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
-        // نكرر الأسماء 4 مرات لسد أي فراغات أثناء الحركة
         tickerContainer.innerHTML = namesHtml + namesHtml + namesHtml + namesHtml;
 
         // 3. التحكم في شاشة Splash
