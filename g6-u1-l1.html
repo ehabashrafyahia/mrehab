@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار سكان الوطن العربي | مراجعة مستر إيهاب أشرف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.15);
+            border-radius: 2.5rem;
+        }
+        .option-box {
+            background: white; border: 2px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align: right; cursor: pointer;
+        }
+        .option-box:hover { border-color: #10b981; transform: scale(1.02); }
+        .option-box.selected {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: transparent; color: white;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+        .opt-prefix {
+            background: #f1f5f9; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-weight: 900; color: #10b981;
+        }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow {
+            height: 100%; background: linear-gradient(90deg, #10b981, #fbbf24);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); border-radius: 100px;
+            transition: width 0.6s ease;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.4);
+        }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade6.html" class="flex-1 py-4 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-4 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-emerald-100 font-900 text-emerald-600">
+                <span id="q-count">1</span> / 20
+            </div>
+            <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-500"><i class="fas fa-graduation-cap"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">جاري التحميل...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-[2rem] text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-emerald-100">
+            <div id="result-emoji" class="text-7xl mb-6">🎯</div>
+            <h1 id="result-title" class="text-4xl font-900 text-slate-800 mb-2">أداء مذهل!</h1>
+            <p class="text-slate-500 font-bold mb-8">سكان وطننا العربي - الصف السادس</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-emerald-600"></div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="py-5 bg-emerald-100 text-emerald-700 rounded-3xl font-bold hover:bg-emerald-200 transition">إعادة</button>
+                <a href="grade6.html" class="py-5 bg-slate-800 text-white rounded-3xl font-bold flex items-center justify-center hover:bg-slate-700 transition">الدروس</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "تضاعف عدد سكان الوطن العربي حوالي 9 مرات في الفترة من 1900م إلى عام:", a: ["2000م", "2010م", "2020م", "2024م"], c: 3 },
+            { q: "يعيش نحو 61% من سكان الوطن العربي في دول الجناح:", a: ["الآسيوي", "الإفريقي", "الشمالي", "الغربي"], c: 1 },
+            { q: "من أسباب النمو السكاني السريع انخفاض معدل الوفيات بسبب:", a: ["زيادة المواليد", "تحسن مستوى المعيشة والصحة", "الهجرة الخارجية", "قلة الحروب"], c: 1 },
+            { q: "أي من المناطق التالية يقل بها تركز السكان في الوطن العربي؟", a: ["السهول الفيضية", "المرتفعات", "المناطق الصحراوية والجبلية", "السهول الساحلية"], c: 2 },
+            { q: "ترتفع نسبة الذكور عن الإناث في منطقة الخليج العربي بسبب:", a: ["العمالة الوافدة", "ارتفاع المواليد", "نقص الرعاية للإناث", "صغر السن"], c: 0 },
+            { q: "يمثل الهرم السكاني العربي القاعدة العريضة، وهذا يعني ارتفاع نسبة:", a: ["كبار السن", "الشباب", "صغار السن", "الإناث"], c: 2 },
+            { q: "أي من الدول التالية تنخفض فيها نسبة التعليم بسبب الحروب؟", a: ["مصر والأردن", "الصومال", "الإمارات", "تونس"], c: 1 },
+            { q: "من التحديات السكانية 'نقص الغذاء' نتيجة:", a: ["زيادة الاستهلاك والسكان", "قلة المزارعين", "الهجرة للمدن", "التوسع الصناعي"], c: 0 },
+            { q: "يتوزع سكان الجناح الآسيوي في الوطن العربي بنسبة تقدر بحوالي:", a: ["61%", "39%", "50%", "75%"], c: 1 },
+            { q: "من المناطق التي يزيد بها تركز السكان بسبب 'النشاط التعديني':", a: ["وادي النيل", "مرتفعات لبنان", "سواحل الخليج والبحر الأحمر", "الصحراء الكبرى"], c: 2 },
+            { q: "يقصد بـ 'معدل المواليد' هو نسبة المواليد إلى:", a: ["الوفيات", "إجمالي عدد السكان", "الشباب فقط", "سكان الريف"], c: 1 },
+            { q: "تزداد أعداد الوفيات ويقل متوسط العمر في السودان والصومال بسبب:", a: ["كثرة المستشفيات", "ضعف الرعاية والحروب", "زيادة الوعي", "جودة التعليم"], c: 1 },
+            { q: "فئة الشباب (15-64 عاماً) في الوطن العربي توفر:", a: ["قوة عمل كبيرة للتنمية", "زيادة استهلاك فقط", "قلة في الإنتاج", "زيادة الأمية"], c: 0 },
+            { q: "تضاعف عدد سكان الوطن العربي يعكس وجود:", a: ["مشكلة تتطلب التخطيط", "نقص في المواليد", "زيادة في الوفيات", "رغبة في الهجرة"], c: 0 },
+            { q: "أي من السهول التالية تعد مناطق تركز سكاني بسبب التربة الخصبة؟", a: ["ساحل البحر المتوسط", "وادي النيل ودجلة والفرات", "السهول الصحراوية", "مرتفعات عسير"], c: 1 },
+            { q: "يعاني الوطن العربي من البطالة خاصة بين الشباب بسبب:", a: ["وفرة العمل", "الزيادة السكانية وقلة الفرص", "نقص عدد السكان", "التوسع الفني"], c: 1 },
+            { q: "من النتائج المترتبة على النمو السكاني السريع:", a: ["الضغط على الموارد والخدمات", "زيادة الزراعة", "انخفاض الأمية", "تحسن الهواء"], c: 0 },
+            { q: "بلغت نسبة الإناث في المجتمع العربي حسب الإحصائيات حوالي:", a: ["51.4%", "48.6%", "40%", "60%"], c: 1 },
+            { q: "تساعد العوامل التالية على تركز السكان في مرتفعات لبنان واليمن:", a: ["وعورة التضاريس", "اعتدال المناخ والأمطار", "وجود المصانع", "حقول البترول"], c: 1 },
+            { q: "تؤدي 'الهجرة الوافدة' لدول الخليج إلى خلل في التركيب:", a: ["العمري فقط", "النوعي (زيادة الذكور)", "اللغوي", "الديني"], c: 1 }
+        ];
+
+        let index = 0, score = 0, picked = null;
+
+        window.onload = () => { render(); };
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#10b981'});
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) render(); else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            
+            if (pct >= 90) {
+                document.getElementById('result-title').innerText = "عبقري الدراسات!";
+                document.getElementById('result-msg').innerText = "أنت فخر لمنصة أطلس يا بطل.";
+            } else if (pct >= 50) {
+                document.getElementById('result-title').innerText = "أحسنت يا بطل!";
+                document.getElementById('result-msg').innerText = "أداء رائع، استمر في المذاكرة.";
+            } else {
+                document.getElementById('result-title').innerText = "حاول مرة أخرى";
+                document.getElementById('result-msg').innerText = "راجع الدرس جيداً وأعد الاختبار.";
+                document.getElementById('result-emoji').innerText = "📚";
+            }
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
+    </script>
+</body>
+</html>
+
