@@ -58,7 +58,14 @@
             z-index: 10; border-radius: 0 50px 50px 0; white-space: nowrap;
         }
         .ticker-wrap { display: flex; width: 100%; overflow: hidden; }
-        .ticker-content { display: flex; white-space: nowrap; animation: ticker-move 40s linear infinite; }
+        
+        /* التعديل هنا: جعلنا الـ 40s تصبح 60s لتبطئة الحركة تماماً */
+        .ticker-content { 
+            display: flex; 
+            white-space: nowrap; 
+            animation: ticker-move 60s linear infinite; 
+        }
+
         .student-name { display: inline-flex; align-items: center; padding: 0 25px; color: #334155; font-weight: 700; font-size: 0.95rem; }
         .student-name i { color: #f59e0b; margin-left: 8px; }
         
@@ -152,7 +159,6 @@
     </footer>
 
     <script>
-        /* --- قسم التحكم في المتميزين --- */
         const TOP_STUDENTS = [
             "احمد عاطف", "أمل عرفة", "ندي فتحي", "مريم احمد", 
             "نوران عاطف", "مصطفى رضا", "رضوي عمرو", "اسراء خليل",
@@ -160,18 +166,15 @@
             "ياسمين خلف", "هاجر نبيل", "ريهام زغلول"
         ];
 
-        // عرض اسم الطالب المرحب به
         const studentName = sessionStorage.getItem("student_identity") || "بطل";
         document.getElementById('welcome-name').innerText = studentName;
 
-        // تحديث شريط التميز
         const tickerContainer = document.getElementById('ticker-names');
         if (TOP_STUDENTS.length > 0) {
             const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
             tickerContainer.innerHTML = new Array(10).fill(namesHtml).join('');
         }
 
-        // إخفاء شاشة الـ Splash
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const splash = document.getElementById('splash-screen');
