@@ -47,7 +47,7 @@
         .splash-footer h4 { font-weight: 800; color: #334155; font-size: 1.1rem; }
         .splash-footer p { font-weight: 700; color: #10b981; direction: ltr; }
 
-        /* --- شريط المتميزين --- */
+        /* --- شريط المتميزين المطور --- */
         .news-ticker {
             background: white; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
             padding: 10px 0; overflow: hidden; display: flex; align-items: center; margin-top: 15px;
@@ -55,24 +55,29 @@
         }
         .ticker-label {
             background: #10b981; color: white; padding: 5px 15px; font-weight: 800; font-size: 0.85rem;
-            z-index: 10; border-radius: 0 50px 50px 0; white-space: nowrap;
+            z-index: 20; border-radius: 0 50px 50px 0; white-space: nowrap;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
         }
-        .ticker-wrap { display: flex; width: 100%; overflow: hidden; }
+        .ticker-wrap { display: flex; width: 100%; overflow: hidden; position: relative; }
         
-        /* التعديل هنا: جعلنا الـ 40s تصبح 60s لتبطئة الحركة تماماً */
+        /* التعديل الجذري: زيادة الوقت لـ 150 ثانية لضمان البطء التام */
         .ticker-content { 
             display: flex; 
             white-space: nowrap; 
-            animation: ticker-move 60s linear infinite; 
+            animation: ticker-move 150s linear infinite; 
+            width: max-content;
         }
 
-        .student-name { display: inline-flex; align-items: center; padding: 0 25px; color: #334155; font-weight: 700; font-size: 0.95rem; }
-        .student-name i { color: #f59e0b; margin-left: 8px; }
+        .student-name { display: inline-flex; align-items: center; padding: 0 40px; color: #334155; font-weight: 700; font-size: 1.1rem; }
+        .student-name i { color: #f59e0b; margin-left: 10px; }
         
         @keyframes ticker-move {
             0% { transform: translateX(0); }
             100% { transform: translateX(100%); }
         }
+
+        /* توقف الشريط عند وضع الماوس عليه لسهولة القراءة */
+        .news-ticker:hover .ticker-content { animation-play-state: paused; }
 
         /* --- تصميم الهوية البصرية --- */
         body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #1e293b; }
@@ -159,6 +164,7 @@
     </footer>
 
     <script>
+        /* --- قسم التحكم في المتميزين (أضف الأسماء هنا بكل حرية) --- */
         const TOP_STUDENTS = [
             "احمد عاطف", "أمل عرفة", "ندي فتحي", "مريم احمد", 
             "نوران عاطف", "مصطفى رضا", "رضوي عمرو", "اسراء خليل",
@@ -166,15 +172,19 @@
             "ياسمين خلف", "هاجر نبيل", "ريهام زغلول"
         ];
 
+        // عرض اسم الطالب المرحب به
         const studentName = sessionStorage.getItem("student_identity") || "بطل";
         document.getElementById('welcome-name').innerText = studentName;
 
+        // تحديث شريط التميز بشكل يضمن البطء
         const tickerContainer = document.getElementById('ticker-names');
         if (TOP_STUDENTS.length > 0) {
             const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
-            tickerContainer.innerHTML = new Array(10).fill(namesHtml).join('');
+            // نكرر المحتوى 6 مرات فقط لتوفير الأداء وجعله أبطأ
+            tickerContainer.innerHTML = new Array(6).fill(namesHtml).join('');
         }
 
+        // إخفاء شاشة الـ Splash
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const splash = document.getElementById('splash-screen');
