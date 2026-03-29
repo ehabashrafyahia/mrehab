@@ -3,7 +3,6 @@
 <head>
     <link rel="manifest" href="./manifest.json">
     <script>
-        // فحص الجلسة قبل تحميل أي شيء في الصفحة
         if (sessionStorage.getItem("atlas_auth") !== "true") {
             window.location.href = "index.html";
         }
@@ -59,7 +58,7 @@
             z-index: 10; border-radius: 0 50px 50px 0; white-space: nowrap;
         }
         .ticker-wrap { display: flex; width: 100%; overflow: hidden; }
-        .ticker-content { display: flex; white-space: nowrap; animation: ticker-move 20s linear infinite; }
+        .ticker-content { display: flex; white-space: nowrap; animation: ticker-move 40s linear infinite; }
         .student-name { display: inline-flex; align-items: center; padding: 0 25px; color: #334155; font-weight: 700; font-size: 0.95rem; }
         .student-name i { color: #f59e0b; margin-left: 8px; }
         
@@ -125,13 +124,11 @@
     <div class="news-ticker">
         <div class="ticker-label">متميزو الأسبوع 🏆</div>
         <div class="ticker-wrap">
-            <div class="ticker-content" id="ticker-names">
-                </div>
+            <div class="ticker-content" id="ticker-names"></div>
         </div>
     </div>
 
     <main class="px-4 mt-6">
-        
         <div class="section-label"><div class="dot bg-emerald-500 shadow-lg"></div> المرحلة الابتدائية</div>
         <a href="grade4.html" class="list-card grad-primary"><div class="number-box">٤</div><div class="card-content"><h3>الصف الرابع الابتدائي</h3><p>مناهج تفاعلية حديثة</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
         <a href="grade5.html" class="list-card grad-primary"><div class="number-box">٥</div><div class="card-content"><h3>الصف الخامس الابتدائي</h3><p>بوابتك نحو التميز</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
@@ -155,18 +152,26 @@
     </footer>
 
     <script>
-        // 1. عرض اسم الطالب
+        /* --- قسم التحكم في المتميزين --- */
+        const TOP_STUDENTS = [
+            "احمد عاطف", "أمل عرفة", "ندي فتحي", "مريم احمد", 
+            "نوران عاطف", "مصطفى رضا", "رضوي عمرو", "اسراء خليل",
+            "حفصة ناصر", "اسماء راضي", "محمد احمد", "احمد حسين",
+            "ياسمين خلف", "هاجر نبيل", "ريهام زغلول"
+        ];
+
+        // عرض اسم الطالب المرحب به
         const studentName = sessionStorage.getItem("student_identity") || "بطل";
         document.getElementById('welcome-name').innerText = studentName;
 
-        // 2. تحديث المتميزين بالأسماء المطلوبة
-        const TOP_STUDENTS = ["أمل عرفة", "نوران عاطف", "مريم احمد"];
+        // تحديث شريط التميز
         const tickerContainer = document.getElementById('ticker-names');
-        const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
-        // نكرر المحتوى ليظهر بشكل مستمر في الانيميشن
-        tickerContainer.innerHTML = namesHtml + namesHtml + namesHtml + namesHtml;
+        if (TOP_STUDENTS.length > 0) {
+            const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
+            tickerContainer.innerHTML = new Array(10).fill(namesHtml).join('');
+        }
 
-        // 3. إخفاء شاشة الـ Splash
+        // إخفاء شاشة الـ Splash
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const splash = document.getElementById('splash-screen');
