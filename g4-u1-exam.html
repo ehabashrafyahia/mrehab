@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>امتحان الوحدة الأولى | مستر إيهاب أشرف</title>
+    <title>امتحان الوحدة الأولى | مراجعة مستر إيهاب أشرف</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -72,7 +72,7 @@
             <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-emerald-100 font-900 text-emerald-600">
                 <span id="q-count">1</span> / 40
             </div>
-            <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-500"><i class="fas fa-star text-lg"></i></div>
+            <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-500"><i class="fas fa-star"></i></div>
         </div>
 
         <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
@@ -173,7 +173,7 @@
             grid.innerHTML = '';
             q.a.forEach((opt, i) => {
                 const btn = document.createElement('div');
-                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 shadow-sm';
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4';
                 btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
                 btn.onclick = () => {
                     document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
@@ -186,13 +186,10 @@
         }
 
         function goToNext() {
-            if (picked === null) return Swal.fire({text:'يا بطل! اختر إجابة للمتابعة.', icon:'info', confirmButtonColor: '#10b981'});
+            if (picked === null) return Swal.fire({text:'يا بطل! اختر إجابة للمتابعة.', icon:'warning', confirmButtonColor: '#10b981'});
             if (picked === questions[index].c) score++;
             index++;
-            if (index < questions.length) {
-                render();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else finish();
+            if (index < questions.length) render(); else finish();
         }
 
         function finish() {
@@ -204,13 +201,13 @@
             
             if (pct >= 90) {
                 document.getElementById('result-title').innerText = "عبقري الدراسات!";
-                document.getElementById('result-msg').innerText = `ممتاز جداً! لقد أجبت على ${score} من 40 سؤالاً. أنت جاهز للتفوق!`;
-            } else if (pct >= 60) {
+                document.getElementById('result-msg').innerText = "ممتاز جداً! أنت جاهز للتفوق في الامتحان النهائي.";
+            } else if (pct >= 50) {
                 document.getElementById('result-title').innerText = "أحسنت يا بطل!";
-                document.getElementById('result-msg').innerText = `نتيجة رائعة! أجبت على ${score} سؤالاً صحيحاً. استمر في التميز.`;
+                document.getElementById('result-msg').innerText = "لقد حققت نتيجة جيدة، استمر في المراجعة.";
             } else {
-                document.getElementById('result-title').innerText = "محاولة جيدة";
-                document.getElementById('result-msg').innerText = `لقد أجبت على ${score} سؤالاً. راجع دروس الوحدة الأولى مرة أخرى لتتحسن.`;
+                document.getElementById('result-title').innerText = "تحتاج مراجعة";
+                document.getElementById('result-msg').innerText = "راجع دروس الوحدة الأولى مرة أخرى لتتحسن نتيجتك.";
                 document.getElementById('result-emoji').innerText = "📖";
             }
         }
