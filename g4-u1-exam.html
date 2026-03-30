@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان الوحدة الأولى | مستر إيهاب أشرف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.15);
+            border-radius: 2.5rem;
+        }
+        .option-box {
+            background: white; border: 2px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align: right; cursor: pointer;
+        }
+        .option-box:hover { border-color: #10b981; transform: translateY(-3px); }
+        .option-box.selected {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: transparent; color: white;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+        .opt-prefix {
+            background: #f1f5f9; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-weight: 900; color: #10b981;
+        }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow {
+            height: 100%; background: linear-gradient(90deg, #10b981, #fbbf24);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); border-radius: 100px;
+            transition: width 0.6s ease;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.4);
+        }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10 text-right">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد إنهاء المراجعة؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade4.html" class="flex-1 py-4 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-4 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-emerald-100 font-900 text-emerald-600">
+                <span id="q-count">1</span> / 40
+            </div>
+            <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-500"><i class="fas fa-star text-lg"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">جاري التحميل...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5 text-right"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-[2rem] text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-emerald-100">
+            <div id="result-emoji" class="text-7xl mb-6">🏆</div>
+            <h1 id="result-title" class="text-4xl font-900 text-slate-800 mb-2">أداء مذهل!</h1>
+            <p class="text-slate-500 font-bold mb-8">مراجعة الوحدة الأولى - الصف الرابع</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-emerald-600"></div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="py-5 bg-emerald-100 text-emerald-700 rounded-3xl font-bold hover:bg-emerald-200 transition">إعادة</button>
+                <a href="grade4.html" class="py-5 bg-slate-800 text-white rounded-3xl font-bold flex items-center justify-center hover:bg-slate-700 transition">الدروس</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "أي من المهن التالية يعتبر من 'أصحاب المهن الخدمية' ويقوم بتوصيل السلع للأفراد؟", a: ["المعلم", "الطبيب", "السائق", "مبرمج الحاسوب"], c: 2 },
+            { q: "مدينة مصرية قديمة كانت تعمل بالزراعة وصناعة الفخار وعُرفت باسم 'أبيدوس':", a: ["طيبة", "منف", "سوهاج", "القاهرة"], c: 2 },
+            { q: "تصنيف السكان إلى مجموعات حسب 'النوع أو العمر' يُسمى:", a: ["الزيادة السكانية", "التركيب السكاني", "الكثافة السكانية", "الهجرة الداخلية"], c: 1 },
+            { q: "يعتمد سكان محافظة 'الوادي الجديد' بشكل أساسي على مياه:", a: ["الأمطار", "نهر النيل", "المياه الجوفية (الآبار)", "تحلية البحر"], c: 2 },
+            { q: "اختيار 'قائد للفصل' يعد من نماذج المشاركة في صنع القرار داخل:", a: ["الأسرة", "المدرسة", "المجتمع", "الدولة"], c: 1 },
+            { q: "أي من المحافظات التالية تُعتبر من المحافظات 'قليلة السكان'؟", a: ["القاهرة", "الجيزة", "شمال سيناء", "المنوفية"], c: 2 },
+            { q: "المهن التي لم تكن موجودة قديماً وظهرت بفضل 'التقدم العلمي والتكنولوجي' تُسمى:", a: ["المهن التقليدية", "المهن المستقبلية", "المهن اليدوية", "المهن الزراعية"], c: 1 },
+            { q: "يقوم 'عمال البناء والنقاشة والمحارة' بتقديم خدمات تتبع قطاع:", a: ["التعدين", "الصناعة والبناء", "السياحة", "التجارة"], c: 1 },
+            { q: "تعتبر محافظة ........ أكثر محافظات مصر ازدحاماً بالسكان:", a: ["الوادي الجديد", "مطروح", "القاهرة", "البحر الأحمر"], c: 2 },
+            { q: "الاتفاق على شراء أشياء مهمة للمنزل يعد من القرارات التي تتخذها:", a: ["المدرسة", "الأسرة", "الحكومة", "المحافظة"], c: 1 },
+            { q: "أي من المهن التالية يرتبط بشكل مباشر بقطاع 'الزراعة'؟", a: ["عمال المصانع", "الفلاحون", "المهندسون الرقميون", "الصيادون"], c: 1 },
+            { q: "يساعدنا 'صنع القرار السليم' في حياتنا على الشعور بـ:", a: ["القلق", "التواكل", "المسؤولية", "الخوف"], c: 2 },
+            { q: "المهنة التي تقوم بتحويل المواد الخام إلى منتجات مثل 'الملابس والأثاث' هي:", a: ["التجارة", "الزراعة", "الصناعة", "الرعي"], c: 2 },
+            { q: "يعمل معظم سكان محافظة القاهرة في نشاط:", a: ["الرعي", "التعدين", "التجارة والصناعة", "الزراعة"], c: 2 },
+            { q: "'صانع المحتوى الرقمي' هو شخص يعمل في مجال:", a: ["البناء", "تكنولوجيا المعلومات", "الزراعة التقليدية", "استخراج البترول"], c: 1 },
+            { q: "لكي يكون 'صنع القرار' سليماً، يجب أولاً القيام بـ:", a: ["تنفيذ القرار", "تحديد المشكلة أو الهدف", "تجاهل البدائل", "لوم الآخرين"], c: 1 },
+            { q: "يتركز معظم سكان محافظة سوهاج في:", a: ["المناطق الجبلية", "القرى على ضفاف النيل", "المناطق الصحراوية", "المدن الجديدة فقط"], c: 1 },
+            { q: "المهنة التي ظهرت حديثاً وتعمل على 'إنتاج الطاقة النظيفة' هي:", a: ["مبرمج الحاسوب", "مهندس الطاقة المتجددة", "عامل المناجم", "النجار"], c: 1 },
+            { q: "أي مما يلي يُعد من 'الركائز الأساسية' لتقدم بلدنا مصر؟", a: ["قطاع الزراعة", "إهمال التعليم", "قلة الإنتاج", "زيادة الاستهلاك"], c: 0 },
+            { q: "المهارة التي يحتاجها 'مبرمج الحاسوب' بشكل أساسي هي:", a: ["مهارة الزراعة", "مهارة استخدام التكنولوجيا", "مهارة الصيد", "مهارة الرعي"], c: 1 },
+            { q: "المهن المرتبطة بقطاع 'الخدمات' تشمل:", a: ["المعلم والطبيب", "الفلاح والراعي", "عامل المناجم", "الصياد"], c: 0 },
+            { q: "يختلف توزيع المهن من محافظة لأخرى بناءً على:", a: ["لون البشرة", "النشاط الاقتصادي", "اسم المحافظة فقط", "عدد الشوارع"], c: 1 },
+            { q: "المشاركة في صنع القرار داخل الأسرة تعلمنا:", a: ["الأنانية", "احترام آراء الآخرين والتعاون", "الانفراد بالرأي", "عدم تحمل المسؤولية"], c: 1 },
+            { q: "ظهرت مهنة 'مطور التطبيقات' نتيجة التقدم في مجال:", a: ["النقل البحري", "التكنولوجيا والبرمجيات", "الحرف اليدوية", "تربية الحيوانات"], c: 1 },
+            { q: "عندما يشارك جميع أفراد الأسرة في صنع القرار، فإن ذلك يؤدي إلى:", a: ["تفكك الأسرة", "زيادة الترابط والتعاون", "كثرة المشكلات", "ضياع الوقت"], c: 1 },
+            { q: "أي المهن التالية 'تلاشت' أو قل الاعتماد عليها بسبب التكنولوجيا؟", a: ["مهندس الطاقة", "صانع المحتوى", "مصلح الأحذية التقليدي اليدوي", "طبيب الجراحة"], c: 2 },
+            { q: "'التركيب النوعي' للسكان يقصد به تقسيم السكان حسب:", a: ["العمر", "المستوى التعليمي", "الذكور والإناث", "مكان السكن"], c: 2 },
+            { q: "تزداد نسبة 'صغار السن' في المحافظات التي تتميز بـ:", a: ["قلة الخدمات", "ارتفاع معدلات المواليد", "وجود الصحاري", "ندرة المياه"], c: 1 },
+            { q: "'صانع المحتوى الرقمي' يساهم في:", a: ["بناء المنازل", "توفير المعلومات والترفيه عبر الإنترنت", "زراعة الأرض", "صيد الأسماك"], c: 1 },
+            { q: "من أهمية 'صنع القرار' أنه يساعدنا على:", a: ["عيش حياة أفضل", "تعقيد الأمور", "زيادة الخلافات", "الاعتماد على الغير"], c: 0 },
+            { q: "مهنة 'صياد الأسماك' تتركز في المحافظات:", a: ["الصحراوية", "الساحلية", "الجبلية", "البعيدة عن المياه"], c: 1 },
+            { q: "'مهندس الطاقة المتجددة' يعمل على توفير طاقة من:", a: ["الفحم", "البترول", "الشمس والرياح", "الغاز الطبيعي"], c: 2 },
+            { q: "أي مما يلي يمثل 'قراراً مجتمعياً'؟", a: ["اختيار ملابسك", "المشاركة في مبادرة تنظيف الحي", "اختيار وجبة الغداء", "حل الواجب المدرسي"], c: 1 },
+            { q: "تحتاج 'المهن المستقبلية' من الطلاب حالياً إلى:", a: ["ترك الدراسة", "تعلم مهارات التكنولوجيا والابتكار", "الاعتماد على الحفظ فقط", "إهمال اللغات"], c: 1 },
+            { q: "'التركيب العمري' يساعد الدولة في:", a: ["معرفة عدد السيارات", "توفير الخدمات المناسبة لكل فئة عمرية", "تحديد مساحة الأرض", "معرفة أنواع المحاصيل"], c: 1 },
+            { q: "محافظة 'مطروح' يُمارس سكانها حرفة ........ في المناطق الصحراوية:", a: ["الصناعة الثقيلة", "الرعي", "البرمجة", "صيد اللؤلؤ"], c: 1 },
+            { q: "العلاقة بين 'العمال والمنتجات' هي علاقة:", a: ["عكسية", "تكاملية (العمال ينتجون السلع)", "لا توجد علاقة", "تنافسية"], c: 1 },
+            { q: "'حرب أكتوبر 1973' تُدرس في التاريخ كمثال على:", a: ["الفشل في التخطيط", "براعة المشاركة في صنع القرار العسكري", "اتخاذ قرارات فردية", "إهمال المعلومات"], c: 1 },
+            { q: "أي من هذه المهن تتطلب 'إبداعاً فنياً وتقنياً' في آن واحد؟", a: ["عامل المناجم", "مصمم الجرافيك", "الراعي", "جامع الثمار"], c: 1 },
+            { q: "لضمان مستقبل مهني ناجح، يجب على الفرد:", a: ["التوقف عن التعلم بعد المدرسة", "تطوير مهاراته باستمرار لمواكبة التطور", "اختيار أسهل المهن فقط", "انتظار الوظائف التقليدية فقط"], c: 1 }
+        ];
+
+        let index = 0, score = 0, picked = null;
+
+        window.onload = () => { render(); };
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 shadow-sm';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return Swal.fire({text:'يا بطل! اختر إجابة للمتابعة.', icon:'info', confirmButtonColor: '#10b981'});
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) {
+                render();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            
+            if (pct >= 90) {
+                document.getElementById('result-title').innerText = "عبقري الدراسات!";
+                document.getElementById('result-msg').innerText = `ممتاز جداً! لقد أجبت على ${score} من 40 سؤالاً. أنت جاهز للتفوق!`;
+            } else if (pct >= 60) {
+                document.getElementById('result-title').innerText = "أحسنت يا بطل!";
+                document.getElementById('result-msg').innerText = `نتيجة رائعة! أجبت على ${score} سؤالاً صحيحاً. استمر في التميز.`;
+            } else {
+                document.getElementById('result-title').innerText = "محاولة جيدة";
+                document.getElementById('result-msg').innerText = `لقد أجبت على ${score} سؤالاً. راجع دروس الوحدة الأولى مرة أخرى لتتحسن.`;
+                document.getElementById('result-emoji').innerText = "📖";
+            }
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
+    </script>
+</body>
+</html>
