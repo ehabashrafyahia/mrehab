@@ -5,19 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة التميز | الصف الخامس</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body { font-family: 'Cairo', sans-serif; background: #f4f7f6; scroll-behavior: smooth; }
-        .main-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.4); position: sticky; top: 0; z-index: 1000; }
-        .lesson-btn-active { background: linear-gradient(145deg, #10b981, #059669); box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3); transition: all 0.3s ease; }
-        .lesson-btn-active:hover { transform: translateY(-4px); box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.4); }
-        .is-locked { position: relative; filter: grayscale(1) blur(1px); opacity: 0.7; pointer-events: none; user-select: none; }
+        .main-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(16, 185, 129, 0.1); position: sticky; top: 0; z-index: 1000; }
+        
+        .lesson-btn-active {
+            background: linear-gradient(145deg, #10b981, #059669);
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .lesson-btn-active:hover { transform: translateY(-4px); box-shadow: 0 15px 25px -5px rgba(5, 150, 105, 0.4); }
+
+        /* الزر الذهبي الموحد - نفس كود الصف الرابع والسادس */
+        .unit-exam-btn {
+            background: linear-gradient(145deg, #fbbf24, #d97706);
+            box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.3);
+            animation: pulse-gold 2s infinite;
+            transition: all 0.3s ease;
+        }
+        .unit-exam-btn:hover { transform: translateY(-4px); }
+
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+        }
+
+        .is-locked { position: relative; filter: grayscale(1) blur(1px); opacity: 0.5; pointer-events: none; }
         .lock-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 20; }
-        .lock-badge { background: rgba(30, 41, 59, 0.9); color: white; padding: 6px 16px; border-radius: 50px; font-size: 0.75rem; font-weight: bold; }
+        .lock-badge { background: rgba(30, 41, 59, 0.9); color: white; padding: 6px 16px; border-radius: 50px; font-size: 0.7rem; font-weight: bold; }
         .back-btn { transition: all 0.3s ease; background: #ffffff; border: 1px solid #e2e8f0; }
-        .unit-title { border-right: 5px solid #10b981; padding-right: 15px; }
     </style>
 </head>
 <body class="pb-20 text-right">
@@ -29,8 +49,8 @@
                 <span>الرئيسية</span>
             </a>
             <div class="text-center">
-                <h2 class="text-xl md:text-2xl font-800 text-slate-800">دراسات خامسة ابتدائي</h2>
-                <p class="text-[10px] md:text-xs text-emerald-600 font-bold">المنهج المطور - الفصل الدراسي الثاني</p>
+                <h2 class="text-xl md:text-2xl font-900 text-slate-800">دراسات خامسة ابتدائي</h2>
+                <p class="text-[10px] md:text-xs text-emerald-600 font-extrabold uppercase tracking-widest">المنهج الجديد - ٢٠٢٦</p>
             </div>
             <div class="w-10 h-10 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 shadow-inner">
                 <i class="fas fa-map-marked-alt"></i>
@@ -38,75 +58,67 @@
         </div>
     </header>
 
-    <main class="max-w-3xl mx-auto px-4 mt-12 space-y-12">
+    <main class="max-w-3xl mx-auto px-4 mt-12 space-y-16">
 
         <section>
-            <div class="flex items-center gap-4 mb-8 unit-title">
-                <h2 class="text-2xl font-800 text-slate-800">الوحدة الأولى: خرائط ومواقع في مصر والعالم</h2>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2 h-8 bg-emerald-500 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-800">الوحدة الأولى: خرائط ومواقع في مصر والعالم</h2>
             </div>
-            <div class="flex flex-col gap-4">
+            
+            <div class="flex flex-col gap-5">
                 
-                <a href="g5-u1-l1.html" class="lesson-btn-active p-6 rounded-3xl text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold text-sm">1</div>
-                        <span class="font-bold text-lg">الدرس الأول: خصائص قارات العالم</span>
-                    </div>
-                    <i class="fas fa-play-circle text-2xl"></i>
+                <a href="g5-u1-l1.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">1</div><span class="font-900 text-lg">خصائص قارات العالم</span></div>
+                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
                 </a>
 
-                <a href="g5-u1-l2.html" class="lesson-btn-active p-6 rounded-3xl text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold text-sm">2</div>
-                        <span class="font-bold text-lg">الدرس الثاني: تأثيرات خطوط الطول ودوائر العرض</span>
-                    </div>
-                    <i class="fas fa-play-circle text-2xl"></i>
+                <a href="g5-u1-l2.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">2</div><span class="font-900 text-lg">تأثيرات خطوط الطول ودوائر العرض</span></div>
+                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
                 </a>
 
-                <a href="g5-u1-l3.html" class="lesson-btn-active p-6 rounded-3xl text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold text-sm">3</div>
-                        <span class="font-bold text-lg">الدرس الثالث: مواقع بيئات بلدنا</span>
-                    </div>
-                    <i class="fas fa-play-circle text-2xl"></i>
+                <a href="g5-u1-l3.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">3</div><span class="font-900 text-lg leading-tight">مواقع بيئات بلدنا</span></div>
+                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
                 </a>
 
-                <a href="g5-u1-l4.html" class="lesson-btn-active p-6 rounded-3xl text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center font-bold text-sm">4</div>
-                        <span class="font-bold text-lg">الدرس الرابع: جولة في محافظات مصر</span>
-                    </div>
-                    <i class="fas fa-play-circle text-2xl"></i>
+                <a href="g5-u1-l4.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">4</div><span class="font-900 text-lg">جولة في محافظات مصر</span></div>
+                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
                 </a>
+
+                <a href="g5-u1-exam.html" class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/30">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square">
+                            <i class="fas fa-star text-yellow-200"></i>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-white/80 text-xs font-bold mb-1 italic text-right">اختبر مستواك</span>
+                            <span class="font-900 text-lg leading-tight text-white text-right">امتحان شامل: الوحدة الأولى</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-trophy text-2xl mr-2"></i>
+                </a>
+
             </div>
         </section>
 
         <section class="is-locked">
-            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
-            <div class="flex items-center gap-4 mb-6" style="border-right: 5px solid #cbd5e1; padding-right: 15px;">
-                <h2 class="text-2xl font-800 text-slate-400">الوحدة الثانية: أرض بلادي ومواردها</h2>
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-500">الوحدة الثانية: أرض بلادي ومواردها</h2>
             </div>
-            <div class="grid grid-cols-1 gap-3">
-                <div class="p-5 rounded-2xl bg-slate-200 text-slate-400 font-bold border border-slate-300">الدرس الأول: الغذاء وحياتنا</div>
-                <div class="p-5 rounded-2xl bg-slate-200 text-slate-400 font-bold border border-slate-300">الدرس الثاني: بلادي مسئوليتي</div>
-                <div class="p-5 rounded-2xl bg-slate-200 text-slate-400 font-bold border border-slate-300">الدرس الثالث: سيناء كاملة لمصر</div>
-            </div>
-        </section>
-
-        <section class="is-locked">
-            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
-            <div class="flex items-center gap-4 mb-6" style="border-right: 5px solid #cbd5e1; padding-right: 15px;">
-                <h2 class="text-2xl font-800 text-slate-400">الوحدة الثالثة: حضارة بلدنا</h2>
-            </div>
-            <div class="grid grid-cols-1 gap-3">
-                <div class="p-5 rounded-2xl bg-slate-200 text-slate-400 font-bold border border-slate-300">الدرس التمهيدي: العصور التاريخية لمصر</div>
-                <div class="p-5 rounded-2xl bg-slate-200 text-slate-400 font-bold border border-slate-300 text-sm">درس 1: منجزات حضارتنا | درس 2: العلوم والآداب</div>
+            <div class="p-10 rounded-[2.5rem] bg-white border border-slate-200 text-center text-slate-400 font-bold">
+                محتوى الوحدة الثانية قيد التجهيز من كتاب الأضواء
             </div>
         </section>
 
     </main>
 
     <footer class="mt-20 text-center text-slate-400 font-bold text-xs pb-10">
-        مراجعة مادة الدراسات الاجتماعية - مستر إيهاب أشرف &copy; 2026
+        إعداد وتصميم: أ. إيهاب أشرف &copy; 2026
     </footer>
 
 </body>
