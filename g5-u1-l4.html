@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة محافظات مصر | مستر إيهاب أشرف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.15);
+            border-radius: 2.5rem;
+        }
+        .option-box {
+            background: white; border: 2px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align: right; cursor: pointer;
+        }
+        .option-box:hover { border-color: #10b981; transform: translateY(-3px); }
+        .option-box.selected {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: transparent; color: white;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+        .opt-prefix {
+            background: #f1f5f9; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-weight: 900; color: #10b981;
+        }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow {
+            height: 100%; background: linear-gradient(90deg, #10b981, #fbbf24);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); border-radius: 100px;
+            transition: width 0.6s ease;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.4);
+        }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10 text-right">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد إنهاء المراجعة؟</h3>
+            <p class="text-slate-500 font-bold text-sm">سيتم فقدان تقدمك الحالي في الاختبار.</p>
+            <div class="flex gap-3 mt-6">
+                <a href="grade5.html" class="flex-1 py-4 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-4 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-emerald-100 font-900 text-emerald-600">
+                <span id="q-count">1</span> / 30
+            </div>
+            <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-500"><i class="fas fa-map-marked-alt"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">جاري التحميل...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5 text-right"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-[2rem] text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-emerald-100">
+            <div id="result-emoji" class="text-7xl mb-6">🏆</div>
+            <h1 id="result-title" class="text-4xl font-900 text-slate-800 mb-2">أداء مذهل!</h1>
+            <p class="text-slate-500 font-bold mb-8">محافظات مصر والمكسيك - مستر إيهاب أشرف</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-emerald-600"></div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="py-5 bg-emerald-100 text-emerald-700 rounded-3xl font-bold hover:bg-emerald-200 transition">إعادة الاختيار</button>
+                <a href="grade5.html" class="py-5 bg-slate-800 text-white rounded-3xl font-bold flex items-center justify-center hover:bg-slate-700 transition">قائمة الدروس</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "تقع المحافظة التي تشترك في حدودها مع دول أخرى أو مسطحات مائية على أطراف مصر وتسمى محافظات:", a: ["الوادي", "الدلتا", "الحدود", "القناة"], c: 2 },
+            { q: "تعتبر محافظة ........... من المحافظات التي يجاورها محافظات أخرى من جميع الجهات (داخلية):", a: ["مطروح", "الإسماعيلية", "شمال سيناء", "البحر الأحمر"], c: 1 },
+            { q: "أي من المحافظات التالية تُعد من محافظات الحدود المصرية؟", a: ["الغربية", "بورسعيد", "الوادي الجديد", "الجيزة"], c: 2 },
+            { q: "أصغر محافظات مصر من حيث المساحة هي محافظة:", a: ["القاهرة", "دمياط", "السويس", "المنيا"], c: 1 },
+            { q: "أكبر محافظات مصر من حيث المساحة هي محافظة:", a: ["مطروح", "البحر الأحمر", "الوادي الجديد", "أسوان"], c: 2 },
+            { q: "المحافظة التي تشتهر بوجود عدد سكان كبير جداً (تزدحم بالسكان) هي:", a: ["جنوب سيناء", "القاهرة", "الوادي الجديد", "مطروح"], c: 1 },
+            { q: "أقل محافظات مصر سكاناً بسبب وعورة تضاريسها ونقص موارد المياه هي:", a: ["دمياط", "بورسعيد", "جنوب سيناء", "الإسماعيلية"], c: 2 },
+            { q: "يُطلق على متوسط عدد السكان الذين يعيشون في الكيلومتر المربع الواحد مصطلح:", a: ["التعداد السكاني", "الزيادة الطبيعية", "الكثافة السكانية", "الهجرة الداخلية"], c: 2 },
+            { q: "ينتشر نشاط صيد الأسماك في المحافظات التي تقع على مسطح مائي مثل محافظة:", a: ["الغربية", "بورسعيد", "القاهرة", "الأقصر"], c: 1 },
+            { q: "يمارس سكان محافظة الشرقية والغربية النشاط ........... بسبب تربتها الخصبة:", a: ["السياحي", "التعديني", "الزراعي", "التجاري"], c: 2 },
+            { q: "تنتشر 'المهن الخدمية' بشكل ملحوظ في محافظات المدن الكبرى مثل:", a: ["مطروح", "الجيزة", "الوادي الجديد", "شمال سيناء"], c: 1 },
+            { q: "محافظة السويس وجنوب سيناء من المحافظات التي يشتهر فيها النشاط:", a: ["الزراعي", "التعديني (بترول ومواد خام)", "الرعوي", "الثقافي"], c: 1 },
+            { q: "يزور السياح محافظتي الأقصر وأسوان لممارسة النشاط:", a: ["الصناعي", "التجاري", "السياحي (أماكن أثرية)", "التعديني"], c: 2 },
+            { q: "تبلغ مساحة دولة 'المكسيك' بالنسبة لمساحة مصر حوالي:", a: ["النصف تقريباً", "الضعف تقريباً", "ثلاثة أضعاف", "نفس المساحة"], c: 1 },
+            { q: "العملة الرسمية المستخدمة في دولة المكسيك هي:", a: ["الدولار", "اليورو", "البيزو الجديد", "الجنيه"], c: 2 },
+            { q: "تشتهر المكسيك بوجود معلم سياحي هام يعود لحضارة 'الإنكا' وهو:", a: ["الأهرامات المصرية", "هرم كوكولكان", "برج إيفل", "تمثال الحرية"], c: 1 },
+            { q: "اللغة الرسمية التي يتحدث بها سكان دولة المكسيك هي:", a: ["الإسبانية", "الفرنسية", "الإنجليزية", "الإيطالية"], c: 0 },
+            { q: "من المحافظات التي تطل على البحر الأحمر وتعتبر محافظة حدودية:", a: ["مطروح", "الوادي الجديد", "شمال سيناء", "البحر الأحمر"], c: 3 },
+            { q: "'المكان الذي يجمع السكان وتربطهم ثقافة وتاريخ وله حدود إدارية' هو تعريف:", a: ["الدولة", "المحافظة", "القارة", "الحي"], c: 1 },
+            { q: "تزداد الكثافة السكانية في محافظات ........... نتيجة وفرة المياه العذبة وخصوبة الأرض:", a: ["الصحاري", "الحدود", "الوادي والدلتا", "السواحل"], c: 2 },
+            { q: "لكي نحسب 'الكثافة السكانية' لمحافظة ما، نقوم بقسمة عدد السكان على:", a: ["عدد المواليد", "المساحة", "عدد الوفيات", "الدخل القومي"], c: 1 },
+            { q: "أي من الموارد التالية يعتبر محركاً أساسياً للنشاط التعديني في محافظة السويس؟", a: ["المياه العذبة", "التربة الطينية", "وجود آبار البترول", "الغابات الطبيعية"], c: 2 },
+            { q: "يتميز شعب المكسيك بأنه شعب اجتماعي جداً ويرتبط بالحفلات وروح:", a: ["الجدية الصارمة", "العزلة والهدوء", "المرح والموسيقى والرقص", "التشاؤم"], c: 2 },
+            { q: "تعتبر المكسيك من أكبر دول العالم في تصدير:", a: ["الأخشاب والأثاث", "الفواكه والخضروات", "السيارات والآلات", "الأجهزة الإلكترونية"], c: 1 },
+            { q: "المحافظة التي تقع في ركن مصر الشمالي الشرقي وتعد بوابة مصر الشرقية هي:", a: ["مطروح", "الوادي الجديد", "شمال سيناء", "أسوان"], c: 2 },
+            { q: "يتشابه سكان محافظتي القاهرة والجيزة في انتشار المهن:", a: ["الرعوية", "الخدمية (تعليم، صحة، أمن)", "صيد الأسماك", "استخراج المعادن"], c: 1 },
+            { q: "عاصمة دولة المكسيك هي مدينة:", a: ["واشنطن", "مكسيكو سيتي", "مدريد", "روما"], c: 1 },
+            { q: "تطل المكسيك من جهة الشرق على المحيط الأطلنطي ومن جهة الغرب على المحيط:", a: ["الهندي", "القطب الشمالي", "الهادي", "المتجمد الجنوبي"], c: 2 },
+            { q: "العلاقة بين مساحة المحافظة وعدد السكان المقيمين بها تحدد لنا:", a: ["المساحة الكلية", "الكثافة السكانية", "الحدود الإدارية", "النشاط الاقتصادي"], c: 1 },
+            { q: "تُعد الأهرامات المصرية من المعالم التي تميز مصر بين الأمم وتعود للعصور:", a: ["الحديثة", "الوسطى", "القديمة", "المعاصرة"], c: 2 }
+        ];
+
+        let index = 0, score = 0, picked = null;
+
+        window.onload = () => { render(); };
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return Swal.fire({text:'يا بطل! اختر إجابة للمتابعة.', icon:'warning', confirmButtonColor: '#10b981'});
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) render(); else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            
+            if (pct >= 90) {
+                document.getElementById('result-title').innerText = "عاش يا بطل!";
+                document.getElementById('result-msg').innerText = "أنت متميز جداً في معرفة محافظات وطنك والمقارنة العالمية.";
+            } else if (pct >= 50) {
+                document.getElementById('result-title').innerText = "أداء جيد!";
+                document.getElementById('result-msg').innerText = "لقد حققت نتيجة جيدة، يمكنك المراجعة مرة أخرى للتميز.";
+            } else {
+                document.getElementById('result-title').innerText = "محاولة أخرى";
+                document.getElementById('result-msg').innerText = "راجع أنواع المحافظات والأنشطة الاقتصادية مرة أخرى.";
+                document.getElementById('result-emoji').innerText = "📖";
+            }
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
+    </script>
+</body>
+</html>
