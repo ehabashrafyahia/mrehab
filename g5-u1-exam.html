@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>امتحان الوحدة الأولى | مستر إيهاب أشرف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.15);
+            border-radius: 2.5rem;
+        }
+        .option-box {
+            background: white; border: 2px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align: right; cursor: pointer;
+        }
+        .option-box:hover { border-color: #10b981; transform: translateY(-3px); }
+        .option-box.selected {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: transparent; color: white;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+        .opt-prefix {
+            background: #f1f5f9; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-weight: 900; color: #10b981;
+        }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow {
+            height: 100%; background: linear-gradient(90deg, #10b981, #fbbf24);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); border-radius: 100px;
+            transition: width 0.6s ease;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.4);
+        }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10 text-right">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد إنهاء المراجعة؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade5.html" class="flex-1 py-4 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-4 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-emerald-100 font-900 text-emerald-600">
+                <span id="q-count">1</span> / 40
+            </div>
+            <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-500"><i class="fas fa-atlas"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">جاري التحميل...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5 text-right"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-[2rem] text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-emerald-100">
+            <div id="result-emoji" class="text-7xl mb-6">🏆</div>
+            <h1 id="result-title" class="text-4xl font-900 text-slate-800 mb-2">أداء مذهل!</h1>
+            <p class="text-slate-500 font-bold mb-8">مراجعة الوحدة الأولى - مستر إيهاب أشرف</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-emerald-600"></div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="py-5 bg-emerald-100 text-emerald-700 rounded-3xl font-bold hover:bg-emerald-200 transition">إعادة</button>
+                <a href="grade5.html" class="py-5 bg-slate-800 text-white rounded-3xl font-bold flex items-center justify-center hover:bg-slate-700 transition">الدروس</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الأسئلة الـ 40 المختارة للوحدة الأولى
+        const questions = [
+            { q: "تقع دائرة الاستواء ضمن المنطقة المناخية:", a: ["الباردة", "المعتدلة", "المدارية الحارة", "القطبية"], c: 2 },
+            { q: "يحد قارة أمريكا الشمالية من جهة الغرب المحيط:", a: ["الأطلنطي", "الهادي", "الهندي", "القطبي الشمالي"], c: 1 },
+            { q: "أكبر محافظات مصر من حيث المساحة هي محافظة:", a: ["القاهرة", "الإسكندرية", "الوادي الجديد", "المنوفية"], c: 2 },
+            { q: "تقع قارة أستراليا بالكامل في نصف الكرة:", a: ["الشمالي", "الجنوبي", "الشرقي", "الغربي"], c: 1 },
+            { q: "يمثل خط 'جرينتش' المرجع الأساسي لـ:", a: ["المناخ", "التوقيت (خطوط الطول)", "التضاريس", "الدوائر الحرارية"], c: 1 },
+            { q: "من أشهر حضارات قارة أمريكا الشمالية والجنوبية قديمًا:", a: ["الحضارة المصرية", "حضارة المايا والإنكا", "حضارة الصين", "حضارة بلاد الرافدين"], c: 1 },
+            { q: "أي من القارات التالية تطل شمالاً على المحيط المتجمد الشمالي؟", a: ["أفريقيا", "أستراليا", "آسيا وأوروبا", "أمريكا الجنوبية"], c: 2 },
+            { q: "تصنف مدينة 'العلمين الجديدة' ضمن البيئة:", a: ["الزراعية", "الساحلية", "الصحراوية", "الصناعية"], c: 1 },
+            { q: "أعلى قمة جبلية في العالم هي قمة:", a: ["كليمنجارو", "إيفرست", "جبال الألب", "جبال البحر الأحمر"], c: 1 },
+            { q: "تقع غابات الأمازون في قارة:", a: ["أفريقيا", "آسيا", "أمريكا الجنوبية", "أوروبا"], c: 2 },
+            { q: "ترتفع درجة الحرارة كلما اقتربنا من:", a: ["القطب الشمالي", "مدار الجدي", "دائرة الاستواء", "القطب الجنوبي"], c: 2 },
+            { q: "أي المحافظات التالية تعد من 'المحافظات الحدودية' في مصر؟", a: ["الجيزة", "مطروح", "الغربية", "المنوفية"], c: 1 },
+            { q: "البيئة التي يشتهر سكانها بصيد الأسماك والعمل التجاري هي:", a: ["البيئة الريفية", "البيئة الساحلية", "البيئة الصحراوية", "البيئة الجبلية"], c: 1 },
+            { q: "هضبة التبت، التي تعد أعلى هضاب العالم، تقع في قارة:", a: ["أفريقيا", "أوروبا", "آسيا", "أمريكا الشمالية"], c: 2 },
+            { q: "النشاط الاقتصادي الذي تقوم عليه دولة المكسيك بشكل رئيسي هو:", a: ["الرعي", "التجارة", "الزراعة", "الصيد"], c: 1 },
+            { q: "يمثل الفارق الزمني بين كل خط طول والآخر:", a: ["ساعة واحدة", "4 دقائق", "15 دقيقة", "10 دقائق"], c: 1 },
+            { q: "تعتبر محافظة 'جنوب سيناء' من المحافظات:", a: ["الحضرية", "منخفضة الكثافة السكانية", "الكثيفة جداً", "الريفية"], c: 1 },
+            { q: "أول نموذج لمدينة حضرية في تاريخ مصر القديم هي مدينة:", a: ["القاهرة", "منف", "الإسكندرية", "أسوان"], c: 1 },
+            { q: "مساحة واسعة من الأرض المرتفعة مستوية السطح تسمى:", a: ["الجبل", "التل", "الهضبة", "المنخفض"], c: 2 },
+            { q: "تختلف بيئات مصر وتتنوع نتيجة:", a: ["ضيق مساحة مصر", "اتساع مساحة مصر وتنوع مظاهر السطح", "تشابه المناخ", "قلة الموارد"], c: 1 },
+            { q: "المبدأ الذي قامت عليه ثورة يوليو 1952 لتوزيع الأراضي هو:", a: ["الاحتكار", "العدالة الاجتماعية", "الخصخصة", "التجارة الحرة"], c: 1 },
+            { q: "يحد قارة آسيا من جهة الشرق المحيط:", a: ["الهندي", "الهادي", "الأطلنطي", "القطبي"], c: 1 },
+            { q: "يطلق على متوسط عدد السكان الذين يعيشون في الكيلومتر المربع الواحد:", a: ["الزيادة الطبيعية", "الكثافة السكانية", "الهجرة", "التركيب النوعي"], c: 1 },
+            { q: "أي مما يلي يعد من خصائص 'البيئة الريفية' في مصر؟", a: ["انتشار المصانع", "ارتفاع نسبة الخدمات", "النشاط الزراعي وتربية الحيوان", "قلة المساحات الخضراء"], c: 2 },
+            { q: "تتسم قارة أوروبا بأن معظم أراضيها:", a: ["صحراوية", "سهلية وجبلية", "قطبية متجمدة", "هضبية جافة"], c: 1 },
+            { q: "الموقع بالنسبة لخطوط الطول ودوائر العرض يعرف بـ:", a: ["الموقع الجغرافي", "الموقع الفلكي", "التضاريس", "المناخ"], c: 1 },
+            { q: "'كل ما يحيط بالإنسان ويؤثر فيه ويتأثر به' هو تعريف لـ:", a: ["المجتمع", "البيئة", "الثقافة", "التاريخ"], c: 1 },
+            { q: "المحافظة التي تقع عند التقاء وادي النيل بالدلتا هي:", a: ["الإسكندرية", "القاهرة", "أسيوط", "بورسعيد"], c: 1 },
+            { q: "إذا اتجهنا 'شرقاً' فإننا نقوم بـ:", a: ["تأخير الوقت", "تقديم الوقت", "ثبات الوقت", "إلغاء التوقيت"], c: 1 },
+            { q: "تعاني البيئة الصحراوية في مصر من مشكلة:", a: ["الفيضانات", "الجفاف وندرة الأمطار", "تلوث الهواء بالمصانع", "الازدحام السكاني"], c: 1 },
+            { q: "أي القارات التالية تقع بالكامل جنوب دائرة الاستواء؟", a: ["أفريقيا", "أمريكا الشمالية", "أنتاركتيكا", "أوروبا"], c: 2 },
+            { q: "تزداد الكثافة السكانية في مصر في منطقة:", a: ["الصحراء الغربية", "الوادي والدلتا", "شبه جزيرة سيناء", "الحدود الشرقية"], c: 1 },
+            { q: "تشتهر محافظة السويس بنشاط:", a: ["الزراعة الكثيفة", "الصناعة والسياحة والنشاط البحري", "الرعي التقليدي", "استخراج الفحم"], c: 1 },
+            { q: "الحضارة التي قامت على ضفاف الأنهار في آسيا هي:", a: ["حضارة المايا", "حضارة الصين القديمة", "حضارة الرومان", "حضارة اليونان"], c: 1 },
+            { q: "يقسم مدار 'الجدي' الأرض إلى نصفين:", a: ["شرقي وغربي", "يقع في النصف الجنوبي", "شمالي وجنوبي بالتساوي", "فوق وتحت"], c: 1 },
+            { q: "توجد أكبر المحافظات مساحة في مصر في البيئة:", a: ["الساحلية", "الصحراوية", "الزراعية", "الصناعية"], c: 1 },
+            { q: "المورد الأساسي للعديد من المعادن ومصادر الطاقة في مصر هو:", a: ["البحر المتوسط", "البيئة الصحراوية", "الدلتا", "نهر النيل"], c: 1 },
+            { q: "من المحاصيل المميزة للبيئة الصحراوية (في الواحات):", a: ["الأرز", "النخيل والزيتون", "قصب السكر", "الكتان"], c: 1 },
+            { q: "قارة تتميز بمظهرها الهضبي هي قارة:", a: ["أوروبا", "أفريقيا", "أمريكا الشمالية", "آسيا"], c: 1 },
+            { q: "يتشابه سكان البيئة الحضرية في:", a: ["ارتفاع نسبة الأمية", "العمل بالصناعة والخدمات والتجارة", "الاعتماد على الزراعة فقط", "انخفاض مستوى المعيشة"], c: 1 }
+        ];
+
+        let index = 0, score = 0, picked = null;
+
+        window.onload = () => { render(); };
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return Swal.fire({text:'يا بطل! اختر إجابة للمتابعة.', icon:'warning', confirmButtonColor: '#10b981'});
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) render(); else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            
+            if (pct >= 85) {
+                document.getElementById('result-title').innerText = "عاش يا بطل!";
+                document.getElementById('result-msg').innerText = "أنت متميز جداً في الوحدة الأولى، تستحق لقب خبير الدراسات!";
+            } else if (pct >= 50) {
+                document.getElementById('result-title').innerText = "أداء جيد!";
+                document.getElementById('result-msg').innerText = "لقد حققت نتيجة جيدة، يمكنك المراجعة مرة أخرى للتميز.";
+            } else {
+                document.getElementById('result-title').innerText = "محاولة أخرى";
+                document.getElementById('result-msg').innerText = "راجع دروس الوحدة الأولى مرة أخرى وستحقق الأفضل المرة القادمة.";
+                document.getElementById('result-emoji').innerText = "📖";
+            }
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
+    </script>
+</body>
+</html>
