@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة النمو السكاني | منصة أطلس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); min-height: 100vh; user-select: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.1); border-radius: 2rem; }
+        .option-box { background: white; border: 2px solid #e2e8f0; transition: all 0.3s ease; text-align: right; cursor: pointer; position: relative; overflow: hidden; }
+        .option-box:hover { border-color: #8b5cf6; transform: scale(1.02); }
+        .option-box.selected { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); border-color: transparent; color: white; }
+        .opt-prefix { background: #f1f5f9; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; color: #64748b; flex-shrink: 0; }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow { height: 100%; background: linear-gradient(90deg, #a855f7, #6366f1); box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); border-radius: 100px; transition: width 0.6s ease; }
+        .btn-confirm { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); box-shadow: 0 15px 30px -10px rgba(109, 40, 217, 0.4); }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade8.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center text-sm">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-purple-600">
+                <span id="q-count">1</span> / 40
+            </div>
+            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-map-marked-alt"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-xl md:text-2xl font-900 text-slate-800 leading-snug text-center mb-12 min-h-[3rem]">جارٍ تحميل السؤال...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-purple-100">
+            <div class="text-7xl mb-6">🏆</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p class="text-slate-500 font-bold mb-8">النمو السكاني في قارتي آسيا وأوروبا</p>
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#a855f7" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-purple-600"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg">إعادة</button>
+            <a href="grade8.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+    { q: "تمثل فئة صغار السن في الهرم السكاني منطقة:", a: ["القمة", "المنتصف", "القاعدة", "الجوانب"], c: 2 },
+    { q: "تبلغ نسبة فئة صغار السن في قارة آسيا حوالي:", a: ["١٥.٧٪", "٢٢٪", "٣٣٪", "٥٠٪"], c: 1 },
+    { q: "تزداد نسبة الإناث عن الذكور في قارة أوروبا بسبب:", a: ["الهجرة للعمل", "الحروب العالمية", "زيادة المواليد", "الرعاية الصحية"], c: 1 },
+    { q: "الدولة الآسيوية التي تعد من أولى دول العالم في نسبة كبار السن هي:", a: ["الصين", "الهند", "اليابان", "فيتنام"], c: 2 },
+    { q: "يقصد بـ 'عمر المتوقع عند الميلاد' عدد السنوات التي يتوقع أن يعيشها الفرد منذ:", a: ["دخول المدرسة", "سن العمل", "لحظة الولادة", "سن التقاعد"], c: 2 },
+    { q: "من أشهر لغات قارة آسيا وتضم نحو ٢٣٠٠ لغة:", a: ["الإنجليزية", "العربية", "الإسبانية", "الفرنسية"], c: 1 },
+    { q: "القارة التي تضم 'ثلث' لغات العالم هي:", a: ["أوروبا", "أفريقيا", "آسيا", "أستراليا"], c: 2 },
+    { q: "يشتهر طبق 'السوشي' في دولة:", a: ["كوريا الجنوبية", "الصين", "اليابان", "الهند"], c: 2 },
+    { q: "تعتبر 'البيتزا' من أشهر الأطباق الوطنية في:", a: ["فرنسا", "إيطاليا", "ألمانيا", "إسبانيا"], c: 1 },
+    { q: "تشتهر دولة إيران بصناعة:", a: ["الحرير اليدوي", "الزجاج", "السجاد اليدوي", "الفخار"], c: 2 },
+    { q: "تبلغ نسبة الإنفاق العام على التعليم في قارة آسيا وأوروبا نحو:", a: ["٣.٧٪", "٥٪", "١٠٪", "٢٢٪"], c: 0 },
+    { q: "الدولة التي تحتل المركز الثاني عالمياً في نسبة كبار السن هي:", a: ["اليابان", "إيطاليا", "الكويت", "النرويج"], c: 1 },
+    { q: "من الأمراض المنتشرة في المناطق الاستوائية بآسيا:", a: ["السرطان", "السكري", "الملاريا", "أمراض القلب"], c: 2 },
+    { q: "فئة 'سن العمل' تشمل الأفراد من سن ١٥ إلى:", a: ["٤٥ عاماً", "٦٠ عاماً", "٦٤ عاماً", "٧٠ عاماً"], c: 2 },
+    { q: "يرجع انخفاض نسبة صغار السن في أوروبا مقارنة بآسيا إلى:", a: ["ارتفاع الوفيات", "انخفاض معدل المواليد", "الهجرة الخارجية", "جودة التعليم"], c: 1 },
+    { q: "أي من القارات التالية تمتلك 'قوة عاملة' تدعم اقتصادها بنسبة تصل لثلثي السكان؟", a: ["آسيا وأوروبا معاً", "آسيا فقط", "أوروبا فقط", "أفريقيا"], c: 0 },
+    { q: "الانحناء المتبادل كطريقة للتحية يعبر عن الاحترام في دولتي:", a: ["إيطاليا وفرنسا", "اليابان وكوريا الجنوبية", "الهند وباكستان", "السويد والنرويج"], c: 1 },
+    { q: "يتساوي النشاط الصناعي في آسيا وأوروبا حيث يعمل به نحو:", a: ["نصف القوة العاملة", "ربع القوة العاملة", "ثلث القوة العاملة", "خمس القوة العاملة"], c: 1 },
+    { q: "القارة التي تتسم بالتركيب النوعي المتوازن (٥١.١٪ ذكور) هي:", a: ["أوروبا", "أمريكا الشمالية", "آسيا", "القارة القطبية"], c: 2 },
+    { q: "تعاني بعض دول شرق وجنوب آسيا من نقص في الأطباء والممرضات مقارنة بـ:", a: ["المعدلات العالمية", "قارة أفريقيا", "دول الخليج", "وسط آسيا"], c: 0 },
+    { q: "يظهر تأثير اللغة على الهوية السياسية بوضوح في تقسيم دولة:", a: ["الهند", "باكستان", "اليابان", "إيطاليا"], c: 1 },
+    { q: "أي من الدول الآتية تعد الأعلى إنفاقاً على التعليم في قارة آسيا؟", a: ["الكويت", "سلطنة عمان", "الصين", "الهند"], c: 1 },
+    { q: "تشترك دول 'السويد والنرويج والدنمارك' في تميزها بحرفة:", a: ["صناعة الزجاج", "صناعة الفخار", "الرسم على الخشب", "صناعة السجاد"], c: 2 },
+    { q: "يرجع انتشار الأمراض في بعض دول قارة آسيا بشكل رئيسي إلى:", a: ["زيادة الغابات", "سوء التغذية وفقر البنية التحتية", "كثرة الأنهار", "المناخ البارد"], c: 1 },
+    { q: " 'الاقتصاد الفضي' هو مصطلح يرتبط بالأنشطة التي تلبي احتياجات فئة:", a: ["صغار السن", "الشباب", "كبار السن", "المهاجرين"], c: 2 },
+    { q: "من المتوقع بحلول عام ٢٠٥٠ أن ترتفع نسبة كبار السن في أوروبا لتصل إلى:", a: ["الربع", "النصف", "الثلث", "الخمس"], c: 2 },
+    { q: "ترجع زيادة نسبة الذكور في دول الخليج العربي إلى:", a: ["زيادة المواليد الذكور", "الهجرة للعمل", "قلة الوفيات", "التقدم الطبي"], c: 1 },
+    { q: " 'كلا الهرمين السكانيين لآسيا وأوروبا من النوع ذي القاعدة الضيقة'. هذا يدل على:", a: ["انفجار سكاني", "نجاح سياسات تنظيم الأسرة", "زيادة عدد المهاجرين", "انخفاض جودة الرعاية الطبية"], c: 1 },
+    { q: "بم تفسر: عدد الأطفال في آسيا عشرة أضعاف عددهم في أوروبا؟", a: ["بسبب مساحة قارة آسيا", "بسبب الحرص على الزواج والإنجاب واتساع شريحة الشباب", "بسبب الهجرة من أوروبا لآسيا", "بسبب توفر الغذاء في آسيا"], c: 1 },
+    { q: "ما النتيجة المترتبة على اهتمام دول القارتين بصحة فئة صغار السن؟", a: ["زيادة عدد المواليد", "ارتفاع العمر المتوقع عند الميلاد", "تقليل فرص العمل", "زيادة الهجرة"], c: 1 },
+    { q: " 'فرض لغة معينة كلغة رسمية قد يؤدي إلى تقسيم الدولة'. أي نموذج مما يلي يؤكد ذلك؟", a: ["دول وسط أوروبا", "انفصال بنجلاديش عن باكستان", "وحدة الدول العربية", "تنوع لغات آسيا"], c: 1 },
+    { q: "العلاقة بين 'تطور الرعاية الصحية' و 'الهرم السكاني' تظهر بوضوح في:", a: ["اتساع القاعدة", "ضيق قمة الهرم", "زيادة فئة كبار السن (قمة الهرم)", "زيادة نسبة الذكور"], c: 2 },
+    { q: "بم تفسر: تباين الأمراض الشائعة بين أوروبا وآسيا؟", a: ["بسبب اختلاف العادات والتقاليد فقط", "بسبب تباين المستويات الاقتصادية والظروف المناخية", "بسبب نوعية الطعام الوطني", "بسبب اللغة والهوية"], c: 1 },
+    { q: "أي من الدول الآتية تعد 'ثاني دول القارة' في الإنفاق على التعليم بآسيا؟", a: ["عمان", "الكويت", "تايلاند", "إندونيسيا"], c: 1 },
+    { q: "النشاط الاقتصادي الذي يقل فيه عدد العاملين في أوروبا (٤٪) مقارنة بآسيا (٢٠٪) هو:", a: ["النشاط الصناعي", "النشاط الزراعي", "النشاط التجاري", "النشاط السياحي"], c: 1 },
+    { q: "ما العلاقة بين الحروب العالمية والتركيب النوعي في أوروبا؟", a: ["أدت لزيادة عدد الذكور", "أدت لفقدان الكثير من الشباب الذكور وزيادة نسبة الإناث", "لم تؤثر على التركيب النوعي", "أدت لزيادة المواليد"], c: 1 },
+    { q: "تعد 'مبادرة الأمن الصحي العالمي' دليلاً على:", a: ["التنافس بين آسيا وأوروبا", "جهود الحد من انتشار الأمراض والأوبئة عالمياً", "زيادة الأمراض في أوروبا", "انغلاق القارات على نفسها"], c: 1 },
+    { q: "تستخدم 'التكنولوجيا' في 'الاقتصاد الفضي' من أجل:", a: ["زيادة الإنتاج الصناعي", "تعزيز الشيخوخة الصحية وتوفير احتياجات كبار السن", "تعليم صغار السن", "تطوير الحرف اليدوية"], c: 1 },
+    { q: "من ملامح الثراء اللغوي في قارة آسيا أنها تضم لغات تمثل:", a: ["نصف لغات العالم", "ثلث لغات العالم", "ربع لغات العالم", "لغات أوروبا"], c: 1 },
+    { q: "رُسمت الحدود السياسية لدول وسط وغرب أوروبا بعد الحرب العالمية الأولى على أساس:", a: ["العادات والتقاليد", "اللغة", "الدين", "القوة العسكرية"], c: 1 }
+];
+
+
+        let index = 0, score = 0, picked = null;
+
+        // دالة البدء
+        function initQuiz() {
+            if (questions && questions.length > 0) {
+                render();
+            }
+        }
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            
+            // تحديث نص السؤال والعداد
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-5 md:p-6 rounded-2xl flex items-center gap-4 transition-all';
+                btn.innerHTML = `
+                    <div class="opt-prefix">${String.fromCharCode(65 + i)}</div>
+                    <span class="font-bold text-sm md:text-base text-slate-700">${opt}</span>
+                `;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            
+            // تحديث شريط التقدم
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) {
+                Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#8b5cf6'});
+                return;
+            }
+            if (picked === questions[index].c) score++;
+            
+            index++;
+            if (index < questions.length) {
+                render();
+            } else {
+                finish();
+            }
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            document.getElementById('result-msg').innerText = pct >= 50 ? "أداء رائع يا بطل أطلس!" : "راجع الدرس وحاول مرة أخرى!";
+        }
+
+        function toggleExitModal(s) { 
+            document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; 
+        }
+
+        // تشغيل الكود فور تحميل الصفحة
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
