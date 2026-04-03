@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة أطلس | الصف الثاني الإعدادي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #f4f7f6; scroll-behavior: smooth; }
+        .main-header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(168, 85, 247, 0.1); position: sticky; top: 0; z-index: 1000; }
+        
+        /* الدروس والامتحانات المفتوحة */
+        .lesson-btn-active { background: linear-gradient(145deg, #a855f7, #7e22ce); box-shadow: 0 10px 20px -5px rgba(168, 85, 247, 0.3); transition: all 0.3s ease; }
+        .unit-exam-btn { background: linear-gradient(145deg, #fbbf24, #d97706); animation: pulse-gold 2s infinite; }
+        @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); } 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); } }
+
+        /* ستايل التمويه والإغلاق للوحدات 3 و 4 */
+        .is-locked-section { position: relative; }
+        .is-locked-section .lock-overlay { position: absolute; inset: 0; background: rgba(244, 247, 246, 0.3); backdrop-filter: blur(4px); z-index: 40; border-radius: 2rem; display: flex; align-items: center; justify-content: center; }
+        .lock-badge { background: #1e293b; color: white; padding: 10px 24px; border-radius: 50px; font-weight: 800; font-size: 0.9rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .blurred-content { filter: blur(2px); pointer-events: none; user-select: none; opacity: 0.7; }
+    </style>
+</head>
+<body class="pb-20 text-right">
+
+    <header class="main-header shadow-sm h-20 flex items-center justify-between px-4">
+        <a href="home.html" class="px-4 py-2 rounded-2xl bg-white border border-slate-200 text-slate-600 font-bold text-sm">الرئيسية</a>
+        <div class="text-center">
+            <h2 class="text-xl font-900 text-slate-800">دراسات تانية إعدادي</h2>
+            <p class="text-xs text-purple-600 font-bold">منصة أطلس التعليمية</p>
+        </div>
+        <div class="w-10 h-10 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600"><i class="fas fa-graduation-cap"></i></div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 mt-10 space-y-12">
+
+        <section>
+            <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-purple-500 rounded-full"></span> الوحدة الأولى: سكان قارتي آسيا وأوروبا</h2>
+            <div class="flex flex-col gap-4">
+                <a href="g8-u1-l1.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">1</div><span class="font-bold text-sm md:text-base">نمو وتوزيع سكان قارتي آسيا وأوروبا</span></div>
+                    <i class="fas fa-play-circle text-xl"></i>
+                </a>
+                <a href="g8-u1-l2.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">2</div><span class="font-bold text-sm md:text-base">خصائص سكان قارتي آسيا وأوروبا</span></div>
+                    <i class="fas fa-play-circle text-xl"></i>
+                </a>
+                <a href="exam1.html" class="unit-exam-btn p-5 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/20">
+                    <div class="flex items-center gap-4"><i class="fas fa-star text-yellow-200"></i><span class="font-bold text-sm">امتحان شامل: الوحدة الأولى</span></div>
+                    <i class="fas fa-trophy"></i>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-purple-500 rounded-full"></span> الوحدة الثانية: مصر من الفتح الإسلامي حتى عصر الدول المستقلة</h2>
+            <div class="flex flex-col gap-4">
+                <a href="g8-u2-l1.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">1</div><span class="font-bold text-sm md:text-base">أحوال مصر بعد الفتح الإسلامي</span></div>
+                    <i class="fas fa-play-circle text-xl"></i>
+                </a>
+                <a href="g8-u2-l2.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">2</div><span class="font-bold text-sm md:text-base">الملامح الحضارية لبعض الدول المستقلة (1)</span></div>
+                    <i class="fas fa-play-circle text-xl"></i>
+                </a>
+                <a href="g8-u2-l3.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">3</div><span class="font-bold text-sm md:text-base">الملامح الحضارية لبعض الدول المستقلة (2)</span></div>
+                    <i class="fas fa-play-circle text-xl"></i>
+                </a>
+                <a href="exam2.html" class="unit-exam-btn p-5 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/20">
+                    <div class="flex items-center gap-4"><i class="fas fa-star text-yellow-200"></i><span class="font-bold text-sm">امتحان شامل: الوحدة الثانية</span></div>
+                    <i class="fas fa-trophy"></i>
+                </a>
+            </div>
+        </section>
+
+        <section class="is-locked-section">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
+            <div class="blurred-content">
+                <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-slate-400 rounded-full"></span> الوحدة الثالثة: الأنشطة الاقتصادية في قارتي آسيا وأوروبا</h2>
+                <div class="flex flex-col gap-4">
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">1. النشاط الزراعي في قارتي آسيا وأوروبا</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">2. النشاط الصناعي والتجاري</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">3. النشاط السياحي في قارتي آسيا وأوروبا</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">4. بعض المنظمات الإقليمية</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="is-locked-section">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
+            <div class="blurred-content">
+                <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-slate-400 rounded-full"></span> الوحدة الرابعة: مصر من الحكم العثماني حتى الحملة الفرنسية</h2>
+                <div class="flex flex-col gap-4">
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">1. مصر تحت الحكم العثماني</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">2. الحملة الفرنسية على مصر</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 text-center text-slate-400 font-bold text-xs pb-10">إعداد وتصميم: أ. إيهاب أشرف &copy; 2026</footer>
+</body>
+</html>
