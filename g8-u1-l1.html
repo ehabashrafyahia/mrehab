@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة النمو السكاني | منصة أطلس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); min-height: 100vh; user-select: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.1); border-radius: 2rem; }
+        .option-box { background: white; border: 2px solid #e2e8f0; transition: all 0.3s ease; text-align: right; cursor: pointer; }
+        .option-box:hover { border-color: #8b5cf6; transform: scale(1.02); }
+        .option-box.selected { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); border-color: transparent; color: white; }
+        .opt-prefix { background: #f1f5f9; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; color: #64748b; }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow { height: 100%; background: linear-gradient(90deg, #a855f7, #6366f1); box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); border-radius: 100px; transition: width 0.6s ease; }
+        .btn-confirm { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); box-shadow: 0 15px 30px -10px rgba(109, 40, 217, 0.4); }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade8.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center text-sm">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-purple-600">
+                <span id="q-count">1</span> / 40
+            </div>
+            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-map-marked-alt"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-xl md:text-2xl font-900 text-slate-800 leading-snug text-center mb-12"></h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-purple-100">
+            <div class="text-7xl mb-6">🏆</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p class="text-slate-500 font-bold mb-8">النمو السكاني في قارتي آسيا وأوروبا</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#a855f7" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-purple-600"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg">إعادة</button>
+            <a href="grade8.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "تعد قارة ........ أولى قارات العالم من حيث عدد السكان.", a: ["أوروبا", "أفريقيا", "آسيا", "أستراليا"], c: 2 },
+            { q: "تحتل دولة ........ المرتبة الأولى عالمياً من حيث عدد السكان.", a: ["الصين", "الهند", "روسيا", "ألمانيا"], c: 1 },
+            { q: "تحتل قارة أوروبا المرتبة ........ عالمياً من حيث عدد السكان.", a: ["الأولى", "الثانية", "الثالثة", "الرابعة"], c: 2 },
+            { q: "أكبر دول قارة أوروبا من حيث عدد السكان هي دولة:", a: ["فرنسا", "ألمانيا", "إيطاليا", "روسيا الاتحادية"], c: 3 },
+            { q: "يقصد بـ 'الزيادة الطبيعية' الفرق بين معدل ........ ومعدل الوفيات.", a: ["الهجرة", "المواليد", "الوافدين", "الأمية"], c: 1 },
+            { q: "يقل نصيب الفرد من المياه العذبة في دولة ........ ليصل لنصف المعدل العالمي.", a: ["اليابان", "فرنسا", "الهند", "إيطاليا"], c: 2 },
+            { q: "من مناطق التركز السكاني المرتفعة في آسيا السهول الفيضية لنهر:", a: ["النيل", "اليانجستي", "الدانوب", "الراين"], c: 1 },
+            { q: "تعتبر جزيرة ........ من أكثر جزر العالم ازدحاماً بالسكان في قارة آسيا.", a: ["قبرص", "جاوا", "تسمانيا", "مدغشقر"], c: 1 },
+            { q: "تنخفض الكثافة السكانية في المناطق الشمالية بآسيا وأوروبا بسبب:", a: ["الحرارة المرتفعة", "شدة البرودة", "انتشار الغابات", "ندرة المياه"], c: 1 },
+            { q: "تتركز الكثافة السكانية في أوروبا في منطقة:", a: ["السهل الأوروبي العظيم", "شبه الجزيرة العربية", "سهول سيبيريا", "جبال الهمالايا"], c: 0 },
+            { q: "الهجرة غير الشرعية هي الانتقال من دولة لأخرى عبر:", a: ["المطارات الرسمية", "المنافذ القانونية", "الوسائل غير القانونية", "السياحة"], c: 2 },
+            { q: "تشهد قارة آسيا تيارات هجرة وافدة خاصة إلى دول:", a: ["أوروبا الغربية", "الخليج العربي", "شمال أفريقيا", "أمريكا الجنوبية"], c: 1 },
+            { q: "من أسباب انخفاض معدل المواليد في أوروبا في الآونة الأخيرة:", a: ["الزواج المبكر", "تأخر سن الزواج", "قلة التعليم", "تشجيع الإنجاب"], c: 1 },
+            { q: "تعاني قارة أوروبا حالياً من مشكلة الزيادة الطبيعية ........", a: ["المرتفعة", "المتوسطة", "السالبة", "الثابتة"], c: 2 },
+            { q: "أدى ارتفاع مستوى الرعاية الطبية في أوروبا إلى زيادة نسبة:", a: ["الأطفال", "الشباب", "كبار السن", "المواليد"], c: 2 },
+            { q: "من الدول التي تتخذ سياسات لزيادة عدد المواليد لمواجهة نقص الأيدي العاملة:", a: ["الصين", "الهند", "فرنسا", "إندونيسيا"], c: 2 },
+            { q: "اتخذت دولة ........ سياسات حازمة قديماً للحد من الزيادة السكانية المرتفعة.", a: ["ألمانيا", "إيطاليا", "الصين", "اليابان"], c: 2 },
+            { q: "تؤدي زيادة السكان والتوسع العمراني إلى تدمير الموائل الطبيعية وتهديد:", a: ["التنوع البيولوجي", "التوقيت الزمني", "النشاط السياحي", "التراث الثقافي"], c: 0 },
+            { q: "يظهر الضغط على البنية التحتية بالمدن نتيجة تزايد تيارات:", a: ["الهجرة الخارجية", "الهجرة من الريف إلى المدن", "السياحة الوافدة", "البعثات العلمية"], c: 1 },
+            { q: "تندر الكثافة السكانية في قارة آسيا في منطقة:", a: ["اليابان", "شبه الجزيرة العربية (لجفافها)", "سهول نهر الجانج", "جزيرة جاوا"], c: 1 },
+            { q: "المواليد أقل من الوفيات (معدل سالب) هي ظاهرة يتوقع حدوثها عام 2025 في:", a: ["آسيا", "أفريقيا", "أوروبا", "أمريكا الشمالية"], c: 2 },
+            { q: "يطلق اسم سن التقاعد على العمر الذي لا يقل غالباً عن:", a: ["40 عاماً", "50 عاماً", "60 عاماً", "70 عاماً"], c: 2 },
+            { q: "من مقترحات دول أوروبا لتعويض نقص العمالة:", a: ["منع الهجرة تماماً", "تشجيع الهجرة القانونية إليها", "تقليل الأجور", "غلق المصانع"], c: 1 },
+            { q: "المناطق الوعرة مثل جبال ........ يقل فيها التركز السكاني في آسيا.", a: ["الألب", "الأطلس", "الهمالايا", "البحر الأحمر"], c: 2 },
+            { q: "تعتبر دولة اليابان من المناطق ذات الكثافة السكانية:", a: ["المنخفضة", "المرتفعة", "النادرة", "المتوسطة"], c: 1 },
+            { q: "أي من الدول التالية تقع في قارة آسيا وتعاني من نمو سكاني مرتفع؟", a: ["ألمانيا", "فرنسا", "إندونيسيا", "إيطاليا"], c: 2 },
+            { q: "من النتائج المترتبة على الهجرة غير الشرعية تعرض المهاجرين لـ:", a: ["التكريم الدولي", "انتهاكات شبكات الإتجار بالبشر", "زيادة الدخل فوراً", "الحصول على الجنسية بسهولة"], c: 1 },
+            { q: "تزداد الحاجة للتوسع العمراني على حساب الأراضي الزراعية نتيجة:", a: ["قلة السكان", "النمو السكاني المتزايد", "توفر المياه", "استصلاح الصحراء"], c: 1 },
+            { q: "تعاني دول مثل فرنسا وإيطاليا من مشكلة:", a: ["نقص كبار السن", "تقلص عدد السكان في سن العمل", "ضيق المساحة", "انعدام الموارد"], c: 1 },
+            { q: "السهول الفيضية لنهر الجانج تقع في دولة:", a: ["الصين", "الهند", "روسيا", "اليابان"], c: 1 },
+            { q: "تشجع قارة أوروبا مواطنيها على الإنجاب من خلال:", a: ["فرض ضرائب إضافية", "منح الأمهات إجازات طويلة لرعاية الأطفال", "تقليل الأجور", "منع التعليم"], c: 1 },
+            { q: "تظهر العشوائيات كأحد آثار مشكلة:", a: ["انخفاض المواليد", "الهجرة من الريف إلى المدن", "الهجرة الشرعية", "جفاف الأنهار"], c: 1 },
+            { q: "يقل التركز السكاني في وسط وغرب أوروبا مقارنة بـ:", a: ["المناطق القطبية", "المناطق الصناعية الكبرى", "المناطق الجبلية الوعرة", "الصحاري"], c: 1 },
+            { q: "يهدف تحقيق التوازن بين النمو السكاني والموارد إلى تحقيق التنمية:", a: ["المؤقتة", "المستدامة", "البدائية", "التجارية"], c: 1 },
+            { q: "أي القارات التالية تضاعف عدد سكانها بنسبة 250% تقريباً بين عامي 1950 و2025؟", a: ["أوروبا", "آسيا", "أستراليا", "القطبية الجنوبية"], c: 1 },
+            { q: "ترجع زيادة الطلب على الطاقة الأحفورية في المدن المكتظة إلى:", a: ["النشاط الزراعي", "الإنتاج الصناعي الكثيف", "قلة السيارات", "الحفاظ على البيئة"], c: 1 },
+            { q: "تعتبر سهول سيبيريا منطقة نادرة السكان بسبب:", a: ["شدة البرودة وتجمد التربة", "كثرة الجبال", "انعدام الأمطار", "النشاط الصناعي"], c: 0 },
+            { q: "من مجهودات الدول لمواجهة النمو السكاني المرتفع:", a: ["تشجيع الزواج المبكر", "بناء الوحدات الصحية ومراكز تنظيم الأسرة", "إهمال التعليم", "زيادة استهلاك الموارد"], c: 1 },
+            { q: "يمر النمو السكاني في أوروبا حالياً بالمرحلة الرابعة التي تتسم بـ:", a: ["انفجار سكاني", "انخفاض معدل المواليد والوفيات بشكل كبير", "زيادة طبيعية مرتفعة جداً", "ثبات عدد الأطفال"], c: 1 },
+            { q: "يتأثر الأمن المائي سلباً في دول مثل الهند نتيجة:", a: ["وفرة الأمطار", "النمو السكاني المتزايد واستنزاف المياه الجوفية", "قلة المصانع", "اتباع طرق ري حديثة"], c: 1 }
+        ];
+
+        let index = 0, score = 0, picked = null;
+        window.onload = () => { render(); };
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 transition-all';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="font-bold text-sm md:text-base">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#8b5cf6'});
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) render(); else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            document.getElementById('
