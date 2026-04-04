@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار مصر والدول المستقلة| مراجعة مستر إيهاب أشرف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.15);
+            border-radius: 2.5rem;
+        }
+        .option-box {
+            background: white; border: 2px solid #e2e8f0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-align: right; cursor: pointer;
+        }
+        .option-box:hover { border-color: #10b981; transform: translateY(-3px); }
+        .option-box.selected {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: transparent; color: white;
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4);
+        }
+        .opt-prefix {
+            background: #f1f5f9; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; font-weight: 900; color: #10b981;
+        }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow {
+            height: 100%; background: linear-gradient(90deg, #10b981, #fbbf24);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); border-radius: 100px;
+            transition: width 0.6s ease;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.4);
+        }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-[2.5rem] p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد إنهاء المراجعة؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade6.html" class="flex-1 py-4 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-4 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-emerald-100 font-900 text-emerald-600">
+                <span id="q-count">1</span> / 30
+            </div>
+            <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-500"><i class="fas fa-shipping-fast"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">جاري التحميل...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-[2rem] text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-emerald-100">
+            <div id="result-emoji" class="text-7xl mb-6">🎯</div>
+            <h1 id="result-title" class="text-4xl font-900 text-slate-800 mb-2">أداء مذهل!</h1>
+            <p class="text-slate-500 font-bold mb-8">التجارة والنقل - الصف السادس</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-emerald-600"></div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="py-5 bg-emerald-100 text-emerald-700 rounded-3xl font-bold hover:bg-emerald-200 transition">إعادة</button>
+                <a href="grade6.html" class="py-5 bg-slate-800 text-white rounded-3xl font-bold flex items-center justify-center hover:bg-slate-700 transition">الدروس</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+    { q: "طلب عمرو بن العاص فتح مصر من الخليفة:", a: ["أبي بكر الصديق", "عمر بن الخطاب", "عثمان بن عفان", "علي بن أبي طالب"], c: 1 },
+    { q: "كانت عاصمة مصر وقت الفتح العربي الإسلامي مدينة:", a: ["القاهرة", "الفسطاط", "الإسكندرية", "العسكر"], c: 2 },
+    { q: "أول ولاة مصر بعد الفتح الإسلامي هو:", a: ["أحمد بن طولون", "عمرو بن العاص", "محمد بن طغج", "صلاح الدين الأيوبي"], c: 1 },
+    { q: "مؤسس الدولة الطولونية في مصر هو:", a: ["خمارويه", "أحمد بن طولون", "محمد بن طغج", "المعز لدين الله"], c: 1 },
+    { q: "اتخذ محمد بن طغج الإخشيد مدينة ........ عاصمة لدولته:", a: ["القطائع", "الفسطاط", "العسكر", "القاهرة"], c: 2 },
+    { q: "تأسست الدولة الفاطمية في البداية في بلاد:", a: ["الحجاز", "المغرب (تونس)", "الشام", "العراق"], c: 1 },
+    { q: "القائد الذي نجح في بناء مدينة القاهرة والجامع الأزهر هو:", a: ["صلاح الدين", "جوهر الصقلي", "سيف الدين قطز", "الظاهر بيبرس"], c: 1 },
+    { q: "أصبحت مصر ولاية عثمانية بعد هزيمة المماليك عام 1517م على يد:", a: ["الصليبيين", "المغول", "العثمانيين", "الفاطميين"], c: 2 },
+    { q: "لقب 'الإخشيد' يعني:", a: ["السلطان العظيم", "ملك الملوك", "القائد الشجاع", "خادم الحرمين"], c: 1 },
+    { q: "بنى عمرو بن العاص مدينة ........ لتكون أول عاصمة إسلامية في أفريقيا:", a: ["القاهرة", "العسكر", "الفسطاط", "القطائع"], c: 2 },
+    { q: "من أسباب رغبة عمرو بن العاص في فتح مصر تأمين حدود الدولة الإسلامية من جهة:", a: ["الشمال", "الشرق", "الغرب", "الجنوب"], c: 2 },
+    { q: "ظهرت الدول المستقلة في مصر خلال العصر:", a: ["الراشدي", "الأموي", "العباسي الأول", "العباسي الثاني"], c: 3 },
+    { q: "تشابهت الدولة الطولونية والدولة الإخشيدية في أنهما:", a: ["دولتان فاطميتان", "استقلتا عن الخلافة العباسية", "حاربتا المغول", "تأسستا في الإسكندرية"], c: 1 },
+    { q: "نجح المعز لدين الله الفاطمي في ضم بلاد الشام و........ إلى دولته:", a: ["الحجاز", "العراق", "اليمن", "الأندلس"], c: 0 },
+    { q: "تصدت الدولة الأيوبية في مصر لخطر:", a: ["الفرس", "الصليبيين", "الروم", "الفاطميين"], c: 1 },
+    { q: " 'الشدة المستنصرية' كانت أزمة اقتصادية حادة حدثت بسبب:", a: ["كثرة الحروب", "نقص مياه النيل", "سقوط القاهرة", "تمرد المماليك"], c: 1 },
+    { q: "استطاع صلاح الدين الأيوبي القضاء على الدولة:", a: ["الطولونية", "الإخشيدية", "الفاطمية", "المملوكية"], c: 2 },
+    { q: "المماليك هم مجموعة من الغلمان تم شراؤهم وتدريبهم على القتال، وأول سلاطينهم هو:", a: ["قطز", "بيبرس", "عز الدين أيبك", "توران شاه"], c: 2 },
+    { q: "من أهم أسباب ظهور الدول المستقلة في مصر:", a: ["قوة الخلفاء العباسيين", "موقع مصر القريب من بغداد", "ضعف الخلفاء العباسيين", "كثرة الثورات في تونس"], c: 2 },
+    { q: "جامع عمرو بن العاص في مصر يُعد أول جامع في:", a: ["العالم", "شبه الجزيرة العربية", "أفريقيا", "الشام"], c: 2 },
+    { q: "أي من المدن التالية بُنيت لتكون عاصمة لمصر في عهد الدولة الطولونية؟", a: ["الفسطاط", "العسكر", "القطائع", "القاهرة"], c: 2 },
+    { q: "امتد نفوذ الخليفة ........ إلى مدينة بغداد عاصمة الخلافة العباسية:", a: ["المعز لدين الله", "المستنصر بالله", "أحمد بن طولون", "صلاح الدين"], c: 1 },
+    { q: "العامل المشترك بين جوهر الصقلي وعمرو بن العاص هو:", a: ["محاربة الصليبيين", "بناء عواصم جديدة لمصر", "القضاء على المماليك", "الانفصال عن الخلافة"], c: 1 },
+    { q: "سقطت الدولة الإخشيدية ودخل الفاطميون مصر بعد وفاة:", a: ["محمد بن طغج", "كافور الإخشيدي", "أحمد بن طولون", "توران شاه"], c: 1 },
+    { q: "استمرت دولة المماليك في حكم مصر حتى نجح العثمانيون في الاستيلاء عليها في عام 1517م في معركة:", a: ["حطين", "عين جالوت", "الريدانية", "القادسية"], c: 2 },
+    { q: "نجح القائد ........ في تصفية الوجود الصليبي في الشرق:", a: ["صلاح الدين", "الأشرف خليل بن قلاوون", "الظاهر بيبرس", "عز الدين أيبك"], c: 2 },
+    { q: "يُعد بناء الجامع الأزهر نقطة تحول في تاريخ مصر الفاطمية لأنه أصبح:", a: ["حصناً عسكرياً", "مركزاً لنشر العلم والدين", "مقراً للحكم", "سوقاً تجارياً"], c: 1 },
+    { q: "يرجع استقلال أحمد بن طولون بمصر إلى عدة عوامل، أهمها:", a: ["رغبة المصريين في الانفصال", "ضعف مركز الخلافة العباسية", "قربه من بلاد المغرب", "تحالفه مع الصليبيين"], c: 1 },
+    { q: "كان الهدف الأساسي من بناء مدينة الفسطاط هو:", a: ["منافسة مدينة الإسكندرية", "إيجاد مقر دائم للجيش والحكم", "نشر اللغة العربية", "حماية حدود مصر الجنوبية"], c: 1 },
+    { q: "تدرجت عواصم مصر الإسلامية بالترتيب الزمني كالتالي:", a: ["القاهرة - القطائع - العسكر", "الفسطاط - العسكر - القطائع - القاهرة", "العسكر - الفسطاط - القاهرة", "القطائع - القاهرة - الفسطاط"], c: 1 }
+];
+
+        
+        let index = 0, score = 0, picked = null;
+
+        window.onload = () => { render(); };
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return Swal.fire({text:'اختر إجابة للمتابعة!', icon:'warning', confirmButtonColor: '#10b981'});
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) render(); else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            
+            if (pct >= 90) {
+                document.getElementById('result-title').innerText = "تاجر شاطر!";
+                document.getElementById('result-msg').innerText = "ممتاز، لديك معلومات قوية جداً عن اقتصادنا العربي.";
+            } else if (pct >= 50) {
+                document.getElementById('result-title').innerText = "أحسنت!";
+                document.getElementById('result-msg').innerText = "إجابات صحيحة، أنت في طريقك للتميز.";
+            } else {
+                document.getElementById('result-title').innerText = "تحتاج لمراجعة";
+                document.getElementById('result-msg').innerText = "أعد قراءة الدرس لتتعرف أكثر على طرق التجارة.";
+                document.getElementById('result-emoji').innerText = "📦";
+            }
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
+    </script>
+</body>
+</html>
