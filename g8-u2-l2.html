@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة خصائص سكان قارتي آسيا وأوروبا| منصة أطلس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); min-height: 100vh; user-select: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.1); border-radius: 2rem; }
+        .option-box { background: white; border: 2px solid #e2e8f0; transition: all 0.3s ease; text-align: right; cursor: pointer; position: relative; overflow: hidden; }
+        .option-box:hover { border-color: #8b5cf6; transform: scale(1.02); }
+        .option-box.selected { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); border-color: transparent; color: white; }
+        .opt-prefix { background: #f1f5f9; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; color: #64748b; flex-shrink: 0; }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow { height: 100%; background: linear-gradient(90deg, #a855f7, #6366f1); box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); border-radius: 100px; transition: width 0.6s ease; }
+        .btn-confirm { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); box-shadow: 0 15px 30px -10px rgba(109, 40, 217, 0.4); }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade8.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center text-sm">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-purple-600">
+                <span id="q-count">1</span> / 30
+            </div>
+            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-map-marked-alt"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-xl md:text-2xl font-900 text-slate-800 leading-snug text-center mb-12 min-h-[3rem]">جارٍ تحميل السؤال...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-purple-100">
+            <div class="text-7xl mb-6">🏆</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p class="text-slate-500 font-bold mb-8">الدول المستقلة: الطولونية والاخشيدية والفاطمية</p>
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#a855f7" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-purple-600"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg">إعادة</button>
+            <a href="grade8.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+    { q: "من هو مؤسس الدولة الطولونية في مصر؟", a: ["خمارويه", "أحمد بن طولون", "محمد بن طغج الإخشيد", "جوهر الصقلي"], c: 1 },
+    { q: "ما هي العاصمة التي أنشأها أحمد بن طولون؟", a: ["القاهرة", "العسكر", "القطائع", "الفسطاط"], c: 2 },
+    { q: "لقب 'الإخشيد' الذي منحه الخليفة العباسي لمحمد بن طغج يعني:", a: ["القائد الشجاع", "ملك الملوك", "الوالي المخلص", "ناصر الدين"], c: 1 },
+    { q: "نجح القائد جوهر الصقلي في بناء مدينة لتكون عاصمة للفاطميين هي مدينة:", a: ["الإسكندرية", "القاهرة", "العسكر", "حلوان"], c: 1 },
+    { q: "تولى حكم مصر بعد وفاة أحمد بن طولون ابنه:", a: ["كافور", "خمارويه", "أنوجور", "المعز لدين الله"], c: 1 },
+    { q: "بم تفسر بناء أحمد بن طولون لـ 'البيمارستان'؟", a: ["لتكون مقراً للحكم", "لعلاج المرضى مجاناً", "لتخزين الغلال", "لتكون مدرسة عسكرية"], c: 1 },
+    { q: "أي من هؤلاء الحكام كان وصياً على 'أبي القاسم أنوجور' لصغر سنه؟", a: ["أحمد بن طولون", "محمد بن طغج", "كافور الإخشيدي", "جوهر الصقلي"], c: 2 },
+    { q: "أصبحت مصر مركزاً للدولة الفاطمية منذ وصول الخليفة:", a: ["الحاكم بأمر الله", "المعز لدين الله", "المستنصر بالله", "العزيز بالله"], c: 1 },
+    { q: "أنشأ الفاطميون 'الجامع الأزهر' بهدف:", a: ["جعله حصناً عسكرياً", "نشر العلم والثقافة الإسلامية", "ليكون مقبرة للخلفاء", "ليكون مركزاً للتجارة الدولية"], c: 1 },
+    { q: "استطاع صلاح الدين الأيوبي إنهاء الخلافة الفاطمية في مصر بعد صراع مع:", a: ["الصليبيين والروم", "نور الدين محمود", "شاور وضرغام", "المماليك"], c: 2 },
+    { q: "امتدت الدولة الطولونية شرقاً حتى بلاد:", a: ["النوبة", "برقة", "الحجاز والشام", "الأندلس"], c: 2 },
+    { q: "بم تفسر ازدهار التجارة في عهد الدولة الطولونية؟", a: ["بسبب الحروب الخارجية", "بسبب موقع مصر واستقرار البلاد", "بسبب إلغاء جميع المهن الأخرى", "بسبب اكتشاف طريق رأس الرجاء الصالح"], c: 1 },
+    { q: "ديوان 'الإنشاء' في الدولة الطولونية يشبه حالياً وزارة:", a: ["الدفاع", "المالية", "الخارجية", "الصحة"], c: 2 },
+    { q: "ما النتيجة المترتبة على مقتل 'خمارويه' في بلاد الشام؟", a: ["قوة وازدهار الدولة الطولونية", "انتشار الفوضى وتدخل الجنود في شئون الدولة", "استقلال مصر نهائياً عن الخلافة العباسية", "بناء مدينة القطائع"], c: 1 },
+    { q: "نجح محمد بن طغج الإخشيد في صد خطر 'الفاطميين' عن مصر عندما كان قائداً في الجيش:", a: ["الطولوني", "العباسي", "الأيوبي", "المملوكي"], c: 1 },
+    { q: "أي من المنشآت التالية أنشئت بهدف تزويد مدينة القطائع بالمياه؟", a: ["جامع أحمد بن طولون", "البيمارستان", "قناطر أحمد بن طولون", "مسجد الفقاعي"], c: 2 },
+    { q: "اتخذ محمد بن طغج الإخشيد مدينة ........ عاصمة لدولته.", a: ["الفسطاط", "العسكر", "القطائع", "القاهرة"], c: 1 },
+    { q: "بم تفسر اهتمام الفاطميين بضم مصر لدولتهم؟", a: ["لموقعها الجغرافي وقربها من الحجاز والشام", "لرغبتهم في نقل العاصمة إلى الإسكندرية", "لعدم وجود موارد في بلاد المغرب", "لتحالفهم مع العباسيين ضد الصليبيين"], c: 0 },
+    { q: "من مظاهر اهتمام كافور الإخشيدي بالعمارة تشييد:", a: ["الجامع الأزهر", "مسجد الفقاعي في المقطم", "البيمارستان", "مدينة القطائع"], c: 1 },
+    { q: "مهد الخليفة المعز لدين الله الطريق لفتح مصر من خلال:", a: ["حفر الآبار وإقامة الاستراحات من إفريقية إلى مصر", "بناء جدار عازل على حدود مصر", "إرسال الرسل لعقد صلح مع الإخشيديين", "تجفيف مياه البحر المتوسط"], c: 0 },
+    { q: "استدل على عدل أحمد بن طولون من خلال موقفه عند حريق:", a: ["كنيسة مريم بدمشق", "حصن بابليون", "الجامع الأزهر", "قصر الوالي بالعسكر"], c: 0 },
+    { q: "أي الدواوين التالية كان مسئولاً عن الكتب والرسائل الصادرة من الدولة؟", a: ["ديوان الجيش", "ديوان الإنشاء", "ديوان الخراج", "ديوان المظالم"], c: 1 },
+    { q: "ترجع تسمية 'الدولة الفاطمية' بهذا الاسم نسبة إلى:", a: ["السيدة عائشة", "السيدة فاطمة الزهراء", "السيدة خديجة", "السيدة زينب"], c: 1 },
+    { q: "بم تفسر زراعة الفاطميين لأشجار الغابات؟", a: ["لتزيين شوارع القاهرة", "للحصول على الأخشاب لبناء الأسطول", "لتصدير الأخشاب إلى أوروبا", "لتوفير الظل للمسافرين"], c: 1 },
+    { q: "كانت مدينة ........ هي المركز الرئيسي للتجارة الدولية في عصر الفاطميين.", a: ["السويس", "دمياط", "الإسكندرية", "أسوان"], c: 2 },
+    { q: " 'سك دنانير تحمل اسم الحاكم واسم الخليفة العباسي' كان من مظاهر ازدهار الدولة:", a: ["الطولونية", "الإخشيدية", "الفاطمية", "الأيوبية"], c: 1 },
+    { q: "ما النتيجة المترتبة على اهتمام الفاطميين بالعلم والعلماء؟", a: ["أصبحت مصر جامعة علمية وفكرية كبرى", "تم إغلاق جميع المدارس التقليدية", "هاجر العلماء من مصر إلى الخارج", "اقتصر العلم على العلوم العسكرية فقط"], c: 0 },
+    { q: "كان 'كسوة الكعبة' في العصر الفاطمي تُنسج في مدينة:", a: ["مكة", "القاهرة", "الإسكندرية", "دمشق"], c: 1 },
+    { q: "أي مما يلي يعد من مظاهر احتفال الفاطميين بالأعياد والمناسبات؟", a: ["تزيين الشوارع وتوزيع الحلوى", "منع المراكب التجارية من الحركة", "إغلاق المساجد والمدارس", "إلغاء المواكب الرسمية"], c: 0 },
+    { q: "سقطت الدولة الإخشيدية بعد وفاة 'كافور' بسبب:", a: ["هجمات الصليبيين", "الفوضى ووصول جيش جوهر الصقلي", "ثورة المصريين ضد الضرائب", "زلزال مدمر ضرب العاصمة"], c: 1 }
+];
+
+
+
+        let index = 0, score = 0, picked = null;
+
+        // دالة البدء
+        function initQuiz() {
+            if (questions && questions.length > 0) {
+                render();
+            }
+        }
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            
+            // تحديث نص السؤال والعداد
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-5 md:p-6 rounded-2xl flex items-center gap-4 transition-all';
+                btn.innerHTML = `
+                    <div class="opt-prefix">${String.fromCharCode(65 + i)}</div>
+                    <span class="font-bold text-sm md:text-base text-slate-700">${opt}</span>
+                `;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            
+            // تحديث شريط التقدم
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) {
+                Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#8b5cf6'});
+                return;
+            }
+            if (picked === questions[index].c) score++;
+            
+            index++;
+            if (index < questions.length) {
+                render();
+            } else {
+                finish();
+            }
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            document.getElementById('result-msg').innerText = pct >= 50 ? "أداء رائع يا بطل أطلس!" : "راجع الدرس وحاول مرة أخرى!";
+        }
+
+        function toggleExitModal(s) { 
+            document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; 
+        }
+
+        // تشغيل الكود فور تحميل الصفحة
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
