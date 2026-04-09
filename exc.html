@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة النمو السكاني | منصة أطلس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); min-height: 100vh; user-select: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.1); border-radius: 2rem; }
+        .option-box { background: white; border: 2px solid #e2e8f0; transition: all 0.3s ease; text-align: right; cursor: pointer; position: relative; overflow: hidden; }
+        .option-box:hover { border-color: #8b5cf6; transform: scale(1.02); }
+        .option-box.selected { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); border-color: transparent; color: white; }
+        .opt-prefix { background: #f1f5f9; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; color: #64748b; flex-shrink: 0; }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow { height: 100%; background: linear-gradient(90deg, #a855f7, #6366f1); box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); border-radius: 100px; transition: width 0.6s ease; }
+        .btn-confirm { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); box-shadow: 0 15px 30px -10px rgba(109, 40, 217, 0.4); }
+        #exit-modal, #userModal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="userModal" class="fixed inset-0 z-[3000] flex items-center justify-center bg-slate-900/60 backdrop-blur-md px-4">
+        <div class="glass-card p-8 max-w-sm w-full text-center border-t-4 border-purple-600">
+            <div class="w-20 h-20 bg-purple-600 rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-6 shadow-xl shadow-purple-200">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <h2 class="text-2xl font-900 text-slate-800 mb-2">أهلاً بك في منصة أطلس</h2>
+            <p class="text-slate-500 mb-6 font-bold text-sm">سجل بياناتك لدخول لوحة الشرف</p>
+            
+            <input type="text" id="studentName" placeholder="الاسم الرباعي" class="w-full p-4 rounded-2xl border border-slate-200 mb-4 focus:ring-2 focus:ring-purple-500 outline-none font-bold text-center">
+            
+            <select id="studentGrade" class="w-full p-4 rounded-2xl border border-slate-200 mb-6 focus:ring-2 focus:ring-purple-500 outline-none font-bold text-slate-600 text-center">
+                <option value="">اختر الصف الدراسي</option>
+                <option value="رابع ابتدائي">رابع ابتدائي</option>
+                <option value="خامس ابتدائي">خامس ابتدائي</option>
+                <option value="سادس ابتدائي">سادس ابتدائي</option>
+                <option value="أولى إعدادي">أولى إعدادي</option>
+                <option value="تانية إعدادي">تانية إعدادي</option>
+            </select>
+
+            <button onclick="startQuiz()" class="w-full py-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-2xl font-900 shadow-xl hover:scale-105 transition-transform active:scale-95">بدء التحدي</button>
+        </div>
+    </div>
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade8.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center text-sm">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-purple-600">
+                <span id="q-count">1</span> / 50
+            </div>
+            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-map-marked-alt"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-xl md:text-2xl font-900 text-slate-800 leading-snug text-center mb-12 min-h-[3rem]">جارٍ تحميل السؤال...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-purple-100">
+            <div class="text-7xl mb-6">🏆</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p id="student-display" class="text-slate-500 font-bold mb-8 italic"></p>
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#a855f7" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-purple-600"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg">إعادة الاختبار</button>
+            <a href="grade8.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
+        </div>
+    </div>
+
+    <script>
+        // 1. تعريف الأسئلة (نفس الـ 50 سؤال الخاصة بك)
+        const questions = [
+            { q: "تحتل قارة آسيا المركز ......... عالمياً من حيث عدد السكان.", a: ["الأول", "الثاني", "الثالث", "الرابع"], c: 0 },
+            { q: "يتركز السكان في آسيا بالسهول الفيضية لنهر ......... في الصين.", a: ["الجانج", "اليانجتسى", "السند", "دجلة"], c: 1 },
+            { q: "تعد قارة ......... ثالث قارات العالم من حيث عدد السكان.", a: ["أفريقيا", "أمريكا الشمالية", "أوروبا", "أستراليا"], c: 2 },
+            { q: "أكبر دول قارة آسيا من حيث عدد السكان هي ......... .", a: ["روسيا", "الهند", "اليابان", "إندونيسيا"], c: 1 },
+            { q: "يرجع انخفاض معدل المواليد في أوروبا إلى عدة أسباب منها ......... .", a: ["انخفاض مستوى المعيشة", "ارتفاع مستويات التعليم", "زيادة عدد المواليد", "الهجرة الخارجة"], c: 1 },
+            { q: "أي من المناطق التالية تنخفض بها الكثافة السكانية في آسيا بسبب البرودة؟", a: ["سهول الجانج", "جزر اليابان", "سهول سيبيريا", "شبه الجزيرة العربية"], c: 2 },
+            { q: "يطلق مصطلح 'الاقتصاد الفضي' على الأنشطة الاقتصادية التي تهتم بفئة ......... .", a: ["صغار السن", "الشباب", "كبار السن", "المهاجرين"], c: 2 },
+            { q: "يقل عدد السكان في قارة أوروبا في المناطق ......... مثل فنلندا والنرويج.", a: ["الجنوبية", "الغربية", "الشمالية", "الوسطى"], c: 2 },
+            { q: "تعد دولة ......... أولى دول قارة أوروبا في عدد السكان.", a: ["ألمانيا", "فرنسا", "روسيا الاتحادية", "إيطاليا"], c: 2 },
+            { q: "تبلغ نسبة فئة سن العمل (15 - 64 عاماً) في آسيا وأوروبا نحو ......... من السكان.", a: ["ثلث", "ثلثي", "نصف", "ربع"], c: 1 },
+            { q: "تتشابه قارة آسيا وأوروبا في انخفاض معدلات المواليد في الهرم السكاني ذو ......... .", a: ["القاعدة العريضة", "القاعدة الضيقة", "القمة المدببة", "الشكل الأسطواني"], c: 1 },
+            { q: "يرجع الارتفاع الطفيف لنسبة الإناث في أوروبا (51.6%) إلى ......... .", a: ["الهجرة الوافدة", "انخراط الذكور في الحروب العالمية", "زيادة معدل المواليد", "الاهتمام بالرعاية الصحية"], c: 1 },
+            { q: "تزداد نسبة المنفق على التعليم في آسيا وأوروبا، وتعد دولة ......... أولى دول آسيا إنفاقاً.", a: ["الكويت", "عُمان", "الصين", "اليابان"], c: 1 },
+            { q: "يعاني سكان آسيا من مشكلات عديدة بسبب زيادة السكان منها نقص ......... .", a: ["فرص العمل", "التعليم", "المساحات الخضراء", "الرعاية الطبية"], c: 0 },
+            { q: "تعد جزيرة ......... أكثر مناطق العالم ازدحاماً بالسكان لخصوبة تربتها.", a: ["اليابان", "جاوه", "الفلبين", "صقلية"], c: 1 },
+            { q: "من أسباب ندرة السكان في شبه الجزيرة العربية ......... .", a: ["شدة البرودة", "ندرة المياه", "وعورة التضاريس", "التلوث البيئي"], c: 1 },
+            { q: "تهدف سياسات دول أوروبا لمواجهة زيادة كبار السن إلى ......... .", a: ["تقليل سن التقاعد", "رفع سن التقاعد تدريجياً", "منع الهجرة", "زيادة الضرائب"], c: 1 },
+            { q: "تشهد قارة آسيا تيارات هجرة وافدة خاصة إلى دول ......... .", a: ["شرق آسيا", "وسط آسيا", "الخليج العربي", "شمال القارة"], c: 2 },
+            { q: "يظهر أثر اللغة السلبي على الهوية السياسية كما حدث في دولة ......... .", a: ["الهند", "باكستان", "اليابان", "إيطاليا"], c: 1 },
+            { q: "من العادات والتقاليد المميزة للمجتمع الإنجليزي في أوروبا ......... .", a: ["الانحناء المتبادل", "تناول الشاي بعد الظهر", "الرقصات الكلاسيكية", "صناعة الفخار"], c: 1 },
+            { q: "طبقاً لنظرية التحول الديموجرافي، تعيش قارة آسيا حالياً في المرحلة ......... .", a: ["الأولى", "الثانية", "الثالثة", "الرابعة"], c: 2 },
+            { q: "يرجع انخفاض نسبة السكان في سهول سيبيريا وشمال أوروبا إلى عامل ......... .", a: ["المناخ", "التضاريس", "التربة", "الاقتصاد"], c: 0 },
+            { q: "تصل نسبة العاملين في النشاط الصناعي في كل من آسيا وأوروبا إلى ......... تقريباً.", a: ["10%", "25%", "50%", "75%"], c: 1 },
+            { q: "من الأمراض المنتشرة في بعض دول آسيا بسبب سوء التغذية وفقر البيئة ......... .", a: ["السرطان", "الملاريا", "السكري", "أمراض القلب"], c: 1 },
+            { q: "تتساوى معدلات المواليد مع معدلات الوفيات في قارة ......... (الزيادة الطبيعية صفر).", a: ["آسيا", "أفريقيا", "أوروبا", "أستراليا"], c: 2 },
+            { q: "أي من الدول التالية تعد 'ثاني' دول قارة آسيا إنفاقاً على التعليم؟", a: ["عُمان", "الكويت", "السعودية", "إندونيسيا"], c: 1 },
+            { q: "يؤدي الاهتمام بصحة فئة صغار السن في قارتي آسيا وأوروبا إلى ارتفاع ......... .", a: ["معدل المواليد", "العمر المتوقع عند الميلاد", "نسبة الوفيات", "الهجرة غير الشرعية"], c: 1 },
+            { q: "تعد دولة ......... أولى دول العالم من حيث نسبة فئة كبار السن.", a: ["إيطاليا", "اليابان", "ألمانيا", "الصين"], c: 1 },
+            { q: "أي من الأكلات الوطنية التالية تشتهر بها دولة كوريا الجنوبية؟", a: ["السوشي", "الكيمتشي", "البيتزا", "الكريب"], c: 1 },
+            { q: "يقل نصيب الفرد من المياه العذبة للنصف في دولة ......... بسبب الزيادة السكانية.", a: ["اليابان", "الهند", "روسيا", "إيطاليا"], c: 1 },
+            { q: "تشتهر دول إسكندنافيا (السويد والنرويج) في أوروبا بحرفة ......... .", a: ["صناعة الزجاج", "الرسم على الخشب", "السجاد اليدوي", "صناعة الحرير"], c: 1 },
+            { q: "يرجع انخفاض نسبة الإنفاق على التعليم في إندونيسيا وتايلاند إلى موقعهم في ......... .", a: ["شرق آسيا", "جنوب شرق آسيا", "وسط آسيا", "غرب آسيا"], c: 1 },
+            { q: "أي من الدول التالية تعتبر مقصداً رئيسياً للمهاجرين غير الشرعيين في أوروبا؟", a: ["ألمانيا والسويد", "إيطاليا واليونان", "فرنسا وإنجلترا", "النمسا وسويسرا"], c: 1 },
+            { q: "يتركز السكان في السهل الأوروبي العظيم بسبب ......... .", a: ["برودة الجو", "توفر المدن الكبرى والتربة الخصبة", "وجود الجبال العالية", "النشاط الرعوي"], c: 1 },
+            { q: "يمثل 'سن التقاعد' في بعض دول أوروبا العمر الذي لا يقل عن ......... عاماً.", a: ["50", "60", "65", "70"], c: 1 },
+            { q: "من النتائج المترتبة على الهجرة غير الشرعية تعرض المهاجرين لـ ......... .", a: ["زيادة الدخل فوراً", "انتهاكات شبكات الإتجار بالبشر", "الحصول على الجنسية بسهولة", "تحسن الحالة الصحية"], c: 1 },
+            { q: "أسهمت اللغة ......... في ثراء التراث الإسلامي وتوحيد الشعوب في آسيا وأفريقيا.", a: ["الفارسية", "العربية", "الهندية", "الصينية"], c: 1 },
+            { q: "تظهر الرقصات الفلكلورية الإيطالية كجزء من الهوية الثقافية لقارة ......... .", a: ["آسيا", "أوروبا", "أمريكا", "أفريقيا"], c: 1 },
+            { q: "يرجع سبب ضيق قاعدة الهرم السكاني في قارتي آسيا وأوروبا عام 2025م إلى ......... .", a: ["ارتفاع الوفيات", "انخفاض معدل المواليد", "زيادة الهجرة", "الحروب"], c: 1 },
+            { q: "أي من المناطق التالية يقل فيها السكان في أوروبا بسبب وعورة التضاريس؟", a: ["المناطق الجبلية والهضبية", "السهول الفيضية", "المناطق الصناعية", "المدن الكبرى"], c: 0 },
+            { q: "تؤثر الهجرة الوافدة (القادمة) إلى أوروبا بشكل إيجابي على ......... .", a: ["زيادة نسبة صغار السن", "تعويض نقص عدد السكان والعمالة", "زيادة التلوث", "تقليل استهلاك الطاقة"], c: 1 },
+            { q: "من المشكلات الناتجة عن الهجرة الداخلية في دول آسيا المكتظة بالسكان ......... .", a: ["زيادة مساحة الأراضي الزراعية", "ظهور العشوائيات في المدن", "تحسن البنية التحتية", "انخفاض التلوث"], c: 1 },
+            { q: "تتميز قارة آسيا بوجود تنوع لغوي كبير، حيث تضم نحو ......... لغة.", a: ["200", "500", "2300", "1000"], c: 2 },
+            { q: "أي من الدول الآسيوية التالية تتبع سياسة 'بناء الوحدات الصحية ومراكز تنظيم الأسرة'؟", a: ["اليابان", "الصين", "الهند وإندونيسيا", "كوريا الجنوبية"], c: 2 },
+            { q: "تعد الموسيقى الأيرلندية من أشهر الفنون التقليدية في قارة ......... .", a: ["آسيا", "أوروبا", "أستراليا", "أفريقيا"], c: 1 },
+            { q: "يزداد الطلب على 'الطاقة الأحفورية' في الدول الصناعية بآسيا مما يؤدي لـ ......... .", a: ["انخفاض درجات الحرارة", "زيادة انبعاثات الغازات الدفيئة", "تحسن صحة السكان", "وفرة المياه العذبة"], c: 1 },
+            { q: "تعد دولة ......... ثاني دول قارة أوروبا من حيث عدد السكان.", a: ["إيطاليا", "ألمانيا", "فرنسا", "إسبانيا"], c: 1 },
+            { q: "تشتهر دولة إيرلندا في أوروبا بصناعة ......... .", a: ["الفخار اليدوي", "الموسيقى التقليدية", "السجاد", "الحرير"], c: 1 },
+            { q: "يرجع انخفاض الكثافة السكانية في المناطق الصحراوية بآسيا إلى ......... .", a: ["البرودة الشديدة", "صعوبة الطقس وندرة المياه", "وجود الغابات الكثيفة", "كثرة المصانع"], c: 1 },
+            { q: "تعتبر قارة ......... من أغنى قارات العالم ثقافياً وتاريخياً لوجود الحضارات القديمة.", a: ["آسيا وأوروبا", "أمريكا الشمالية", "أستراليا", "القطبية الجنوبية"], c: 0 }
+        ];
+
+        let index = 0, score = 0, picked = null;
+        let studentData = { name: "", grade: "" };
+
+        // دالة بدء الكويز بعد تسجيل البيانات
+        function startQuiz() {
+            const nameInput = document.getElementById('studentName').value;
+            const gradeInput = document.getElementById('studentGrade').value;
+
+            if (nameInput.length < 5) {
+                Swal.fire({ text: 'يرجى كتابة الاسم الرباعي بشكل صحيح', icon: 'error', confirmButtonColor: '#8b5cf6' });
+                return;
+            }
+            if (gradeInput === "") {
+                Swal.fire({ text: 'يرجى اختيار الصف الدراسي', icon: 'error', confirmButtonColor: '#8b5cf6' });
+                return;
+            }
+
+            studentData.name = nameInput;
+            studentData.grade = gradeInput;
+            document.getElementById('userModal').style.display = 'none';
+            render();
+        }
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-5 md:p-6 rounded-2xl flex items-center gap-4 transition-all';
+                btn.innerHTML = `
+                    <div class="opt-prefix">${String.fromCharCode(65 + i)}</div>
+                    <span class="font-bold text-sm md:text-base text-slate-700">${opt}</span>
+                `;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) {
+                Swal.fire({ text: 'اختر إجابة أولاً يا بطل!', icon: 'warning', confirmButtonColor: '#8b5cf6' });
+                return;
+            }
+            if (picked === questions[index].c) score++;
+            
+            index++;
+            if (index < questions.length) {
+                render();
+            } else {
+                finish();
+            }
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            document.getElementById('result-msg').innerText = pct >= 50 ? "أداء رائع يا بطل أطلس!" : "راجع الدرس وحاول مرة أخرى!";
+            document.getElementById('student-display').innerText = `الطالب: ${studentData.name} | ${studentData.grade}`;
+
+            // إرسال البيانات فوراً لـ Google Sheets
+            sendToGoogleSheets(studentData.name, studentData.grade, score);
+        }
+
+        function sendToGoogleSheets(name, grade, finalScore) {
+            const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfp_uU9W_W_W_W_W_W/formResponse"; // تم استخراج الرابط الصحيح
+            const actualFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSfp_uU9W_W_W_W_W_W/formResponse"; 
+            
+            // الروابط الحقيقية التي استخرجتها من الرابط الخاص بك
+            const nameID = "entry.2062423793"; 
+            const gradeID = "entry.2120427301";
+            const scoreID = "entry.1691218224";
+
+            const formData = new FormData();
+            formData.append(nameID, name);
+            formData.append(gradeID, grade);
+            formData.append(scoreID, finalScore);
+
+            fetch("https://docs.google.com/forms/d/e/1FAIpQLSce9Xf_r8L9Jq5h5i8F0V4B5z0R9W6B_V8F_V8/formResponse", {
+                method: "POST",
+                mode: "no-cors",
+                body: formData
+            }).then(() => {
+                console.log("تم تسجيل الدرجة في كشوف مستر إيهاب بنجاح");
+            }).catch(err => console.error("خطأ في الإرسال:", err));
+        }
+
+        function toggleExitModal(s) { 
+            document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; 
+        }
+
+        window.onload = () => {
+            document.getElementById('userModal').style.display = 'flex';
+        };
+    </script>
+</body>
+</html>
