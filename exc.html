@@ -47,17 +47,7 @@
         </div>
     </div>
 
-    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
-            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
-            <div class="flex gap-3 mt-6">
-                <a href="grade8.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center text-sm">خروج</a>
-                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto" style="display:none;">
         <div class="flex justify-between items-center mb-10">
             <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100">
                 <i class="fas fa-sign-out-alt rotate-180"></i>
@@ -106,8 +96,17 @@
         </div>
     </div>
 
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade8.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center text-sm">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 1. تعريف الأسئلة (نفس الـ 50 سؤال الخاصة بك)
         const questions = [
             { q: "تحتل قارة آسيا المركز ......... عالمياً من حيث عدد السكان.", a: ["الأول", "الثاني", "الثالث", "الرابع"], c: 0 },
             { q: "يتركز السكان في آسيا بالسهول الفيضية لنهر ......... في الصين.", a: ["الجانج", "اليانجتسى", "السند", "دجلة"], c: 1 },
@@ -164,7 +163,6 @@
         let index = 0, score = 0, picked = null;
         let studentData = { name: "", grade: "" };
 
-        // دالة بدء الكويز بعد تسجيل البيانات
         function startQuiz() {
             const nameInput = document.getElementById('studentName').value;
             const gradeInput = document.getElementById('studentGrade').value;
@@ -181,6 +179,7 @@
             studentData.name = nameInput;
             studentData.grade = gradeInput;
             document.getElementById('userModal').style.display = 'none';
+            document.getElementById('quiz-wrapper').style.display = 'block';
             render();
         }
 
@@ -227,7 +226,7 @@
         }
 
         function finish() {
-            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('quiz-wrapper').style.display = 'none';
             document.getElementById('result-view').classList.remove('hidden');
             
             const pct = Math.round((score / questions.length) * 100);
@@ -236,30 +235,24 @@
             document.getElementById('result-msg').innerText = pct >= 50 ? "أداء رائع يا بطل أطلس!" : "راجع الدرس وحاول مرة أخرى!";
             document.getElementById('student-display').innerText = `الطالب: ${studentData.name} | ${studentData.grade}`;
 
-            // إرسال البيانات فوراً لـ Google Sheets
             sendToGoogleSheets(studentData.name, studentData.grade, score);
         }
 
         function sendToGoogleSheets(name, grade, finalScore) {
-            const formURL = "https://docs.google.com/forms/d/e/1FAIpQLSfp_uU9W_W_W_W_W_W/formResponse"; // تم استخراج الرابط الصحيح
-            const actualFormURL = "https://docs.google.com/forms/d/e/1FAIpQLSfp_uU9W_W_W_W_W_W/formResponse"; 
+            // تم تصحيح الرابط هنا ليكون formResponse
+            const formActionURL = "https://docs.google.com/forms/d/e/1FAIpQLSdnInXBfJCZc1f45Dp9lIEv_N3t2W4W2Mu99lQ1pFCugZlBRA/formResponse";
             
-            // الروابط الحقيقية التي استخرجتها من الرابط الخاص بك
-            const nameID = "entry.2062423793"; 
-            const gradeID = "entry.2120427301";
-            const scoreID = "entry.1691218224";
-
             const formData = new FormData();
-            formData.append(nameID, name);
-            formData.append(gradeID, grade);
-            formData.append(scoreID, finalScore);
+            formData.append("entry.2062423793", name);
+            formData.append("entry.2120427301", grade);
+            formData.append("entry.1691218224", finalScore);
 
-            fetch("https://docs.google.com/forms/d/e/1FAIpQLSce9Xf_r8L9Jq5h5i8F0V4B5z0R9W6B_V8F_V8/formResponse", {
+            fetch(formActionURL, {
                 method: "POST",
                 mode: "no-cors",
                 body: formData
             }).then(() => {
-                console.log("تم تسجيل الدرجة في كشوف مستر إيهاب بنجاح");
+                console.log("تم الإرسال بنجاح");
             }).catch(err => console.error("خطأ في الإرسال:", err));
         }
 
