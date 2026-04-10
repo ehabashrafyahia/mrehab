@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار خصائص قارات العالم | مراجعة ذاتية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            min-height: 100vh;
+            user-select: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(16, 185, 129, 0.1);
+            border-radius: 2rem;
+        }
+        .option-box {
+            background: white; border: 2px solid #e2e8f0;
+            transition: all 0.3s ease; text-align: right; cursor: pointer;
+        }
+        .option-box:hover { border-color: #10b981; transform: scale(1.02); }
+        .option-box.selected {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-color: transparent; color: white;
+        }
+        .opt-prefix {
+            background: #f1f5f9; width: 38px; height: 38px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; font-weight: 900; color: #64748b;
+        }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow {
+            height: 100%; background: linear-gradient(90deg, #10b981, #3b82f6);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); border-radius: 100px;
+            transition: width 0.6s ease;
+        }
+        .btn-confirm {
+            background: linear-gradient(135deg, #059669 0%, #064e3b 100%);
+            box-shadow: 0 15px 30px -10px rgba(5, 150, 105, 0.4);
+        }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade5.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-emerald-600">
+                <span id="q-count">1</span> / 30
+            </div>
+            <div class="p-3 bg-emerald-50 rounded-2xl text-emerald-500"><i class="fas fa-map-marked-alt"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 5%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">جاري التحميل...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 shadow-2xl bg-white mb-6 border-2 border-emerald-100">
+            <div class="text-7xl mb-6">🌍</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p class="text-slate-500 font-bold mb-8">سيناء كاملة لمصر</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-emerald-600"></div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="py-4 bg-emerald-100 text-emerald-700 rounded-2xl font-bold shadow-lg hover:bg-emerald-200 transition">إعادة الاختبار</button>
+                <a href="grade5.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center hover:bg-slate-700 transition">الرئيسية</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+    { q: "تعد شبه جزيرة سيناء منطقة غنية بالموارد الطبيعية ومنها:", a: ["الغابات الاستوائية", "الكثير من المعادن", "التربة الطينية السوداء فقط", "الثلوج الدائمة"], c: 1 },
+    { q: "تتميز سيناء بوجود موارد مائية تساعد على قيام:", a: ["الصناعات الثقيلة", "حرفة الزراعة", "استخراج الفحم", "صيد اللؤلؤ"], c: 1 },
+    { q: "تمتلك سيناء سواحل سياحية جميلة تطل على البحرين:", a: ["الأحمر والميت", "الأحمر والمتوسط", "المتوسط والأسود", "العربي والكاريبي"], c: 1 },
+    { q: "تمت عودة سيناء كاملة للدولة المصرية من خلال عدة محطات بدأت بـ:", a: ["الانتصار العظيم في حرب أكتوبر", "اتفاقية التجارة الحرة", "بناء المدن الجديدة", "حفر قناة سويس جديدة"], c: 0 },
+    { q: "عبرت القوات المسلحة قناة السويس ورفعت علم مصر على أرض سيناء في:", a: ["25 يناير 2011م", "6 أكتوبر 1973م", "23 يوليو 1952م", "30 يونيو 2013م"], c: 1 },
+    { q: "الحصن الدفاعي الذي دمره الجيش المصري وكان العدو يعتقد أنه لا يقهر هو:", a: ["خط ماجينو", "خط بارليف", "سور برلين", "قلعة صلاح الدين"], c: 1 },
+    { q: "من أهم أسباب نصر أكتوبر 1973م:", a: ["الإيمان بالله والتخطيط الجيد", "الصدفة والحظ", "إهمال تدريبات الجيش", "ضعف الصفوف الداخلية"], c: 0 },
+    { q: "قام الرئيس الراحل أنور السادات بزيارة تاريخية عام 1977م إلى:", a: ["واشنطن", "القدس", "لندن", "باريس"], c: 1 },
+    { q: "عُقدت مفاوضات 'كامب ديفيد' برعاية أمريكية في عام:", a: ["1973م", "1978م", "1982م", "1989م"], c: 1 },
+    { q: "المعاهدة التي نصت على انسحاب إسرائيل الكامل من سيناء هي:", a: ["معاهدة لندن", "اتفاقية السلام عام 1979م", "اتفاقية التجارة", "صلح الحديبية"], c: 1 },
+    { q: "تم رفع علم مصر فوق سيناء بعد استعادتها كاملة (ما عدا طابا) في:", a: ["6 أكتوبر 1973م", "25 إبريل 1982م", "1 يناير 2000م", "5 يونيو 1967م"], c: 1 },
+    { q: "استردت مصر 'طابا' عن طريق التحكيم الدولي في عام:", a: ["1982م", "1989م", "1973م", "1977م"], c: 1 },
+    { q: "تحتفل مصر بعيد 'تحرير سيناء' في يوم ________ من كل عام.", a: ["6 أكتوبر", "25 إبريل", "23 يوليو", "18 يونيو"], c: 1 },
+    { q: "من إجراءات الدولة المصرية لإعمار سيناء بعد استعادتها:", a: ["تركها دون سكان", "إقامة المشروعات الزراعية وبناء المدن", "إغلاق الطرق المؤدية إليها", "منع السياحة فيها"], c: 1 },
+    { q: "تهدف الدولة من خلال مشروعات الإعمار في سيناء إلى:", a: ["زيادة الفقر", "تأمين حدود مصر في سيناء", "إضعاف الاقتصاد", "عزل سيناء عن الدلتا"], c: 1 },
+    { q: "من مزايا تحقيق السلام في سيناء:", a: ["انعدام الأمن", "زيادة الاستثمار والسياحة", "توقف حركة التجارة", "هجرة السكان"], c: 1 },
+    { q: "أظهر الجنود المصريون في حرب أكتوبر شجاعة نادرة في مواجهة:", a: ["الطبيعة فقط", "العدو", "البحر", "العواصف"], c: 1 },
+    { q: "من القيم التي نتعلمها من الدرس أن 'السلام لا يتحقق إلا بـ':", a: ["الضعف", "القوة والعدل", "الاستسلام", "التنازل عن الحقوق"], c: 1 },
+    { q: "الوحدة بين الشعب والجيش هي ________ مصر.", a: ["عائق أمام", "سر قوة", "سبب ضعف", "مشكلة كبيرة لـ"], c: 1 },
+    { q: "محطة 'طريق السلام' لاستعادة سيناء تضمنت:", a: ["القتال العنيف فقط", "معاهدة السلام والمفاوضات", "الانسحاب دون شروط", "التدخل العسكري الخارجي"], c: 1 },
+    { q: "أي مما يلي يعد من نتائج نصر أكتوبر 1973م؟", a: ["ضياع سيناء للأبد", "إثبات قدرة المصريين على تحقيق المستحيل", "زيادة نفوذ العدو", "إغلاق قناة السويس نهائياً"], c: 1 },
+    { q: "مشروع 'إعمار سيناء' يتضمن بناء:", a: ["قلاع تاريخية فقط", "المدن الجديدة", "مخازن مهملة", "خيام مؤقتة"], c: 1 },
+    { q: "تحسنت علاقات مصر مع دول العالم نتيجة لـ:", a: ["الحروب المستمرة", "تحقيق السلام", "الانغلاق على النفس", "ترك الحدود دون حماية"], c: 1 },
+    { q: "كان موقف الشعب المصري من جيشه في حرب أكتوبر:", a: ["التخلي عنه", "الوقوف خلفه ودعمه بالعمل والدعاء", "معارضة الحرب", "الهجرة خارج البلاد"], c: 1 },
+    { q: "استعادة سيناء أدت إلى تفرغ الدولة لعمليات:", a: ["الهدم", "البناء والتنمية", "الاستيراد فقط", "النزاعات الداخلية"], c: 1 },
+    { q: "من حق الأجيال القادمة أن ________ على ما استرده الآباء والأجداد.", a: ["تهمل", "تحافظ", "تفرط", "تنسى"], c: 1 },
+    { q: "السلام الذي يحميه الجيش يوصف بأنه سلام:", a: ["ضعيف", "قوي يحقق الاستقرار", "مؤقت", "غير عادل"], c: 1 },
+    { q: "ساهمت 'الموارد المائية' في سيناء في مشروع إعمارها من خلال:", a: ["بناء الملاعب", "استصلاح الأراضي والزراعة", "بناء المصانع الكيماوية فقط", "توليد الطاقة النووية"], c: 1 },
+    { q: "سيناء هي 'أرض الفيروز' وهي جزء لا يتجزأ من:", a: ["قارة أوروبا", "دولة مصر", "شبه الجزيرة العربية سياسياً", "قارة أمريكا"], c: 1 },
+    { q: "المحطات الثلاث لعودة سيناء هي: الانتصار العظيم، وطريق السلام، و________.", a: ["طريق الحرب", "بناء المستقبل", "طريق العودة", "بناء الماضي"], c: 1 }
+];
+
+        let index = 0, score = 0, picked = null;
+
+        window.onload = () => {
+            render();
+        };
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 group';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#10b981'});
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) render(); else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            
+            let msg = pct >= 50 ? "أداء ممتاز! أنت جغرافي بارع" : "حاول مرة أخرى لتتقن تضاريس العالم";
+            document.getElementById('result-msg').innerText = msg;
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
+    </script>
+</body>
+</html>
