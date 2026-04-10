@@ -135,7 +135,7 @@
             { q: "تتساوى معدلات المواليد مع معدلات الوفيات في قارة ......... (الزيادة الطبيعية صفر).", a: ["آسيا", "أفريقيا", "أوروبا", "أستراليا"], c: 2 },
             { q: "أي من الدول التالية تعد 'ثاني' دول قارة آسيا إنفاقاً على التعليم؟", a: ["عُمان", "الكويت", "السعودية", "إندونيسيا"], c: 1 },
             { q: "يؤدي الاهتمام بصحة فئة صغار السن في قارتي آسيا وأوروبا إلى ارتفاع ......... .", a: ["معدل المواليد", "العمر المتوقع عند الميلاد", "نسبة الوفيات", "الهجرة غير الشرعية"], c: 1 },
-            { q: "تعد دولة ......... أولى دول العالم من حيث نسبة فئة كبار السن.", a: ["إيطاليا", "اليابان", "ألمانيا", "الصين"], c: 1 },
+            { q: "تعد دولة ......... أولى دول العالم من حيث نسبة فئة كبار السن.", a: ["إيطاليا", "اليابان", "ألماينا", "الصين"], c: 1 },
             { q: "أي من الأكلات الوطنية التالية تشتهر بها دولة كوريا الجنوبية؟", a: ["السوشي", "الكيمتشي", "البيتزا", "الكريب"], c: 1 },
             { q: "يقل نصيب الفرد من المياه العذبة للنصف في دولة ......... بسبب الزيادة السكانية.", a: ["اليابان", "الهند", "روسيا", "إيطاليا"], c: 1 },
             { q: "تشتهر دول إسكندنافيا (السويد والنرويج) في أوروبا بحرفة ......... .", a: ["صناعة الزجاج", "الرسم على الخشب", "السجاد اليدوي", "صناعة الحرير"], c: 1 },
@@ -167,8 +167,8 @@
             const nameInput = document.getElementById('studentName').value;
             const gradeInput = document.getElementById('studentGrade').value;
 
-            if (nameInput.length < 5) {
-                Swal.fire({ text: 'يرجى كتابة الاسم الرباعي بشكل صحيح', icon: 'error', confirmButtonColor: '#8b5cf6' });
+            if (nameInput.trim().split(/\s+/).length < 3) {
+                Swal.fire({ text: 'يرجى كتابة الاسم الثلاثي أو الرباعي لدخول لوحة الشرف', icon: 'error', confirmButtonColor: '#8b5cf6' });
                 return;
             }
             if (gradeInput === "") {
@@ -235,25 +235,28 @@
             document.getElementById('result-msg').innerText = pct >= 50 ? "أداء رائع يا بطل أطلس!" : "راجع الدرس وحاول مرة أخرى!";
             document.getElementById('student-display').innerText = `الطالب: ${studentData.name} | ${studentData.grade}`;
 
+            // استدعاء دالة الإرسال المؤكدة
             sendToGoogleSheets(studentData.name, studentData.grade, score);
         }
 
         function sendToGoogleSheets(name, grade, finalScore) {
-            // تم تصحيح الرابط هنا ليكون formResponse
             const formActionURL = "https://docs.google.com/forms/d/e/1FAIpQLSdnInXBfJCZc1f45Dp9lIEv_N3t2W4W2Mu99lQ1pFCugZlBRA/formResponse";
             
-            const formData = new FormData();
-            formData.append("entry.2062423793", name);
-            formData.append("entry.2120427301", grade);
-            formData.append("entry.1691218224", finalScore);
+            const params = new URLSearchParams();
+            params.append("entry.2062423793", name);
+            params.append("entry.2120427301", grade);
+            params.append("entry.1691218224", finalScore);
 
             fetch(formActionURL, {
                 method: "POST",
                 mode: "no-cors",
-                body: formData
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: params.toString()
             }).then(() => {
-                console.log("تم الإرسال بنجاح");
-            }).catch(err => console.error("خطأ في الإرسال:", err));
+                console.log("✅ تم الإرسال لشيت مستر إيهاب بنجاح");
+            }).catch(err => console.error("❌ خطأ:", err));
         }
 
         function toggleExitModal(s) { 
