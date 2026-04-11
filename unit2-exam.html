@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار عهد محمد علي | منصة أطلس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); 
+            min-height: 100vh; 
+            user-select: none; 
+        }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.9); 
+            backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255, 255, 255, 0.5); 
+            box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.1); 
+            border-radius: 2rem; 
+        }
+        .option-box { 
+            background: white; border: 2px solid #e2e8f0; 
+            transition: all 0.3s ease; text-align: right; cursor: pointer; 
+        }
+        .option-box:hover { border-color: #8b5cf6; transform: scale(1.02); }
+        .option-box.selected { 
+            background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); 
+            border-color: transparent; color: white; 
+        }
+        .opt-prefix { 
+            background: #f1f5f9; width: 38px; height: 38px; 
+            display: flex; align-items: center; justify-content: center; 
+            border-radius: 10px; font-weight: 900; color: #64748b; 
+        }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow { 
+            height: 100%; background: linear-gradient(90deg, #a855f7, #6366f1); 
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); border-radius: 100px; 
+            transition: width 0.6s ease; 
+        }
+        .btn-confirm { 
+            background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); 
+            box-shadow: 0 15px 30px -10px rgba(109, 40, 217, 0.4); 
+        }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade7.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100 transition-colors hover:text-red-500">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-purple-600">
+                <span id="q-count">1</span> / 60
+            </div>
+            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-history"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-2xl md:text-3xl font-900 text-slate-800 leading-snug text-center mb-12">جاري التحميل...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-purple-100">
+            <div class="text-7xl mb-6">🏆</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p class="text-slate-500 font-bold mb-8">اختبار الوحدة الثانية</p>
+            
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#a855f7" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-purple-600"></div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg hover:bg-purple-200 transition">إعادة</button>
+                <a href="grade7.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center hover:bg-slate-700 transition">العودة للدروس</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+    { q: "ولد محمد علي باشا في بلدة 'قولة' التي تقع في شمال دولة...؟", a: ["ألبانيا", "اليونان", "تركيا", "بلغاريا"], c: 1 },
+    { q: "التحق محمد علي باشا في بداية حياته بـ...؟", a: ["الأسطول الفرنسي", "الجيش العثماني", "المماليك في مصر", "القوات البريطانية"], c: 1 },
+    { q: "جاء محمد علي إلى مصر على رأس فرقة عسكرية للمساهمة في تحريرها من...؟", a: ["الإنجليز", "العثمانيين", "الحملة الفرنسية", "المماليك"], c: 2 },
+    { q: "نجح محمد علي في تولي حكم مصر عام...؟", a: ["1801م", "1805م", "1811م", "1840م"], c: 1 },
+    { q: "أي من الأهداف التالية يُعد هدفاً 'سياسياً' لتوسع محمد علي في السودان؟", a: ["اكتشاف منابع النيل", "تأمين الحدود الجنوبية", "القضاء على المماليك الفارين إلى السودان", "تجنيد السودانيين"], c: 2 },
+    { q: "كان محمد علي يرى أن أمن مصر القومي لن يتحقق إلا بضمان أمن...؟", a: ["البحر الأحمر", "مجرى نهر النيل", "البحر المتوسط", "شبه جزيرة سيناء"], c: 1 },
+    { q: "من الأهداف العسكرية لمحمد علي في السودان 'تأمين الحدود الجنوبية' لتسهيل الدفاع عن مصر ضد...؟", a: ["المماليك", "أي تهديدات خارجية", "القبائل المتصارعة", "الأسطول الإنجليزي"], c: 1 },
+    { q: "استهدف محمد علي استثمار الموارد الاقتصادية في السودان مثل الذهب و...؟", a: ["البترول", "الصمغ العربي", "الفضة", "الفحم"], c: 1 },
+    { q: "قاد محمد علي 'بنفسه' حملة عسكرية إلى السودان عام 1838م بهدف...؟", a: ["القضاء على المماليك", "البحث عن المعادن وتفقد الإدارة", "بناء مدينة الخرطوم", "محاربة تجارة الرقيق"], c: 1 },
+    { q: "المدينة السودانية التي نجح محمد علي في الوصول لمناجم الذهب بها هي...؟", a: ["سنار", "دنقلة", "بربر", "شندي"], c: 1 },
+    { q: "أول من بدأ بمحاربة 'تجارة الرقيق' في إفريقيا من حكام مصر هو...؟", a: ["الخديوي إسماعيل", "محمد علي باشا", "سعيد باشا", "إبراهيم باشا"], c: 1 },
+    { q: "ما المقصود بـ 'تجارة الرقيق'؟", a: ["تبادل البضائع الإفريقية", "بيع وشراء البشر كعبيد واستغلالهم", "تجارة الذهب والعاج", "الهجرة غير الشرعية"], c: 1 },
+    { q: "من هو الجغرافي والضابط البحري الذي قام برحلات لاستكشاف منابع النيل الأبيض؟", a: ["رفاعة الطهطاوي", "سليم بك قبطان", "إبراهيم باشا", "عمرو بن العاص"], c: 1 },
+    { q: "حالت 'الجنادل' دون تقدم سفن سليم بك قبطان، فما هي الجنادل؟", a: ["شلالات مائية", "كتل صخرية ضخمة تعترض مجرى النهر", "غابات كثيفة على الضفاف", "قبائل معادية في الجنوب"], c: 1 },
+    { q: "تم تقسيم السودان في عهد محمد علي إدارياً إلى كم مديرية؟", a: ["5 مديريات", "7 مديريات", "12 مديرية", "10 مديريات"], c: 1 },
+    { q: "الحاكم الذي كان يجمع السلطة العسكرية والمدنية في السودان عهد محمد علي يسمى...؟", a: ["المدير", "الناظر", "الحكمدار", "الوالي"], c: 2 },
+    { q: "كان 'حكمدار السودان' يتبع إدارياً لـ...؟", a: ["ديوان الجهادية", "ديوان وزارة الداخلية في مصر", "السلطان العثماني مباشرة", "حاكم القلعة"], c: 1 },
+    { q: "أنشأ محمد علي مدينة ....... لتكون عاصمة للسودان ومقراً للحكمدار؟", a: ["كسلا", "سنار", "الخرطوم", "سواكن"], c: 2 },
+    { q: "أي من المدن التالية أنشأها محمد علي في شرق السودان واشتهرت بأبراجها وتحصيناتها؟", a: ["الخرطوم", "فازوغلي", "كسلا", "كورتي"], c: 2 },
+    { q: "استخدم محمد علي القانون ....... للفصل في النزاعات بين سكان السودان؟", a: ["الفرنسي", "العثماني", "الإنجليزي", "المصري القديم"], c: 1 },
+    { q: "قام محمد علي بتعيين 'رئيس للقضاة' في السودان وكان صاحب...؟", a: ["السلطة التنفيذية", "الحكم النهائي", "حق التشريع", "قيادة الجيش"], c: 1 },
+    { q: "نشر محمد علي 'الكتاتيب' في جميع أنحاء السودان بهدف...؟", a: ["تعليم القتال", "تعليم القراءة والكتابة وحفظ القرآن", "تعليم اللغات الأجنبية", "تدريب الصناع"], c: 1 },
+    { q: "أرسل محمد علي بعثات من السودانيين إلى مصر لتلقي التعليم خاصة في المجالات...؟", a: ["الفنية والأدبية", "العسكرية والإدارية", "الطب والصيدلة", "التجارية والزراعية"], c: 1 },
+    { q: "أرسل محمد علي مزارعين مصريين إلى السودان لتدريب السودانيين على...؟", a: ["صناعة السكر", "أساليب الزراعة المتقدمة", "تربية الماشية", "بناء السواقي"], c: 1 },
+    { q: "من المحاصيل التي أدخل محمد علي زراعتها في السودان...؟", a: ["الأرز والقمح", "القطن وقصب السكر والفاكهة", "الشاي والبن", "الزيتون والنخيل"], c: 1 },
+    { q: "اهتم محمد علي بتحسين الإنتاج الحيواني في السودان بهدف...؟", a: ["توفير اللحوم للسودانيين", "تصدير الماشية", "استخدامها في الزراعة", "إنتاج الألبان"], c: 1 },
+    { q: "أنشأ محمد علي في مدينة الخرطوم مصنعاً للبارود و...؟", a: ["ترسانة لصناعة السفن النيلية", "مصنعاً للمنسوجات", "معامل لتكرير البترول", "مطبعة للكتب"], c: 0 },
+    { q: "كلف محمد علي ....... بتأمين طرق التجارة في السودان؟", a: ["الجيش المصري فقط", "شيوخ القبائل", "القوات العثمانية", "التجار الأجانب"], c: 1 },
+    { q: "تحالفت القوى الأوروبية مع السلطان العثماني ضد محمد علي في معاهدة...؟", a: ["العريش 1800م", "لندن 1840م", "باريس 1856م", "سان ستيفانو"], c: 1 },
+    { q: "نصت معاهدة لندن 1840م على تخلي محمد علي عن معظم الأراضي التي حكمها...؟", a: ["داخل مصر", "خارج مصر", "في السودان فقط", "في الحجاز فقط"], c: 1 },
+    { q: "حصل محمد علي على حكم 'وراثي' لمصر والسودان بناءً على فرمان عام...؟", a: ["1805م", "1841م", "1863م", "1879م"], c: 1 },
+    { q: "من خلفاء محمد علي الذي قال: 'إن مستقبل مصر في إفريقيا'؟", a: ["عباس باشا الأول", "إبراهيم باشا", "سعيد باشا", "الخديوي توفيق"], c: 1 },
+    { q: "الحاكم الذي لم يهتم بالكشوف الجغرافية في إفريقيا من خلفاء محمد علي هو...؟", a: ["الخديوي إسماعيل", "سعيد باشا", "عباس باشا الأول", "محمد علي"], c: 2 },
+    { q: "أنشأ عباس باشا الأول مدرسة ابتدائية في مدينة الخرطوم وجعل ناظرها هو...؟", a: ["سليم بك قبطان", "رفاعة الطهطاوي", "علي مبارك", "إبراهيم باشا"], c: 1 },
+    { q: "نشط السباق الأوروبي لاستكشاف إفريقيا في عهد...؟", a: ["محمد علي", "سعيد باشا", "عباس باشا الأول", "الملك فاروق"], c: 1 },
+    { q: "أرسلت الجمعية الجغرافية الملكية البريطانية بعثات لكشف منابع النيل في عهد...؟", a: ["عباس باشا", "سعيد باشا", "توفيق باشا", "حسين كامل"], c: 1 },
+    { q: "زار سعيد باشا السودان عام 1857م بهدف دراسة أحوالها و...؟", a: ["تنمية مواردها والاهتمام بالمواطنين", "إعلان الحرب على القبائل", "بناء سدود جديدة", "تسريح الجيش هناك"], c: 0 },
+    { q: "اتجه الخديوي إسماعيل نحو إفريقيا برغبة في استكمال مسيرة جده...؟", a: ["إبراهيم باشا", "محمد علي باشا", "عباس باشا", "سعيد باشا"], c: 1 },
+    { q: "من دوافع إسماعيل للتوسع في إفريقيا استكمال محاربة...؟", a: ["الاستعمار الأوروبي", "تجارة الرقيق في إفريقيا", "المماليك الفارين", "القراصنة"], c: 1 },
+    { q: "أراد إسماعيل تأكيد الوحدة ....... بين مصر ودول حوض النيل؟", a: ["اللغوية والدينية", "الجغرافية والاقتصادية", "العسكرية والسياسية", "الثقافية والرياضية"], c: 1 },
+    { q: "نجحت حملات إسماعيل في الوصول إلى خط الاستواء وبحيرتي ألبرت و...؟", a: ["ناصر", "فيكتوريا", "قارون", "تانا"], c: 1 },
+    { q: "استعان الخديوي إسماعيل في حملاته بضباط أجانب وضباط من...؟", a: ["الجيش العثماني", "الجيش المصري", "الأسطول الفرنسي", "المرتزقة"], c: 1 },
+    { q: "من نتائج حملات إسماعيل رسم خريطة مفصلة لإفريقيا عام 1877م اعتبرت...؟", a: ["أول خريطة في التاريخ", "أدق خريطة عُرفت في ذلك الوقت", "خريطة غير دقيقة", "خريطة للحدود البحرية فقط"], c: 1 },
+    { q: "عزل إسماعيل الموظفين المعروفين بسوء المعاملة وأمر بـ...؟", a: ["سجنهم مدى الحياة", "حسن معاملة الأهالي وإقامة العدل", "نفيهم خارج السودان", "مصادرة جميع أملاكهم"], c: 1 },
+    { q: "أنشأ إسماعيل 'المجالس العرفية' في السودان بهدف...؟", a: ["جمع الضرائب", "إشراك السودانيين في حكم بلادهم", "تدريب الجيش", "تعليم القضاء"], c: 1 },
+    { q: " 'المجالس العرفية' هي تجمع من شخصيات ذات نفوذ لفض المنازعات استناداً إلى...؟", a: ["القانون الفرنسي", "الأعراف والتقاليد المتبعة", "أوامر الخديوي المباشرة", "الدستور المصري"], c: 1 },
+    { q: "أقام إسماعيل معسكراً للجيش على نهر ....... لمنع تجارة الرقيق؟", a: ["النيل الأزرق", "السوباط", "عطبرة", "القاش"], c: 1 },
+    { q: "من الإصلاحات الاجتماعية لإسماعيل في السودان إعفاء الأهالي من...؟", a: ["الخدمة العسكرية", "الضرائب المتأخرة", "العمل في المناجم", "تعلم اللغة العربية"], c: 1 },
+    { q: "نظم إسماعيل المواصلات والبريد بين مصر والسودان وأنشأ محطات محددة لـ...؟", a: ["تخزين الحبوب", "تغيير دواب النقل", "استراحة المسافرين", "المراقبة العسكرية"], c: 1 },
+    { q: "قسم الخديوي إسماعيل السودان إدارياً نتيجة توسعاته إلى كم مديرية؟", a: ["7 مديريات", "12 مديرية", "5 مديريات", "10 مديريات"], c: 1 },
+    { q: "أنشأ الخديوي إسماعيل (5) محافظات على الساحل الشرقي لإفريقيا منها...؟", a: ["الخرطوم وكسلا", "سواكن ومصوع وزيلع وبربرة وهرر", "جيبوتي ومقديشو", "عدن وصنعاء"], c: 1 },
+    { q: "أرسل إسماعيل المعلمين وعلماء ....... للتدريس في السودان ومنطقة القرن الإفريقي؟", a: ["مدرسة الألسن", "الأزهر الشريف", "المهندسخانة", "الجامعة المصرية"], c: 1 },
+    { q: "خريجو مدرسة الخرطوم ساعدوا في نبوغ عدد كبير من العلماء السودانيين في مجالات...؟", a: ["الطب والصيدلة", "الهندسة والمساحة والتاريخ", "الأدب والشعر", "التجارية والمحاسبة"], c: 1 },
+    { q: "امتدت الحدود الجنوبية لمصر في عهد محمد علي لتشمل مدينة ....... جنوباً؟", a: ["أسوان", "فازوغلي", "القاهرة", "الإسكندرية"], c: 1 },
+    { q: "كانت مدينة 'سواكن' تقع على ساحل...؟", a: ["البحر المتوسط", "البحر الأحمر", "المحيط الهندي", "بحيرة فيكتوريا"], c: 1 },
+    { q: "تكونت الحاميات العسكرية التي وضعها محمد علي في السودان من جنود مصريين وسودانيين و...؟", a: ["فرنسيين", "عدد قليل من الجنود الأتراك", "إنجليز", "إيطاليين"], c: 1 },
+    { q: "استهدف محمد علي من وضع الحاميات العسكرية في السودان توفير...؟", a: ["العمالة للمصانع", "الأمن والحماية", "الضرائب للخرينة", "المترجمين للبعثات"], c: 1 },
+    { q: "أدى تمهيد الطرق وتوطيد الأمن بين مصر والسودان إلى إقبال الشباب السوداني على...؟", a: ["العمل في الزراعة", "الأزهر الشريف طلباً للعلم", "التطوع في الأسطول", "الهجرة لأوروبا"], c: 1 },
+    { q: "منطقة 'القرن الإفريقي' تضم حالياً معظم الصومال وجيبوتي وجزء من...؟", a: ["السودان وليبيا", "شرق إثيوبيا وإريتريا", "كينيا وتنزانيا", "تشاد والنيجر"], c: 1 },
+    { q: "استطاع الخديوي إسماعيل توسيع حدود مصر نحو الجنوب وضم مديرية...؟", a: ["الخرطوم", "خط الاستواء", "وادي حلفا", "سنار"], c: 1 }
+];
+
+
+        let index = 0, score = 0, picked = null;
+
+        window.onload = () => { render(); };
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-6 rounded-2xl flex items-center gap-4 transition-all';
+                btn.innerHTML = `<div class="opt-prefix">${String.fromCharCode(65 + i)}</div><span class="text-lg font-bold">${opt}</span>`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) return Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#8b5cf6'});
+            if (picked === questions[index].c) score++;
+            index++;
+            if (index < questions.length) render(); else finish();
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            document.getElementById('result-msg').innerText = pct >= 50 ? "بطل حقيقي! مستواك رائع" : "محاولة جيدة، راجع الدرس مرة أخرى";
+        }
+
+        function toggleExitModal(s) { document.getElementById('exit-modal').style.display = s?'flex':'none'; }
+    </script>
+</body>
+</html>
