@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>بوابة نتائج الطلاب الذكية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -21,6 +21,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -29,22 +30,24 @@
             align-items: center;
             min-height: 100vh;
             background: var(--bg-gradient);
-            padding: 20px;
+            padding: 15px; /* تقليل البادينج للموبايل */
             overflow-x: hidden;
         }
 
-        /* دوائر جمالية في الخلفية */
-        body::before, body::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            z-index: -1;
-            animation: float 15s infinite alternate ease-in-out;
+        /* دوائر الخلفية - تم إخفاؤها في الموبايل لزيادة السرعة والوضوح */
+        @media (min-width: 768px) {
+            body::before, body::after {
+                content: '';
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                z-index: -1;
+                animation: float 15s infinite alternate ease-in-out;
+            }
+            body::before { width: 300px; height: 300px; top: -50px; left: -50px; }
+            body::after { width: 250px; height: 250px; bottom: -50px; right: -50px; animation-delay: 2s; }
         }
-        body::before { width: 300px; height: 300px; top: -50px; left: -50px; }
-        body::after { width: 250px; height: 250px; bottom: -50px; right: -50px; animation-delay: 2s; }
 
         @keyframes float {
             0% { transform: translateY(0) rotate(0deg); }
@@ -52,119 +55,106 @@
         }
 
         .main-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            padding: 30px 20px; /* مسافات مرنة */
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 450px;
+            max-width: 420px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.4);
             transition: transform 0.3s ease;
-            position: relative;
         }
 
-        .main-card:hover { transform: translateY(-5px); }
+        h2 { 
+            color: var(--primary-color); 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+            font-size: clamp(20px, 6vw, 26px); /* تكبير وتصغير الخط حسب الشاشة */
+        }
 
-        h2 { color: var(--primary-color); font-weight: 700; margin-bottom: 8px; font-size: 26px; }
-        .subtitle { color: #636e72; margin-bottom: 30px; font-size: 14px; }
+        .subtitle { color: #636e72; margin-bottom: 25px; font-size: 14px; }
 
         input {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             border: 2px solid transparent;
-            border-radius: 15px;
+            border-radius: 12px;
             background-color: rgba(108, 92, 231, 0.05);
             font-size: 16px;
             color: var(--text-color);
             transition: all 0.3s ease;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            appearance: none;
         }
 
         input:focus {
             outline: none;
             border-color: var(--secondary-color);
             background-color: #fff;
-            box-shadow: 0 0 20px rgba(108, 92, 231, 0.1);
         }
 
         button {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: var(--primary-color);
             color: #fff;
             border: none;
-            border-radius: 15px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 18px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.2);
         }
 
-        button:hover {
-            background: #5a4bcf;
-            transform: scale(1.02);
-            box-shadow: 0 12px 25px rgba(108, 92, 231, 0.3);
-        }
+        button:active { transform: scale(0.98); }
 
-        /* زر العودة للرئيسية */
         .back-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            margin-top: 25px;
+            margin-top: 20px;
             color: var(--primary-color);
             text-decoration: none;
             font-size: 14px;
             font-weight: 700;
-            transition: 0.3s;
             padding: 8px 15px;
             border-radius: 10px;
             background: rgba(108, 92, 231, 0.05);
         }
 
-        .back-btn:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateX(-5px);
-        }
+        .back-btn i { margin-left: 8px; }
 
-        .back-btn i {
-            margin-left: 8px;
-        }
-
-        #result {
-            margin-top: 30px;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
+        #result { margin-top: 20px; display: none; opacity: 0; transition: 0.4s; }
         #result.show { display: block; opacity: 1; }
 
-        .result-box { padding: 25px; border-radius: 20px; border: 1px solid transparent; }
-        .success { background-color: rgba(0, 184, 148, 0.08); border-color: rgba(0, 184, 148, 0.2); color: var(--success-color); }
-        .error { background-color: rgba(255, 118, 117, 0.08); border-color: rgba(255, 118, 117, 0.2); color: var(--error-color); }
+        .result-box { padding: 20px; border-radius: 15px; border: 1px solid transparent; }
+        .success { background-color: #f0fff4; border-color: #c6f6d5; color: var(--success-color); }
+        .error { background-color: #fff5f5; border-color: #fed7d7; color: var(--error-color); }
 
-        .label { font-size: 13px; color: #636e72; display: block; margin-bottom: 4px; }
-        .value { font-size: 22px; font-weight: 700; color: var(--text-color); margin-bottom: 15px; }
-        .divider { height: 1px; background: rgba(0,0,0,0.06); margin: 12px 0; }
-
+        .value { font-size: clamp(18px, 5vw, 22px); font-weight: 700; margin-bottom: 10px; }
+        
+        /* تحسين مظهر اللودر */
         .loader {
             display: none;
-            width: 35px;
-            height: 35px;
-            border: 4px solid rgba(108, 92, 231, 0.1);
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(108, 92, 231, 0.1);
             border-left-color: var(--primary-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 20px auto;
+            margin: 15px auto;
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* تعديلات خاصة بالشاشات الصغيرة جداً */
+        @media (max-width: 350px) {
+            .main-card { padding: 20px 15px; }
+            h2 { font-size: 18px; }
+        }
     </style>
 </head>
 <body>
@@ -173,7 +163,7 @@
     <h2>بوابة النتائج</h2>
     <p class="subtitle">استعلم عن نتيجتك بكل سهولة</p>
     
-    <input type="text" id="studentCode" placeholder="أدخل كود الطالب هنا">
+    <input type="tel" id="studentCode" placeholder="أدخل كود الطالب هنا" pattern="[0-9]*">
     <button onclick="fetchResult()">عرض النتيجة</button>
 
     <div id="loader" class="loader"></div>
@@ -185,7 +175,6 @@
 </div>
 
 <script>
-    // تم وضع الـ ID الخاص بملفك هنا
     const SHEET_ID = '1lSbcQ-yUPGOZ_I7N66ZBJEUIDhEYL_oGtKFnbg9ITEs'; 
     const SHEET_TITLE = 'Sheet1'; 
 
@@ -208,11 +197,7 @@
         try {
             const response = await fetch(url);
             const data = await response.text();
-            
-            // تحويل البيانات وتنظيفها
             const rows = data.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '').trim()));
-            
-            // البحث عن الكود في العمود الأول
             const student = rows.find(row => row[0] === codeInput);
 
             loader.style.display = "none";
@@ -221,31 +206,25 @@
             if (student) {
                 resultDiv.innerHTML = `
                     <div class="result-box success">
-                        <span class="label">اسم الطالب</span>
+                        <span style="font-size:12px; opacity:0.8">اسم الطالب</span>
                         <div class="value">${student[1]}</div>
-                        <div class="divider"></div>
-                        <span class="label">الدرجة النهائية</span>
-                        <div class="value" style="font-size: 35px; color: var(--success-color);">${student[2]}</div>
-                        <p style="font-size: 14px;">مبارك النجاح!</p>
+                        <div style="height:1px; background:#c6f6d5; margin:10px 0;"></div>
+                        <span style="font-size:12px; opacity:0.8">الدرجة النهائية</span>
+                        <div class="value" style="font-size: 32px; color: #276749;">${student[2]}</div>
+                        <p style="font-size: 13px; font-weight: bold;">مبارك النجاح! 🎉</p>
                     </div>
                 `;
             } else {
                 resultDiv.innerHTML = `
                     <div class="result-box error">
-                        <div class="value" style="color: var(--error-color);">عذراً.. الكود غير صحيح</div>
-                        <p style="font-size: 14px;">تأكد من كتابة الكود بشكل سليم وأعد المحاولة.</p>
+                        <div class="value" style="font-size:16px;">عذراً.. الكود غير صحيح</div>
                     </div>
                 `;
             }
         } catch (error) {
             loader.style.display = "none";
             resultDiv.classList.add('show');
-            resultDiv.innerHTML = `
-                <div class="result-box error">
-                    <div class="value">خطأ فني</div>
-                    <p>يرجى التأكد من نشر الملف للويب (Publish to web).</p>
-                </div>
-            `;
+            resultDiv.innerHTML = `<div class="result-box error">خطأ في الاتصال بالبيانات</div>`;
         }
     }
 </script>
