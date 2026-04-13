@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة نتائج الطلاب الذكية</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
             --primary-color: #6c5ce7;
@@ -108,6 +109,24 @@
             box-shadow: 0 12px 25px rgba(108, 92, 231, 0.3);
         }
 
+        /* زر العودة للرئيسية */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.3s;
+            padding: 8px 15px;
+            border-radius: 10px;
+            background: rgba(108, 92, 231, 0.05);
+        }
+        .back-btn:hover { background: var(--primary-color); color: white; transform: translateX(-5px); }
+        .back-btn i { margin-left: 8px; }
+
         #result {
             margin-top: 30px;
             display: none;
@@ -150,11 +169,15 @@
 
     <div id="loader" class="loader"></div>
     <div id="result"></div>
+
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i> العودة للرئيسية 
+    </a>
 </div>
 
 <script>
-    // --- هام: استبدل المعرف أدناه بالمعرف الخاص بملفك ---
-    const SHEET_ID = '2PACX-1vSn2zP7zmYG8vgvt2Meercg9PwmKxbsVsg6ehGp8dCIW2IezGCOsZ7DkgEiNTXnzy6Ry5silnXf_ki1'; 
+    // تم استبدال الـ ID بالمعرف الأصح للملف لضمان عمل الاستعلام
+    const SHEET_ID = '1lSbcQ-yUPGOZ_I7N66ZBJEUIDhEYL_oGtKFnbg9ITEs'; 
     const SHEET_TITLE = 'Sheet1'; 
 
     async function fetchResult() {
@@ -177,7 +200,7 @@
             const response = await fetch(url);
             const data = await response.text();
             
-            // تحويل البيانات وتنظيفها من علامات الاقتباس والمسافات
+            // تحويل البيانات وتنظيفها
             const rows = data.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '').trim()));
             
             // البحث عن الكود في العمود الأول
