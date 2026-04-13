@@ -133,7 +133,7 @@
         }
 
         .back-btn i {
-            margin-right: 8px;
+            margin-left: 8px;
         }
 
         #result {
@@ -180,13 +180,13 @@
     <div id="result"></div>
 
     <a href="index.html" class="back-btn">
-        العودة للرئيسية <i class="fas fa-arrow-left"></i>
+        العودة للرئيسية <i class="fas fa-home"></i>
     </a>
 </div>
 
 <script>
-    // --- هام: استبدل المعرف أدناه بالمعرف الخاص بملفك ---
-    const SHEET_ID = 'ضع_هنا_ID_الملف_الخاص_بك'; 
+    // تم وضع الـ ID الخاص بملفك هنا
+    const SHEET_ID = '1lSbcQ-yUPGOZ_I7N66ZBJEUIDhEYL_oGtKFnbg9ITEs'; 
     const SHEET_TITLE = 'Sheet1'; 
 
     async function fetchResult() {
@@ -209,8 +209,10 @@
             const response = await fetch(url);
             const data = await response.text();
             
+            // تحويل البيانات وتنظيفها
             const rows = data.split('\n').map(row => row.split(',').map(cell => cell.replace(/"/g, '').trim()));
             
+            // البحث عن الكود في العمود الأول
             const student = rows.find(row => row[0] === codeInput);
 
             loader.style.display = "none";
