@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
+<html lang="ar" dir="rtl" style="background-color: #0f172a;"> <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>منصة أطلس | النظام المحمي</title>
     
     <script>
@@ -16,11 +15,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        body { 
-            font-family: 'Cairo', sans-serif; 
-            background-color: #0f172a; 
-            color: #f8fafc;
+        /* التعديل الجذري لمنع الفراغات */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: #0f172a !important; /* اللون الغامق الأساسي */
+            color: #f8fafc;
+            min-height: 100vh;
+            width: 100%;
             overflow-x: hidden;
         }
 
@@ -40,26 +47,22 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        /* تصميم البطاقات */
+        /* البطاقات الذكية */
         .tech-card {
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s ease;
             display: flex; align-items: center; justify-content: space-between;
-            padding: 1rem 1.25rem; border-radius: 1.25rem; text-decoration: none; color: inherit;
+            padding: 1.2rem; border-radius: 1.25rem; text-decoration: none; color: inherit;
         }
-        .tech-card:hover {
-            border-color: #10b981;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px -10px rgba(16, 185, 129, 0.3);
-        }
-
+        
         /* شريط المتميزين */
         .ticker-container {
             background: rgba(30, 41, 59, 0.5);
             backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
         }
         .ticker-content { display: flex; animation: ticker-move 40s linear infinite; width: max-content; }
         @keyframes ticker-move { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
@@ -72,10 +75,10 @@
         <h1 class="text-2xl font-black text-emerald-500 tracking-tighter">ATLAS</h1>
     </div>
 
-    <header class="p-6 max-w-2xl mx-auto flex justify-between items-center">
+    <header class="p-6 max-w-2xl mx-auto flex justify-between items-center bg-[#0f172a]">
         <div>
             <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">منصة أطلس التعليمية</p>
-            <h2 class="text-xl font-black italic">أهلاً بك يا <span id="welcome-name" class="text-white">بطل</span> 👋</h2>
+            <h2 class="text-xl font-black">أهلاً بك يا <span id="welcome-name">بطل</span> 👋</h2>
         </div>
         <button onclick="sessionStorage.clear(); location.href='index.html'" class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500 border border-red-500/20">
             <i class="fas fa-power-off text-xs"></i>
@@ -83,11 +86,11 @@
     </header>
 
     <div class="ticker-container py-2 overflow-hidden flex items-center mb-8">
-        <div class="bg-emerald-600 text-white px-3 py-1 font-black text-[10px] z-10 shrink-0 shadow-lg">لوحة الشرف</div>
+        <div class="bg-emerald-600 text-white px-3 py-1 font-black text-[10px] z-10 shrink-0">لوحة الشرف</div>
         <div class="ticker-content space-x-8 px-4 text-xs font-bold text-slate-400" id="ticker-names"></div>
     </div>
 
-    <main class="max-w-xl mx-auto px-6 space-y-8">
+    <main class="max-w-xl mx-auto px-6 space-y-8 bg-[#0f172a]">
         
         <section>
             <h4 class="text-[10px] font-black text-slate-500 mb-4 flex items-center gap-2 uppercase tracking-widest">
@@ -157,34 +160,25 @@
 
     </main>
 
-    <footer class="text-center py-12 px-6">
-        <p class="text-[10px] font-bold uppercase text-slate-600 tracking-widest mb-1">إعداد: أ. إيهاب أشرف</p>
-        <p class="text-[8px] font-mono text-slate-700 uppercase">© 2026 Kemit Tech Systems</p>
+    <footer class="text-center py-10 bg-[#0f172a]">
+        <p class="text-[10px] font-bold uppercase text-slate-600 tracking-widest">إعداد: أ. إيهاب أشرف</p>
+        <p class="text-[8px] font-mono text-slate-700 mt-2 uppercase">© 2026 Kemit Tech Systems</p>
     </footer>
 
     <script>
-        // إظهار اسم الطالب
         document.getElementById('welcome-name').innerText = sessionStorage.getItem("student_identity") || "بطل";
 
-        // تعبئة شريط المتميزين
         const students = ["جني محي", "زينب احمد", "محمود وائل", "رحمة خلف", "محمد محمود علي", "اسراء عمرو", "نادية انور", "حبيبة ناصر"];
         const ticker = document.getElementById('ticker-names');
-        const content = students.map(s => `<span><i class="fas fa-award text-emerald-500"></i> ${s}</span>`).join(' ');
+        const content = students.map(s => `<span>🏆 ${s}</span>`).join(' ');
         ticker.innerHTML = new Array(10).fill(content).join(' ');
 
-        // إخفاء الـ Splash
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const s = document.getElementById('splash-screen');
                 if(s) s.classList.add('hidden-splash');
-            }, 1500);
+            }, 1000);
         });
-
-        // حماية أخيرة لضمان التحميل
-        setTimeout(() => {
-            const s = document.getElementById('splash-screen');
-            if(s) s.classList.add('hidden-splash');
-        }, 3000);
     </script>
 </body>
 </html>
