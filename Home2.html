@@ -1,197 +1,186 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <link rel="manifest" href="./manifest.json">
-    <script>
-        if (sessionStorage.getItem("atlas_auth") !== "true") {
-            window.location.href = "index.html";
-        }
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('تم تسجيل الـ SW بنجاح'))
-                    .catch(err => console.log('فشل التسجيل:', err));
-            });
-        }
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة أطلس التعليمية | أ. إيهاب أشرف</title>
+    <title>منصة أطلس | النظام المتكامل</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* --- شاشة الـ Splash --- */
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: #0f172a; 
+            color: #f8fafc;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* حل مشكلة عدم التحميل: Splash Screen */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10000; transition: opacity 0.8s ease, visibility 0.8s;
+            background: #0f172a; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center;
+            z-index: 10000; transition: opacity 0.5s ease;
         }
-        #splash-screen.hidden-splash { opacity: 0; visibility: hidden; }
-        .splash-main-content { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .loader-bar {
-            width: 140px; height: 3px; background: #f1f5f9; border-radius: 10px;
-            margin: 20px auto; position: relative; overflow: hidden;
-        }
-        .loader-bar::after {
-            content: ""; position: absolute; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, #10b981, transparent);
-            animation: loadingProgress 1.5s infinite linear;
-        }
-        @keyframes loadingProgress { 0% { left: -100%; } 100% { left: 100%; } }
-        .splash-footer { padding-bottom: 40px; text-align: center; }
-        .splash-footer h4 { font-weight: 800; color: #334155; font-size: 1.1rem; }
-        .splash-footer p { font-weight: 700; color: #10b981; direction: ltr; }
+        .hidden-splash { opacity: 0; pointer-events: none; }
 
-        /* --- شريط المتميزين المطور --- */
-        .news-ticker {
-            background: white; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
-            padding: 10px 0; overflow: hidden; display: flex; align-items: center; margin-top: 15px;
-            position: relative;
+        .loader-ring {
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 3px solid rgba(16, 185, 129, 0.1); border-top-color: #10b981;
+            animation: spin 1s linear infinite;
         }
-        .ticker-label {
-            background: #10b981; color: white; padding: 5px 15px; font-weight: 800; font-size: 0.85rem;
-            z-index: 20; border-radius: 0 50px 50px 0; white-space: nowrap;
-            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* تصميم البطاقات المطور */
+        .tech-card {
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 1.25rem; border-radius: 1.25rem; text-decoration: none; color: inherit;
         }
-        .ticker-wrap { display: flex; width: 100%; overflow: hidden; position: relative; }
-        
-        /* التعديل الجذري: زيادة الوقت لـ 150 ثانية لضمان البطء التام */
-        .ticker-content { 
-            display: flex; 
-            white-space: nowrap; 
-            animation: ticker-move 150s linear infinite; 
-            width: max-content;
+        .tech-card:hover {
+            border-color: #10b981;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(16, 185, 129, 0.3);
         }
 
-        .student-name { display: inline-flex; align-items: center; padding: 0 40px; color: #334155; font-weight: 700; font-size: 1.1rem; }
-        .student-name i { color: #f59e0b; margin-left: 10px; }
-        
-        @keyframes ticker-move {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(100%); }
+        /* شريط المتميزين */
+        .ticker-container {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+        .ticker-content { display: flex; animation: ticker-move 40s linear infinite; width: max-content; }
+        @keyframes ticker-move { 0% { transform: translateX(0); } 100% { transform: translateX(100%); } }
 
-        /* توقف الشريط عند وضع الماوس عليه لسهولة القراءة */
-        .news-ticker:hover .ticker-content { animation-play-state: paused; }
-
-        /* --- تصميم الهوية البصرية --- */
-        body { font-family: 'Cairo', sans-serif; background-color: #f8fafc; color: #1e293b; }
-        .logo-container { position: relative; width: 130px; height: 100px; margin: 0 auto 5px; display: flex; align-items: center; justify-content: center; }
-        .logo-shape {
-            position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: morph 6s linear infinite;
-            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
-        }
-        .logo-text { position: relative; z-index: 10; color: white; font-family: 'Reem Kufi', sans-serif; font-size: 2.2rem; font-weight: 700; }
-        @keyframes morph { 0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } }
-
-        .list-card {
-            position: relative; overflow: hidden; border-radius: 24px; padding: 18px 24px; margin: 0 auto 15px;
-            display: flex; align-items: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            max-width: 500px; text-decoration: none; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .list-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); }
-        
-        .grad-primary { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
-        .grad-prep { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); }
-        .grad-secondary { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-        .grad-locked { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); opacity: 0.6; pointer-events: none; }
-
-        .number-box { width: 54px; height: 54px; border-radius: 18px; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; margin-left: 20px; }
-        .card-content { flex-grow: 1; text-align: right; }
-        .section-label { max-width: 500px; margin: 25px auto 15px; font-weight: 900; display: flex; align-items: center; gap: 12px; color: #475569; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid white; }
+        .locked { opacity: 0.3; pointer-events: none; }
     </style>
 </head>
 <body>
 
     <div id="splash-screen">
-        <div class="splash-main-content">
-            <div class="logo-container" style="transform: scale(1.2);">
-                <div class="logo-shape"></div>
-                <div class="logo-text">اطلس</div>
-            </div>
-            <div class="loader-bar"></div>
-            <p class="text-slate-400 font-bold text-[11px] uppercase tracking-widest text-center px-4">طريقك نحو القمة</p>
-        </div>
-        <div class="splash-footer">
-            <h4>إعداد: أ. إيهاب أشرف</h4>
-            <p><i class="fab fa-whatsapp" style="color:#25D366"></i> 01559116736</p>
-        </div>
+        <div class="loader-ring mb-4"></div>
+        <h1 class="text-2xl font-black text-emerald-500">ATLAS</h1>
     </div>
 
-    <header class="pt-8 text-center px-4">
-        <div class="logo-container"><div class="logo-shape"></div><div class="logo-text">اطلس</div></div>
-        <h2 class="font-black text-slate-800 mt-3 text-xl">أهلاً بك يا <span id="welcome-name" class="text-emerald-600">بطل</span> 👋</h2>
-        <button onclick="sessionStorage.clear(); localStorage.clear(); window.location.href='index.html';" class="text-[10px] font-bold text-red-500 underline mt-2">تسجيل خروج</button>
+    <header class="p-6 max-w-2xl mx-auto flex justify-between items-center">
+        <div>
+            <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">منصة أطلس التعليمية</p>
+            <h2 class="text-xl font-black">أهلاً بك يا <span id="welcome-name">بطل</span> 👋</h2>
+        </div>
+        <button onclick="location.reload()" class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400">
+            <i class="fas fa-sync-alt text-xs"></i>
+        </button>
     </header>
 
-    <div class="news-ticker">
-        <div class="ticker-label">متميزو الأسبوع 🏆</div>
-        <div class="ticker-wrap">
-            <div class="ticker-content" id="ticker-names"></div>
-        </div>
+    <div class="ticker-container py-2 overflow-hidden flex items-center mb-8">
+        <div class="bg-emerald-600 text-white px-3 py-1 font-black text-[10px] z-10 shrink-0">لوحة الشرف</div>
+        <div class="ticker-content space-x-8 px-4 text-xs font-bold text-slate-400" id="ticker-names">
+            </div>
     </div>
 
-    <main class="px-4 mt-6">
-        <div class="section-label"><div class="dot bg-emerald-500 shadow-lg"></div> المرحلة الابتدائية</div>
-        <a href="grade4.html" class="list-card grad-primary"><div class="number-box">٤</div><div class="card-content"><h3>الصف الرابع الابتدائي</h3><p>مناهج تفاعلية حديثة</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
-        <a href="grade5.html" class="list-card grad-primary"><div class="number-box">٥</div><div class="card-content"><h3>الصف الخامس الابتدائي</h3><p>بوابتك نحو التميز</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
-        <a href="grade6.html" class="list-card grad-primary"><div class="number-box">٦</div><div class="card-content"><h3>الصف السادس الابتدائي</h3><p>محتوى تعليمي متكامل</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
+    <main class="max-w-xl mx-auto px-6 space-y-8">
+        
+        <section>
+            <h4 class="text-[10px] font-black text-slate-500 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                <span class="w-6 h-[1px] bg-emerald-500"></span> المرحلة الابتدائية
+            </h4>
+            <div class="grid gap-3">
+                <a href="grade4.html" class="tech-card">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 font-black">٤</div>
+                        <h5 class="text-sm font-bold">الصف الرابع الابتدائي</h5>
+                    </div>
+                    <i class="fas fa-chevron-left text-[10px] opacity-20"></i>
+                </a>
+                <a href="grade5.html" class="tech-card">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 font-black">٥</div>
+                        <h5 class="text-sm font-bold">الصف الخامس الابتدائي</h5>
+                    </div>
+                    <i class="fas fa-chevron-left text-[10px] opacity-20"></i>
+                </a>
+                <a href="grade6.html" class="tech-card">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 font-black">٦</div>
+                        <h5 class="text-sm font-bold">الصف السادس الابتدائي</h5>
+                    </div>
+                    <i class="fas fa-chevron-left text-[10px] opacity-20"></i>
+                </a>
+            </div>
+        </section>
 
-        <div class="section-label"><div class="dot bg-purple-500 shadow-lg"></div> المرحلة الإعدادية</div>
-        <a href="grade7.html" class="list-card grad-prep"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الإعدادي</h3><p>تعلم بذكاء وأسلوب ممتع</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
-        <a href="grade8.html" class="list-card grad-prep"><div class="number-box">٢</div><div class="card-content"><h3>الصف الثاني الإعدادي</h3><p>طريقك المباشر للنجاح</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
-        <div class="list-card grad-locked"><div class="number-box"><i class="fas fa-lock text-sm"></i></div><div class="card-content"><h3>الصف الثالث الإعدادي</h3><p>قريباً جداً</p></div></div>
+        <section>
+            <h4 class="text-[10px] font-black text-slate-500 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                <span class="w-6 h-[1px] bg-purple-500"></span> المرحلة الإعدادية
+            </h4>
+            <div class="grid gap-3">
+                <a href="grade7.html" class="tech-card">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 font-black">١</div>
+                        <h5 class="text-sm font-bold">الصف الأول الإعدادي</h5>
+                    </div>
+                    <i class="fas fa-chevron-left text-[10px] opacity-20"></i>
+                </a>
+                <a href="grade8.html" class="tech-card">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 font-black">٢</div>
+                        <h5 class="text-sm font-bold">الصف الثاني الإعدادي</h5>
+                    </div>
+                    <i class="fas fa-chevron-left text-[10px] opacity-20"></i>
+                </a>
+            </div>
+        </section>
 
-        <div class="section-label"><div class="dot bg-orange-500 shadow-lg"></div> المرحلة الثانوية</div>
-        <a href="grade10.html" class="list-card grad-secondary"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الثانوي</h3><p>أفضل شروحات التاريخ</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
+        <section>
+            <h4 class="text-[10px] font-black text-slate-500 mb-4 flex items-center gap-2 uppercase tracking-tighter">
+                <span class="w-6 h-[1px] bg-orange-500"></span> المرحلة الثانوية
+            </h4>
+            <div class="grid gap-3">
+                <a href="grade10.html" class="tech-card">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-500 font-black">١</div>
+                        <h5 class="text-sm font-bold">الصف الأول الثانوي</h5>
+                    </div>
+                    <i class="fas fa-chevron-left text-[10px] opacity-20"></i>
+                </a>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="mt-12 text-center border-t border-slate-200 py-8">
-        <div class="font-bold text-slate-500 italic">إعداد: أ. إيهاب أشرف</div>
-        <a href="https://wa.me/201559116736" class="text-emerald-500 font-bold flex justify-center items-center gap-2 mt-2 ltr">
-             01559116736 <i class="fab fa-whatsapp"></i>
-        </a>
-        <div class="text-[10px] text-slate-400 mt-4 font-bold">جميع الحقوق محفوظة &copy; ٢٠٢٦</div>
+    <footer class="text-center py-12 px-6 opacity-50">
+        <p class="text-[10px] font-bold uppercase tracking-[0.2em] mb-2">إعداد: أ. إيهاب أشرف</p>
+        <p class="text-[8px] font-mono">© 2026 ATLAS TECH SYSTEMS</p>
     </footer>
 
     <script>
-        /* --- قسم التحكم في المتميزين (أضف الأسماء هنا بكل حرية) --- */
-        const TOP_STUDENTS = [
-            "احمد عاطف", "أمل عرفة", "ندي فتحي", "مريم احمد", 
-            "نوران عاطف", "مصطفى رضا", "رضوي عمرو", "اسراء خليل",
-            "حفصة ناصر", "اسماء راضي", "محمد احمد", "احمد حسين",
-            "ياسمين خلف", "هاجر نبيل", "ريهام زغلول"
-        ];
+        // التحقق من الاسم
+        document.getElementById('welcome-name').innerText = sessionStorage.getItem("student_identity") || "بطل";
 
-        // عرض اسم الطالب المرحب به
-        const studentName = sessionStorage.getItem("student_identity") || "بطل";
-        document.getElementById('welcome-name').innerText = studentName;
+        // شريط المتميزين
+        const students = ["جني محي", "زينب احمد", "محمود وائل", "رحمة خلف", "محمد محمود علي", "اسراء عمرو", "نادية انور", "حبيبة ناصر"];
+        const ticker = document.getElementById('ticker-names');
+        const content = students.map(s => `<span>🏆 ${s}</span>`).join(' ');
+        ticker.innerHTML = new Array(10).fill(content).join(' ');
 
-        // تحديث شريط التميز بشكل يضمن البطء
-        const tickerContainer = document.getElementById('ticker-names');
-        if (TOP_STUDENTS.length > 0) {
-            const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
-            // نكرر المحتوى 6 مرات فقط لتوفير الأداء وجعله أبطأ
-            tickerContainer.innerHTML = new Array(6).fill(namesHtml).join('');
-        }
-
-        // إخفاء شاشة الـ Splash
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const splash = document.getElementById('splash-screen');
-                splash.classList.add('hidden-splash');
-                setTimeout(() => { splash.style.display = 'none'; }, 800);
-            }, 2000);
+        // حل مشكلة التحميل: إخفاء الشاشة بعد 1.5 ثانية فوراً
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splash-screen').classList.add('hidden-splash');
+            }, 1500);
         });
+
+        // حماية إضافية: لو لم تختفِ الشاشة بعد 3 ثوانٍ، أخفِها يدوياً
+        setTimeout(() => {
+            const s = document.getElementById('splash-screen');
+            if (s) s.classList.add('hidden-splash');
+        }, 3000);
     </script>
 </body>
 </html>
