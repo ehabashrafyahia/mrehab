@@ -3,269 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مراجعة النمو السكاني | منصة أطلس</title>
+    <title>تسجيل دخول المنصة | مستر إيهاب أشرف</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
-        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); min-height: 100vh; user-select: none; }
-        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.1); border-radius: 2rem; }
-        .option-box { background: white; border: 2px solid #e2e8f0; transition: all 0.3s ease; text-align: right; cursor: pointer; position: relative; overflow: hidden; }
-        .option-box:hover { border-color: #8b5cf6; transform: scale(1.02); }
-        .option-box.selected { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); border-color: transparent; color: white; }
-        .opt-prefix { background: #f1f5f9; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; color: #64748b; flex-shrink: 0; }
-        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
-        .progress-glow { height: 100%; background: linear-gradient(90deg, #a855f7, #6366f1); box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); border-radius: 100px; transition: width 0.6s ease; }
-        .btn-confirm { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); box-shadow: 0 15px 30px -10px rgba(109, 40, 217, 0.4); }
-        #exit-modal, #userModal { display: none; }
+        body { font-family: 'Cairo', sans-serif; background: #f8fafc; margin: 0; overflow: hidden; }
+
+        /* --- 1. شاشة المقدمة الفخمة (Splash) --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #ffffff; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+        }
+
+        .splash-logo-container {
+            position: relative; width: 160px; height: 130px;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: scale(0.5);
+        }
+
+        .splash-shape {
+            position: absolute; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.25);
+        }
+
+        .splash-text {
+            position: relative; z-index: 10; color: white;
+            font-family: 'Reem Kufi', sans-serif; font-size: 3rem; font-weight: 700;
+            opacity: 0; transform: translateY(20px);
+        }
+
+        .loader-bar {
+            width: 180px; height: 3px; background: #f1f5f9; border-radius: 10px;
+            margin-top: 40px; overflow: hidden; position: relative; opacity: 0;
+        }
+        .loader-bar::after {
+            content: ""; position: absolute; left: -100%; width: 100%; height: 100%;
+            background: #10b981;
+        }
+
+        /* --- 2. ستايلات صفحة تسجيل الدخول --- */
+        #login-container { 
+            display: none; opacity: 0; transform: translateY(20px); 
+            transition: all 0.8s ease; 
+        }
+        
+        .logo-container { position: relative; width: 150px; height: 120px; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; }
+        .logo-shape { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; animation: morph 6s linear infinite; box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2); }
+        .logo-text { position: relative; z-index: 10; color: white; font-family: 'Reem Kufi', sans-serif; font-size: 2.8rem; font-weight: 700; }
+        
+        @keyframes morph { 0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; } 50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; } }
+        
+        .login-input { width: 100%; padding: 16px; background: #f1f5f9; border: 2px solid transparent; border-radius: 18px; outline: none; transition: 0.3s; text-align: center; font-weight: 700; }
+        .login-input:focus { border-color: #10b981; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
+
+        /* --- الزر الجديد للمراجعات النهائية --- */
+        .final-review-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            padding: 14px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border-radius: 18px;
+            font-weight: 900;
+            font-size: 15px;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .final-review-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .final-review-btn i {
+            font-size: 1.2rem;
+            animation: rocket-pulse 1.5s infinite;
+        }
+
+        @keyframes rocket-pulse {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(-10deg); }
+        }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="min-h-screen flex items-center justify-center p-6">
 
-    <div id="userModal" class="fixed inset-0 z-[3000] flex items-center justify-center bg-slate-900/60 backdrop-blur-md px-4">
-        <div class="glass-card p-8 max-w-sm w-full text-center border-t-4 border-purple-600">
-            <div class="w-20 h-20 bg-purple-600 rounded-2xl flex items-center justify-center text-white text-3xl mx-auto mb-6 shadow-xl shadow-purple-200">
-                <i class="fas fa-user-graduate"></i>
-            </div>
-            <h2 class="text-2xl font-900 text-slate-800 mb-2">أهلاً بك في منصة أطلس</h2>
-            <p class="text-slate-500 mb-6 font-bold text-sm">سجل بياناتك لدخول لوحة الشرف</p>
-            
-            <input type="text" id="studentName" placeholder="الاسم الرباعي" class="w-full p-4 rounded-2xl border border-slate-200 mb-4 focus:ring-2 focus:ring-purple-500 outline-none font-bold text-center">
-            
-            <select id="studentGrade" class="w-full p-4 rounded-2xl border border-slate-200 mb-6 focus:ring-2 focus:ring-purple-500 outline-none font-bold text-slate-600 text-center">
-                <option value="">اختر الصف الدراسي</option>
-                <option value="رابع ابتدائي">رابع ابتدائي</option>
-                <option value="خامس ابتدائي">خامس ابتدائي</option>
-                <option value="سادس ابتدائي">سادس ابتدائي</option>
-                <option value="أولى إعدادي">أولى إعدادي</option>
-                <option value="تانية إعدادي">تانية إعدادي</option>
-            </select>
-
-            <button onclick="startQuiz()" class="w-full py-4 bg-gradient-to-r from-purple-600 to-purple-800 text-white rounded-2xl font-900 shadow-xl hover:scale-105 transition-transform active:scale-95">بدء التحدي</button>
+    <div id="splash-screen">
+        <div class="splash-logo-container" id="splash-logo">
+            <div class="splash-shape" id="splash-shape"></div>
+            <div class="splash-text" id="splash-text">اطلس</div>
         </div>
+        <div class="loader-bar" id="splash-loader"></div>
+        <p class="text-slate-400 font-bold text-[10px] mt-6 tracking-[0.3em] uppercase opacity-0" id="splash-tagline">طريقك نحو القمة</p>
     </div>
 
-    <div id="quiz-wrapper" class="max-w-3xl mx-auto" style="display:none;">
-        <div class="flex justify-between items-center mb-10">
-            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100">
-                <i class="fas fa-sign-out-alt rotate-180"></i>
-                <span class="font-bold text-sm text-slate-800">خروج</span>
+    <div id="login-container" class="bg-white w-full max-w-sm p-10 rounded-[45px] shadow-2xl text-center border border-slate-50">
+        <div class="logo-container">
+            <div class="logo-shape"></div>
+            <div class="logo-text">اطلس</div>
+        </div>
+        <h2 class="text-2xl font-black text-slate-800 mb-2">مرحباً بك يا بطل</h2>
+        <p class="text-slate-400 text-xs font-bold mb-8">يرجى تسجيل الدخول للبدء</p>
+
+        <div class="space-y-4">
+            <div class="relative">
+                <input type="text" id="user" class="login-input" placeholder="اسم المستخدم" autocomplete="off">
+                <i class="fas fa-user absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+            </div>
+            <div class="relative">
+                <input type="password" id="pass" class="login-input" placeholder="كلمة المرور">
+                <i class="fas fa-lock absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+            </div>
+
+            <button onclick="handleLogin()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-100 transition-all transform active:scale-95">
+                دخول المنصة <i class="fas fa-sign-in-alt mr-2"></i>
             </button>
-            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-purple-600">
-                <span id="q-count">1</span> / 50
-            </div>
-            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-map-marked-alt"></i></div>
+
+            <a href="final-reviews.html" class="final-review-btn">
+                <span>المراجعات النهائية 2026</span>
+                <i class="fas fa-rocket"></i>
+            </a>
         </div>
 
-        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
-            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
-        </div>
-
-        <div class="glass-card p-8 md:p-12 mb-10">
-            <h2 id="main-question" class="text-xl md:text-2xl font-900 text-slate-800 leading-snug text-center mb-12 min-h-[3rem]">جارٍ تحميل السؤال...</h2>
-            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
-        </div>
-
-        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
-            <span>تأكيد الإجابة</span>
-            <i class="fas fa-chevron-left"></i>
-        </button>
-    </div>
-
-    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
-        <div class="glass-card p-12 bg-white mb-6 border-2 border-purple-100">
-            <div class="text-7xl mb-6">🏆</div>
-            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
-            <p id="student-display" class="text-slate-500 font-bold mb-8 italic"></p>
-            <div class="relative inline-block mb-10">
-                <svg class="w-40 h-40 transform -rotate-90">
-                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
-                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#a855f7" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
-                </svg>
-                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
-                </div>
-            </div>
-            <div id="result-msg" class="text-xl font-black text-purple-600"></div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-            <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg">إعادة الاختبار</button>
-            <a href="grade8.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
-        </div>
-    </div>
-
-    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
-            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
-            <div class="flex gap-3 mt-6">
-                <a href="grade8.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center text-sm">خروج</a>
-                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">إلغاء</button>
-            </div>
+        <div class="mt-10 pt-6 border-t border-slate-100">
+            <p class="text-[11px] text-slate-500 font-bold mb-1">إعداد وتصميم: أ. إيهاب أشرف</p>
+            <a href="https://wa.me/201559116736" class="text-[10px] text-emerald-500 font-black"><i class="fab fa-whatsapp"></i> 01559116736</a>
         </div>
     </div>
 
     <script>
-        const questions = [
-            { q: "تحتل قارة آسيا المركز ......... عالمياً من حيث عدد السكان.", a: ["الأول", "الثاني", "الثالث", "الرابع"], c: 0 },
-            { q: "يتركز السكان في آسيا بالسهول الفيضية لنهر ......... في الصين.", a: ["الجانج", "اليانجتسى", "السند", "دجلة"], c: 1 },
-            { q: "تعد قارة ......... ثالث قارات العالم من حيث عدد السكان.", a: ["أفريقيا", "أمريكا الشمالية", "أوروبا", "أستراليا"], c: 2 },
-            { q: "أكبر دول قارة آسيا من حيث عدد السكان هي ......... .", a: ["روسيا", "الهند", "اليابان", "إندونيسيا"], c: 1 },
-            { q: "يرجع انخفاض معدل المواليد في أوروبا إلى عدة أسباب منها ......... .", a: ["انخفاض مستوى المعيشة", "ارتفاع مستويات التعليم", "زيادة عدد المواليد", "الهجرة الخارجة"], c: 1 },
-            { q: "أي من المناطق التالية تنخفض بها الكثافة السكانية في آسيا بسبب البرودة؟", a: ["سهول الجانج", "جزر اليابان", "سهول سيبيريا", "شبه الجزيرة العربية"], c: 2 },
-            { q: "يطلق مصطلح 'الاقتصاد الفضي' على الأنشطة الاقتصادية التي تهتم بفئة ......... .", a: ["صغار السن", "الشباب", "كبار السن", "المهاجرين"], c: 2 },
-            { q: "يقل عدد السكان في قارة أوروبا في المناطق ......... مثل فنلندا والنرويج.", a: ["الجنوبية", "الغربية", "الشمالية", "الوسطى"], c: 2 },
-            { q: "تعد دولة ......... أولى دول قارة أوروبا في عدد السكان.", a: ["ألمانيا", "فرنسا", "روسيا الاتحادية", "إيطاليا"], c: 2 },
-            { q: "تبلغ نسبة فئة سن العمل (15 - 64 عاماً) في آسيا وأوروبا نحو ......... من السكان.", a: ["ثلث", "ثلثي", "نصف", "ربع"], c: 1 },
-            { q: "تتشابه قارة آسيا وأوروبا في انخفاض معدلات المواليد في الهرم السكاني ذو ......... .", a: ["القاعدة العريضة", "القاعدة الضيقة", "القمة المدببة", "الشكل الأسطواني"], c: 1 },
-            { q: "يرجع الارتفاع الطفيف لنسبة الإناث في أوروبا (51.6%) إلى ......... .", a: ["الهجرة الوافدة", "انخراط الذكور في الحروب العالمية", "زيادة معدل المواليد", "الاهتمام بالرعاية الصحية"], c: 1 },
-            { q: "تزداد نسبة المنفق على التعليم في آسيا وأوروبا، وتعد دولة ......... أولى دول آسيا إنفاقاً.", a: ["الكويت", "عُمان", "الصين", "اليابان"], c: 1 },
-            { q: "يعاني سكان آسيا من مشكلات عديدة بسبب زيادة السكان منها نقص ......... .", a: ["فرص العمل", "التعليم", "المساحات الخضراء", "الرعاية الطبية"], c: 0 },
-            { q: "تعد جزيرة ......... أكثر مناطق العالم ازدحاماً بالسكان لخصوبة تربتها.", a: ["اليابان", "جاوه", "الفلبين", "صقلية"], c: 1 },
-            { q: "من أسباب ندرة السكان في شبه الجزيرة العربية ......... .", a: ["شدة البرودة", "ندرة المياه", "وعورة التضاريس", "التلوث البيئي"], c: 1 },
-            { q: "تهدف سياسات دول أوروبا لمواجهة زيادة كبار السن إلى ......... .", a: ["تقليل سن التقاعد", "رفع سن التقاعد تدريجياً", "منع الهجرة", "زيادة الضرائب"], c: 1 },
-            { q: "تشهد قارة آسيا تيارات هجرة وافدة خاصة إلى دول ......... .", a: ["شرق آسيا", "وسط آسيا", "الخليج العربي", "شمال القارة"], c: 2 },
-            { q: "يظهر أثر اللغة السلبي على الهوية السياسية كما حدث في دولة ......... .", a: ["الهند", "باكستان", "اليابان", "إيطاليا"], c: 1 },
-            { q: "من العادات والتقاليد المميزة للمجتمع الإنجليزي في أوروبا ......... .", a: ["الانحناء المتبادل", "تناول الشاي بعد الظهر", "الرقصات الكلاسيكية", "صناعة الفخار"], c: 1 },
-            { q: "طبقاً لنظرية التحول الديموجرافي، تعيش قارة آسيا حالياً في المرحلة ......... .", a: ["الأولى", "الثانية", "الثالثة", "الرابعة"], c: 2 },
-            { q: "يرجع انخفاض نسبة السكان في سهول سيبيريا وشمال أوروبا إلى عامل ......... .", a: ["المناخ", "التضاريس", "التربة", "الاقتصاد"], c: 0 },
-            { q: "تصل نسبة العاملين في النشاط الصناعي في كل من آسيا وأوروبا إلى ......... تقريباً.", a: ["10%", "25%", "50%", "75%"], c: 1 },
-            { q: "من الأمراض المنتشرة في بعض دول آسيا بسبب سوء التغذية وفقر البيئة ......... .", a: ["السرطان", "الملاريا", "السكري", "أمراض القلب"], c: 1 },
-            { q: "تتساوى معدلات المواليد مع معدلات الوفيات في قارة ......... (الزيادة الطبيعية صفر).", a: ["آسيا", "أفريقيا", "أوروبا", "أستراليا"], c: 2 },
-            { q: "أي من الدول التالية تعد 'ثاني' دول قارة آسيا إنفاقاً على التعليم؟", a: ["عُمان", "الكويت", "السعودية", "إندونيسيا"], c: 1 },
-            { q: "يؤدي الاهتمام بصحة فئة صغار السن في قارتي آسيا وأوروبا إلى ارتفاع ......... .", a: ["معدل المواليد", "العمر المتوقع عند الميلاد", "نسبة الوفيات", "الهجرة غير الشرعية"], c: 1 },
-            { q: "تعد دولة ......... أولى دول العالم من حيث نسبة فئة كبار السن.", a: ["إيطاليا", "اليابان", "ألماينا", "الصين"], c: 1 },
-            { q: "أي من الأكلات الوطنية التالية تشتهر بها دولة كوريا الجنوبية؟", a: ["السوشي", "الكيمتشي", "البيتزا", "الكريب"], c: 1 },
-            { q: "يقل نصيب الفرد من المياه العذبة للنصف في دولة ......... بسبب الزيادة السكانية.", a: ["اليابان", "الهند", "روسيا", "إيطاليا"], c: 1 },
-            { q: "تشتهر دول إسكندنافيا (السويد والنرويج) في أوروبا بحرفة ......... .", a: ["صناعة الزجاج", "الرسم على الخشب", "السجاد اليدوي", "صناعة الحرير"], c: 1 },
-            { q: "يرجع انخفاض نسبة الإنفاق على التعليم في إندونيسيا وتايلاند إلى موقعهم في ......... .", a: ["شرق آسيا", "جنوب شرق آسيا", "وسط آسيا", "غرب آسيا"], c: 1 },
-            { q: "أي من الدول التالية تعتبر مقصداً رئيسياً للمهاجرين غير الشرعيين في أوروبا؟", a: ["ألمانيا والسويد", "إيطاليا واليونان", "فرنسا وإنجلترا", "النمسا وسويسرا"], c: 1 },
-            { q: "يتركز السكان في السهل الأوروبي العظيم بسبب ......... .", a: ["برودة الجو", "توفر المدن الكبرى والتربة الخصبة", "وجود الجبال العالية", "النشاط الرعوي"], c: 1 },
-            { q: "يمثل 'سن التقاعد' في بعض دول أوروبا العمر الذي لا يقل عن ......... عاماً.", a: ["50", "60", "65", "70"], c: 1 },
-            { q: "من النتائج المترتبة على الهجرة غير الشرعية تعرض المهاجرين لـ ......... .", a: ["زيادة الدخل فوراً", "انتهاكات شبكات الإتجار بالبشر", "الحصول على الجنسية بسهولة", "تحسن الحالة الصحية"], c: 1 },
-            { q: "أسهمت اللغة ......... في ثراء التراث الإسلامي وتوحيد الشعوب في آسيا وأفريقيا.", a: ["الفارسية", "العربية", "الهندية", "الصينية"], c: 1 },
-            { q: "تظهر الرقصات الفلكلورية الإيطالية كجزء من الهوية الثقافية لقارة ......... .", a: ["آسيا", "أوروبا", "أمريكا", "أفريقيا"], c: 1 },
-            { q: "يرجع سبب ضيق قاعدة الهرم السكاني في قارتي آسيا وأوروبا عام 2025م إلى ......... .", a: ["ارتفاع الوفيات", "انخفاض معدل المواليد", "زيادة الهجرة", "الحروب"], c: 1 },
-            { q: "أي من المناطق التالية يقل فيها السكان في أوروبا بسبب وعورة التضاريس؟", a: ["المناطق الجبلية والهضبية", "السهول الفيضية", "المناطق الصناعية", "المدن الكبرى"], c: 0 },
-            { q: "تؤثر الهجرة الوافدة (القادمة) إلى أوروبا بشكل إيجابي على ......... .", a: ["زيادة نسبة صغار السن", "تعويض نقص عدد السكان والعمالة", "زيادة التلوث", "تقليل استهلاك الطاقة"], c: 1 },
-            { q: "من المشكلات الناتجة عن الهجرة الداخلية في دول آسيا المكتظة بالسكان ......... .", a: ["زيادة مساحة الأراضي الزراعية", "ظهور العشوائيات في المدن", "تحسن البنية التحتية", "انخفاض التلوث"], c: 1 },
-            { q: "تتميز قارة آسيا بوجود تنوع لغوي كبير، حيث تضم نحو ......... لغة.", a: ["200", "500", "2300", "1000"], c: 2 },
-            { q: "أي من الدول الآسيوية التالية تتبع سياسة 'بناء الوحدات الصحية ومراكز تنظيم الأسرة'؟", a: ["اليابان", "الصين", "الهند وإندونيسيا", "كوريا الجنوبية"], c: 2 },
-            { q: "تعد الموسيقى الأيرلندية من أشهر الفنون التقليدية في قارة ......... .", a: ["آسيا", "أوروبا", "أستراليا", "أفريقيا"], c: 1 },
-            { q: "يزداد الطلب على 'الطاقة الأحفورية' في الدول الصناعية بآسيا مما يؤدي لـ ......... .", a: ["انخفاض درجات الحرارة", "زيادة انبعاثات الغازات الدفيئة", "تحسن صحة السكان", "وفرة المياه العذبة"], c: 1 },
-            { q: "تعد دولة ......... ثاني دول قارة أوروبا من حيث عدد السكان.", a: ["إيطاليا", "ألمانيا", "فرنسا", "إسبانيا"], c: 1 },
-            { q: "تشتهر دولة إيرلندا في أوروبا بصناعة ......... .", a: ["الفخار اليدوي", "الموسيقى التقليدية", "السجاد", "الحرير"], c: 1 },
-            { q: "يرجع انخفاض الكثافة السكانية في المناطق الصحراوية بآسيا إلى ......... .", a: ["البرودة الشديدة", "صعوبة الطقس وندرة المياه", "وجود الغابات الكثيفة", "كثرة المصانع"], c: 1 },
-            { q: "تعتبر قارة ......... من أغنى قارات العالم ثقافياً وتاريخياً لوجود الحضارات القديمة.", a: ["آسيا وأوروبا", "أمريكا الشمالية", "أستراليا", "القطبية الجنوبية"], c: 0 }
-        ];
+        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5wBVZeNv3Ijg80p-YkD57IPnAXnzWFT1kyoIVXIn46zY-U9fcykFNd3vgAzjMkJlOk0J2hqazdIoI/pub?gid=0&single=true&output=csv";
 
-        let index = 0, score = 0, picked = null;
-        let studentData = { name: "", grade: "" };
+        window.onload = function() {
+            sessionStorage.clear();
+            localStorage.clear();
 
-        function startQuiz() {
-            const nameInput = document.getElementById('studentName').value;
-            const gradeInput = document.getElementById('studentGrade').value;
-
-            if (nameInput.trim().split(/\s+/).length < 3) {
-                Swal.fire({ text: 'يرجى كتابة الاسم الثلاثي أو الرباعي لدخول لوحة الشرف', icon: 'error', confirmButtonColor: '#8b5cf6' });
-                return;
-            }
-            if (gradeInput === "") {
-                Swal.fire({ text: 'يرجى اختيار الصف الدراسي', icon: 'error', confirmButtonColor: '#8b5cf6' });
-                return;
-            }
-
-            studentData.name = nameInput;
-            studentData.grade = gradeInput;
-            document.getElementById('userModal').style.display = 'none';
-            document.getElementById('quiz-wrapper').style.display = 'block';
-            render();
-        }
-
-        function render() {
-            picked = null;
-            const q = questions[index];
-            document.getElementById('main-question').innerText = q.q;
-            document.getElementById('q-count').innerText = index + 1;
-            
-            const grid = document.getElementById('options-grid');
-            grid.innerHTML = '';
-            
-            q.a.forEach((opt, i) => {
-                const btn = document.createElement('div');
-                btn.className = 'option-box p-5 md:p-6 rounded-2xl flex items-center gap-4 transition-all';
-                btn.innerHTML = `
-                    <div class="opt-prefix">${String.fromCharCode(65 + i)}</div>
-                    <span class="font-bold text-sm md:text-base text-slate-700">${opt}</span>
-                `;
-                btn.onclick = () => {
-                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
-                    btn.classList.add('selected');
-                    picked = i;
-                };
-                grid.appendChild(btn);
+            // أنيميشن شاشة البداية
+            anime({
+                targets: '#splash-logo',
+                opacity: [0, 1],
+                scale: [0.5, 1],
+                rotate: '1turn',
+                easing: 'easeOutElastic(1, .5)',
+                duration: 2000,
+                delay: 200
             });
-            
-            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+
+            anime({
+                targets: '#splash-text',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                easing: 'easeOutExpo',
+                duration: 1200,
+                delay: 1000
+            });
+
+            anime({
+                targets: '#splash-shape',
+                borderRadius: [
+                    '30% 70% 70% 30% / 30% 30% 70% 70%',
+                    '50% 50% 33% 67% / 55% 27% 73% 45%',
+                    '30% 70% 70% 30% / 30% 30% 70% 70%'
+                ],
+                easing: 'linear',
+                duration: 6000,
+                loop: true,
+                direction: 'alternate'
+            });
+
+            anime({
+                targets: ['#splash-loader', '#splash-tagline'],
+                opacity: [0, 1],
+                easing: 'easeInQuad',
+                duration: 1000,
+                delay: 1500
+            });
+
+            anime({
+                targets: '#splash-loader::after',
+                left: ['-100%', '0%'],
+                easing: 'easeInOutQuad',
+                duration: 3000,
+                delay: 2000,
+                complete: function() {
+                    showLoginForm();
+                }
+            });
         }
 
-        function goToNext() {
-            if (picked === null) {
-                Swal.fire({ text: 'اختر إجابة أولاً يا بطل!', icon: 'warning', confirmButtonColor: '#8b5cf6' });
+        function showLoginForm() {
+            const splash = document.getElementById('splash-screen');
+            const login = document.getElementById('login-container');
+            
+            splash.style.transition = 'opacity 0.8s ease';
+            splash.style.opacity = '0';
+            
+            setTimeout(() => {
+                splash.style.display = 'none';
+                login.style.display = 'block';
+                setTimeout(() => {
+                    login.style.opacity = '1';
+                    login.style.transform = 'translateY(0)';
+                }, 50);
+                document.body.style.overflow = 'auto';
+            }, 800);
+        }
+
+        async function handleLogin() {
+            const uInput = document.getElementById('user').value.toLowerCase().trim();
+            const pInput = document.getElementById('pass').value.toLowerCase().trim();
+
+            if (!uInput || !pInput) {
+                Swal.fire({ icon: 'warning', title: 'تنبيه', text: 'برجاء كتابة البيانات كاملة' });
                 return;
             }
-            if (picked === questions[index].c) score++;
-            
-            index++;
-            if (index < questions.length) {
-                render();
-            } else {
-                finish();
+
+            Swal.fire({ title: 'جاري التحقق...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
+
+            try {
+                const response = await fetch(`${SHEET_URL}&t=${new Date().getTime()}`);
+                const csvData = await response.text();
+                const rows = csvData.split("\n").map(row => row.split(","));
+                
+                let found = false;
+                let userRole = "student";
+
+                for (let i = 1; i < rows.length; i++) {
+                    const user = rows[i][0]?.trim().toLowerCase();
+                    const pass = rows[i][1]?.trim().toLowerCase();
+                    if (user === uInput && pass === pInput) {
+                        found = true;
+                        if (user === "mrehab") userRole = "admin";
+                        break;
+                    }
+                }
+
+                if (found) {
+                    sessionStorage.setItem("atlas_auth", "true");
+                    sessionStorage.setItem("role", userRole);
+                    sessionStorage.setItem("student_identity", uInput);
+                    Swal.fire({ icon: 'success', title: 'تم الدخول بنجاح', text: 'أهلاً بك في منصة أطلس', showConfirmButton: false, timer: 1500 });
+                    setTimeout(() => {
+                        window.location.href = (userRole === "admin") ? "dashboard.html" : "home.html";
+                    }, 1500);
+                } else {
+                    Swal.fire({ icon: 'error', title: 'عذراً!', text: 'اسم المستخدم أو كلمة المرور خطأ' });
+                }
+            } catch (error) {
+                Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'فشلنا في الوصول لقاعدة البيانات' });
             }
         }
-
-        function finish() {
-            document.getElementById('quiz-wrapper').style.display = 'none';
-            document.getElementById('result-view').classList.remove('hidden');
-            
-            const pct = Math.round((score / questions.length) * 100);
-            document.getElementById('score-text').innerText = pct + '%';
-            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
-            document.getElementById('result-msg').innerText = pct >= 50 ? "أداء رائع يا بطل أطلس!" : "راجع الدرس وحاول مرة أخرى!";
-            document.getElementById('student-display').innerText = `الطالب: ${studentData.name} | ${studentData.grade}`;
-
-            // استدعاء دالة الإرسال المؤكدة
-            sendToGoogleSheets(studentData.name, studentData.grade, score);
-        }
-
-        function sendToGoogleSheets(name, grade, finalScore) {
-            const formActionURL = "https://docs.google.com/forms/d/e/1FAIpQLSdnInXBfJCZc1f45Dp9lIEv_N3t2W4W2Mu99lQ1pFCugZlBRA/formResponse";
-            
-            const params = new URLSearchParams();
-            params.append("entry.2062423793", name);
-            params.append("entry.2120427301", grade);
-            params.append("entry.1691218224", finalScore);
-
-            fetch(formActionURL, {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: params.toString()
-            }).then(() => {
-                console.log("✅ تم الإرسال لشيت مستر إيهاب بنجاح");
-            }).catch(err => console.error("❌ خطأ:", err));
-        }
-
-        function toggleExitModal(s) { 
-            document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; 
-        }
-
-        window.onload = () => {
-            document.getElementById('userModal').style.display = 'flex';
-        };
     </script>
 </body>
 </html>
