@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المراجعات النهائية | أطلس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: #f1f5f9; overflow-x: hidden; }
+        
+        .header-gradient {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .pdf-card {
+            background: white;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ستايل المشاهد داخل المنصة */
+        #pdf-viewer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .viewer-container {
+            width: 100%;
+            max-width: 900px;
+            height: 90%;
+            margin: auto;
+            background: white;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        .close-viewer {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ef4444;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10001;
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <header class="header-gradient text-white pt-10 pb-20 px-6 rounded-b-[50px] shadow-lg relative">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-black mb-2">مركز المراجعات النهائية 🚀</h1>
+                <p class="text-emerald-100 opacity-80 font-bold">كل ما تحتاجه للقمة في مكان واحد</p>
+            </div>
+            <a href="home.html" class="bg-white/20 hover:bg-white/30 p-3 rounded-2xl transition-all">
+                <i class="fas fa-home text-2xl"></i>
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 -mt-10">
+        <div class="bg-white p-4 rounded-3xl shadow-sm mb-8 flex flex-col md:flex-row gap-4 items-center">
+            <div class="relative w-full">
+                <input type="text" id="searchInput" onkeyup="filterPDFs()" placeholder="ابحث عن مراجعة محددة..." 
+                class="w-full p-4 pr-12 bg-slate-100 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500 outline-none font-bold">
+                <i class="fas fa-search absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+            </div>
+        </div>
+
+        <div id="pdfGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
+            
+            <div class="pdf-card p-6 flex flex-col items-center text-center" data-title="مراجعة ليلة الامتحان الأولى">
+                <div class="w-20 h-20 bg-red-50 text-red-500 rounded-3xl flex items-center justify-center text-3xl mb-4">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3 class="text-xl font-black text-slate-800 mb-2">مراجعة ليلة الامتحان (1)</h3>
+                <p class="text-slate-500 text-sm font-bold mb-6">تشمل أهم 100 سؤال في المنهج</p>
+                
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    <button onclick="viewPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf')" 
+                        class="py-3 bg-emerald-500 text-white rounded-xl font-bold text-sm hover:bg-emerald-600 transition-all">
+                        <i class="fas fa-eye ml-1"></i> عرض
+                    </button>
+                    <a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" download 
+                        class="py-3 bg-slate-800 text-white rounded-xl font-bold text-sm hover:bg-slate-900 transition-all text-center">
+                        <i class="fas fa-download ml-1"></i> تحميل
+                    </a>
+                </div>
+            </div>
+
+            <div class="pdf-card p-6 flex flex-col items-center text-center" data-title="ملخص قوانين الفيزياء">
+                <div class="w-20 h-20 bg-blue-50 text-blue-500 rounded-3xl flex items-center justify-center text-3xl mb-4">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3 class="text-xl font-black text-slate-800 mb-2">ملخص القوانين</h3>
+                <p class="text-slate-500 text-sm font-bold mb-6">خرائط ذهنية لسهولة الحفظ</p>
+                
+                <div class="grid grid-cols-2 gap-3 w-full">
+                    <button onclick="viewPDF('https://example.com/file2.pdf')" 
+                        class="py-3 bg-emerald-500 text-white rounded-xl font-bold text-sm hover:bg-emerald-600 transition-all">
+                        <i class="fas fa-eye ml-1"></i> عرض
+                    </button>
+                    <a href="#" class="py-3 bg-slate-800 text-white rounded-xl font-bold text-sm hover:bg-slate-900 transition-all text-center">
+                        <i class="fas fa-download ml-1"></i> تحميل
+                    </a>
+                </div>
+            </div>
+
+            </div>
+    </main>
+
+    <div id="pdf-viewer-modal">
+        <div class="close-viewer" onclick="closeViewer()"><i class="fas fa-times"></i></div>
+        <div class="viewer-container">
+            <iframe id="pdfFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // حماية الصفحة: التأكد من تسجيل الدخول
+        window.onload = function() {
+            if (sessionStorage.getItem("atlas_auth") !== "true") {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'غير مسموح!',
+                    text: 'يجب تسجيل الدخول أولاً للوصول للمراجعات',
+                    confirmButtonText: 'ذهاب لتسجيل الدخول'
+                }).then(() => {
+                    window.location.href = "login.html"; // اسم ملف تسجيل الدخول عندك
+                });
+            }
+
+            // أنيميشن ظهور الكروت
+            anime({
+                targets: '.pdf-card',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                delay: anime.stagger(100),
+                easing: 'easeOutExpo',
+                duration: 1000
+            });
+        }
+
+        // دالة عرض الـ PDF
+        function viewPDF(url) {
+            const modal = document.getElementById('pdf-viewer-modal');
+            const frame = document.getElementById('pdfFrame');
+            
+            Swal.fire({
+                title: 'جاري فتح الملف...',
+                timer: 800,
+                didOpen: () => { Swal.showLoading() }
+            }).then(() => {
+                frame.src = url;
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        }
+
+        function closeViewer() {
+            const modal = document.getElementById('pdf-viewer-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('pdfFrame').src = "";
+        }
+
+        // دالة البحث (البحث في العناوين)
+        function filterPDFs() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.getElementsByClassName('pdf-card');
+
+            for (let i = 0; i < cards.length; i++) {
+                let title = cards[i].getAttribute('data-title').toLowerCase();
+                if (title.includes(input)) {
+                    cards[i].style.display = "flex";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
