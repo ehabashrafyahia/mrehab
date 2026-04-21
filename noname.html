@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كشف درجات المبدعين</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .table-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            color: #34495e;
+            font-size: 16px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* تنسيق الدرجات الكاملة */
+        .full-mark {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        /* تنسيق بدون درجة بالعلامة الحمراء */
+        .no-grade {
+            background-color: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .badge {
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        .excellent { background-color: #d4edda; color: #155724; }
+        .good { background-color: #fff3cd; color: #856404; }
+
+    </style>
+</head>
+<body>
+
+<div class="table-card">
+    <div class="header">
+        <h1>📊 كشف نتائج الطلاب (من 30 درجة)</h1>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>اسم الطالب</th>
+                <th>الدرجة المرصودة</th>
+                <th>التقدير</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>نوران عاطف</td>
+                <td class="full-mark">30 / 30</td>
+                <td><span class="badge excellent">امتياز مع مرتبة الشرف</span></td>
+            </tr>
+            <tr>
+                <td>ندي فتحي</td>
+                <td class="full-mark">30 / 30</td>
+                <td><span class="badge excellent">امتياز مع مرتبة الشرف</span></td>
+            </tr>
+            <tr>
+                <td>أمل عرفه</td>
+                <td>29.5 / 30</td>
+                <td><span class="badge excellent">امتياز</span></td>
+            </tr>
+            <tr>
+                <td>مصطفي رضا</td>
+                <td>28 / 30</td>
+                <td><span class="badge excellent">امتياز</span></td>
+            </tr>
+            <tr>
+                <td>جني محمود</td>
+                <td>28 / 30</td>
+                <td><span class="badge excellent">امتياز</span></td>
+            </tr>
+            <tr>
+                <td>حسام حسن</td>
+                <td>24 / 30</td>
+                <td><span class="badge good">جيد جداً</span></td>
+            </tr>
+            <tr>
+                <td>محمود محمد</td>
+                <td>21 / 30</td>
+                <td><span class="badge good">جيد</span></td>
+            </tr>
+            <tr>
+                <td>جني محمد</td>
+                <td><span class="no-grade">بدون درجة ✘</span></td>
+                <td>--</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
