@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>قريبًا | مناهج العام الدراسي الجديد</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Cairo',sans-serif;
+overflow:hidden;
+background:
+radial-gradient(circle at top,#d1fae5 0%,#f8fafc 45%,#ffffff 100%);
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+/* خلفية متحركة */
+
+body::before{
+content:"";
+position:absolute;
+width:700px;
+height:700px;
+background:#10b98115;
+filter:blur(80px);
+border-radius:50%;
+animation:move 10s ease-in-out infinite alternate;
+}
+
+@keyframes move{
+from{
+transform:translate(-150px,-100px);
+}
+to{
+transform:translate(180px,120px);
+}
+}
+
+/* الكارت */
+
+.card{
+
+width:95%;
+max-width:620px;
+
+padding:45px;
+
+background:rgba(255,255,255,.75);
+
+backdrop-filter:blur(18px);
+
+border-radius:35px;
+
+box-shadow:0 25px 60px rgba(0,0,0,.08);
+
+text-align:center;
+
+position:relative;
+
+z-index:2;
+
+}
+
+/* اللوجو */
+
+.logo{
+
+width:170px;
+height:130px;
+margin:auto;
+position:relative;
+display:flex;
+justify-content:center;
+align-items:center;
+
+}
+
+.logoShape{
+
+position:absolute;
+
+width:100%;
+height:100%;
+
+background:linear-gradient(135deg,#10b981,#059669);
+
+border-radius:30% 70% 70% 30% / 30% 30% 70% 70%;
+
+box-shadow:0 20px 35px rgba(16,185,129,.25);
+
+animation:morph 6s linear infinite;
+
+}
+
+@keyframes morph{
+
+0%,100%{
+border-radius:30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+50%{
+border-radius:55% 45% 34% 66% / 43% 58% 42% 57%;
+}
+
+}
+
+.logoText{
+
+position:relative;
+z-index:5;
+
+font-family:'Reem Kufi';
+
+font-size:52px;
+
+font-weight:bold;
+
+color:#fff;
+
+}
+
+h1{
+
+font-size:38px;
+
+font-weight:900;
+
+color:#0f172a;
+
+margin-top:18px;
+
+}
+
+.subtitle{
+
+margin-top:12px;
+
+font-size:19px;
+
+font-weight:700;
+
+color:#10b981;
+
+}
+
+.desc{
+
+margin-top:15px;
+
+line-height:2;
+
+font-size:15px;
+
+color:#64748b;
+
+}
+
+/* شريط التحميل */
+
+.progress{
+
+margin:35px auto;
+
+width:250px;
+
+height:8px;
+
+background:#e2e8f0;
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+.fill{
+
+width:0%;
+
+height:100%;
+
+background:linear-gradient(to right,#10b981,#22c55e);
+
+border-radius:20px;
+
+}
+
+/* المميزات */
+
+.features{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:15px;
+
+margin-top:30px;
+
+}
+
+.box{
+
+background:#fff;
+
+padding:18px;
+
+border-radius:20px;
+
+font-weight:800;
+
+color:#0f172a;
+
+box-shadow:0 10px 25px rgba(0,0,0,.05);
+
+}
+
+.footer{
+
+margin-top:35px;
+
+font-size:14px;
+
+font-weight:900;
+
+color:#334155;
+
+}
+
+.phone{
+
+margin-top:8px;
+
+color:#10b981;
+
+font-weight:900;
+
+}
+
+@media(max-width:600px){
+
+.features{
+
+grid-template-columns:1fr;
+
+}
+
+h1{
+
+font-size:30px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<div class="logo" id="logo">
+
+<div class="logoShape"></div>
+
+<div class="logoText">أطلس</div>
+
+</div>
+
+<h1 id="title">قريبًا...</h1>
+
+<div class="subtitle" id="sub">
+مناهج العام الدراسي الجديد
+</div>
+
+<div class="desc" id="desc">
+
+استعد لتجربة تعليمية مختلفة مع منصة أطلس.<br>
+
+شرح احترافي، اختبارات ذكية، مراجعات شاملة، ومحتوى جديد بالكامل.
+
+</div>
+
+<div class="progress">
+
+<div class="fill"></div>
+
+</div>
+
+<div class="features">
+
+<div class="box">📚 شرح مبسط</div>
+
+<div class="box">🎥 فيديوهات عالية الجودة</div>
+
+<div class="box">📝 اختبارات تفاعلية</div>
+
+<div class="box">🏆 متابعة مستمرة</div>
+
+</div>
+
+<div class="footer">
+
+أ. إيهاب أشرف<br>
+
+مدرس الدراسات الاجتماعية
+
+<div class="phone">
+
+📱 01559116736
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+anime({
+
+targets:"#logo",
+
+scale:[0.5,1],
+
+opacity:[0,1],
+
+rotate:["-25deg","0deg"],
+
+duration:1800,
+
+easing:"easeOutElastic(1,.6)"
+
+});
+
+anime({
+
+targets:["#title","#sub","#desc"],
+
+translateY:[30,0],
+
+opacity:[0,1],
+
+delay:anime.stagger(250,{start:800}),
+
+duration:1000,
+
+easing:"easeOutExpo"
+
+});
+
+anime({
+
+targets:".box",
+
+translateY:[40,0],
+
+opacity:[0,1],
+
+delay:anime.stagger(150,{start:1600}),
+
+duration:800,
+
+easing:"easeOutBack"
+
+});
+
+anime({
+
+targets:".fill",
+
+width:["0%","100%"],
+
+duration:3500,
+
+easing:"easeInOutQuart",
+
+loop:true,
+
+direction:"alternate"
+
+});
+
+</script>
+
+</body>
+</html>
