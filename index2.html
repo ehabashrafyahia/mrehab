@@ -63,11 +63,6 @@
         
         .login-input { width: 100%; padding: 16px; background: #f1f5f9; border: 2px solid transparent; border-radius: 18px; outline: none; transition: 0.3s; text-align: center; font-weight: 700; }
         .login-input:focus { border-color: #10b981; background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
-
-        .result-btn {
-            background: none; border: none; color: #64748b; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.3s;
-        }
-        .result-btn:hover { color: #10b981; }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-6">
@@ -100,12 +95,6 @@
             </div>
             <button onclick="handleLogin()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-100 transition-all transform active:scale-95">
                 دخول المنصة <i class="fas fa-sign-in-alt mr-2"></i>
-            </button>
-        </div>
-
-        <div class="mt-8 pt-4 border-t border-dashed border-slate-100">
-            <button onclick="showResultModal()" class="result-btn">
-                <i class="fas fa-id-card ml-1"></i> الاستعلام عن نتيجة امتحان؟ اضغط هنا
             </button>
         </div>
 
@@ -183,61 +172,6 @@
                 }
             } catch (error) {
                 Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'فشلنا في الوصول لقاعدة البيانات' });
-            }
-        }
-
-        // --- وظيفة الاستعلام عن النتيجة ---
-        function showResultModal() {
-            Swal.fire({
-                title: 'نتيجة الامتحان',
-                text: 'أدخل كود الطالب أو رقم الجلوس لمعرفة درجتك',
-                input: 'text',
-                inputPlaceholder: 'الكود المكون من أرقام...',
-                showCancelButton: true,
-                confirmButtonText: 'بحث عن النتيجة',
-                cancelButtonText: 'إلغاء',
-                confirmButtonColor: '#10b981',
-                preConfirm: (val) => {
-                    if (!val) { Swal.showValidationMessage('يرجى إدخال الكود'); }
-                    return val;
-                }
-            }).then((result) => {
-                if (result.isConfirmed) { checkStudentResult(result.value); }
-            });
-        }
-
-        async function checkStudentResult(studentCode) {
-            Swal.fire({ title: 'جاري البحث...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
-
-            try {
-                const response = await fetch(`${SHEET_URL}&t=${new Date().getTime()}`);
-                const csvData = await response.text();
-                const rows = csvData.split("\n").map(row => row.split(","));
-                
-                // البحث في العمود الأول (الكود)
-                let data = rows.find(r => r[0]?.trim() === studentCode.trim());
-
-                if (data) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'تم العثور على النتيجة!',
-                        html: `
-                            <div class="text-right p-4 bg-slate-50 rounded-2xl border border-slate-100 space-y-3 font-bold">
-                                <p class="text-slate-500 text-xs">اسم الطالب:</p>
-                                <p class="text-slate-800 text-lg">${data[1] || 'غير مسجل'}</p>
-                                <hr class="border-slate-200 border-dashed">
-                                <p class="text-slate-500 text-xs">الدرجة النهائية:</p>
-                                <p class="text-emerald-600 text-3xl font-black">${data[2] || '0'} <span class="text-sm">درجة</span></p>
-                                <p class="text-blue-500 text-xs italic">التقدير: ${data[3] || 'ناجح'}</p>
-                            </div>
-                        `,
-                        confirmButtonText: 'شكراً يا مستر'
-                    });
-                } else {
-                    Swal.fire({ icon: 'error', title: 'عذراً!', text: 'هذا الكود غير موجود في سجلاتنا' });
-                }
-            } catch (e) {
-                Swal.fire({ icon: 'error', title: 'خطأ', text: 'حدثت مشكلة تقنية أثناء البحث' });
             }
         }
     </script>
