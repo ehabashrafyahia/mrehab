@@ -41,6 +41,10 @@
             background: linear-gradient(145deg, #fbbf24, #d97706);
             box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.3);
             animation: pulse-gold 2s infinite;
+            transition: all 0.3s ease;
+        }
+        .unit-exam-btn:hover {
+            transform: translateY(-4px);
         }
         @keyframes pulse-gold {
             0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
@@ -92,7 +96,7 @@
             </a>
             <div class="text-center">
                 <h2 class="text-xl md:text-2xl font-900 text-slate-800">دراسات أولى إعدادي</h2>
-                <p class="text-[10px] md:text-xs text-purple-600 font-extrabold text-uppercase">الفصل الدراسي الثاني</p>
+                <p class="text-[10px] md:text-xs text-purple-600 font-extrabold uppercase">الفصل الدراسي الأول</p>
             </div>
             <div class="w-10 h-10 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600 shadow-inner">
                 <i class="fas fa-graduation-cap"></i>
@@ -100,12 +104,13 @@
         </div>
     </header>
 
-    <main class="max-w-3xl mx-auto px-4 mt-12 space-y-12">
+    <main class="max-w-3xl mx-auto px-4 mt-12 space-y-16">
 
+        <!-- الوحدة الأولى (مفتوحة) -->
         <section>
             <div class="flex items-center gap-4 mb-8">
                 <div class="w-2 h-8 bg-purple-500 rounded-full"></div>
-                <h2 class="text-2xl font-900 text-slate-800">الوحدة الأولى: سكان قارة إفريقيا</h2>
+                <h2 class="text-2xl font-900 text-slate-800">الوحدة الأولى: الملامح الطبيعية لقارة إفريقيا وحضاراتها القديمة</h2>
             </div>
 
             <div class="flex flex-col gap-5">
@@ -114,24 +119,35 @@
                         <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">1</div>
                         <div class="flex flex-col text-right">
                             <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
-                            <span class="font-900 text-lg leading-tight text-white">نمو وتوزيع سكان قارة إفريقيا</span>
+                            <span class="font-900 text-lg leading-tight text-white">قارة إفريقيا (الموقع والكشوف الجغرافية)</span>
                         </div>
                     </div>
                     <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
                 </a>
 
-                <a href="africa-pop.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                <a href="g7-u1-l2.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
                     <div class="flex items-center gap-5 w-full">
                         <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">2</div>
                         <div class="flex flex-col text-right">
                             <span class="text-white/70 text-xs font-bold mb-1">الدرس الثاني</span>
-                            <span class="font-900 text-lg leading-tight text-white">خصائص سكان قارة إفريقيا</span>
+                            <span class="font-900 text-lg leading-tight text-white">مظاهر سطح قارة إفريقيا</span>
                         </div>
                     </div>
                     <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
                 </a>
 
-                <a href="unit1-exam.html" class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center group border-2 border-white/30">
+                <a href="g7-u1-l3.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">3</div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الثالث</span>
+                            <span class="font-900 text-lg leading-tight text-white">نهر النيل والحضارات القديمة في إفريقيا</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
+                </a>
+
+                <a href="g7-u1-exam.html" class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center group border-2 border-white/30">
                     <div class="flex items-center gap-5 w-full">
                         <div class="w-14 h-14 flex-none bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square">
                             <i class="fas fa-star text-yellow-200"></i>
@@ -146,105 +162,103 @@
             </div>
         </section>
 
-        <section>
+        <!-- الوحدة الثانية (مقفلة) -->
+        <section class="is-locked">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-2 h-8 bg-purple-500 rounded-full"></div>
-                <h2 class="text-2xl font-900 text-slate-800">الوحدة الثانية: علاقة مصر بإفريقيا في عهد محمد علي وخلفائه</h2>
+                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-500">الوحدة الثانية: الحضارة المصرية القديمة وعلاقتها بحضارات إفريقيا</h2>
             </div>
 
             <div class="flex flex-col gap-5">
-                <a href="g7-u2-l1.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                <div class="min-h-[100px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
                     <div class="flex items-center gap-5 w-full">
-                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">1</div>
+                        <div class="w-14 h-14 flex-none bg-slate-100 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">1</div>
                         <div class="flex flex-col text-right">
-                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
-                            <span class="font-900 text-lg leading-tight text-white">الدور الحضاري لمصر في قارة إفريقيا في عهد محمد علي</span>
+                            <span class="text-slate-400 text-xs font-bold mb-1">الدرس الأول</span>
+                            <span class="font-900 text-lg leading-tight text-slate-600">عصر الدولة القديمة (عصر بناة الأهرام)</span>
                         </div>
                     </div>
-                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
-                </a>
+                </div>
 
-                <a href="g7-u2-l2.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                <div class="min-h-[100px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
                     <div class="flex items-center gap-5 w-full">
-                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">2</div>
+                        <div class="w-14 h-14 flex-none bg-slate-100 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">2</div>
                         <div class="flex flex-col text-right">
-                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الثاني</span>
-                            <span class="font-900 text-lg leading-tight text-white">الدور الحضاري لمصر في قارة إفريقيا في عهد خلفاء محمد علي</span>
+                            <span class="text-slate-400 text-xs font-bold mb-1">الدرس الثاني</span>
+                            <span class="font-900 text-lg leading-tight text-slate-600">عصر الدولة الوسطى (عصر الرخاء الاقتصادي)</span>
                         </div>
                     </div>
-                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
-                </a>
+                </div>
 
-                <a href="unit2-exam.html" class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center group border-2 border-white/30">
+                <div class="min-h-[100px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-slate-100 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">3</div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-slate-400 text-xs font-bold mb-1">الدرس الثالث</span>
+                            <span class="font-900 text-lg leading-tight text-slate-600">عصر الدولة الحديثة (عصر المجد الحربي)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/30">
                     <div class="flex items-center gap-5 w-full">
                         <div class="w-14 h-14 flex-none bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square">
-                            <i class="fas fa-star text-yellow-200"></i>
+                            <i class="fas fa-crown text-yellow-200"></i>
                         </div>
                         <div class="flex flex-col text-right">
-                            <span class="text-white/80 text-xs font-bold mb-1 italic text-right">اختبر مستواك</span>
+                            <span class="text-white/80 text-xs font-bold mb-1 italic text-right">تحدي الأبطال</span>
                             <span class="font-900 text-lg leading-tight text-white text-right">امتحان شامل: الوحدة الثانية</span>
                         </div>
                     </div>
-                    <i class="fas fa-trophy text-2xl flex-none mr-2"></i>
-                </a>
+                    <i class="fas fa-award text-2xl flex-none mr-2"></i>
+                </div>
             </div>
         </section>
 
-        <section>
+        <!-- الوحدة الثالثة (مقفلة) -->
+        <section class="is-locked">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-2 h-8 bg-purple-500 rounded-full"></div>
-                <h2 class="text-2xl font-900 text-slate-800">الوحدة الثالثة: الأنشطة الاقتصادية ودورها في التنمية المستدامة بإفريقيا</h2>
+                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-500">الوحدة الثالثة: النظم البيئية في قارة إفريقيا</h2>
             </div>
 
             <div class="flex flex-col gap-5">
-                <a href="g7-u3-l1.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                <div class="min-h-[100px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
                     <div class="flex items-center gap-5 w-full">
-                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">1</div>
+                        <div class="w-14 h-14 flex-none bg-slate-100 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">1</div>
                         <div class="flex flex-col text-right">
-                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الأول</span>
-                            <span class="font-900 text-lg leading-tight text-white">الزراعة والثروة الحيوانية والسمكية في إفريقيا</span>
+                            <span class="text-slate-400 text-xs font-bold mb-1">الدرس الأول</span>
+                            <span class="font-900 text-lg leading-tight text-slate-600">نظم الغابات في إفريقيا (الغابات المدارية المطيرة وغابات البحر المتوسط)</span>
                         </div>
                     </div>
-                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
-                </a>
+                </div>
 
-                <a href="g7-u3-l2.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                <div class="min-h-[100px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
                     <div class="flex items-center gap-5 w-full">
-                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">2</div>
+                        <div class="w-14 h-14 flex-none bg-slate-100 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">2</div>
                         <div class="flex flex-col text-right">
-                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الثاني</span>
-                            <span class="font-900 text-lg leading-tight text-white">التعدين والطاقة والصناعة في إفريقيا</span>
+                            <span class="text-slate-400 text-xs font-bold mb-1">الدرس الثاني</span>
+                            <span class="font-900 text-lg leading-tight text-slate-600">نظم الحشائش (الحارة والمعتدلة) والصحارى الحارة في إفريقيا</span>
                         </div>
                     </div>
-                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
-                </a>
+                </div>
 
-                <a href="g7-u3-l3.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
+                <div class="min-h-[100px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
                     <div class="flex items-center gap-5 w-full">
-                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">3</div>
+                        <div class="w-14 h-14 flex-none bg-slate-100 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">3</div>
                         <div class="flex flex-col text-right">
-                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الثالث</span>
-                            <span class="font-900 text-lg leading-tight text-white">السياحة ومواقع التراث العالمي في إفريقيا</span>
+                            <span class="text-slate-400 text-xs font-bold mb-1">الدرس الثالث</span>
+                            <span class="font-900 text-lg leading-tight text-slate-600">النظم البيئية المائية في إفريقيا</span>
                         </div>
                     </div>
-                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
-                </a>
+                </div>
 
-                <a href="g7-u3-l4.html" class="lesson-btn-active min-h-[100px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5 w-full">
-                        <div class="w-14 h-14 flex-none bg-white/20 rounded-2xl flex items-center justify-center font-900 text-2xl shadow-inner aspect-square">4</div>
-                        <div class="flex flex-col text-right">
-                            <span class="text-white/70 text-xs font-bold mb-1">الدرس الرابع</span>
-                            <span class="font-900 text-lg leading-tight text-white">النقل والتجارة في إفريقيا</span>
-                        </div>
-                    </div>
-                    <i class="fas fa-play-circle text-2xl flex-none mr-2"></i>
-                </a>
-
-                <a href="unit3-exam.html" class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center group border-2 border-white/30">
+                <div class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/30">
                     <div class="flex items-center gap-5 w-full">
                         <div class="w-14 h-14 flex-none bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square">
-                            <i class="fas fa-star text-yellow-200"></i>
+                            <i class="fas fa-gem text-yellow-200"></i>
                         </div>
                         <div class="flex flex-col text-right">
                             <span class="text-white/80 text-xs font-bold mb-1 italic text-right">اختبر مستواك</span>
@@ -252,18 +266,51 @@
                         </div>
                     </div>
                     <i class="fas fa-trophy text-2xl flex-none mr-2"></i>
-                </a>
+                </div>
             </div>
         </section>
 
+        <!-- الوحدة الرابعة (مقفلة) -->
         <section class="is-locked">
             <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
-            <div class="flex items-center gap-4 mb-6">
+            <div class="flex items-center gap-4 mb-8">
                 <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
-                <h2 class="text-2xl font-900 text-slate-400">الوحدة الرابعة: استعمار إفريقيا ودور مصر الداعم لحركات التحرر</h2>
+                <h2 class="text-2xl font-900 text-slate-500">الوحدة الرابعة: علاقة مصر بإفريقيا خلال العصور الوسطى</h2>
             </div>
-            <div class="p-10 rounded-[2.5rem] bg-slate-200 border-2 border-dashed border-slate-300 text-center text-slate-400 font-bold">
-                محتوى الوحدة الرابعة قيد التجهيز
+
+            <div class="flex flex-col gap-5">
+                <div class="min-h-[100px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-slate-100 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">1</div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-slate-400 text-xs font-bold mb-1">الدرس الأول</span>
+                            <span class="font-900 text-lg leading-tight text-slate-600">انتشار الإسلام في إفريقيا</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="min-h-[100px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-slate-100 rounded-2xl flex items-center justify-center font-900 text-2xl aspect-square">2</div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-slate-400 text-xs font-bold mb-1">الدرس الثاني</span>
+                            <span class="font-900 text-lg leading-tight text-slate-600">دور مصر الحضاري في قارة إفريقيا</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/30">
+                    <div class="flex items-center gap-5 w-full">
+                        <div class="w-14 h-14 flex-none bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square">
+                            <i class="fas fa-star text-yellow-200"></i>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="text-white/80 text-xs font-bold mb-1 italic text-right">اختبر مستواك</span>
+                            <span class="font-900 text-lg leading-tight text-white text-right">امتحان شامل: الوحدة الرابعة</span>
+                        </div>
+                    </div>
+                    <i class="fas fa-trophy text-2xl flex-none mr-2"></i>
+                </div>
             </div>
         </section>
 
