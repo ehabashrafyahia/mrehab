@@ -23,7 +23,10 @@
             background: linear-gradient(145deg, #fbbf24, #d97706);
             box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.3);
             animation: pulse-gold 2s infinite;
+            transition: all 0.3s ease;
         }
+        .unit-exam-btn:hover { transform: translateY(-4px); }
+
         @keyframes pulse-gold {
             0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
             70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); }
@@ -55,7 +58,7 @@
 
     <main class="max-w-3xl mx-auto px-4 mt-12 space-y-16">
 
-        <!-- الوحدة الأولى -->
+        <!-- الوحدة الأولى (مفتوحة) -->
         <section>
             <div class="flex items-center gap-4 mb-8">
                 <div class="w-2 h-8 bg-emerald-500 rounded-full"></div>
@@ -85,64 +88,58 @@
             </div>
         </section>
 
-        <!-- الوحدة الثانية -->
-        <section>
+        <!-- الوحدة الثانية (مقفلة) -->
+        <section class="is-locked">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-2 h-8 bg-emerald-500 rounded-full"></div>
-                <h2 class="text-2xl font-900 text-slate-800">الوحدة الثانية: الدولة الإسلامية من النشأة إلى العالمية</h2>
+                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-500">الوحدة الثانية: الدولة الإسلامية من النشأة إلى العالمية</h2>
             </div>
             <div class="flex flex-col gap-5">
-                <a href="g6-u2-l1.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">1</div><span class="font-900 text-lg">شبه الجزيرة العربية (قبل وبعد ظهور الإسلام)</span></div>
-                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
-                </a>
-                <a href="g6-u2-l2.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">2</div><span class="font-900 text-lg">الهجرة وعالمية الدعوة</span></div>
-                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
-                </a>
-                <a href="g6-u2-l3.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">3</div><span class="font-900 text-lg">إنجازات الخلفاء الراشدين</span></div>
-                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
-                </a>
-                <a href="g6-u2-l4.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">4</div><span class="font-900 text-lg">الدولة الإسلامية (الأمويون - العباسيون)</span></div>
-                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
-                </a>
+                <div class="min-h-[90px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center font-900 text-xl">1</div><span class="font-900 text-lg">شبه الجزيرة العربية (قبل وبعد ظهور الإسلام)</span></div>
+                </div>
+                <div class="min-h-[90px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center font-900 text-xl">2</div><span class="font-900 text-lg">الهجرة وعالمية الدعوة</span></div>
+                </div>
+                <div class="min-h-[90px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center font-900 text-xl">3</div><span class="font-900 text-lg">إنجازات الخلفاء الراشدين</span></div>
+                </div>
+                <div class="min-h-[90px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center font-900 text-xl">4</div><span class="font-900 text-lg">الدولة الإسلامية (الأمويون - العباسيون)</span></div>
+                </div>
                 
-                <a href="g6-u2-exam.html" class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/30">
-                    <div class="flex items-center gap-5 w-full"><div class="w-14 h-14 bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square"><i class="fas fa-star text-yellow-200"></i></div><div class="flex flex-col text-right"><span class="text-white/80 text-xs font-bold mb-1 italic">اختبر مستواك</span><span class="font-900 text-lg leading-tight text-white">امتحان شامل: الوحدة الثانية</span></div></div>
-                    <i class="fas fa-trophy text-2xl mr-2"></i>
-                </a>
+                <div class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/30">
+                    <div class="flex items-center gap-5 w-full"><div class="w-14 h-14 bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square"><i class="fas fa-crown text-yellow-200"></i></div><div class="flex flex-col text-right"><span class="text-white/80 text-xs font-bold mb-1 italic">تحدي الأبطال</span><span class="font-900 text-lg leading-tight text-white">امتحان شامل: الوحدة الثانية</span></div></div>
+                    <i class="fas fa-award text-2xl mr-2"></i>
+                </div>
             </div>
         </section>
 
-        <!-- الوحدة الثالثة -->
-        <section>
+        <!-- الوحدة الثالثة (مقفلة) -->
+        <section class="is-locked">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>الوحدة مقفلة</div></div>
             <div class="flex items-center gap-4 mb-8">
-                <div class="w-2 h-8 bg-emerald-500 rounded-full"></div>
-                <h2 class="text-2xl font-900 text-slate-800">الوحدة الثالثة: وطننا العربي والتنمية الاقتصادية</h2>
+                <div class="w-2 h-8 bg-slate-400 rounded-full"></div>
+                <h2 class="text-2xl font-900 text-slate-500">الوحدة الثالثة: وطننا العربي والتنمية الاقتصادية</h2>
             </div>
             <div class="flex flex-col gap-5">
-                <a href="g6-u3-l1.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">1</div><span class="font-900 text-lg">النشاط الزراعي في وطننا العربي</span></div>
-                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
-                </a>
-                <a href="g6-u3-l2.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">2</div><span class="font-900 text-lg">الثروة الحيوانية والسمكية في وطننا العربي</span></div>
-                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
-                </a>
-                <a href="g6-u3-l3.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">3</div><span class="font-900 text-lg">المعادن ومصادر الطاقة في وطننا العربي</span></div>
-                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
-                </a>
-                <a href="g6-u3-l4.html" class="lesson-btn-active min-h-[90px] p-6 rounded-[2rem] text-white flex justify-between items-center group">
-                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-900 text-xl">4</div><span class="font-900 text-lg">النشاط السياحي في وطننا العربي</span></div>
-                    <i class="fas fa-play-circle text-2xl opacity-70"></i>
-                </a>
-                <a href="g6-u3-exam.html" class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/30">
-                    <div class="flex items-center gap-5 w-full"><div class="w-14 h-14 bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square"><i class="fas fa-star text-yellow-200"></i></div><div class="flex flex-col text-right"><span class="text-white/80 text-xs font-bold mb-1 italic">اختبر مستواك</span><span class="font-900 text-lg leading-tight text-white">امتحان شامل: الوحدة الثالثة</span></div></div>
+                <div class="min-h-[90px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center font-900 text-xl">1</div><span class="font-900 text-lg">النشاط الزراعي في وطننا العربي</span></div>
+                </div>
+                <div class="min-h-[90px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center font-900 text-xl">2</div><span class="font-900 text-lg">الثروة الحيوانية والسمكية في وطننا العربي</span></div>
+                </div>
+                <div class="min-h-[90px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center font-900 text-xl">3</div><span class="font-900 text-lg">المعادن ومصادر الطاقة في وطننا العربي</span></div>
+                </div>
+                <div class="min-h-[90px] p-6 rounded-[2rem] bg-white border border-slate-200 text-slate-400 flex justify-between items-center">
+                    <div class="flex items-center gap-5"><div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center font-900 text-xl">4</div><span class="font-900 text-lg">النشاط السياحي في وطننا العربي</span></div>
+                </div>
+                <div class="unit-exam-btn min-h-[80px] p-6 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/30">
+                    <div class="flex items-center gap-5 w-full"><div class="w-14 h-14 bg-black/10 rounded-2xl flex items-center justify-center text-2xl aspect-square"><i class="fas fa-gem text-yellow-200"></i></div><div class="flex flex-col text-right"><span class="text-white/80 text-xs font-bold mb-1 italic">اختبر مستواك</span><span class="font-900 text-lg leading-tight text-white">امتحان شامل: الوحدة الثالثة</span></div></div>
                     <i class="fas fa-trophy text-2xl mr-2"></i>
-                </a>
+                </div>
             </div>
         </section>
 
