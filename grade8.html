@@ -17,7 +17,7 @@
         .unit-exam-btn { background: linear-gradient(145deg, #fbbf24, #d97706); animation: pulse-gold 2s infinite; }
         @keyframes pulse-gold { 0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); } 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); } }
 
-        /* ستايل التمويه والإغلاق للوحدات 3 و 4 */
+        /* ستايل التمويه والإغلاق للوحدات المغلقة */
         .is-locked-section { position: relative; }
         .is-locked-section .lock-overlay { position: absolute; inset: 0; background: rgba(244, 247, 246, 0.3); backdrop-filter: blur(4px); z-index: 40; border-radius: 2rem; display: flex; align-items: center; justify-content: center; }
         .lock-badge { background: #1e293b; color: white; padding: 10px 24px; border-radius: 50px; font-weight: 800; font-size: 0.9rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
@@ -30,22 +30,23 @@
         <a href="home.html" class="px-4 py-2 rounded-2xl bg-white border border-slate-200 text-slate-600 font-bold text-sm">الرئيسية</a>
         <div class="text-center">
             <h2 class="text-xl font-900 text-slate-800">دراسات تانية إعدادي</h2>
-            <p class="text-xs text-purple-600 font-bold">منصة أطلس التعليمية</p>
+            <p class="text-xs text-purple-600 font-bold">الفصل الدراسي الأول</p>
         </div>
         <div class="w-10 h-10 bg-purple-50 rounded-2xl flex items-center justify-center text-purple-600"><i class="fas fa-graduation-cap"></i></div>
     </header>
 
     <main class="max-w-3xl mx-auto px-4 mt-10 space-y-12">
 
+        <!-- الوحدة الأولى (مفتوحة) -->
         <section>
-            <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-purple-500 rounded-full"></span> الوحدة الأولى: سكان قارتي آسيا وأوروبا</h2>
+            <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-purple-500 rounded-full"></span> الوحدة الأولى: الملامح الطبيعية لقارتي آسيا وأوروبا</h2>
             <div class="flex flex-col gap-4">
                 <a href="g8-u1-l1.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">1</div><span class="font-bold text-sm md:text-base">نمو وتوزيع سكان قارتي آسيا وأوروبا</span></div>
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">1</div><span class="font-bold text-sm md:text-base">موقع ومظاهر سطح قارتي آسيا وأوروبا</span></div>
                     <i class="fas fa-play-circle text-xl"></i>
                 </a>
                 <a href="g8-u1-l2.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">2</div><span class="font-bold text-sm md:text-base">خصائص سكان قارتي آسيا وأوروبا</span></div>
+                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">2</div><span class="font-bold text-sm md:text-base">المعادن ومصادر الطاقة في قارتي آسيا وأوروبا</span></div>
                     <i class="fas fa-play-circle text-xl"></i>
                 </a>
                 <a href="exam1.html" class="unit-exam-btn p-5 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/20">
@@ -55,48 +56,44 @@
             </div>
         </section>
 
-        <section>
-            <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-purple-500 rounded-full"></span> الوحدة الثانية: مصر من الفتح الإسلامي حتى عصر الدول المستقلة</h2>
-            <div class="flex flex-col gap-4">
-                <a href="g8-u2-l1.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">1</div><span class="font-bold text-sm md:text-base">أحوال مصر بعد الفتح الإسلامي</span></div>
-                    <i class="fas fa-play-circle text-xl"></i>
-                </a>
-                <a href="g8-u2-l2.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">2</div><span class="font-bold text-sm md:text-base">الملامح الحضارية لبعض الدول المستقلة (الطولونية و الاخشيدية و الفاطمية)</span></div>
-                    <i class="fas fa-play-circle text-xl"></i>
-                </a>
-                <a href="g8-u2-l3.html" class="lesson-btn-active p-6 rounded-[2rem] text-white flex justify-between items-center">
-                    <div class="flex items-center gap-4"><div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-bold">3</div><span class="font-bold text-sm md:text-base">الملامح الحضارية لبعض الدول المستقلة (الايوبية والمملوكية)</span></div>
-                    <i class="fas fa-play-circle text-xl"></i>
-                </a>
-                <a href="exam2.html" class="unit-exam-btn p-5 rounded-[2rem] text-white flex justify-between items-center border-2 border-white/20">
-                    <div class="flex items-center gap-4"><i class="fas fa-star text-yellow-200"></i><span class="font-bold text-sm">امتحان شامل: الوحدة الثانية</span></div>
-                    <i class="fas fa-trophy"></i>
-                </a>
-            </div>
-        </section>
-
+        <!-- الوحدة الثانية (مغلقة) -->
         <section class="is-locked-section">
             <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
             <div class="blurred-content">
-                <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-slate-400 rounded-full"></span> الوحدة الثالثة: الأنشطة الاقتصادية في قارتي آسيا وأوروبا</h2>
+                <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-slate-400 rounded-full"></span> الوحدة الثانية: الحضارات القديمة في قارة آسيا وعلاقتها بمصر</h2>
                 <div class="flex flex-col gap-4">
-                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">1. النشاط الزراعي في قارتي آسيا وأوروبا</div>
-                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">2. النشاط الصناعي والتجاري</div>
-                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">3. النشاط السياحي في قارتي آسيا وأوروبا</div>
-                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">4. بعض المنظمات الإقليمية</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">1. نماذج للحضارات القديمة بالشرق الأدنى</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">2. نماذج لحضارات بلاد اليمن القديم</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">3. نماذج للحضارات القديمة بالشرق الأقصى</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">4. الحضارة الإسلامية</div>
+                    <div class="p-5 rounded-[2rem] bg-slate-200 font-bold text-slate-500">امتحان شامل: الوحدة الثانية</div>
                 </div>
             </div>
         </section>
 
+        <!-- الوحدة الثالثة (مغلقة) -->
         <section class="is-locked-section">
             <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
             <div class="blurred-content">
-                <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-slate-400 rounded-full"></span> الوحدة الرابعة: مصر من الحكم العثماني حتى الحملة الفرنسية</h2>
+                <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-slate-400 rounded-full"></span> الوحدة الثالثة: النظم البيئية في قارتي آسيا وأوروبا</h2>
                 <div class="flex flex-col gap-4">
-                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">1. مصر تحت الحكم العثماني</div>
-                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">2. الحملة الفرنسية على مصر</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">1. نظم الغابات في قارتي آسيا وأوروبا</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">2. نظم الحشائش ونظم الصحارى في قارتي آسيا وأوروبا</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">3. النظم البيئية المائية في قارتي آسيا وأوروبا</div>
+                    <div class="p-5 rounded-[2rem] bg-slate-200 font-bold text-slate-500">امتحان شامل: الوحدة الثالثة</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- الوحدة الرابعة (مغلقة) -->
+        <section class="is-locked-section">
+            <div class="lock-overlay"><div class="lock-badge"><i class="fas fa-lock ml-2"></i>قريباً</div></div>
+            <div class="blurred-content">
+                <h2 class="text-xl font-900 text-slate-800 mb-6 flex items-center gap-2"><span class="w-2 h-6 bg-slate-400 rounded-full"></span> الوحدة الرابعة: الحضارات القديمة في قارة أوروبا وعلاقتها بمصر</h2>
+                <div class="flex flex-col gap-4">
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">1. الحضارة اليونانية</div>
+                    <div class="p-6 rounded-[2rem] bg-white border border-slate-200 font-bold text-slate-500">2. الحضارة الرومانية</div>
+                    <div class="p-5 rounded-[2rem] bg-slate-200 font-bold text-slate-500">امتحان شامل: الوحدة الرابعة</div>
                 </div>
             </div>
         </section>
