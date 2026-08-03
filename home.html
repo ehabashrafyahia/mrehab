@@ -60,7 +60,6 @@
         }
         .ticker-wrap { display: flex; width: 100%; overflow: hidden; position: relative; }
         
-        /* التعديل الجذري: زيادة الوقت لـ 150 ثانية لضمان البطء التام */
         .ticker-content { 
             display: flex; 
             white-space: nowrap; 
@@ -76,7 +75,6 @@
             100% { transform: translateX(100%); }
         }
 
-        /* توقف الشريط عند وضع الماوس عليه لسهولة القراءة */
         .news-ticker:hover .ticker-content { animation-play-state: paused; }
 
         /* --- تصميم الهوية البصرية --- */
@@ -141,18 +139,17 @@
     </div>
 
     <main class="px-4 mt-6">
+        <!-- المرحلة الابتدائية -->
         <div class="section-label"><div class="dot bg-emerald-500 shadow-lg"></div> المرحلة الابتدائية</div>
         <a href="grade4.html" class="list-card grad-primary"><div class="number-box">٤</div><div class="card-content"><h3>الصف الرابع الابتدائي</h3><p>مناهج تفاعلية حديثة</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
         <a href="grade5.html" class="list-card grad-primary"><div class="number-box">٥</div><div class="card-content"><h3>الصف الخامس الابتدائي</h3><p>بوابتك نحو التميز</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
         <a href="grade6.html" class="list-card grad-primary"><div class="number-box">٦</div><div class="card-content"><h3>الصف السادس الابتدائي</h3><p>محتوى تعليمي متكامل</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
 
+        <!-- المرحلة الإعدادية -->
         <div class="section-label"><div class="dot bg-purple-500 shadow-lg"></div> المرحلة الإعدادية</div>
         <a href="grade7.html" class="list-card grad-prep"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الإعدادي</h3><p>تعلم بذكاء وأسلوب ممتع</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
         <a href="grade8.html" class="list-card grad-prep"><div class="number-box">٢</div><div class="card-content"><h3>الصف الثاني الإعدادي</h3><p>طريقك المباشر للنجاح</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
-        <div class="list-card grad-locked"><div class="number-box"><i class="fas fa-lock text-sm"></i></div><div class="card-content"><h3>الصف الثالث الإعدادي</h3><p>قريباً جداً</p></div></div>
-
-        <div class="section-label"><div class="dot bg-orange-500 shadow-lg"></div> المرحلة الثانوية</div>
-        <a href="grade10.html" class="list-card grad-secondary"><div class="number-box">١</div><div class="card-content"><h3>الصف الأول الثانوي</h3><p>أفضل شروحات التاريخ</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
+        <a href="grade9.html" class="list-card grad-prep"><div class="number-box">٣</div><div class="card-content"><h3>الصف الثالث الإعدادي</h3><p>استعد لاجتياز الشهادة بتفوق</p></div><i class="fas fa-chevron-left text-xs opacity-50"></i></a>
     </main>
 
     <footer class="mt-12 text-center border-t border-slate-200 py-8">
@@ -164,21 +161,19 @@
     </footer>
 
     <script>
-        /* --- قسم التحكم في المتميزين (أضف الأسماء هنا بكل حرية) --- */
+        /* --- قسم التحكم في المتميزين --- */
         const TOP_STUDENTS = [
-                    "جني محي", "زينب احمد", "محمود وائل" , "رحمة خلف" ,"محمد محمود علي" , "اسراء عمرو" , "نادية انور" , "حبيبة ناصر"
-        
+            "جني محي", "زينب احمد", "محمود وائل", "رحمة خلف", "محمد محمود علي", "اسراء عمرو", "نادية انور", "حبيبة ناصر"
         ];
 
         // عرض اسم الطالب المرحب به
         const studentName = sessionStorage.getItem("student_identity") || "بطل";
         document.getElementById('welcome-name').innerText = studentName;
 
-        // تحديث شريط التميز بشكل يضمن البطء
+        // تحديث شريط التميز
         const tickerContainer = document.getElementById('ticker-names');
         if (TOP_STUDENTS.length > 0) {
             const namesHtml = TOP_STUDENTS.map(name => `<span class="student-name"><i class="fas fa-trophy"></i>${name}</span>`).join('');
-            // نكرر المحتوى 6 مرات فقط لتوفير الأداء وجعله أبطأ
             tickerContainer.innerHTML = new Array(6).fill(namesHtml).join('');
         }
 
