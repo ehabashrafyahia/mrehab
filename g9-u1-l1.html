@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مراجعة النمو السكاني | منصة أطلس</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); min-height: 100vh; user-select: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 25px 50px -12px rgba(124, 58, 237, 0.1); border-radius: 2rem; }
+        .option-box { background: white; border: 2px solid #e2e8f0; transition: all 0.3s ease; text-align: right; cursor: pointer; position: relative; overflow: hidden; }
+        .option-box:hover { border-color: #8b5cf6; transform: scale(1.02); }
+        .option-box.selected { background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%); border-color: transparent; color: white; }
+        .opt-prefix { background: #f1f5f9; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 900; color: #64748b; flex-shrink: 0; }
+        .option-box.selected .opt-prefix { background: rgba(255, 255, 255, 0.2); color: white; }
+        .progress-glow { height: 100%; background: linear-gradient(90deg, #a855f7, #6366f1); box-shadow: 0 0 15px rgba(168, 85, 247, 0.4); border-radius: 100px; transition: width 0.6s ease; }
+        .btn-confirm { background: linear-gradient(135deg, #6d28d9 0%, #4c1d95 100%); box-shadow: 0 15px 30px -10px rgba(109, 40, 217, 0.4); }
+        #exit-modal { display: none; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div id="exit-modal" class="fixed inset-0 z-[2000] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <h3 class="text-xl font-900 text-slate-800 mb-2">هل تريد الخروج؟</h3>
+            <div class="flex gap-3 mt-6">
+                <a href="grade9.html" class="flex-1 py-3 bg-red-50 text-red-600 rounded-2xl font-bold text-center text-sm">خروج</a>
+                <button onclick="toggleExitModal(false)" class="flex-1 py-3 bg-slate-100 text-slate-600 rounded-2xl font-bold text-sm">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="quiz-wrapper" class="max-w-3xl mx-auto">
+        <div class="flex justify-between items-center mb-10">
+            <button onclick="toggleExitModal(true)" class="flex items-center gap-2 p-3 bg-white rounded-2xl shadow-sm text-slate-500 border border-slate-100">
+                <i class="fas fa-sign-out-alt rotate-180"></i>
+                <span class="font-bold text-sm text-slate-800">خروج</span>
+            </button>
+            <div class="bg-white px-6 py-2 rounded-2xl shadow-sm border border-slate-100 font-900 text-purple-600">
+                <span id="q-count">1</span> / 55
+            </div>
+            <div class="p-3 bg-purple-50 rounded-2xl text-purple-500"><i class="fas fa-map-marked-alt"></i></div>
+        </div>
+
+        <div class="h-3 bg-slate-200 rounded-full mb-12 overflow-hidden">
+            <div id="progress-bar" class="progress-glow" style="width: 0%;"></div>
+        </div>
+
+        <div class="glass-card p-8 md:p-12 mb-10">
+            <h2 id="main-question" class="text-xl md:text-2xl font-900 text-slate-800 leading-snug text-center mb-12 min-h-[3rem]">جارٍ تحميل السؤال...</h2>
+            <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        </div>
+
+        <button onclick="goToNext()" class="btn-confirm w-full py-6 rounded-3xl text-white font-900 text-xl flex items-center justify-center gap-3 active:scale-95 transition-all">
+            <span>تأكيد الإجابة</span>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </div>
+
+    <div id="result-view" class="hidden max-w-xl mx-auto text-center pt-10">
+        <div class="glass-card p-12 bg-white mb-6 border-2 border-purple-100">
+            <div class="text-7xl mb-6">🏆</div>
+            <h1 class="text-4xl font-900 text-slate-800 mb-2">نتيجة الاختبار</h1>
+            <p class="text-slate-500 font-bold mb-8">موقع ومظاهر سطح قارات العالم الجديد</p>
+            <div class="relative inline-block mb-10">
+                <svg class="w-40 h-40 transform -rotate-90">
+                    <circle cx="80" cy="80" r="70" stroke="#f1f5f9" stroke-width="12" fill="transparent" />
+                    <circle id="score-circle" cx="80" cy="80" r="70" stroke="#a855f7" stroke-width="12" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" class="transition-all duration-1000" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <span class="font-900 text-4xl text-slate-800" id="score-text">0%</span>
+                </div>
+            </div>
+            <div id="result-msg" class="text-xl font-black text-purple-600"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <button onclick="location.reload()" class="py-4 bg-purple-100 text-purple-700 rounded-2xl font-bold shadow-lg">إعادة</button>
+            <a href="grade9.html" class="py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-lg flex items-center justify-center">الرئيسية</a>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+    { q: "تتميز جبال الأنديز بأنها:", a: ["أطول سلسلة جبلية في العالم", "أكبر هضبة في العالم", "أوسع سهول العالم", "أكبر جزيرة في العالم"], c: 0 },
+    { q: "تمتد جبال الأنديز في قارة أمريكا الجنوبية في:", a: ["الجزء الشرقي", "الجزء الغربي", "الجزء الجنوبي فقط", "الجزء الشمالي فقط"], c: 1 },
+    { q: "تعد جبال الأنديز مخزنًا عالميًا لـ:", a: ["الفحم والبترول", "الذهب والفضة", "النحاس والقصدير", "اليورانيوم والحديد"], c: 2 },
+    { q: "تقع هضبة البرازيل في:", a: ["شرق قارة أمريكا الجنوبية", "غرب قارة أمريكا الجنوبية", "شمال قارة أمريكا الجنوبية", "جنوب قارة أمريكا الجنوبية فقط"], c: 0 },
+    { q: "تتميز هضبة البرازيل بأنها:", a: ["أصغر هضاب القارة", "أكبر هضاب القارة مساحة", "أعلى هضاب العالم", "أكثر مناطق القارة انخفاضًا"], c: 1 },
+    { q: "تعد هضبة البرازيل مصدرًا رئيسيًا للعديد من:", a: ["الثروات المعدنية في البرازيل", "الثروات السمكية", "الغابات الصنوبرية", "المراعي الطبيعية"], c: 0 },
+    { q: "يعد سهل الأمازون من:", a: ["السهول الساحلية", "السهول الفيضية", "السهول الصحراوية", "السهول الجبلية"], c: 1 },
+    { q: "يشغل سهل الأمازون مساحة كبيرة من:", a: ["قارة أمريكا الشمالية", "قارة أمريكا الجنوبية", "قارة أستراليا", "قارة آسيا"], c: 1 },
+    { q: "من أهم خصائص سهل الأمازون أنه:", a: ["أضيق سهول العالم", "من أوسع السهول الفيضية في العالم", "يقع بالكامل في منطقة صحراوية", "لا توجد به أنهار"], c: 1 },
+    { q: "يجري نهر الأمازون الذي ينبع من جبال الأنديز ويصب في:", a: ["المحيط الهادئ", "المحيط الأطلسي", "البحر الكاريبي", "المحيط الهندي"], c: 1 },
+    { q: "تكثر المستنقعات والبرك في:", a: ["سهول الأمازون", "جبال الأنديز", "هضبة البرازيل", "هضبة لابرادور"], c: 0 },
+    { q: "تغطي مساحات كبيرة من سهول الأمازون:", a: ["الغابات المدارية المطيرة", "الغابات الصنوبرية", "الحشائش المعتدلة", "النباتات الصحراوية"], c: 0 },
+    { q: "تتميز سهول المحيط الهادئ في أمريكا الجنوبية بأنها:", a: ["شديدة الضيق", "واسعة جدًا", "صحراوية بالكامل", "تغطي معظم القارة"], c: 0 },
+    { q: "يرجع ضيق سهول المحيط الهادئ في أمريكا الجنوبية إلى:", a: ["اقتراب سلاسل جبال الأنديز من الساحل", "كثرة الأنهار", "بعد الجبال عن الساحل", "كثرة الجزر"], c: 0 },
+    { q: "تمتد سهول المحيط الأطلسي على طول:", a: ["السواحل الغربية للقارة", "السواحل الشرقية للقارة", "السواحل الشمالية فقط", "السواحل الجنوبية فقط"], c: 1 },
+    { q: "من خصائص سهول المحيط الأطلسي في أمريكا الجنوبية:", a: ["اتساعها وانبساطها", "ضيقها الشديد", "ارتفاعها الكبير", "خلوها من المستنقعات"], c: 0 },
+    { q: "تنتشر المستنقعات في سهول المحيط الأطلسي بسبب:", a: ["اتساع السهول وانبساطها", "وجود جبال الأنديز", "قلة الأمطار", "ارتفاع السطح"], c: 0 },
+    { q: "من أمثلة جزر قارة أمريكا الجنوبية:", a: ["جرينلاند", "فوكولاند", "مدغشقر", "بورنيو"], c: 1 },
+    { q: "تقع جزر فوكولاند في:", a: ["المحيط الأطلسي", "المحيط الهادئ", "البحر المتوسط", "المحيط الهندي"], c: 0 },
+
+    { q: "تتميز جبال الأبلاش بأنها تمتد في:", a: ["شرق قارة أمريكا الشمالية", "غرب قارة أمريكا الشمالية", "جنوب القارة فقط", "وسط القارة فقط"], c: 0 },
+    { q: "تمتد جبال روكي في:", a: ["شرق أمريكا الشمالية", "غرب أمريكا الشمالية", "شمال أمريكا الجنوبية", "شرق أمريكا الجنوبية"], c: 1 },
+    { q: "يشتهر كل من جبال الأبلاش وجبال روكي بـ:", a: ["الزراعة فقط", "الغابات والمعادن", "صيد الأسماك فقط", "الرعي فقط"], c: 1 },
+    { q: "تعد هضبة لابرادور من مظاهر السطح في:", a: ["أمريكا الشمالية", "أمريكا الجنوبية", "أستراليا", "آسيا"], c: 0 },
+    { q: "تقع هضبة لابرادور في:", a: ["شمال شرق قارة أمريكا الشمالية", "جنوب غرب القارة", "شرق أمريكا الجنوبية", "وسط أستراليا"], c: 0 },
+    { q: "تجري في هضبة لابرادور أنهار صغيرة كثيرة الشلالات، مما أتاح استخدامها في:", a: ["توليد الطاقة الكهرومائية", "الزراعة فقط", "الصيد البحري", "النقل النهري فقط"], c: 0 },
+    { q: "يمتد السهل الأوسط في أمريكا الشمالية بين:", a: ["جبال الأبلاش شرقًا وجبال روكي غربًا", "جبال روكي شرقًا والأبلاش غربًا", "جبال الأنديز والأبلاش", "جبال الألب والكوردييرا"], c: 0 },
+    { q: "من أهم أنهار السهل الأوسط في أمريكا الشمالية:", a: ["نهر الأمازون", "نهر المسيسيبي", "نهر النيل", "نهر الدانوب"], c: 1 },
+    { q: "يعد نهر المسيسيبي من أطول أنهار القارة ويصب في:", a: ["خليج المكسيك", "المحيط الهادئ", "البحر الكاريبي", "المحيط الهندي"], c: 0 },
+    { q: "تتميز سهول المحيط الهادئ في أمريكا الشمالية بأنها:", a: ["معظم أجزائها ضيقة", "واسعة جدًا", "خالية من الجبال", "تغطي معظم القارة"], c: 0 },
+    { q: "يرجع ضيق سهول المحيط الهادئ في أمريكا الشمالية إلى:", a: ["اقتراب سلاسل الجبال الغربية من الساحل", "بعد الجبال عن الساحل", "كثرة الأنهار", "قلة التضاريس"], c: 0 },
+    { q: "تنتشر الجزر في قارة أمريكا الشمالية، ومن أكبرها مساحة:", a: ["جزيرة جرينلاند", "جزيرة فوكولاند", "جزيرة تسمانيا", "جزيرة مدغشقر"], c: 0 },
+
+    { q: "تعد قارات العالم الجديد مركزًا للقاء الثقافات:", a: ["الأوروبية والإفريقية والآسيوية", "الأمريكية فقط", "الأسترالية والآسيوية فقط", "الإفريقية فقط"], c: 0 },
+    { q: "من نتائج كثرة الهجرات إلى قارات العالم الجديد:", a: ["ظهور العديد من الحضارات القديمة", "اختفاء السكان", "قلة التنوع الثقافي", "انخفاض عدد المدن"], c: 0 },
+    { q: "من الحضارات القديمة التي ظهرت في قارات العالم الجديد:", a: ["حضارة المايا وحضارة الإنكا", "الحضارة الرومانية فقط", "الحضارة الفرعونية فقط", "الحضارة الصينية فقط"], c: 0 },
+    { q: "ظهرت حضارة المايا في:", a: ["أمريكا الشمالية", "أمريكا الجنوبية فقط", "أستراليا", "أوروبا"], c: 0 },
+    { q: "ظهرت حضارة الإنكا في:", a: ["أمريكا الجنوبية", "أمريكا الشمالية", "أستراليا", "آسيا"], c: 0 },
+    { q: "تتميز قارات العالم الجديد بأهمية استراتيجية بسبب:", a: ["تيسير التجارة العالمية عن طريق قناة بنما", "قلة السواحل", "عدم وجود ممرات مائية", "بعدها عن المحيطات"], c: 0 },
+    { q: "تربط قناة بنما بين:", a: ["المحيط الأطلسي والمحيط الهادئ", "المحيط الهندي والأطلسي", "البحر المتوسط والأحمر", "المحيط الهادئ والهندي"], c: 0 },
+    { q: "ساعدت قناة بنما على:", a: ["اختصار آلاف الكيلومترات التي كانت تقطعها السفن", "زيادة طول الرحلات البحرية", "منع التجارة العالمية", "ربط المحيط الهندي بالأطلسي"], c: 0 },
+    { q: "حفرت الولايات المتحدة قناة بنما في دولة بنما وافتتحت عام:", a: ["1914م", "1900م", "1920م", "1945م"], c: 0 },
+    { q: "تعد قناة بنما من أهم الممرات المائية في العالم لأنها:", a: ["تربط بين المحيطين الأطلسي والهادي", "تربط بين البحر المتوسط والمحيط الهندي", "تقع داخل أمريكا الجنوبية", "تربط بين أوروبا وآسيا فقط"], c: 0 },
+
+    { q: "من أسباب الأهمية الاقتصادية لقارات العالم الجديد امتلاكها:", a: ["كميات كبيرة من مصادر الطاقة الأحفورية", "موارد محدودة فقط", "قلة الأراضي الزراعية", "ندرة المعادن"], c: 0 },
+    { q: "تمتلك قارات العالم الجديد مساحات كبيرة من:", a: ["الأراضي الزراعية", "الصحاري فقط", "الجبال فقط", "المستنقعات فقط"], c: 0 },
+    { q: "من المعادن التي تمتلك قارات العالم الجديد احتياطيات كبيرة منها:", a: ["اليورانيوم والحديد", "الذهب فقط", "النحاس فقط", "القصدير فقط"], c: 0 },
+    { q: "تمتد قارة أمريكا الشمالية بين دائرتي عرض تقريبًا:", a: ["7° و83° شمالًا", "10° و44° جنوبًا", "12° و56° جنوبًا", "30° و60° شمالًا"], c: 0 },
+    { q: "تمتد قارة أمريكا الشمالية بين خطي طول تقريبًا:", a: ["10° و168° غربًا", "35° و81° شرقًا", "3° و178° شرقًا", "90° و120° شرقًا"], c: 0 },
+    { q: "من دوائر العرض الرئيسية التي تمر بقارة أمريكا الشمالية:", a: ["الدائرة القطبية الشمالية ومدار السرطان", "خط الاستواء ومدار الجدي", "مدار الجدي والدائرة القطبية الجنوبية", "خط الاستواء فقط"], c: 0 },
+    { q: "تظهر قارة أستراليا على شكل:", a: ["جزيرة كبيرة تحيط بها المياه من جميع الجهات", "مثلث كبير", "شريط ضيق", "مجموعة جبال"], c: 0 },
+    { q: "تقع قارة أستراليا بالكامل تقريبًا في:", a: ["النصف الجنوبي والشرقي من الكرة الأرضية", "النصف الشمالي والغربي", "النصف الشمالي فقط", "النصف الغربي فقط"], c: 0 },
+    { q: "يمر مدار الجدي بقارة أستراليا في:", a: ["الوسط تقريبًا", "الشمال فقط", "الجنوب فقط", "الشرق فقط"], c: 0 },
+    { q: "تحد قارة أستراليا من الشرق:", a: ["المحيط الهادئ", "المحيط الأطلسي", "المحيط الهندي", "البحر المتوسط"], c: 0 },
+
+    { q: "تقع قارة أمريكا الجنوبية بين دائرتي عرض تقريبًا:", a: ["12° شمالًا و56° جنوبًا", "7° و83° شمالًا", "10° و44° جنوبًا", "30° و60° شمالًا"], c: 0 },
+    { q: "تمتد قارة أمريكا الجنوبية بين خطي طول تقريبًا:", a: ["35° و81° غربًا", "10° و168° غربًا", "113° و178° شرقًا", "0° و30° شرقًا"], c: 0 },
+    { q: "يمر خط الاستواء بقارة أمريكا الجنوبية في:", a: ["شمال القارة", "جنوب القارة", "وسط أستراليا", "شرق أمريكا الشمالية"], c: 0 },
+    { q: "يمر مدار الجدي بقارة أمريكا الجنوبية في:", a: ["جنوب القارة", "شمال القارة", "وسط أمريكا الشمالية", "شمال أستراليا"], c: 0 },
+    { q: "تشترك قارتي أمريكا الشمالية وأمريكا الجنوبية في أن حدودهما الشرقية والغربية يحدها:", a: ["شرقًا المحيط الأطلسي وغربًا المحيط الهادئ", "شرقًا المحيط الهادئ وغربًا الأطلسي", "شرقًا المحيط الهندي وغربًا الأطلسي", "شرقًا البحر المتوسط وغربًا المحيط الهندي"], c: 0 }
+];
+        let index = 0, score = 0, picked = null;
+
+        // دالة البدء
+        function initQuiz() {
+            if (questions && questions.length > 0) {
+                render();
+            }
+        }
+
+        function render() {
+            picked = null;
+            const q = questions[index];
+            
+            // تحديث نص السؤال والعداد
+            document.getElementById('main-question').innerText = q.q;
+            document.getElementById('q-count').innerText = index + 1;
+            
+            const grid = document.getElementById('options-grid');
+            grid.innerHTML = '';
+            
+            q.a.forEach((opt, i) => {
+                const btn = document.createElement('div');
+                btn.className = 'option-box p-5 md:p-6 rounded-2xl flex items-center gap-4 transition-all';
+                btn.innerHTML = `
+                    <div class="opt-prefix">${String.fromCharCode(65 + i)}</div>
+                    <span class="font-bold text-sm md:text-base text-slate-700">${opt}</span>
+                `;
+                btn.onclick = () => {
+                    document.querySelectorAll('.option-box').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    picked = i;
+                };
+                grid.appendChild(btn);
+            });
+            
+            // تحديث شريط التقدم
+            document.getElementById('progress-bar').style.width = ((index / questions.length) * 100) + '%';
+        }
+
+        function goToNext() {
+            if (picked === null) {
+                Swal.fire({text:'اختر إجابة أولاً يا بطل!', icon:'warning', confirmButtonColor: '#8b5cf6'});
+                return;
+            }
+            if (picked === questions[index].c) score++;
+            
+            index++;
+            if (index < questions.length) {
+                render();
+            } else {
+                finish();
+            }
+        }
+
+        function finish() {
+            document.getElementById('quiz-wrapper').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            const pct = Math.round((score / questions.length) * 100);
+            document.getElementById('score-text').innerText = pct + '%';
+            document.getElementById('score-circle').style.strokeDashoffset = 440 - (440 * pct) / 100;
+            document.getElementById('result-msg').innerText = pct >= 50 ? "أداء رائع يا بطل أطلس!" : "راجع الدرس وحاول مرة أخرى!";
+        }
+
+        function toggleExitModal(s) { 
+            document.getElementById('exit-modal').style.display = s ? 'flex' : 'none'; 
+        }
+
+        // تشغيل الكود فور تحميل الصفحة
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
