@@ -1,271 +1,1168 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>تسجيل دخول المنصة | مستر إيهاب أشرف</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+    <meta name="theme-color" content="#0b3b30">
+    <meta name="description" content="منصة أطلس - تسجيل الدخول لطلاب ومعلمي الدراسات الاجتماعية">
+
+    <title>Atlas | تسجيل الدخول</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Reem+Kufi:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
-        /* --- إصلاح مشكلة الحواف البيضاء في الويب فيو --- */
-        html {
-            background: #ffffff;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: #ffffff;
-            margin: 0;
-            padding: 0;
-            min-height: 100%;
-            overflow: hidden; /* تم التعديل لتجنب التمرير أثناء ظهور شاشة السبلاش */
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* --- شاشة الترحيب (Splash Screen) --- */
-        #splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
+        html, body {
             width: 100%;
-            height: 100%;
-            background-color: #ffffff;
+            min-height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #f4f6f5;
+            overflow-x: hidden;
+            color: #0f172a;
+        }
+
+        /* ==================================================
+           SPLASH
+        ================================================== */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
+            background: #0b3b30;
+            transition: opacity .7s cubic-bezier(.4,0,.2,1), visibility .7s;
         }
 
-        .splash-logo-container {
-            position: relative;
-            width: 180px;
-            height: 145px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: splashPulse 2s infinite ease-in-out;
-        }
-
-        .splash-logo-shape {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: morph 6s linear infinite;
-            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
-        }
-
-        .splash-logo-text {
-            position: relative;
-            z-index: 10;
-            color: white;
-            font-family: 'Reem Kufi', sans-serif;
-            font-size: 3.5rem;
-            font-weight: 700;
-        }
-
-        .splash-title {
-            margin-top: 25px;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #1e293b;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        .splash-subtitle {
-            font-size: 0.9rem;
-            color: #94a3b8;
-            font-weight: 700;
-            margin-top: 5px;
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        @keyframes splashPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- ستايلات صفحة تسجيل الدخول --- */
-        #login-container {
+        #splash.hide {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
+            visibility: hidden;
+            pointer-events: none;
         }
 
-        .logo-container {
-            position: relative;
-            width: 150px;
-            height: 120px;
-            margin: 0 auto 25px;
+        .splash-mark {
+            width: 76px;
+            height: 76px;
+            border-radius: 22px;
+            background: linear-gradient(155deg, #16a97a 0%, #0d7a58 60%, #0a5c43 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .logo-shape {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: morph 6s linear infinite;
-            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.2);
-        }
-        .logo-text {
+            box-shadow: 0 20px 45px -12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.15);
             position: relative;
-            z-index: 10;
-            color: white;
+        }
+
+        .splash-mark span {
             font-family: 'Reem Kufi', sans-serif;
-            font-size: 2.8rem;
+            font-size: 30px;
             font-weight: 700;
+            color: #eafff5;
         }
 
-        @keyframes morph {
-            0%, 100% {
-                border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            }
-            50% {
-                border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%;
-            }
+        .splash-word {
+            margin-top: 22px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: rgba(255,255,255,.4);
+            text-transform: uppercase;
         }
 
-        .login-input {
+        .splash-progress {
+            margin-top: 28px;
+            width: 130px;
+            height: 2px;
+            background: rgba(255,255,255,.12);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .splash-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #16a97a, #5eead4);
+            border-radius: inherit;
+            transition: width 1.5s cubic-bezier(.4,0,.2,1);
+        }
+
+        /* ==================================================
+           LAYOUT
+        ================================================== */
+        #app {
+            min-height: 100vh;
+            display: flex;
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1);
+        }
+
+        #app.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* -------- Brand panel -------- */
+        .brand-panel {
+            display: none;
+            position: relative;
+            width: 47%;
+            min-height: 100vh;
+            background: #0b3b30;
+            background-image:
+                radial-gradient(circle at 100% 0%, rgba(94,234,212,.12), transparent 45%),
+                radial-gradient(circle at 0% 100%, rgba(16,169,122,.16), transparent 50%);
+            overflow: hidden;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 52px 56px;
+            color: white;
+        }
+
+        .brand-dotgrid {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px);
+            background-size: 26px 26px;
+            mask-image: radial-gradient(ellipse 70% 60% at 60% 40%, black 20%, transparent 80%);
+            pointer-events: none;
+        }
+
+        .brand-topline {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            background: linear-gradient(155deg, #16a97a, #0a5c43);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Reem Kufi', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
+        }
+
+        .brand-mark-name {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: .3px;
+        }
+
+        .brand-version {
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            border-radius: 99px;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.12);
+            color: rgba(255,255,255,.55);
+        }
+
+        .brand-mid {
+            position: relative;
+            z-index: 2;
+            padding: 40px 0;
+        }
+
+        .brand-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #5eead4;
+            letter-spacing: .3px;
+            margin-bottom: 22px;
+        }
+
+        .brand-eyebrow i {
+            font-size: 8px;
+        }
+
+        .brand-title {
+            font-size: 38px;
+            font-weight: 900;
+            line-height: 1.35;
+            letter-spacing: -.5px;
+            margin: 0 0 16px;
+        }
+
+        .brand-title em {
+            font-style: normal;
+            color: #5eead4;
+        }
+
+        .brand-desc {
+            font-size: 13.5px;
+            line-height: 1.9;
+            color: rgba(255,255,255,.55);
+            max-width: 380px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* stat strip */
+        .brand-stats {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 10px;
+            margin-top: 34px;
+            max-width: 420px;
+        }
+
+        .brand-stat {
+            padding: 14px 6px 14px 14px;
+            border-radius: 16px;
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .brand-stat strong {
+            display: block;
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .brand-stat span {
+            display: block;
+            margin-top: 3px;
+            font-size: 9.5px;
+            font-weight: 700;
+            color: rgba(255,255,255,.45);
+        }
+
+        /* feature list */
+        .brand-features {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .brand-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 13px 4px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        .brand-feature:first-child {
+            border-top: 0;
+        }
+
+        .brand-feature-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            flex-shrink: 0;
+            background: rgba(94,234,212,.1);
+            color: #5eead4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12.5px;
+            margin-top: 1px;
+        }
+
+        .brand-feature-text strong {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .brand-feature-text span {
+            display: block;
+            margin-top: 2px;
+            font-size: 10.5px;
+            font-weight: 600;
+            color: rgba(255,255,255,.45);
+        }
+
+        .brand-footer {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255,255,255,.08);
+        }
+
+        .brand-footer p {
+            margin: 0;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: rgba(255,255,255,.35);
+        }
+
+        .brand-footer-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            color: rgba(255,255,255,.4);
+        }
+
+        /* -------- Form panel -------- */
+        .form-panel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 22px;
+            background: #f4f6f5;
+        }
+
+        .login-card {
             width: 100%;
-            padding: 16px;
-            background: #f1f5f9;
-            border: 2px solid transparent;
-            border-radius: 18px;
-            outline: none;
-            transition: 0.3s;
-            text-align: center;
+            max-width: 408px;
+            background: #ffffff;
+            border: 1px solid #e6ebe9;
+            border-radius: 24px;
+            box-shadow: 0 30px 60px -25px rgba(11,59,48,.18);
+            padding: 38px 34px 30px;
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .card-mark {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: linear-gradient(155deg, #16a97a, #0a5c43);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 10px 24px -8px rgba(10,92,67,.45);
+        }
+
+        .card-mark span {
+            font-family: 'Reem Kufi', sans-serif;
+            color: white;
+            font-size: 19px;
             font-weight: 700;
         }
-        .login-input:focus {
-            border-color: #10b981;
-            background: white;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+
+        .card-heading h1 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 900;
+            color: #0f172a;
         }
+
+        .card-heading p {
+            margin: 2px 0 0;
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        /* segmented tabs */
+        .tabs {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #eef2f0;
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 26px;
+        }
+
+        .tab-slider {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            width: calc(50% - 4px);
+            right: 4px;
+            background: white;
+            border-radius: 11px;
+            box-shadow: 0 6px 16px -4px rgba(15,23,42,.12);
+            transition: transform .3s cubic-bezier(.4,0,.2,1);
+        }
+
+        .tabs.teacher .tab-slider {
+            transform: translateX(-100%);
+        }
+
+        .tab {
+            position: relative;
+            z-index: 1;
+            border: 0;
+            background: transparent;
+            padding: 11px 8px;
+            font-family: inherit;
+            font-size: 12.5px;
+            font-weight: 800;
+            color: #94a3b8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: color .25s;
+        }
+
+        .tab.active {
+            color: #0a5c43;
+        }
+
+        /* panels */
+        .panel {
+            display: none;
+            animation: panelIn .3s cubic-bezier(.4,0,.2,1);
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes panelIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* OTP */
+        .otp-label {
+            display: block;
+            text-align: center;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #64748b;
+            margin-bottom: 16px;
+        }
+
+        .otp-container {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            direction: ltr;
+        }
+
+        .otp-input {
+            width: 46px;
+            height: 54px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 13px;
+            background: #f8fafc;
+            text-align: center;
+            font-family: inherit;
+            font-size: 20px;
+            font-weight: 900;
+            color: #0f172a;
+            outline: none;
+            transition: all .18s cubic-bezier(.4,0,.2,1);
+            caret-color: #0d7a58;
+        }
+
+        .otp-input:focus {
+            border-color: #16a97a;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(16,169,122,.13);
+        }
+
+        .otp-input.filled {
+            border-color: #0d7a58;
+            background: #ecfdf5;
+        }
+
+        .otp-input.error {
+            border-color: #f87171;
+            background: #fef2f2;
+            animation: shake .4s ease;
+        }
+
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20%,60% { transform: translateX(-4px); }
+            40%,80% { transform: translateX(4px); }
+        }
+
+        /* fields */
+        .field-group {
+            margin-bottom: 15px;
+        }
+
+        .field-label {
+            display: block;
+            font-size: 11.5px;
+            font-weight: 800;
+            color: #475569;
+            margin-bottom: 7px;
+            padding-right: 1px;
+        }
+
+        .field {
+            position: relative;
+        }
+
+        .field input {
+            width: 100%;
+            height: 52px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 13px;
+            outline: none;
+            background: #f8fafc;
+            padding: 0 46px 0 15px;
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #0f172a;
+            transition: all .2s cubic-bezier(.4,0,.2,1);
+        }
+
+        .field input::placeholder {
+            color: #a3adba;
+            font-weight: 500;
+        }
+
+        .field input:focus {
+            background: white;
+            border-color: #16a97a;
+            box-shadow: 0 0 0 4px rgba(16,169,122,.1);
+        }
+
+        .field > i.field-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a3adba;
+            font-size: 14px;
+            pointer-events: none;
+            transition: color .2s;
+        }
+
+        .field input:focus + i.field-icon {
+            color: #16a97a;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0;
+            background: transparent;
+            color: #a3adba;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            transition: all .2s;
+        }
+
+        .password-toggle:hover {
+            color: #64748b;
+            background: #eef2f0;
+        }
+
+        /* button */
+        .login-btn {
+            width: 100%;
+            height: 52px;
+            margin-top: 6px;
+            border: 0;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #16a97a 0%, #0a5c43 100%);
+            color: white;
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 14px 28px -10px rgba(10,92,67,.5);
+            transition: all .22s cubic-bezier(.4,0,.2,1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 34px -10px rgba(10,92,67,.58);
+        }
+
+        .login-btn:active:not(:disabled) {
+            transform: scale(.985);
+        }
+
+        .login-btn:disabled {
+            opacity: .68;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* trust + footer */
+        .trust-line {
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #9aa5a2;
+        }
+
+        .trust-line i {
+            color: #16a97a;
+            font-size: 11px;
+        }
+
+        .card-footer {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px dashed #e6ebe9;
+            text-align: center;
+        }
+
+        .card-footer p {
+            margin: 0;
+            font-size: 10.5px;
+            color: #a3adba;
+            font-weight: 600;
+        }
+
+        .card-footer strong {
+            color: #0a5c43;
+            font-weight: 800;
+        }
+
+        /* responsive */
+        @media (min-width: 960px) {
+            .brand-panel { display: flex; }
+            .form-panel { padding: 40px; }
+        }
+
+        @media (max-width: 420px) {
+            .login-card { padding: 30px 20px 24px; border-radius: 22px; }
+            .otp-input { width: 41px; height: 49px; font-size: 18px; border-radius: 11px; }
+            .otp-container { gap: 6px; }
+        }
+
+        .fa-spinner { animation: spin .8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-6" id="main-body">
 
-    <!-- شاشة السبلاش الترحيبية -->
-    <div id="splash-screen">
-        <div class="splash-logo-container">
-            <div class="splash-logo-shape"></div>
-            <div class="splash-logo-text">اطلس</div>
-        </div>
-        <h1 class="splash-title">أهلاً بك في منصة أطلس</h1>
-        <p class="splash-subtitle">تحت إشراف أ. إيهاب أشرف</p>
+<body>
+
+<!-- ===================== SPLASH ===================== -->
+<div id="splash">
+    <div class="splash-mark"><span>أ</span></div>
+    <p class="splash-word">Atlas Platform</p>
+    <div class="splash-progress">
+        <div class="splash-progress-bar" id="splashBar"></div>
     </div>
+</div>
 
-    <!-- نموذج تسجيل الدخول -->
-    <div id="login-container" class="bg-white w-full max-w-sm p-10 rounded-[45px] shadow-2xl text-center border border-slate-100">
-        <div class="logo-container">
-            <div class="logo-shape"></div>
-            <div class="logo-text">اطلس</div>
-        </div>
-        <h2 class="text-2xl font-black text-slate-800 mb-2">مرحباً بك يا بطل</h2>
-        <p class="text-slate-400 text-xs font-bold mb-8">يرجى تسجيل الدخول للبدء</p>
+<!-- ===================== APP ===================== -->
+<main id="app">
 
-        <div class="space-y-4">
-            <div class="relative">
-                <input type="text" id="user" class="login-input" placeholder="اسم المستخدم" autocomplete="off">
-                <i class="fas fa-user absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+    <!-- Brand Side (Desktop only) -->
+    <aside class="brand-panel">
+        <div class="brand-dotgrid"></div>
+
+        <div class="brand-topline">
+            <div class="brand-mark">
+                <div class="brand-mark-icon"><span style="font-family:'Reem Kufi',sans-serif">أ</span></div>
+                <span class="brand-mark-name">أطلس</span>
             </div>
-            <div class="relative">
-                <input type="password" id="pass" class="login-input" placeholder="كلمة المرور">
-                <i class="fas fa-lock absolute right-4 top-1/2 -translate-y-1/2 text-slate-300"></i>
+            <span class="brand-version">ATLAS 2.0</span>
+        </div>
+
+        <div class="brand-mid">
+            <span class="brand-eyebrow"><i class="fas fa-circle"></i> منصة تعليمية متكاملة</span>
+
+            <h1 class="brand-title">
+                رحلتك نحو <em>التميز</em><br>تبدأ من هنا
+            </h1>
+
+            <p class="brand-desc">
+                بيئة تعليمية رقمية لمادة الدراسات الاجتماعية، تجمع بين الشرح
+                والاختبارات والمتابعة الدقيقة لأداء كل طالب.
+            </p>
+
+            <div class="brand-stats">
+                <div class="brand-stat">
+                    <strong>+500</strong>
+                    <span>سؤال تفاعلي</span>
+                </div>
+                <div class="brand-stat">
+                    <strong>2</strong>
+                    <span>مرحلة دراسية</span>
+                </div>
+                <div class="brand-stat">
+                    <strong>24/7</strong>
+                    <span>إتاحة كاملة</span>
+                </div>
             </div>
-            <button onclick="handleLogin()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl font-black shadow-lg shadow-emerald-100 transition-all transform active:scale-95">
-                دخول المنصة <i class="fas fa-sign-in-alt mr-2"></i>
-            </button>
         </div>
 
-        <div class="mt-6 pt-4 border-t border-dashed border-slate-100">
-            <p class="text-[11px] text-slate-500 font-bold mb-1">إعداد وتصميم: أ. إيهاب أشرف</p>
-            <a href="https://wa.me/201559116736" class="text-[10px] text-emerald-500 font-black"><i class="fab fa-whatsapp"></i> 01559116736</a>
+        <div class="brand-features">
+            <div class="brand-feature">
+                <div class="brand-feature-icon"><i class="fas fa-book-open"></i></div>
+                <div class="brand-feature-text">
+                    <strong>محتوى تعليمي منظم</strong>
+                    <span>دروس واختبارات وملخصات جاهزة لكل درس</span>
+                </div>
+            </div>
+            <div class="brand-feature">
+                <div class="brand-feature-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="brand-feature-text">
+                    <strong>متابعة دقيقة للتقدم</strong>
+                    <span>تقارير أداء واضحة لحظة بلحظة</span>
+                </div>
+            </div>
+            <div class="brand-feature">
+                <div class="brand-feature-icon"><i class="fas fa-shield-halved"></i></div>
+                <div class="brand-feature-text">
+                    <strong>دخول آمن ومشفّر</strong>
+                    <span>كود خاص بكل طالب، وحساب محمي للمعلم</span>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <script>
-        const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ5wBVZeNv3Ijg80p-YkD57IPnAXnzWFT1kyoIVXIn46zY-U9fcykFNd3vgAzjMkJlOk0J2hqazdIoI/pub?gid=0&single=true&output=csv";
+        <div class="brand-footer">
+            <p>© 2026 أطلس · إعداد أ. إيهاب أشرف</p>
+            <span class="brand-footer-badge"><i class="fas fa-lock"></i> Firebase Secured</span>
+        </div>
+    </aside>
 
-        window.onload = function() {
-            sessionStorage.clear();
-            localStorage.clear();
+    <!-- Form Side -->
+    <section class="form-panel">
+        <div class="login-card">
 
-            // إخفاء شاشة السبلاش وإظهار نموذج الدخول بعد 2.5 ثانية
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
-                const loginContainer = document.getElementById('login-container');
+            <div class="card-top">
+                <div class="card-mark"><span>أ</span></div>
+                <div class="card-heading">
+                    <h1>أهلاً بك في أطلس 👋</h1>
+                    <p>اختر نوع حسابك للمتابعة</p>
+                </div>
+            </div>
 
-                // إخفاء السبلاش
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
+            <!-- Tabs -->
+            <div class="tabs" id="tabsWrap">
+                <div class="tab-slider"></div>
+                <button type="button" class="tab active" id="studentTabBtn" onclick="switchTab('student')">
+                    <i class="fas fa-user-graduate"></i> طالب
+                </button>
+                <button type="button" class="tab" id="teacherTabBtn" onclick="switchTab('teacher')">
+                    <i class="fas fa-user-tie"></i> معلم
+                </button>
+            </div>
 
-                // إظهار النموذج مع حركة انسيابية
-                loginContainer.style.opacity = '1';
-                loginContainer.style.transform = 'translateY(0)';
-                
-                // إعادة خاصية التمرير للجسم
-                document.body.style.overflow = 'auto';
-            }, 2500);
+            <!-- ========== STUDENT PANEL ========== -->
+            <div id="studentPanel" class="panel active">
+                <label class="otp-label">أدخل كود الدخول المكوّن من 6 أرقام</label>
+                <div class="otp-container" id="otpContainer">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-index="0" autocomplete="one-time-code">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-index="1" autocomplete="off">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-index="2" autocomplete="off">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-index="3" autocomplete="off">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-index="4" autocomplete="off">
+                    <input type="text" class="otp-input" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-index="5" autocomplete="off">
+                </div>
+
+                <button id="studentLoginButton" class="login-btn" style="margin-top:22px" onclick="studentLogin()">
+                    <i class="fas fa-right-to-bracket"></i> دخول
+                </button>
+            </div>
+
+            <!-- ========== TEACHER PANEL ========== -->
+            <div id="teacherPanel" class="panel">
+                <div class="field-group">
+                    <label class="field-label" for="email">البريد الإلكتروني</label>
+                    <div class="field">
+                        <input type="email" id="email" placeholder="name@example.com" autocomplete="email">
+                        <i class="fas fa-envelope field-icon"></i>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label" for="password">كلمة المرور</label>
+                    <div class="field">
+                        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+                        <i class="fas fa-lock field-icon"></i>
+                        <button type="button" class="password-toggle" onclick="togglePassword()" aria-label="إظهار كلمة المرور">
+                            <i id="passwordIcon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button id="teacherLoginButton" class="login-btn" onclick="teacherLogin()">
+                    <i class="fas fa-right-to-bracket"></i> دخول المنصة
+                </button>
+            </div>
+
+            <div class="trust-line">
+                <i class="fas fa-shield-halved"></i>
+                بياناتك محمية بتشفير Firebase الكامل
+            </div>
+
+            <div class="card-footer">
+                <p>إعداد وتصميم <strong>أ. إيهاب أشرف</strong></p>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+
+<script type="module">
+    import { auth, db } from "./firebase.js";
+
+    import {
+        signInWithEmailAndPassword,
+        signOut,
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    import {
+        doc,
+        getDoc
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+    const STUDENT_EMAIL_DOMAIN = "atlas-students.app";
+
+    /* =========================
+       SPLASH
+    ========================= */
+    window.addEventListener("load", () => {
+        const bar = document.getElementById("splashBar");
+        requestAnimationFrame(() => { bar.style.width = "100%"; });
+
+        setTimeout(() => {
+            document.getElementById("splash").classList.add("hide");
+            document.getElementById("app").classList.add("show");
+            document.querySelector(".otp-input")?.focus();
+        }, 1500);
+    });
+
+    /* =========================
+       TABS
+    ========================= */
+    window.switchTab = function (tab) {
+        const studentTabBtn = document.getElementById("studentTabBtn");
+        const teacherTabBtn = document.getElementById("teacherTabBtn");
+        const studentPanel  = document.getElementById("studentPanel");
+        const teacherPanel  = document.getElementById("teacherPanel");
+        const tabsWrap      = document.getElementById("tabsWrap");
+
+        if (tab === "student") {
+            studentTabBtn.classList.add("active");
+            teacherTabBtn.classList.remove("active");
+            studentPanel.classList.add("active");
+            teacherPanel.classList.remove("active");
+            tabsWrap.classList.remove("teacher");
+            document.querySelector(".otp-input")?.focus();
+        } else {
+            teacherTabBtn.classList.add("active");
+            studentTabBtn.classList.remove("active");
+            teacherPanel.classList.add("active");
+            studentPanel.classList.remove("active");
+            tabsWrap.classList.add("teacher");
+            document.getElementById("email")?.focus();
+        }
+    };
+
+    /* =========================
+       OTP LOGIC
+    ========================= */
+    const otpInputs = document.querySelectorAll(".otp-input");
+
+    function getOtpCode() {
+        return Array.from(otpInputs).map(inp => inp.value).join("");
+    }
+
+    function clearOtpError() {
+        otpInputs.forEach(inp => inp.classList.remove("error"));
+    }
+
+    function setOtpError() {
+        otpInputs.forEach(inp => {
+            inp.classList.add("error");
+            setTimeout(() => inp.classList.remove("error"), 500);
+        });
+    }
+
+    otpInputs.forEach((input, index) => {
+        input.addEventListener("input", (e) => {
+            const value = e.target.value.replace(/[^0-9]/g, "");
+            e.target.value = value.slice(-1);
+
+            if (value) {
+                e.target.classList.add("filled");
+                if (index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                } else if (getOtpCode().length === 6) {
+                    studentLogin();
+                }
+            } else {
+                e.target.classList.remove("filled");
+            }
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && !e.target.value && index > 0) {
+                otpInputs[index - 1].focus();
+                otpInputs[index - 1].value = "";
+                otpInputs[index - 1].classList.remove("filled");
+            }
+            if (e.key === "Enter") studentLogin();
+            if (e.key === "ArrowLeft" && index > 0) otpInputs[index - 1].focus();
+            if (e.key === "ArrowRight" && index < otpInputs.length - 1) otpInputs[index + 1].focus();
+        });
+
+        input.addEventListener("paste", (e) => {
+            e.preventDefault();
+            const paste = (e.clipboardData || window.clipboardData).getData("text").replace(/[^0-9]/g, "").slice(0, 6);
+            if (!paste) return;
+
+            paste.split("").forEach((char, i) => {
+                if (otpInputs[i]) {
+                    otpInputs[i].value = char;
+                    otpInputs[i].classList.add("filled");
+                }
+            });
+
+            const nextIndex = Math.min(paste.length, otpInputs.length - 1);
+            otpInputs[nextIndex].focus();
+
+            if (paste.length === 6) studentLogin();
+        });
+    });
+
+    /* =========================
+       STUDENT LOGIN
+    ========================= */
+    window.studentLogin = async function () {
+        const code = getOtpCode();
+        const button = document.getElementById("studentLoginButton");
+
+        clearOtpError();
+
+        if (!code || code.length !== 6) {
+            setOtpError();
+            Swal.fire({
+                icon: "warning",
+                title: "كود غير مكتمل",
+                text: "من فضلك أدخل كود الدخول المكوّن من 6 أرقام.",
+                confirmButtonColor: "#0a5c43",
+                customClass: { popup: "rounded-2xl" }
+            });
+            return;
         }
 
-        // --- وظيفة تسجيل الدخول ---
-        async function handleLogin() {
-            const uInput = document.getElementById('user').value.toLowerCase().trim();
-            const pInput = document.getElementById('pass').value.toLowerCase().trim();
+        button.disabled = true;
+        button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> جاري تسجيل الدخول...`;
 
-            if (!uInput || !pInput) {
-                Swal.fire({ icon: 'warning', title: 'تنبيه', text: 'برجاء كتابة البيانات كاملة' });
+        const fakeEmail = `${code}@${STUDENT_EMAIL_DOMAIN}`;
+
+        try {
+            const result = await signInWithEmailAndPassword(auth, fakeEmail, code);
+            const userSnap = await getDoc(doc(db, "users", result.user.uid));
+
+            if (!userSnap.exists() || userSnap.data().role !== "student") {
+                await signOut(auth);
+                setOtpError();
+                Swal.fire({
+                    icon: "error",
+                    title: "كود غير صالح",
+                    text: "هذا الكود غير مرتبط بحساب طالب.",
+                    confirmButtonColor: "#0a5c43",
+                    customClass: { popup: "rounded-2xl" }
+                });
+                resetStudentButton();
                 return;
             }
 
-            Swal.fire({ title: 'جاري التحقق...', allowOutsideClick: false, didOpen: () => { Swal.showLoading() } });
-
-            try {
-                const response = await fetch(`${SHEET_URL}&t=${new Date().getTime()}`);
-                const csvData = await response.text();
-                const rows = csvData.split("\n").map(row => row.split(","));
-
-                let found = false;
-                let userRole = "student";
-
-                for (let i = 1; i < rows.length; i++) {
-                    const user = rows[i][0]?.trim().toLowerCase();
-                    const pass = rows[i][1]?.trim().toLowerCase();
-                    if (user === uInput && pass === pInput) {
-                        found = true;
-                        if (user === "mrehab") userRole = "admin";
-                        break;
-                    }
-                }
-
-                if (found) {
-                    sessionStorage.setItem("atlas_auth", "true");
-                    sessionStorage.setItem("role", userRole);
-                    Swal.fire({ icon: 'success', title: 'تم الدخول بنجاح', showConfirmButton: false, timer: 1500 });
-                    setTimeout(() => { window.location.href = (userRole === "admin") ? "dashboard.html" : "home.html"; }, 1500);
-                } else {
-                    Swal.fire({ icon: 'error', title: 'عذراً!', text: 'اسم المستخدم أو كلمة المرور خطأ' });
-                }
-            } catch (error) {
-                Swal.fire({ icon: 'error', title: 'خطأ اتصال', text: 'فشلنا في الوصول لقاعدة البيانات' });
+            if (userSnap.data().active === false) {
+                await signOut(auth);
+                Swal.fire({
+                    icon: "error",
+                    title: "الحساب غير مفعّل",
+                    text: "تواصل مع المدرّس لتفعيل حسابك.",
+                    confirmButtonColor: "#0a5c43",
+                    customClass: { popup: "rounded-2xl" }
+                });
+                resetStudentButton();
+                return;
             }
+
+            await Swal.fire({
+                icon: "success",
+                title: "تم الدخول بنجاح 🎉",
+                text: `أهلاً بك ${userSnap.data().name || ""}`,
+                showConfirmButton: false,
+                timer: 1300,
+                customClass: { popup: "rounded-2xl" }
+            });
+
+            window.location.href = "student-dashboard.html";
+
+        } catch (error) {
+            console.error(error);
+            setOtpError();
+
+            let message = "الكود غير صحيح أو غير مسجل.";
+            if (error.code === "auth/too-many-requests") {
+                message = "تم إجراء محاولات كثيرة. حاول مرة أخرى لاحقاً.";
+            }
+
+            Swal.fire({
+                icon: "error",
+                title: "تعذر تسجيل الدخول",
+                text: message,
+                confirmButtonColor: "#0a5c43",
+                customClass: { popup: "rounded-2xl" }
+            });
+
+            resetStudentButton();
         }
-    </script>
+
+        function resetStudentButton() {
+            button.disabled = false;
+            button.innerHTML = `<i class="fas fa-right-to-bracket"></i> دخول`;
+        }
+    };
+
+    /* =========================
+       PASSWORD TOGGLE
+    ========================= */
+    window.togglePassword = function () {
+        const password = document.getElementById("password");
+        const icon = document.getElementById("passwordIcon");
+
+        if (password.type === "password") {
+            password.type = "text";
+            icon.className = "fas fa-eye-slash";
+        } else {
+            password.type = "password";
+            icon.className = "fas fa-eye";
+        }
+    };
+
+    /* =========================
+       TEACHER LOGIN
+    ========================= */
+    window.teacherLogin = async function () {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const button = document.getElementById("teacherLoginButton");
+
+        if (!email || !password) {
+            Swal.fire({
+                icon: "warning",
+                title: "بيانات ناقصة",
+                text: "اكتب البريد الإلكتروني وكلمة المرور.",
+                confirmButtonColor: "#0a5c43",
+                customClass: { popup: "rounded-2xl" }
+            });
+            return;
+        }
+
+        button.disabled = true;
+        button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> جاري تسجيل الدخول...`;
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+
+            await Swal.fire({
+                icon: "success",
+                title: "تم الدخول بنجاح 🎉",
+                text: "مرحباً بك في Atlas Platform",
+                showConfirmButton: false,
+                timer: 1300,
+                customClass: { popup: "rounded-2xl" }
+            });
+
+            window.location.href = "dashboard.html";
+
+        } catch (error) {
+            console.error(error);
+
+            let message = "حدث خطأ أثناء تسجيل الدخول.";
+            if (error.code === "auth/invalid-credential") {
+                message = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+            } else if (error.code === "auth/user-not-found") {
+                message = "لا يوجد حساب بهذا البريد الإلكتروني.";
+            } else if (error.code === "auth/wrong-password") {
+                message = "كلمة المرور غير صحيحة.";
+            } else if (error.code === "auth/invalid-email") {
+                message = "البريد الإلكتروني غير صحيح.";
+            } else if (error.code === "auth/too-many-requests") {
+                message = "تم إجراء محاولات كثيرة. حاول مرة أخرى لاحقاً.";
+            }
+
+            Swal.fire({
+                icon: "error",
+                title: "تعذر تسجيل الدخول",
+                text: message,
+                confirmButtonColor: "#0a5c43",
+                customClass: { popup: "rounded-2xl" }
+            });
+
+            button.disabled = false;
+            button.innerHTML = `<i class="fas fa-right-to-bracket"></i> دخول المنصة`;
+        }
+    };
+
+    document.getElementById("password").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") teacherLogin();
+    });
+
+    document.getElementById("email").addEventListener("keydown", (e) => {
+        if (e.key === "Enter") document.getElementById("password").focus();
+    });
+
+    /* =========================
+       AUTH STATE
+    ========================= */
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("Atlas user:", user.email);
+            // لا نحول تلقائياً هنا لتجنب Loop
+        }
+    });
+</script>
+
 </body>
 </html>
